@@ -70,7 +70,7 @@ export default function Navigation({
     },
     {
       title: "Options & Derivatives",
-      href: "/docs/options",
+      href: "/options",
       description:
         "Options pricing, hedging strategies, and binomial/Black-Scholes models.",
     },

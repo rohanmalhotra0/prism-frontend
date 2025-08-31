@@ -3,37 +3,41 @@
 import { useState } from "react";
 
 interface ChartSettings {
-  stock: string;
+  underlying: string;
   chartType: string;
   overlays: string[];
   indicators: string[];
   timePeriod: string;
+  optionsData: string[];
+  volatilityMetrics: string[];
 }
 
 interface Props {
   onUpdate: (settings: ChartSettings) => void;
 }
 
-const popularStocks = [
+const popularUnderlyings = [
+  { symbol: "SPY", name: "SPDR S&P 500 ETF" },
+  { symbol: "QQQ", name: "Invesco QQQ Trust" },
+  { symbol: "IWM", name: "iShares Russell 2000 ETF" },
   { symbol: "AAPL", name: "Apple Inc." },
-  { symbol: "MSFT", name: "Microsoft Corporation" },
-  { symbol: "GOOGL", name: "Alphabet Inc." },
-  { symbol: "AMZN", name: "Amazon.com Inc." },
   { symbol: "TSLA", name: "Tesla Inc." },
-  { symbol: "META", name: "Meta Platforms Inc." },
   { symbol: "NVDA", name: "NVIDIA Corporation" },
-  { symbol: "JPM", name: "JPMorgan Chase" },
-  { symbol: "V", name: "Visa Inc." },
-  { symbol: "NFLX", name: "Netflix Inc." },
+  { symbol: "AMD", name: "Advanced Micro Devices" },
+  { symbol: "META", name: "Meta Platforms Inc." },
+  { symbol: "AMZN", name: "Amazon.com Inc." },
+  { symbol: "MSFT", name: "Microsoft Corporation" },
 ];
 
 export default function ChartSettingsPanel({ onUpdate }: Props) {
-  const [stock, setStock] = useState("");
+  const [underlying, setUnderlying] = useState("");
   const [search, setSearch] = useState("");
   const [chartType, setChartType] = useState("candlestick");
   const [overlays, setOverlays] = useState(["", "", ""]);
   const [indicators, setIndicators] = useState(["", "", ""]);
-  const [timePeriod, setTimePeriod] = useState("1y");
+  const [timePeriod, setTimePeriod] = useState("1mo");
+  const [optionsData, setOptionsData] = useState(["", "", ""]);
+  const [volatilityMetrics, setVolatilityMetrics] = useState(["", "", ""]);
   const [showDropdown, setShowDropdown] = useState(false);
 
   const handleOverlayChange = (index: number, value: string) => {
@@ -48,18 +52,32 @@ export default function ChartSettingsPanel({ onUpdate }: Props) {
     setIndicators(updated);
   };
 
+  const handleOptionsDataChange = (index: number, value: string) => {
+    const updated = [...optionsData];
+    updated[index] = value;
+    setOptionsData(updated);
+  };
+
+  const handleVolatilityMetricsChange = (index: number, value: string) => {
+    const updated = [...volatilityMetrics];
+    updated[index] = value;
+    setVolatilityMetrics(updated);
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onUpdate({
-      stock: stock || search.toUpperCase(),
+      underlying: underlying || search.toUpperCase(),
       chartType,
       overlays: overlays.filter((o) => o !== ""),
       indicators: indicators.filter((i) => i !== ""),
       timePeriod,
+      optionsData: optionsData.filter((o) => o !== ""),
+      volatilityMetrics: volatilityMetrics.filter((v) => v !== ""),
     });
   };
 
-  const filteredStocks = popularStocks.filter(
+  const filteredUnderlyings = popularUnderlyings.filter(
     (s) =>
       s.symbol.toLowerCase().includes(search.toLowerCase()) ||
       s.name.toLowerCase().includes(search.toLowerCase())
@@ -85,7 +103,7 @@ export default function ChartSettingsPanel({ onUpdate }: Props) {
         {/* Header with enhanced styling */}
         <div className="relative z-10">
           <h2 className="text-3xl font-bold tracking-tight text-left mb-2 bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text text-transparent">
-            Chart Settings
+            Options Chart Settings
           </h2>
           <div className="w-20 h-1 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full"></div>
         </div>
@@ -94,19 +112,19 @@ export default function ChartSettingsPanel({ onUpdate }: Props) {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 relative z-10">
           {/* LEFT SIDE */}
           <div className="space-y-7">
-            {/* Stock Picker with enhanced styling */}
+            {/* Underlying Picker */}
             <div className="flex flex-col gap-3 relative group">
               <label className="font-semibold text-gray-200 text-sm uppercase tracking-wider">
-                Choose Stock
+                Choose Underlying
               </label>
               <div className="relative">
                 <input
                   type="text"
-                  placeholder="Type symbol or company (e.g. AAPL, Tesla)"
-                  value={search || stock}
+                  placeholder="Type symbol or company (e.g. SPY, AAPL)"
+                  value={search || underlying}
                   onChange={(e) => {
                     setSearch(e.target.value);
-                    setStock("");
+                    setUnderlying("");
                   }}
                   onFocus={() => setShowDropdown(true)}
                   onBlur={() => setTimeout(() => setShowDropdown(false), 120)}
@@ -117,12 +135,12 @@ export default function ChartSettingsPanel({ onUpdate }: Props) {
 
               {showDropdown && search && (
                 <div className="absolute top-full mt-2 z-20 w-full max-h-60 overflow-y-auto rounded-xl border border-white/20 bg-black/80 backdrop-blur-xl shadow-2xl">
-                  {filteredStocks.length > 0 ? (
-                    filteredStocks.map((s) => (
+                  {filteredUnderlyings.length > 0 ? (
+                    filteredUnderlyings.map((s) => (
                       <div
                         key={s.symbol}
                         onClick={() => {
-                          setStock(s.symbol);
+                          setUnderlying(s.symbol);
                           setSearch(s.symbol);
                           setShowDropdown(false);
                         }}
@@ -134,14 +152,14 @@ export default function ChartSettingsPanel({ onUpdate }: Props) {
                     ))
                   ) : (
                     <div className="px-4 py-3 text-sm text-gray-500 italic">
-                      Hit Enter to Find Stock
+                      Hit Enter to Find Underlying
                     </div>
                   )}
                 </div>
               )}
             </div>
 
-            {/* Time Period with enhanced styling */}
+            {/* Time Period */}
             <div className="flex flex-col gap-3 group">
               <label className="font-semibold text-gray-200 text-sm uppercase tracking-wider">
                 Time Period
@@ -165,7 +183,7 @@ export default function ChartSettingsPanel({ onUpdate }: Props) {
               </select>
             </div>
 
-            {/* Chart Type with enhanced styling */}
+            {/* Chart Type */}
             <div className="flex flex-col gap-3 group">
               <label className="font-semibold text-gray-200 text-sm uppercase tracking-wider">
                 Chart Type
@@ -180,90 +198,111 @@ export default function ChartSettingsPanel({ onUpdate }: Props) {
                 <option value="line">Line</option>
                 <option value="area">Area</option>
                 <option value="bar">Bar</option>
-                <option value="histogram">Histogram</option>
-                <option value="scatter">Scatter</option>
-                <option value="scatter3d">3D Scatter</option>
-                <option value="heatmap">Heatmap</option>
-                <option value="bubble">Bubble Chart</option>
-                <option value="waterfall">Waterfall</option>
-                <option value="funnel">Funnel</option>
-                <option value="pie">Pie</option>
-                <option value="treemap">Treemap</option>
-                <option value="sunburst">Sunburst</option>
-                <option value="box">Box Plot</option>
-                <option value="violin">Violin Plot</option>
+                <option value="volume">Volume</option>
+                <option value="optionsChain">Options Chain</option>
+                <option value="greeks">Greeks Chart</option>
+                <option value="ivSurface">IV Surface</option>
+                <option value="pcr">Put-Call Ratio</option>
               </select>
             </div>
           </div>
 
           {/* RIGHT SIDE */}
           <div className="space-y-7">
-            {/* Overlays with enhanced styling */}
-            <div className="flex flex-col gap-4">
+            {/* Options Data (3) */}
+            <div className="flex flex-col gap-3">
               <label className="font-semibold text-gray-200 text-sm uppercase tracking-wider">
-                Overlays (up to 3)
+                Options Data (up to 3)
               </label>
-              {overlays.map((ov, i) => (
+              {optionsData.map((opt, i) => (
                 <select
                   key={i}
-                  value={ov}
-                  onChange={(e) => handleOverlayChange(i, e.target.value)}
+                  value={opt}
+                  onChange={(e) => handleOptionsDataChange(i, e.target.value)}
                   className="rounded-xl border border-white/20 bg-black/40 backdrop-blur-sm p-4 text-white focus:border-purple-400 focus:ring-2 focus:ring-purple-400/30 focus:outline-none transition-all duration-300 hover:border-white/30 cursor-pointer"
                 >
-                  <option value="">-- Select Overlay --</option>
-                  <option value="ema20">EMA (20)</option>
-                  <option value="sma50">SMA (50)</option>
-                  <option value="sma200">SMA (200)</option>
-                  <option value="bollinger">Bollinger Bands</option>
-                  <option value="keltner">Keltner Channels</option>
-                  <option value="donchian">Donchian Channels</option>
-                  <option value="ichimoku">Ichimoku Cloud</option>
-                  <option value="parabolicSAR">Parabolic SAR</option>
-                  <option value="vwap">VWAP</option>
-                  <option value="pivotPoints">Pivot Points</option>
-                  <option value="supertrend">Supertrend</option>
-                  <option value="envelopes">Envelopes</option>
-                  <option value="fibonacci">Fibonacci Retracement</option>
-                  <option value="hma">Hull Moving Average</option>
-                  <option value="wma">Weighted Moving Average</option>
+                  <option value="">-- Select Options Data --</option>
+                  <option value="openInterest">Open Interest</option>
+                  <option value="volume">Volume</option>
+                  <option value="putCallRatio">Put-Call Ratio</option>
+                  <option value="ivPercentile">IV Percentile</option>
+                  <option value="ivRank">IV Rank</option>
+                  <option value="delta">Delta</option>
+                  <option value="gamma">Gamma</option>
+                  <option value="theta">Theta</option>
+                  <option value="vega">Vega</option>
+                  <option value="rho">Rho</option>
+                  <option value="maxPain">Max Pain</option>
+                  <option value="gammaExposure">Gamma Exposure</option>
+                  <option value="vanna">Vanna</option>
+                  <option value="charm">Charm</option>
                 </select>
               ))}
             </div>
 
-            {/* Indicators with enhanced styling */}
-            <div className="flex flex-col gap-4">
+            {/* Volatility Metrics (3) */}
+            <div className="flex flex-col gap-3">
               <label className="font-semibold text-gray-200 text-sm uppercase tracking-wider">
-                Indicators (up to 3)
+                Volatility Metrics (up to 3)
               </label>
-              {indicators.map((ind, i) => (
+              {volatilityMetrics.map((vol, i) => (
                 <select
                   key={i}
-                  value={ind}
-                  onChange={(e) => handleIndicatorChange(i, e.target.value)}
+                  value={vol}
+                  onChange={(e) => handleVolatilityMetricsChange(i, e.target.value)}
                   className="rounded-xl border border-white/20 bg-black/40 backdrop-blur-sm p-4 text-white focus:border-purple-400 focus:ring-2 focus:ring-purple-400/30 focus:outline-none transition-all duration-300 hover:border-white/30 cursor-pointer"
                 >
-                  <option value="">-- Select Indicator --</option>
-                  <option value="macd">MACD</option>
-                  <option value="rsi">RSI</option>
-                  <option value="volume">Volume</option>
-                  <option value="sma">SMA</option>
-                  <option value="ema">EMA</option>
-                  <option value="wma">WMA</option>
-                  <option value="bollinger">Bollinger Bands</option>
-                  <option value="stochastic">Stochastic</option>
-                  <option value="adx">ADX</option>
-                  <option value="atr">ATR</option>
-                  <option value="cci">CCI</option>
-                  <option value="obv">OBV</option>
-                  <option value="mfi">MFI</option>
-                  <option value="roc">ROC</option>
-                  <option value="vwma">VWMA</option>
-                  <option value="ichimoku">Ichimoku Cloud</option>
-                  <option value="parabolicSAR">Parabolic SAR</option>
-                  <option value="pivot">Pivot Points</option>
-                  <option value="fibRetracement">Fibonacci Retracement</option>
+                  <option value="">-- Select Volatility Metric --</option>
+                  <option value="iv30">30-Day IV</option>
+                  <option value="iv60">60-Day IV</option>
+                  <option value="iv90">90-Day IV</option>
+                  <option value="ivSkew">IV Skew</option>
+                  <option value="ivTerm">IV Term Structure</option>
+                  <option value="realizedVol">Realized Volatility</option>
+                  <option value="volOfVol">Volatility of Volatility</option>
+                  <option value="vix">VIX Correlation</option>
+                  <option value="volRegime">Volatility Regime</option>
+                  <option value="volSurface">Volatility Surface</option>
                 </select>
               ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Additional Options Settings */}
+        <div className="relative z-10 space-y-6">
+          <h3 className="text-xl font-semibold text-gray-200 border-b border-white/20 pb-2">
+            Advanced Options Settings
+          </h3>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Strike Range */}
+            <div className="flex flex-col gap-3">
+              <label className="font-medium text-gray-300">Strike Range</label>
+              <div className="flex gap-3">
+                <input
+                  type="number"
+                  placeholder="Min Strike"
+                  className="flex-1 rounded-lg border border-white/20 bg-black/40 backdrop-blur-sm p-3 text-white placeholder-gray-400 focus:border-purple-400 focus:ring-2 focus:ring-purple-400/30 focus:outline-none"
+                />
+                <input
+                  type="number"
+                  placeholder="Max Strike"
+                  className="flex-1 rounded-lg border border-white/20 bg-black/40 backdrop-blur-sm p-3 text-white placeholder-gray-400 focus:border-purple-400 focus:ring-2 focus:ring-purple-400/30 focus:outline-none"
+                />
+              </div>
+            </div>
+
+            {/* Expiration Filter */}
+            <div className="flex flex-col gap-3">
+              <label className="font-medium text-gray-300">Expiration Filter</label>
+              <select className="rounded-lg border border-white/20 bg-black/40 backdrop-blur-sm p-3 text-white focus:border-purple-400 focus:ring-2 focus:ring-purple-400/30 focus:outline-none">
+                <option value="all">All Expirations</option>
+                <option value="weekly">Weekly</option>
+                <option value="monthly">Monthly</option>
+                <option value="quarterly">Quarterly</option>
+                <option value="leaps">LEAPS</option>
+              </select>
             </div>
           </div>
         </div>
@@ -277,7 +316,7 @@ export default function ChartSettingsPanel({ onUpdate }: Props) {
               boxShadow: '0 10px 40px -10px rgba(147, 51, 234, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.1)',
             }}
           >
-            Update Chart
+            Update Options Chart
           </button>
         </div>
       </form>
