@@ -17,9 +17,27 @@ export default function AuthModal({
     <Dialog>
       {/* Trigger button */}
       <DialogTrigger asChild>
-        <Button className="bg-sky-600 hover:bg-sky-700 text-white font-semibold rounded-lg">
-          {triggerText}
-        </Button>
+        <button className="relative group px-4 py-2 rounded-lg font-semibold text-white transition-all duration-300 hover:scale-105 active:scale-95 overflow-hidden">
+          {/* Background gradient */}
+          <div className="absolute inset-0 bg-gradient-to-r from-purple-600 via-purple-500 to-blue-600 rounded-lg"></div>
+          
+          {/* Hover effect overlay */}
+          <div className="absolute inset-0 bg-gradient-to-r from-purple-500 via-purple-400 to-blue-500 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          
+          {/* Shine effect */}
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+          
+          {/* Border glow */}
+          <div className="absolute inset-0 rounded-lg border border-white/20 group-hover:border-white/40 transition-colors duration-300"></div>
+          
+          {/* Text */}
+          <span className="relative z-10">
+            {triggerText}
+          </span>
+          
+          {/* Shadow */}
+          <div className="absolute inset-0 rounded-lg shadow-lg group-hover:shadow-xl group-hover:shadow-purple-500/25 transition-all duration-300"></div>
+        </button>
       </DialogTrigger>
 
       <DialogContent className="backdrop-blur-md bg-black/90 border border-sky-700 shadow-xl">
