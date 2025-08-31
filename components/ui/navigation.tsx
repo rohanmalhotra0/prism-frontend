@@ -64,7 +64,7 @@ export default function Navigation({
     },
     {
       title: "Insurance Risk Analysis",
-      href: "/docs/insurance-risk",
+      href: "/insurance",
       description:
         "Stochastic risk modeling for actuarial science and portfolio management.",
     },
@@ -76,19 +76,13 @@ export default function Navigation({
     },
     {
       title: "Crypto Modeling",
-      href: "/docs/crypto-modeling",
+      href: "/crypto",
       description:
         "On-chain data analysis, risk modeling, and DeFi pricing strategies.",
     },
     {
-      title: "Unconventional Data",
-      href: "/docs/unconventional",
-      description:
-        "Sentiment, alternative data, and non-traditional market signals.",
-    },
-    {
       title: "General Modeling",
-      href: "/docs/general-modeling",
+      href: "/general",
       description:
         "Regression, simulation, and time-series forecasting techniques.",
     },
