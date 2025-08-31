@@ -58,7 +58,7 @@ export default function Navigation({
   components = [
     {
       title: "Financial Modeling",
-      href: "/docs/financial-modeling",
+      href: "/financePage",
       description:
         "Quantitative models for corporate finance, valuation, and forecasting.",
     },

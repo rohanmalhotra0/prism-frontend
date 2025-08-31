@@ -21,10 +21,10 @@ interface CTAProps {
 }
 
 export default function CTA({
-  title = "Start building",
+  title = "Start Modeling",
   buttons = [
     {
-      href: "https://www.launchuicomponents.com/",
+      href: "/",
       text: "Get Started",
       variant: "default",
     },
