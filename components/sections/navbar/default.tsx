@@ -1,6 +1,7 @@
 import { Menu } from "lucide-react";
 import { ReactNode } from "react";
-
+import prismLogo from "@/components/logos/prismLogo.jpeg";
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 import SignInModal from "@/components/sections/signInModal";
 import SignUpModal from "@/components/sections/signUpModal";
@@ -30,7 +31,7 @@ interface NavbarProps {
 }
 
 export default function Navbar({
-  logo = null,
+  logo = <Image src={prismLogo} alt="Prism Logo" width={32} height={32} />,
   name = "Prism",
   homeUrl = "/",
   mobileLinks = [

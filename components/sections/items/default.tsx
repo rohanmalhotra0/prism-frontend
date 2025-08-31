@@ -1,16 +1,16 @@
 import {
-  BlocksIcon,
-  EclipseIcon,
-  FastForwardIcon,
-  LanguagesIcon,
-  MonitorSmartphoneIcon,
+  LineChartIcon,
+  BarChart3Icon,
+  DatabaseIcon,
+  CalculatorIcon,
+  UsersIcon,
   RocketIcon,
-  ScanFaceIcon,
-  SquarePenIcon,
+  LayersIcon,
+  CloudIcon,
 } from "lucide-react";
 import { ReactNode } from "react";
 
-import { Item, ItemDescription,ItemIcon, ItemTitle } from "../../ui/item";
+import { Item, ItemDescription, ItemIcon, ItemTitle } from "../../ui/item";
 import { Section } from "../../ui/section";
 
 interface ItemProps {
@@ -26,50 +26,47 @@ interface ItemsProps {
 }
 
 export default function Items({
-  title = "Everything you need. Nothing you don't.",
+  title = "Prism gives you the tools to model, analyze, and scale.",
   items = [
     {
-      title: "Accessibility first",
-      description: "Fully WCAG 2.0 compliant, made with best a11y practices",
-      icon: <ScanFaceIcon className="size-5 stroke-1" />,
+      title: "Advanced Charting",
+      description: "Interactive charts for indicators, simulations, and backtests.",
+      icon: <LineChartIcon className="size-5 stroke-1" />,
     },
     {
-      title: "Responsive design",
-      description: "Looks and works great on any device and screen size",
-      icon: <MonitorSmartphoneIcon className="size-5 stroke-1" />,
+      title: "Financial Modeling",
+      description: "Options, derivatives, and portfolio risk models out-of-the-box.",
+      icon: <CalculatorIcon className="size-5 stroke-1" />,
     },
     {
-      title: "Light and dark mode",
-      description:
-        "Seamless switching between color schemes, 6 themes included",
-      icon: <EclipseIcon className="size-5 stroke-1" />,
+      title: "Data Integrations",
+      description: "Connect to APIs, live markets, and alternative datasets.",
+      icon: <DatabaseIcon className="size-5 stroke-1" />,
     },
     {
-      title: "Easy to customize",
-      description: "Flexible options to match your product or brand",
-      icon: <BlocksIcon className="size-5 stroke-1" />,
+      title: "Team Collaboration",
+      description: "Share dashboards and research with your team in real time.",
+      icon: <UsersIcon className="size-5 stroke-1" />,
     },
     {
-      title: "Top-level performance",
-      description: "Made for lightning-fast load times and smooth interactions",
-      icon: <FastForwardIcon className="size-5 stroke-1" />,
+      title: "Strategy Backtesting",
+      description: "Simulate and evaluate trading strategies before going live.",
+      icon: <BarChart3Icon className="size-5 stroke-1" />,
     },
     {
-      title: "Production ready",
-      description: "Thoroughly tested and launch-prepared",
+      title: "Cloud Powered",
+      description: "Run heavy simulations in the cloud without slowing down.",
+      icon: <CloudIcon className="size-5 stroke-1" />,
+    },
+    {
+      title: "Custom Indicators",
+      description: "Build and visualize your own financial metrics and signals.",
+      icon: <LayersIcon className="size-5 stroke-1" />,
+    },
+    {
+      title: "Production Ready",
+      description: "Move from prototype to deployment seamlessly with Prism.",
       icon: <RocketIcon className="size-5 stroke-1" />,
-    },
-    {
-      title: "Made for localisation",
-      description:
-        "Easy to implement support for multiple languages and regions",
-      icon: <LanguagesIcon className="size-5 stroke-1" />,
-    },
-    {
-      title: "CMS friendly",
-      description:
-        "Built to work with your any headless content management system",
-      icon: <SquarePenIcon className="size-5 stroke-1" />,
     },
   ],
   className,

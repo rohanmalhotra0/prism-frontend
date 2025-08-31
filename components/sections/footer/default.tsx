@@ -1,8 +1,7 @@
 import { ReactNode } from "react";
-
 import { cn } from "@/lib/utils";
-
-
+import prismLogo from "@/components/logos/prismLogo.jpeg";
+import Image from "next/image";
 import {
   Footer,
   FooterBottom,
@@ -32,37 +31,36 @@ interface FooterProps {
 }
 
 export default function FooterSection({
-  logo = null,
-  name = "Launch UI",
+  logo = <Image src={prismLogo} alt="Prism Logo" width={32} height={32} />,
+  name = "Prism",
   columns = [
     {
       title: "Product",
       links: [
-        { text: "Changelog", href: "https://www.launchuicomponents.com/" },
-        { text: "Documentation", href: "https://www.launchuicomponents.com/" },
+        { text: "Pricing", href: "#pricing" }, // scrolls to pricing section
+        { text: "Documentation", href: "/docs" },
       ],
     },
     {
       title: "Company",
       links: [
-        { text: "About", href: "https://www.launchuicomponents.com/" },
-        { text: "Careers", href: "https://www.launchuicomponents.com/" },
-        { text: "Blog", href: "https://www.launchuicomponents.com/" },
+        { text: "About Us", href: "https://www.rohanm.org" },
+        { text: "Research", href: "/research" },
+        { text: "Careers", href: "/careers" },
       ],
     },
     {
-      title: "Contact",
+      title: "Connect",
       links: [
-        { text: "Discord", href: "https://www.launchuicomponents.com/" },
-        { text: "Twitter", href: "https://www.launchuicomponents.com/" },
-        { text: "Github", href: "https://www.launchuicomponents.com/" },
+        { text: "LinkedIn", href: "https://www.linkedin.com/in/rohanamal" },
+        { text: "GitHub", href: "https://github.com/Rohanmalhotra0" },
       ],
     },
   ],
-  copyright = "© 2025 Mikołaj Dobrucki. All rights reserved",
+  copyright = "© 2025 Prism. All rights reserved",
   policies = [
-    { text: "Privacy Policy", href: "https://www.launchuicomponents.com/" },
-    { text: "Terms of Service", href: "https://www.launchuicomponents.com/" },
+    { text: "Privacy Policy", href: "/privacy" },
+    { text: "Terms of Service", href: "/terms" },
   ],
   showModeToggle = true,
   className,
@@ -85,7 +83,9 @@ export default function FooterSection({
                   <a
                     key={linkIndex}
                     href={link.href}
-                    className="text-muted-foreground text-sm"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-muted-foreground text-sm hover:text-foreground"
                   >
                     {link.text}
                   </a>
@@ -97,7 +97,11 @@ export default function FooterSection({
             <div>{copyright}</div>
             <div className="flex items-center gap-4">
               {policies.map((policy, index) => (
-                <a key={index} href={policy.href}>
+                <a
+                  key={index}
+                  href={policy.href}
+                  className="text-muted-foreground hover:text-foreground"
+                >
                   {policy.text}
                 </a>
               ))}

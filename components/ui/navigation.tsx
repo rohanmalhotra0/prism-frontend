@@ -3,7 +3,8 @@
 import Link from "next/link";
 import * as React from "react";
 import { ReactNode } from "react";
-
+import prismLogo from "@/components/logos/prismLogo.jpeg";
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 
 import {
@@ -92,7 +93,7 @@ export default function Navigation({
         "Regression, simulation, and time-series forecasting techniques.",
     },
   ],
-  logo = null,
+  logo = <Image src={prismLogo} alt="Prism Logo" width={250} height={250} />,
   logoTitle = "Pricing",
   logoDescription =
     "Learn about Prism’s mission and how to get started with the platform.",
