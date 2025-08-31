@@ -107,7 +107,7 @@ export default function Navigation({
     },
     {
       title: "FAQ",
-      href: "#FAQ",
+      href: "/#FAQ",
       description:
         "Find answers to common questions about using Prism and our platform.",
     },
