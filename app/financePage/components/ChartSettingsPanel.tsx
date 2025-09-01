@@ -3,11 +3,12 @@
 import { useState } from "react";
 
 interface ChartSettings {
-  stock: string;
+  symbol: string;          // ✅ renamed from stock → symbol
   chartType: string;
   overlays: string[];
   indicators: string[];
   timePeriod: string;
+  data?: any[];            // backend OHLC + indicators
 }
 
 interface Props {
@@ -28,7 +29,7 @@ const popularStocks = [
 ];
 
 export default function ChartSettingsPanel({ onUpdate }: Props) {
-  const [stock, setStock] = useState("");
+  const [symbol, setSymbol] = useState("");   // ✅ renamed
   const [search, setSearch] = useState("");
   const [chartType, setChartType] = useState("candlestick");
   const [overlays, setOverlays] = useState(["", "", ""]);
@@ -36,27 +37,44 @@ export default function ChartSettingsPanel({ onUpdate }: Props) {
   const [timePeriod, setTimePeriod] = useState("1y");
   const [showDropdown, setShowDropdown] = useState(false);
 
-  const handleOverlayChange = (index: number, value: string) => {
+  const handleOverlayChange = (i: number, value: string) => {
     const updated = [...overlays];
-    updated[index] = value;
+    updated[i] = value;
     setOverlays(updated);
   };
 
-  const handleIndicatorChange = (index: number, value: string) => {
+  const handleIndicatorChange = (i: number, value: string) => {
     const updated = [...indicators];
-    updated[index] = value;
+    updated[i] = value;
     setIndicators(updated);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    onUpdate({
-      stock: stock || search.toUpperCase(),
+
+    const payload: ChartSettings = {
+      symbol: symbol || search.toUpperCase(),   // ✅ backend expects "symbol"
       chartType,
       overlays: overlays.filter((o) => o !== ""),
       indicators: indicators.filter((i) => i !== ""),
       timePeriod,
-    });
+    };
+
+    try {
+      const res = await fetch("http://localhost:8000/finance", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) throw new Error(`Backend error: ${res.status}`);
+
+      const result = await res.json();
+      onUpdate({ ...payload, data: result });
+    } catch (err) {
+      console.error("❌ Error fetching chart data:", err);
+      alert("Failed to fetch chart data. Is the backend running?");
+    }
   };
 
   const filteredStocks = popularStocks.filter(
@@ -66,221 +84,159 @@ export default function ChartSettingsPanel({ onUpdate }: Props) {
   );
 
   return (
-    <div className="relative">
-      {/* Background blur effect */}
-      <div className="absolute inset-0 bg-gradient-to-br from-black via-gray-900 to-black rounded-3xl blur-xl opacity-60"></div>
-      
-      {/* Main container with glassmorphism */}
-      <form
-        onSubmit={handleSubmit}
-        className="relative space-y-8 rounded-3xl border border-white/10 bg-black/40 backdrop-blur-2xl p-10 shadow-2xl text-white overflow-hidden"
-        style={{
-          background: 'linear-gradient(135deg, rgba(0,0,0,0.8) 0%, rgba(20,20,20,0.6) 50%, rgba(0,0,0,0.8) 100%)',
-          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.1)',
-        }}
-      >
-        {/* Subtle glow effect */}
-        <div className="absolute inset-0 bg-gradient-to-r from-purple-500/5 via-transparent to-blue-500/5 rounded-3xl"></div>
-        
-        {/* Header with enhanced styling */}
-        <div className="relative z-10">
-          <h2 className="text-3xl font-bold tracking-tight text-left mb-2 bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text text-transparent">
-            Chart Settings
-          </h2>
-          <div className="w-20 h-1 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full"></div>
-        </div>
+    <form
+      onSubmit={handleSubmit}
+      className="relative space-y-8 rounded-3xl border border-white/10 bg-black/40 backdrop-blur-2xl p-10 shadow-2xl text-white"
+    >
+      {/* Header */}
+      <div>
+        <h2 className="text-3xl font-bold mb-2 bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text text-transparent">
+          Chart Settings
+        </h2>
+        <div className="w-20 h-1 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full"></div>
+      </div>
 
-        {/* Two-column layout with enhanced spacing */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 relative z-10">
-          {/* LEFT SIDE */}
-          <div className="space-y-7">
-            {/* Stock Picker with enhanced styling */}
-            <div className="flex flex-col gap-3 relative group">
-              <label className="font-semibold text-gray-200 text-sm uppercase tracking-wider">
-                Choose Stock
-              </label>
-              <div className="relative">
-                <input
-                  type="text"
-                  placeholder="Type symbol or company (e.g. AAPL, Tesla)"
-                  value={search || stock}
-                  onChange={(e) => {
-                    setSearch(e.target.value);
-                    setStock("");
-                  }}
-                  onFocus={() => setShowDropdown(true)}
-                  onBlur={() => setTimeout(() => setShowDropdown(false), 120)}
-                  className="w-full rounded-xl border border-white/20 bg-black/40 backdrop-blur-sm p-4 text-white placeholder-gray-400 focus:border-purple-400 focus:ring-2 focus:ring-purple-400/30 focus:outline-none transition-all duration-300 hover:border-white/30"
-                />
-                <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-purple-500/10 to-blue-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* Left Column */}
+        <div className="space-y-6">
+          {/* Stock Picker */}
+          <div className="relative">
+            <label className="block text-sm text-gray-300 mb-2">
+              Choose Stock
+            </label>
+            <input
+              type="text"
+              placeholder="e.g. AAPL, Tesla"
+              value={search || symbol}
+              onChange={(e) => {
+                setSearch(e.target.value);
+                setSymbol("");
+              }}
+              onFocus={() => setShowDropdown(true)}
+              onBlur={() => setTimeout(() => setShowDropdown(false), 120)}
+              className="w-full rounded-xl border border-white/20 bg-black/40 p-4 text-white placeholder-gray-400 focus:border-purple-400 focus:ring-2 focus:ring-purple-400/30"
+            />
+            {showDropdown && search && (
+              <div className="absolute top-full mt-2 w-full max-h-60 overflow-y-auto rounded-xl border border-white/20 bg-black/90 backdrop-blur-xl shadow-xl z-20">
+                {filteredStocks.map((s) => (
+                  <div
+                    key={s.symbol}
+                    onClick={() => {
+                      setSymbol(s.symbol);
+                      setSearch(s.symbol);
+                      setShowDropdown(false);
+                    }}
+                    className="cursor-pointer px-4 py-2 hover:bg-purple-500/20"
+                  >
+                    <span className="font-semibold text-purple-300">
+                      {s.symbol}
+                    </span>{" "}
+                    <span className="text-sm text-gray-400">— {s.name}</span>
+                  </div>
+                ))}
               </div>
-
-              {showDropdown && search && (
-                <div className="absolute top-full mt-2 z-20 w-full max-h-60 overflow-y-auto rounded-xl border border-white/20 bg-black/80 backdrop-blur-xl shadow-2xl">
-                  {filteredStocks.length > 0 ? (
-                    filteredStocks.map((s) => (
-                      <div
-                        key={s.symbol}
-                        onClick={() => {
-                          setStock(s.symbol);
-                          setSearch(s.symbol);
-                          setShowDropdown(false);
-                        }}
-                        className="cursor-pointer px-4 py-3 hover:bg-gradient-to-r hover:from-purple-500/20 hover:to-blue-500/20 hover:text-white transition-all duration-200 border-b border-white/5 last:border-b-0"
-                      >
-                        <span className="font-semibold text-purple-300">{s.symbol}</span>{" "}
-                        <span className="text-sm text-gray-400">— {s.name}</span>
-                      </div>
-                    ))
-                  ) : (
-                    <div className="px-4 py-3 text-sm text-gray-500 italic">
-                      Hit Enter to Find Stock
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
-
-            {/* Time Period with enhanced styling */}
-            <div className="flex flex-col gap-3 group">
-              <label className="font-semibold text-gray-200 text-sm uppercase tracking-wider">
-                Time Period
-              </label>
-              <select
-                value={timePeriod}
-                onChange={(e) => setTimePeriod(e.target.value)}
-                className="rounded-xl border border-white/20 bg-black/40 backdrop-blur-sm p-4 text-white focus:border-purple-400 focus:ring-2 focus:ring-purple-400/30 focus:outline-none transition-all duration-300 hover:border-white/30 cursor-pointer"
-              >
-                <option value="1d">1 Day</option>
-                <option value="5d">5 Days</option>
-                <option value="1mo">1 Month</option>
-                <option value="3mo">3 Months</option>
-                <option value="6mo">6 Months</option>
-                <option value="1y">1 Year</option>
-                <option value="2y">2 Years</option>
-                <option value="5y">5 Years</option>
-                <option value="10y">10 Years</option>
-                <option value="ytd">Year-to-Date</option>
-                <option value="max">Max</option>
-              </select>
-            </div>
-
-            {/* Chart Type with enhanced styling */}
-            <div className="flex flex-col gap-3 group">
-              <label className="font-semibold text-gray-200 text-sm uppercase tracking-wider">
-                Chart Type
-              </label>
-              <select
-                value={chartType}
-                onChange={(e) => setChartType(e.target.value)}
-                className="rounded-xl border border-white/20 bg-black/40 backdrop-blur-sm p-4 text-white focus:border-purple-400 focus:ring-2 focus:ring-purple-400/30 focus:outline-none transition-all duration-300 hover:border-white/30 cursor-pointer"
-              >
-                <option value="candlestick">Candlestick</option>
-                <option value="ohlc">OHLC</option>
-                <option value="line">Line</option>
-                <option value="area">Area</option>
-                <option value="bar">Bar</option>
-                <option value="histogram">Histogram</option>
-                <option value="scatter">Scatter</option>
-                <option value="scatter3d">3D Scatter</option>
-                <option value="heatmap">Heatmap</option>
-                <option value="bubble">Bubble Chart</option>
-                <option value="waterfall">Waterfall</option>
-                <option value="funnel">Funnel</option>
-                <option value="pie">Pie</option>
-                <option value="treemap">Treemap</option>
-                <option value="sunburst">Sunburst</option>
-                <option value="box">Box Plot</option>
-                <option value="violin">Violin Plot</option>
-              </select>
-            </div>
+            )}
           </div>
 
-          {/* RIGHT SIDE */}
-          <div className="space-y-7">
-            {/* Overlays with enhanced styling */}
-            <div className="flex flex-col gap-4">
-              <label className="font-semibold text-gray-200 text-sm uppercase tracking-wider">
-                Overlays (up to 3)
-              </label>
-              {overlays.map((ov, i) => (
-                <select
-                  key={i}
-                  value={ov}
-                  onChange={(e) => handleOverlayChange(i, e.target.value)}
-                  className="rounded-xl border border-white/20 bg-black/40 backdrop-blur-sm p-4 text-white focus:border-purple-400 focus:ring-2 focus:ring-purple-400/30 focus:outline-none transition-all duration-300 hover:border-white/30 cursor-pointer"
-                >
-                  <option value="">-- Select Overlay --</option>
-                  <option value="ema20">EMA (20)</option>
-                  <option value="sma50">SMA (50)</option>
-                  <option value="sma200">SMA (200)</option>
-                  <option value="bollinger">Bollinger Bands</option>
-                  <option value="keltner">Keltner Channels</option>
-                  <option value="donchian">Donchian Channels</option>
-                  <option value="ichimoku">Ichimoku Cloud</option>
-                  <option value="parabolicSAR">Parabolic SAR</option>
-                  <option value="vwap">VWAP</option>
-                  <option value="pivotPoints">Pivot Points</option>
-                  <option value="supertrend">Supertrend</option>
-                  <option value="envelopes">Envelopes</option>
-                  <option value="fibonacci">Fibonacci Retracement</option>
-                  <option value="hma">Hull Moving Average</option>
-                  <option value="wma">Weighted Moving Average</option>
-                </select>
-              ))}
-            </div>
+          {/* Time Period */}
+          <div>
+            <label className="block text-sm text-gray-300 mb-2">
+              Time Period
+            </label>
+            <select
+              value={timePeriod}
+              onChange={(e) => setTimePeriod(e.target.value)}
+              className="w-full rounded-xl border border-white/20 bg-black/40 p-4 text-white"
+            >
+              <option value="1d">1 Day</option>
+              <option value="5d">5 Days</option>
+              <option value="1mo">1 Month</option>
+              <option value="3mo">3 Months</option>
+              <option value="6mo">6 Months</option>
+              <option value="1y">1 Year</option>
+              <option value="2y">2 Years</option>
+              <option value="5y">5 Years</option>
+              <option value="10y">10 Years</option>
+              <option value="ytd">Year-to-Date</option>
+              <option value="max">Max</option>
+            </select>
+          </div>
 
-            {/* Indicators with enhanced styling */}
-            <div className="flex flex-col gap-4">
-              <label className="font-semibold text-gray-200 text-sm uppercase tracking-wider">
-                Indicators (up to 3)
-              </label>
-              {indicators.map((ind, i) => (
-                <select
-                  key={i}
-                  value={ind}
-                  onChange={(e) => handleIndicatorChange(i, e.target.value)}
-                  className="rounded-xl border border-white/20 bg-black/40 backdrop-blur-sm p-4 text-white focus:border-purple-400 focus:ring-2 focus:ring-purple-400/30 focus:outline-none transition-all duration-300 hover:border-white/30 cursor-pointer"
-                >
-                  <option value="">-- Select Indicator --</option>
-                  <option value="macd">MACD</option>
-                  <option value="rsi">RSI</option>
-                  <option value="volume">Volume</option>
-                  <option value="sma">SMA</option>
-                  <option value="ema">EMA</option>
-                  <option value="wma">WMA</option>
-                  <option value="bollinger">Bollinger Bands</option>
-                  <option value="stochastic">Stochastic</option>
-                  <option value="adx">ADX</option>
-                  <option value="atr">ATR</option>
-                  <option value="cci">CCI</option>
-                  <option value="obv">OBV</option>
-                  <option value="mfi">MFI</option>
-                  <option value="roc">ROC</option>
-                  <option value="vwma">VWMA</option>
-                  <option value="ichimoku">Ichimoku Cloud</option>
-                  <option value="parabolicSAR">Parabolic SAR</option>
-                  <option value="pivot">Pivot Points</option>
-                  <option value="fibRetracement">Fibonacci Retracement</option>
-                </select>
-              ))}
-            </div>
+          {/* Chart Type */}
+          <div>
+            <label className="block text-sm text-gray-300 mb-2">
+              Chart Type
+            </label>
+            <select
+              value={chartType}
+              onChange={(e) => setChartType(e.target.value)}
+              className="w-full rounded-xl border border-white/20 bg-black/40 p-4 text-white"
+            >
+              <option value="candlestick">Candlestick</option>
+              <option value="ohlc">OHLC</option>
+              <option value="line">Line</option>
+              <option value="area">Area</option>
+              <option value="bar">Bar</option>
+              <option value="scatter">Scatter</option>
+            </select>
           </div>
         </div>
 
-        {/* Enhanced submit button */}
-        <div className="relative z-10 pt-4">
-          <button
-            type="submit"
-            className="w-full rounded-xl bg-gradient-to-r from-purple-600 via-purple-500 to-blue-600 px-6 py-4 font-bold text-white shadow-2xl transition-all duration-300 hover:from-purple-500 hover:via-purple-400 hover:to-blue-500 hover:shadow-purple-500/25 hover:scale-[1.02] focus:ring-4 focus:ring-purple-400/30 focus:outline-none active:scale-[0.98]"
-            style={{
-              boxShadow: '0 10px 40px -10px rgba(147, 51, 234, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.1)',
-            }}
-          >
-            Update Chart
-          </button>
+        {/* Right Column */}
+        <div className="space-y-6">
+          {/* Overlays */}
+          <div>
+            <label className="block text-sm text-gray-300 mb-2">
+              Overlays (up to 3)
+            </label>
+            {overlays.map((ov, i) => (
+              <select
+                key={i}
+                value={ov}
+                onChange={(e) => handleOverlayChange(i, e.target.value)}
+                className="w-full rounded-xl border border-white/20 bg-black/40 p-3 text-white mb-2"
+              >
+                <option value="">-- Select Overlay --</option>
+                <option value="ema20">EMA (20)</option>
+                <option value="sma50">SMA (50)</option>
+                <option value="sma200">SMA (200)</option>
+                <option value="bollinger">Bollinger Bands</option>
+                <option value="keltner">Keltner Channels</option>
+              </select>
+            ))}
+          </div>
+
+          {/* Indicators */}
+          <div>
+            <label className="block text-sm text-gray-300 mb-2">
+              Indicators (up to 3)
+            </label>
+            {indicators.map((ind, i) => (
+              <select
+                key={i}
+                value={ind}
+                onChange={(e) => handleIndicatorChange(i, e.target.value)}
+                className="w-full rounded-xl border border-white/20 bg-black/40 p-3 text-white mb-2"
+              >
+                <option value="">-- Select Indicator --</option>
+                <option value="rsi">RSI</option>
+                <option value="macd">MACD</option>
+                <option value="volume">Volume</option>
+                <option value="atr">ATR</option>
+                <option value="roc">ROC</option>
+              </select>
+            ))}
+          </div>
         </div>
-      </form>
-    </div>
+      </div>
+
+      {/* Submit */}
+      <button
+        type="submit"
+        className="w-full rounded-xl bg-gradient-to-r from-purple-600 via-purple-500 to-blue-600 px-6 py-4 font-bold text-white shadow-xl hover:scale-[1.02] transition"
+      >
+        Update Chart
+      </button>
+    </form>
   );
 }
