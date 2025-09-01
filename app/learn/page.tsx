@@ -35,7 +35,7 @@ export default function LearnPage() {
                   <Card className="p-6 hover:shadow-md hover:bg-gray-900 transition hover:-translate-y-0.5">
                     <h2 className="text-xl font-semibold mb-4">{cat.name}</h2>
                     <p className="text-gray-400 text-sm">
-                      Click to explore!!!! {cat.name}.
+                      Click to explore {cat.name}.
                     </p>
                   </Card>
                 </Link>
