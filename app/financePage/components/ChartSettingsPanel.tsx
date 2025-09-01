@@ -3,12 +3,12 @@
 import { useState } from "react";
 
 interface ChartSettings {
-  stock: string;
+  symbol: string;          // ✅ renamed from stock → symbol
   chartType: string;
   overlays: string[];
   indicators: string[];
   timePeriod: string;
-  data?: any[]; // backend OHLC + indicators
+  data?: any[];            // backend OHLC + indicators
 }
 
 interface Props {
@@ -29,7 +29,7 @@ const popularStocks = [
 ];
 
 export default function ChartSettingsPanel({ onUpdate }: Props) {
-  const [stock, setStock] = useState("");
+  const [symbol, setSymbol] = useState("");   // ✅ renamed
   const [search, setSearch] = useState("");
   const [chartType, setChartType] = useState("candlestick");
   const [overlays, setOverlays] = useState(["", "", ""]);
@@ -53,7 +53,7 @@ export default function ChartSettingsPanel({ onUpdate }: Props) {
     e.preventDefault();
 
     const payload: ChartSettings = {
-      stock: stock || search.toUpperCase(),
+      symbol: symbol || search.toUpperCase(),   // ✅ backend expects "symbol"
       chartType,
       overlays: overlays.filter((o) => o !== ""),
       indicators: indicators.filter((i) => i !== ""),
@@ -107,10 +107,10 @@ export default function ChartSettingsPanel({ onUpdate }: Props) {
             <input
               type="text"
               placeholder="e.g. AAPL, Tesla"
-              value={search || stock}
+              value={search || symbol}
               onChange={(e) => {
                 setSearch(e.target.value);
-                setStock("");
+                setSymbol("");
               }}
               onFocus={() => setShowDropdown(true)}
               onBlur={() => setTimeout(() => setShowDropdown(false), 120)}
@@ -122,7 +122,7 @@ export default function ChartSettingsPanel({ onUpdate }: Props) {
                   <div
                     key={s.symbol}
                     onClick={() => {
-                      setStock(s.symbol);
+                      setSymbol(s.symbol);
                       setSearch(s.symbol);
                       setShowDropdown(false);
                     }}

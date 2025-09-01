@@ -1,17 +1,9 @@
 "use client";
 
-import dynamic from "next/dynamic";
-
-const Plot = dynamic(() => import("react-plotly.js"), { ssr: false });
-
-interface PlotRow {
-  Date: string;
-  Close: number;
-  [key: string]: number | string | undefined; // allow dynamic fields for overlays/indicators
-}
+import Plot from "react-plotly.js";
 
 interface PlotProps {
-  data: PlotRow[];
+  data: Record<string, any>[];
   symbol: string;
   overlays?: string[];
   indicators?: string[];
@@ -29,65 +21,82 @@ export default function FinancePlot({
 
   const dates = data.map((row) => row.Date);
 
-  // Always include close price trace
-  const traces: Plotly.Data[] = [
-    {
-      x: dates,
-      y: data.map((row) => row.Close),
-      type: "scatter",
-      mode: "lines",
-      name: "Close",
-      line: { color: "white" },
-    },
-  ];
+  const traces: any[] = [];
 
-  // Add overlays (e.g. SMA, EMA, Bollinger)
+  // 📈 Price as candlesticks
+  traces.push({
+    x: dates,
+    open: data.map((row) => row.Open),
+    high: data.map((row) => row.High),
+    low: data.map((row) => row.Low),
+    close: data.map((row) => row.Close),
+    type: "candlestick",
+    name: "Price",
+    increasing: { line: { color: "#16a34a" } },
+    decreasing: { line: { color: "#dc2626" } },
+    xaxis: "x",
+    yaxis: "y",
+  });
+
+  // 📊 Overlays
   overlays.forEach((overlay) => {
     if (data[0][overlay] !== undefined) {
       traces.push({
         x: dates,
-        y: data.map((row) => row[overlay] as number),
+        y: data.map((row) => row[overlay]),
         type: "scatter",
         mode: "lines",
-        name: overlay.replace(/_/g, " "), // prettier legend
-        line: { dash: "solid" },
+        name: overlay.toUpperCase(),
+        line: { width: 2 },
+        xaxis: "x",
+        yaxis: "y",
       });
     }
   });
 
-  // Add indicators (e.g. RSI, ATR, Volume)
+  // 📉 Indicators
   indicators.forEach((indicator) => {
     if (data[0][indicator] !== undefined) {
       traces.push({
         x: dates,
-        y: data.map((row) => row[indicator] as number),
+        y: data.map((row) => row[indicator]),
         type: "scatter",
         mode: "lines",
-        name: indicator.replace(/_/g, " "),
+        name: indicator.toUpperCase(),
         line: { dash: "dot" },
-        yaxis: "y2", // put indicators on right-hand side
+        xaxis: "x",
+        yaxis: "y2",
       });
     }
   });
 
   return (
-    <div className="w-full h-[600px]">
+    <div className="w-full h-[700px]">
       <Plot
         data={traces}
         layout={{
-          title: { text: `${symbol} Stock Chart` },// ✅ use string, avoids type issues
           paper_bgcolor: "black",
           plot_bgcolor: "black",
           font: { color: "white" },
-          xaxis: { title: { text: "Date" } }, // ✅ also wrap xaxis/yaxis titles
-          yaxis: { title: { text: "Price (USD)" } },
+
+          title: { text: `${symbol} Stock Chart`, x: 0.05 }, // ✅ FIXED
+
+          xaxis: {
+            title: { text: "Date" }, // ✅ FIXED
+            rangeslider: { visible: false },
+          },
+
+          yaxis: {
+            title: { text: "Price (USD)" }, // ✅ FIXED
+            domain: [0.35, 1],
+          },
+
           yaxis2: {
-            title: { text: "Indicators" },
-            overlaying: "y",
-            side: "right",
+            title: { text: "Indicators" }, // ✅ FIXED
+            domain: [0, 0.25],
           },
         }}
-        config={{ responsive: true }}
+        config={{ responsive: true, scrollZoom: true, displayModeBar: true }}
         style={{ width: "100%", height: "100%" }}
       />
     </div>
