@@ -12,6 +12,7 @@ export default function FinanceModelsPage() {
   // Function to fetch backend data
   const fetchFinanceData = async (chartSettings: any) => {
     try {
+      
       const response = await fetch(`${API_BASE}/finance`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -22,6 +23,7 @@ export default function FinanceModelsPage() {
       }
 
       const data = await response.json();
+      console.log("Backend returned:", data);  // 👈 add this
 
       // Backend returns { symbol, data } → merge with settings
       setSettings({

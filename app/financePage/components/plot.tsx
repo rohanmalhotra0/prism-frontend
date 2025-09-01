@@ -1,9 +1,10 @@
 "use client";
 
-import Plot from "react-plotly.js";
+import dynamic from "next/dynamic";
+const Plot = dynamic(() => import("react-plotly.js"), { ssr: false });
 
 interface PlotProps {
-  data: Record<string, any>[];
+  data: any[];
   symbol: string;
   overlays?: string[];
   indicators?: string[];
@@ -19,26 +20,41 @@ export default function FinancePlot({
     return <p className="text-gray-400">No data to display</p>;
   }
 
-  const dates = data.map((row) => row.Date);
+  // ✅ Ensure correct keys from backend
+  const dates = data.map((row) => row["Date"]);
+  const open = data.map((row) => row["Open"]);
+  const high = data.map((row) => row["High"]);
+  const low = data.map((row) => row["Low"]);
+  const close = data.map((row) => row["Close"]);
+  const volume = data.map((row) => row["Volume"]);
 
-  const traces: any[] = [];
+  // ✅ Base candlestick + volume traces
+  const traces: any[] = [
+    {
+      x: dates,
+      open,
+      high,
+      low,
+      close,
+      type: "candlestick",
+      name: `${symbol} OHLC`,
+      increasing: { line: { color: "#26a69a" } },
+      decreasing: { line: { color: "#ef5350" } },
+      xaxis: "x",
+      yaxis: "y",
+    },
+    {
+      x: dates,
+      y: volume,
+      type: "bar",
+      name: "Volume",
+      marker: { color: "rgba(100,100,100,0.5)" },
+      xaxis: "x",
+      yaxis: "y2",
+    },
+  ];
 
-  // 📈 Price as candlesticks
-  traces.push({
-    x: dates,
-    open: data.map((row) => row.Open),
-    high: data.map((row) => row.High),
-    low: data.map((row) => row.Low),
-    close: data.map((row) => row.Close),
-    type: "candlestick",
-    name: "Price",
-    increasing: { line: { color: "#16a34a" } },
-    decreasing: { line: { color: "#dc2626" } },
-    xaxis: "x",
-    yaxis: "y",
-  });
-
-  // 📊 Overlays
+  // ✅ Add overlays if present (EMA, SMA, etc.)
   overlays.forEach((overlay) => {
     if (data[0][overlay] !== undefined) {
       traces.push({
@@ -47,14 +63,13 @@ export default function FinancePlot({
         type: "scatter",
         mode: "lines",
         name: overlay.toUpperCase(),
-        line: { width: 2 },
-        xaxis: "x",
+        line: { width: 1.5 },
         yaxis: "y",
       });
     }
   });
 
-  // 📉 Indicators
+  // ✅ Add indicators (RSI, MACD, etc.)
   indicators.forEach((indicator) => {
     if (data[0][indicator] !== undefined) {
       traces.push({
@@ -64,41 +79,33 @@ export default function FinancePlot({
         mode: "lines",
         name: indicator.toUpperCase(),
         line: { dash: "dot" },
-        xaxis: "x",
-        yaxis: "y2",
+        yaxis: "y3",
       });
     }
   });
-
+  console.log("Plot data sample:", data[0], traces);
   return (
     <div className="w-full h-[700px]">
       <Plot
-        data={traces}
-        layout={{
-          paper_bgcolor: "black",
-          plot_bgcolor: "black",
-          font: { color: "white" },
+  data={traces as any}
+  layout={{
+    title: { text: `${symbol} Stock Chart` },
+    dragmode: "zoom",
+    showlegend: true,
+    grid: { rows: 3, columns: 1, pattern: "independent" },
+    xaxis: { title: { text: "Date" }, rangeslider: { visible: false } },
+    yaxis: { title: { text: "Price (USD)" }, domain: [0.4, 1] },
+    yaxis2: { title: { text: "Volume" }, domain: [0.25, 0.35] },
+    yaxis3: { title: { text: "Indicators" }, domain: [0, 0.2] },
+    paper_bgcolor: "black",
+    plot_bgcolor: "black",
+    font: { color: "white" },
+  } as Partial<Plotly.Layout>}
+  config={{ responsive: true } as Partial<Plotly.Config>}
+  style={{ width: "100%", height: "100%" }}
 
-          title: { text: `${symbol} Stock Chart`, x: 0.05 }, // ✅ FIXED
-
-          xaxis: {
-            title: { text: "Date" }, // ✅ FIXED
-            rangeslider: { visible: false },
-          },
-
-          yaxis: {
-            title: { text: "Price (USD)" }, // ✅ FIXED
-            domain: [0.35, 1],
-          },
-
-          yaxis2: {
-            title: { text: "Indicators" }, // ✅ FIXED
-            domain: [0, 0.25],
-          },
-        }}
-        config={{ responsive: true, scrollZoom: true, displayModeBar: true }}
-        style={{ width: "100%", height: "100%" }}
-      />
+/>
     </div>
   );
+  
 }
