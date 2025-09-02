@@ -6,14 +6,13 @@ import ChartSettingsPanel from "./components/ChartSettingsPanel";
 import ThreeDChartSettingsPanel from "./components/ThreeDChartSettingsPanel";
 import FinancePlot from "./components/plot";
 import InfoChart from "./components/infoChart";
-import ThreeStockChart from "./components/threeD";
+import ThreeStockChart  from "./components/threeD";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
 
 export default function FinanceModelsPage() {
   const [settings, setSettings] = useState<any>(null);
   const [is3DView, setIs3DView] = useState(false);
-  const [threeDSettings, setThreeDSettings] = useState<any>(null);
 
   // Fetch OHLCV data from backend
   const fetchFinanceData = async (chartSettings: any) => {
@@ -33,7 +32,7 @@ export default function FinanceModelsPage() {
       setSettings({
         ...chartSettings,
         symbol: data.symbol,
-        data: data.data,
+        data: data.data, // OHLCV data
       });
     } catch (error: any) {
       alert(error.message);
@@ -59,35 +58,44 @@ export default function FinanceModelsPage() {
                 {settings?.symbol ? `${settings.symbol} Chart` : "Stock Chart"}
               </h2>
               <div className="flex items-center space-x-3">
-                <span className={`text-sm ${!is3DView ? 'text-white' : 'text-gray-400'}`}>2D</span>
+                <span className={`text-sm ${!is3DView ? "text-white" : "text-gray-400"}`}>
+                  2D
+                </span>
                 <button
                   onClick={() => setIs3DView(!is3DView)}
                   className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-900 ${
-                    is3DView ? 'bg-blue-600' : 'bg-gray-600'
+                    is3DView ? "bg-blue-600" : "bg-gray-600"
                   }`}
                 >
                   <span
                     className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                      is3DView ? 'translate-x-6' : 'translate-x-1'
+                      is3DView ? "translate-x-6" : "translate-x-1"
                     }`}
                   />
                 </button>
-                <span className={`text-sm ${is3DView ? 'text-white' : 'text-gray-400'}`}>3D</span>
+                <span className={`text-sm ${is3DView ? "text-white" : "text-gray-400"}`}>
+                  3D
+                </span>
               </div>
             </div>
-            
+
             {/* Chart Content */}
             <div className="flex-1 flex items-center justify-center">
               {settings ? (
                 is3DView ? (
                   <ThreeStockChart
-                    data={settings.data}
-                    symbol={settings.symbol}
-                    height={20}
-                    gap={0.9}
-                    baseThickness={0.15}
-                    threeDSettings={threeDSettings}
-                  />
+                  data={settings.data}
+                  symbol={settings.symbol}
+                  height={20}
+                  gap={0.9}
+                  baseThickness={0.15}
+                  threeDSettings={{
+                    x: settings.x,
+                    y: settings.y,
+                    z: settings.z,
+                  }}
+                />
+                
                 ) : (
                   <FinancePlot
                     data={settings.data}
@@ -115,7 +123,7 @@ export default function FinanceModelsPage() {
         {/* Settings Panel */}
         <section className="space-y-8">
           {is3DView ? (
-            <ThreeDChartSettingsPanel onUpdate={setThreeDSettings} />
+            <ThreeDChartSettingsPanel onUpdate={fetchFinanceData} />
           ) : (
             <ChartSettingsPanel onUpdate={fetchFinanceData} />
           )}

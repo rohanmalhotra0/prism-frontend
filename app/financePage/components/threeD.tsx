@@ -1,181 +1,140 @@
 "use client";
 
-import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { Html, OrbitControls, Instances, Instance, Text, PerspectiveCamera } from "@react-three/drei";
+import { Canvas } from "@react-three/fiber";
+import { OrbitControls, Html, Text, PerspectiveCamera } from "@react-three/drei";
 import * as THREE from "three";
 import { useMemo, useRef, useState, useCallback } from "react";
 
 type Row = {
-  Date: string;        // "YYYY-MM-DD"
+  Date: string;
   Open: number;
   High: number;
   Low: number;
   Close: number;
   Volume?: number;
-  [k: string]: any;    // overlays can ride along
+  [k: string]: any; // indicators and overlays can ride along
 };
 
 type ThreeDSettings = {
-  // 2D Chart Settings
-  symbol: string;
-  chartType: string;
-  overlays: string[];
-  indicators: string[];
-  timePeriod: string;
-  
-  // 3D Specific Settings
-  x: number;  // X-axis scaling (time/position)
-  y: number;  // Y-axis scaling (price/height)
-  z: number;  // Z-axis scaling (indicators/depth)
+  x: number; // X-axis scaling
+  y: number; // Y-axis scaling
+  z: number; // Z-axis scaling
+  indicators?: string[];
+  overlays?: string[];
 };
 
 type Props = {
-  data: Row[];               // OHLCV from your backend
+  data: Row[];
   symbol: string;
-  height?: number;           // vertical world-units (price axis)
-  gap?: number;              // spacing between candles (x)
-  baseThickness?: number;    // min candle thickness (z)
-  threeDSettings?: ThreeDSettings; // 3D-specific settings
+  height?: number;
+  gap?: number;
+  baseThickness?: number;
+  threeDSettings?: ThreeDSettings;
 };
 
-const clamp = (x: number, a: number, b: number) => Math.max(a, Math.min(b, x));
-
-function useScales(data: Row[], height: number) {
-  const { yScale, xScale, volScale, minLow, maxHigh } = useMemo(() => {
-    const minLow  = Math.min(...data.map(d => d.Low));
-    const maxHigh = Math.max(...data.map(d => d.High));
-    const yRange  = maxHigh - minLow || 1;
-
-    const yScale = (p: number) => ((p - minLow) / yRange) * height;
-
-    // X is index-based for now (uniform spacing)
-    const xScale = (i: number) => i;
-
-    // volume → thickness scaler (0..1)
-    const vols = data.map(d => d.Volume ?? 0);
-    const vMax = Math.max(1, ...vols);
-    const volScale = (v: number) => (vMax ? v / vMax : 0);
-
-    return { yScale, xScale, volScale, minLow, maxHigh };
-  }, [data, height]);
-
-  return { yScale, xScale, volScale, minLow, maxHigh };
-}
-
-function Candles({ data, gap = 1, baseThickness = 0.15, height = 20, threeDSettings }: { 
-  data: Row[]; 
-  gap: number; 
-  baseThickness: number; 
-  height: number; 
-  threeDSettings?: ThreeDSettings; 
+function Candles({
+  data,
+  gap = 1,
+  baseThickness = 0.15,
+  height = 20,
+  threeDSettings,
+}: {
+  data: Row[];
+  gap?: number;
+  baseThickness?: number;
+  height?: number;
+  threeDSettings?: ThreeDSettings;
 }) {
-  const { yScale, xScale, volScale } = useScales(data, height);
   const [hover, setHover] = useState<number | null>(null);
-  
-  // Use 3D settings if provided, otherwise use defaults
-  const xScaleFactor = threeDSettings?.x ?? 1.0;
-  const yScaleFactor = threeDSettings?.y ?? 1.0;
-  const zScaleFactor = threeDSettings?.z ?? 1.0;
 
-  // Precompute candle transforms
+  const xScale = threeDSettings?.x ?? 1;
+  const yScale = threeDSettings?.y ?? 1;
+  const zScale = threeDSettings?.z ?? 1;
+
+  const minLow = Math.min(...data.map((d) => d.Low));
+  const maxHigh = Math.max(...data.map((d) => d.High));
+  const yRange = maxHigh - minLow || 1;
+
+  // Precompute all candles
   const candles = useMemo(() => {
+    const maxVol = Math.max(...data.map((d) => d.Volume || 1));
+
     return data.map((d, i) => {
-      const x = xScale(i) * gap * xScaleFactor;
-      const yOpen  = yScale(d.Open) * yScaleFactor;
-      const yClose = yScale(d.Close) * yScaleFactor;
-      const yHigh  = yScale(d.High) * yScaleFactor;
-      const yLow   = yScale(d.Low) * yScaleFactor;
+      const x = i * gap * xScale;
 
-      const bodyHeight = Math.max(0.001, Math.abs(yClose - yOpen));
-      const bodyMidY   = Math.min(yOpen, yClose) + bodyHeight / 2;
+      // Price → Y
+      const o = ((d.Open - minLow) / yRange) * height * yScale;
+      const c = ((d.Close - minLow) / yRange) * height * yScale;
+      const h = ((d.High - minLow) / yRange) * height * yScale;
+      const l = ((d.Low - minLow) / yRange) * height * yScale;
 
-      // Z-axis: Use indicators if available, otherwise volume
-      let zValue = 0;
+      const bodyHeight = Math.max(0.002, Math.abs(c - o));
+      const bodyMid = Math.min(o, c) + bodyHeight / 2;
+
+      // Indicator or Volume → Z
+      let z = 0;
       if (threeDSettings?.indicators && threeDSettings.indicators.length > 0) {
-        // Use the first indicator for Z-axis depth
-        const indicator = threeDSettings.indicators[0];
-        if (d[indicator] !== undefined) {
-          zValue = Math.abs(d[indicator]) * 0.1; // Scale indicator values
+        const ind = threeDSettings.indicators[0];
+        if (d[ind] !== undefined) {
+          z = (Number(d[ind]) || 0) * 0.05 * zScale; // normalize indicator depth
         }
-      } else {
-        // Fallback to volume
-        zValue = volScale(d.Volume ?? 0) * 0.6;
+      } else if (d.Volume) {
+        z = ((d.Volume ?? 0) / maxVol) * 5 * zScale;
       }
-      
-      const t = (baseThickness + zValue) * zScaleFactor;
 
-      const color = (d.Close >= d.Open) ? "#26a69a" : "#ef5350";
+      const color = d.Close >= d.Open ? "#26a69a" : "#ef5350";
 
       return {
         x,
-        wick: { y: (yHigh + yLow) / 2, h: Math.max(0.001, yHigh - yLow) },
-        body: { y: bodyMidY, h: bodyHeight, t },
+        z,
+        wick: { y: (h + l) / 2, h: Math.max(0.002, h - l) },
+        body: { y: bodyMid, h: bodyHeight, t: baseThickness },
         color,
         date: d.Date,
-        d
+        d,
       };
     });
-  }, [data, gap, baseThickness, yScale, xScale, volScale, xScaleFactor, yScaleFactor, zScaleFactor]);
+  }, [data, gap, xScale, yScale, zScale, height, minLow, yRange, baseThickness, threeDSettings]);
 
   return (
     <>
-      {/* WICKS */}
-      <Instances limit={candles.length} range={candles.length}>
-        <boxGeometry args={[0.05, 1, 0.05]} />
-        <meshStandardMaterial color="#cfd8dc" />
-        {candles.map((c, i) => (
-          <Instance
-            key={`wick-${i}`}
-            position={[c.x, c.wick.y, 0]}
-            scale={[1, c.wick.h, 1]}
-            onPointerOver={(e) => { e.stopPropagation(); setHover(i); }}
-            onPointerOut={() => setHover((h) => (h === i ? null : h))}
-          />
-        ))}
-      </Instances>
+      {candles.map((c, i) => (
+        <group key={i}>
+          {/* Wick */}
+          <mesh
+            position={[c.x, c.wick.y, c.z]}
+            scale={[0.05, c.wick.h, 0.05]}
+            onPointerOver={() => setHover(i)}
+            onPointerOut={() => setHover(null)}
+          >
+            <boxGeometry />
+            <meshStandardMaterial color="#cfd8dc" />
+          </mesh>
 
-      {/* BODIES */}
-      <Instances limit={candles.length} range={candles.length}>
-        <boxGeometry args={[1, 1, 1]} />
-        {/* material color per-instance via setColorAt: easier by separate Instances per color */}
-        <meshStandardMaterial color="#ffffff" />
-        {candles.map((c, i) => (
-          <Instance
-            key={`body-${i}`}
-            position={[c.x, c.body.y, 0]}
-            scale={[0.75, Math.max(0.002, c.body.h), clamp(c.body.t, 0.05, 1.2)]}
-            color={new THREE.Color(c.color)}
-            onPointerOver={(e) => { e.stopPropagation(); setHover(i); }}
-            onPointerOut={() => setHover((h) => (h === i ? null : h))}
-          />
-        ))}
-      </Instances>
+          {/* Body */}
+          <mesh
+            position={[c.x, c.body.y, c.z]}
+            scale={[0.6, c.body.h, c.body.t]}
+            onPointerOver={() => setHover(i)}
+            onPointerOut={() => setHover(null)}
+          >
+            <boxGeometry />
+            <meshStandardMaterial color={c.color} />
+          </mesh>
+        </group>
+      ))}
 
       {/* Tooltip */}
       {hover !== null && (
-        <Html
-          position={[candles[hover].x, candles[hover].wick.y, 1.2]}
-          center
-          distanceFactor={8}
-          occlude
-          className="pointer-events-none"
-        >
-          <div style={{
-            backdropFilter: "blur(6px)",
-            background: "rgba(0,0,0,0.6)",
-            border: "1px solid rgba(255,255,255,0.15)",
-            borderRadius: 8,
-            padding: "8px 10px",
-            fontSize: 12,
-            whiteSpace: "nowrap"
-          }}>
-            <div style={{ opacity: 0.8 }}>{candles[hover].date}</div>
+        <Html position={[candles[hover].x, candles[hover].body.y, candles[hover].z + 1]} center>
+          <div className="backdrop-blur-md bg-black/70 text-white text-xs rounded-md px-2 py-1 border border-white/10">
+            <div>{candles[hover].date}</div>
             <div>O: {candles[hover].d.Open.toFixed(2)}</div>
             <div>H: {candles[hover].d.High.toFixed(2)}</div>
             <div>L: {candles[hover].d.Low.toFixed(2)}</div>
             <div>C: {candles[hover].d.Close.toFixed(2)}</div>
-            {typeof candles[hover].d.Volume === "number" && (
-              <div>V: {(candles[hover].d.Volume as number).toLocaleString()}</div>
+            {candles[hover].d.Volume && (
+              <div>V: {candles[hover].d.Volume.toLocaleString()}</div>
             )}
           </div>
         </Html>
@@ -184,131 +143,61 @@ function Candles({ data, gap = 1, baseThickness = 0.15, height = 20, threeDSetti
   );
 }
 
-function Axes({ width, height }: { width: number; height: number }) {
-  const geo = useMemo(() => {
-    const g = new THREE.BufferGeometry();
-    const verts = new Float32Array([
-      // X axis
-      0, 0, 0,  width, 0, 0,
-      // Y axis
-      0, 0, 0,  0, height, 0,
-      // Z axis
-      0, 0, 0,  0, 0, 5,
-    ]);
-    g.setAttribute("position", new THREE.BufferAttribute(verts, 3));
-    return g;
-  }, [width, height]);
-
-  return (
-    <lineSegments geometry={geo}>
-      <lineBasicMaterial color="#607d8b" linewidth={2} />
-    </lineSegments>
-  );
-}
-
-function Grid3D({ width, height, depth }: { width: number; height: number; depth: number }) {
-  const gridGeo = useMemo(() => {
-    const g = new THREE.BufferGeometry();
-    const verts: number[] = [];
-    
-    // X-Y plane grid (floor) - Time vs Price
-    for (let i = 0; i <= 10; i++) {
-      const x = (i / 10) * width;
-      verts.push(x, 0, 0, x, 0, depth);
-    }
-    for (let i = 0; i <= 10; i++) {
-      const z = (i / 10) * depth;
-      verts.push(0, 0, z, width, 0, z);
-    }
-    
-    // Y-Z plane grid (back wall) - Price vs Indicators
-    for (let i = 0; i <= 10; i++) {
-      const y = (i / 10) * height;
-      verts.push(0, y, 0, 0, y, depth);
-    }
-    for (let i = 0; i <= 10; i++) {
-      const z = (i / 10) * depth;
-      verts.push(0, 0, z, 0, height, z);
-    }
-    
-    // X-Z plane grid (side wall) - Time vs Indicators
-    for (let i = 0; i <= 10; i++) {
-      const x = (i / 10) * width;
-      verts.push(x, 0, 0, x, 0, depth);
-    }
-    for (let i = 0; i <= 10; i++) {
-      const z = (i / 10) * depth;
-      verts.push(0, 0, z, width, 0, z);
-    }
-    
-    g.setAttribute("position", new THREE.BufferAttribute(new Float32Array(verts), 3));
-    return g;
-  }, [width, height, depth]);
+function Overlays2D({ data, overlays, gap = 1, xScale = 1 }: { data: Row[]; overlays?: string[]; gap?: number; xScale?: number }) {
+  if (!overlays || overlays.length === 0) return null;
 
   return (
     <group>
-      <lineSegments geometry={gridGeo}>
-        <lineBasicMaterial color="#374151" opacity={0.3} transparent />
-      </lineSegments>
-      
-      {/* Axis Labels */}
-      <Text position={[width/2, -1, 0]} fontSize={0.8} color="#9ca3af" anchorX="center">
-        Time (X)
-      </Text>
-      <Text position={[-1, height/2, 0]} fontSize={0.8} color="#9ca3af" anchorX="center" rotation={[0, 0, Math.PI/2]}>
-        Price (Y)
-      </Text>
-      <Text position={[0, -1, depth/2]} fontSize={0.8} color="#9ca3af" anchorX="center" rotation={[0, Math.PI/2, 0]}>
-        Indicators (Z)
-      </Text>
+      {overlays.map((overlay, idx) => {
+        if (!overlay) return null;
+
+        const points = data
+          .filter((d) => d[overlay] !== undefined)
+          .map((d, i) => new THREE.Vector3(i * gap * xScale, d[overlay], 0)); // force flat z=0
+
+        if (points.length < 2) return null;
+
+        return (
+          <line key={idx}>
+            <bufferGeometry attach="geometry" setFromPoints={points} />
+            <lineBasicMaterial color={idx === 0 ? "yellow" : "cyan"} linewidth={2} />
+          </line>
+        );
+      })}
     </group>
   );
 }
 
-function FlyThrough({ enabled, width }: { enabled: boolean; width: number }) {
-  const ref = useRef<THREE.Group>(null);
-  useFrame(({ camera, clock }) => {
-    if (!enabled) return;
-    const t = clock.getElapsedTime() * 0.08;
-    const x = (t % (width + 10)) - 5; // loop
-    camera.position.x = x;
-    camera.position.y = 8 + Math.sin(t) * 2;
-    camera.position.z = 12 + Math.cos(t * 0.7) * 1.5;
-    camera.lookAt(x + 2, 8, 0);
-  });
-  return <group ref={ref} />;
-}
-
-function ResetCameraButton({ onReset }: { onReset: () => void }) {
+function Grid3D({ width, height, depth }: { width: number; height: number; depth: number }) {
   return (
-    <Html position={[0, 0, 0]} center>
-      <div className="absolute top-4 right-4 flex flex-col space-y-2 z-10">
-        <button
-          onClick={onReset}
-          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow-lg transition-colors duration-200 flex items-center space-x-2"
-          style={{ pointerEvents: 'auto' }}
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/>
-            <path d="M21 3v5h-5"/>
-            <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/>
-            <path d="M3 21v-5h5"/>
-          </svg>
-          <span>Reset View</span>
-        </button>
-        
-        {/* Help Panel */}
-        <div className="bg-black/80 backdrop-blur-sm text-white text-xs p-3 rounded-lg shadow-lg max-w-48">
-          <div className="font-semibold mb-2">Navigation:</div>
-          <div className="space-y-1 text-gray-300">
-            <div>🖱️ <strong>Left drag:</strong> Rotate</div>
-            <div>🖱️ <strong>Right drag:</strong> Pan</div>
-            <div>🖱️ <strong>Scroll:</strong> Zoom</div>
-            <div>👆 <strong>Hover:</strong> Tooltip</div>
-          </div>
-        </div>
-      </div>
-    </Html>
+    <group>
+      {/* Base grid */}
+      <gridHelper args={[width, 20, "#555", "#333"]} position={[width / 2, 0, 0]} />
+      {/* Y axis */}
+      <line>
+        <bufferGeometry>
+          <bufferAttribute
+            attach="attributes-position"
+            args={[new Float32Array([0, 0, 0, 0, height, 0]), 3]}
+            count={2}
+            itemSize={3}
+          />
+        </bufferGeometry>
+        <lineBasicMaterial color="#888" />
+      </line>
+      {/* Z axis */}
+      <line>
+        <bufferGeometry>
+          <bufferAttribute
+            attach="attributes-position"
+            args={[new Float32Array([0, 0, 0, 0, 0, depth]), 3]}
+            count={2}
+            itemSize={3}
+          />
+        </bufferGeometry>
+        <lineBasicMaterial color="purple" />
+      </line>
+    </group>
   );
 }
 
@@ -316,81 +205,68 @@ export default function ThreeStockChart({
   data,
   symbol,
   height = 20,
-  gap = 0.9,
+  gap = 1,
   baseThickness = 0.15,
   threeDSettings,
 }: Props) {
-  const xScaleFactor = threeDSettings?.x ?? 1.0;
-  const yScaleFactor = threeDSettings?.y ?? 1.0;
-  const zScaleFactor = threeDSettings?.z ?? 1.0;
-  
-  const width = Math.max(20, data.length * gap * xScaleFactor);
-  const effectiveHeight = height * yScaleFactor;
   const controlsRef = useRef<any>(null);
-  
-  // Calculate optimal initial camera position
-  const initialCameraPosition = useMemo(() => [
-    Math.min(15, width * 0.3), 
-    effectiveHeight * 0.6, 
-    Math.max(12, width * 0.4)
-  ] as [number, number, number], [width, effectiveHeight]);
+
+  const xScale = threeDSettings?.x ?? 1;
+  const width = data.length * gap * xScale;
+  const depth = (threeDSettings?.z ?? 1) * 10;
 
   const resetCamera = useCallback(() => {
-    if (controlsRef.current) {
-      controlsRef.current.reset();
-    }
+    if (controlsRef.current) controlsRef.current.reset();
   }, []);
 
   return (
     <div className="w-full h-[700px] rounded-xl overflow-hidden border border-white/10 relative">
-      <Canvas dpr={[1, 2]} gl={{ antialias: true }} shadows>
-        {/* Camera */}
-        <PerspectiveCamera makeDefault position={initialCameraPosition} fov={50} />
-        <color attach="background" args={["#0b0f14"]} />
+      <Canvas shadows dpr={[1, 2]}>
+        <PerspectiveCamera makeDefault position={[width * 0.3, height * 0.6, depth * 1.5]} fov={55} />
+        <color attach="background" args={["#0a0a0f"]} />
 
         {/* Lights */}
-        <hemisphereLight intensity={0.7} color={"#dfe7ef"} groundColor={"#0b0f14"} />
-        <directionalLight position={[5, 10, 6]} intensity={0.9} castShadow />
+        <ambientLight intensity={0.4} />
+        <directionalLight position={[10, 15, 10]} intensity={1.0} castShadow />
 
-        {/* 3D Grid System */}
-        <Grid3D width={width} height={effectiveHeight} depth={zScaleFactor * 5} />
-
-        <Axes width={width} height={effectiveHeight} />
+        {/* Grid */}
+        <Grid3D width={width} height={height} depth={depth} />
 
         {/* Title */}
-        <Text position={[0, effectiveHeight + 1.6, 0]} fontSize={1} color="#e2e8f0" anchorX="left">
-          {symbol} • 3D Candles
+        <Text position={[0, height + 2, 0]} fontSize={1} color="#e2e8f0" anchorX="left">
+          {symbol} • 3D Chart
         </Text>
 
-        <Candles 
-          data={data} 
-          gap={gap} 
-          baseThickness={baseThickness} 
-          height={height} 
-          threeDSettings={threeDSettings} 
+        {/* Candles */}
+        <Candles
+          data={data}
+          gap={gap}
+          baseThickness={baseThickness}
+          height={height}
+          threeDSettings={threeDSettings}
         />
 
+        {/* Overlays (2D flat) */}
+        <Overlays2D data={data} overlays={threeDSettings?.overlays} gap={gap} xScale={xScale} />
+
+        {/* Controls */}
         <OrbitControls
           ref={controlsRef}
           enableDamping
           dampingFactor={0.05}
-          minDistance={4}
-          maxDistance={Math.max(60, width * 1.5)}
-          maxPolarAngle={Math.PI * 0.6}
-          minPolarAngle={Math.PI * 0.1}
-          enablePan={true}
-          panSpeed={0.8}
-          rotateSpeed={0.5}
-          zoomSpeed={0.8}
+          minDistance={5}
+          maxDistance={Math.max(100, width * 2)}
           target={[width / 2, height / 2, 0]}
         />
-
-        {/* Reset Camera Button */}
-        <ResetCameraButton onReset={resetCamera} />
-
-        {/* Toggle this to true to auto-fly the camera */}
-        <FlyThrough enabled={false} width={width} />
       </Canvas>
+
+      {/* Reset Button */}
+      <button
+        onClick={resetCamera}
+        className="absolute top-4 right-4 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md shadow-lg"
+      >
+        Reset View
+      </button>
     </div>
   );
 }
