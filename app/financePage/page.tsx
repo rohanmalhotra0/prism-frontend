@@ -4,7 +4,7 @@ import { useState } from "react";
 import Navbar from "@/components/sections/navbar/default";
 import ChartSettingsPanel from "./components/ChartSettingsPanel";
 import FinancePlot from "./components/plot";
-import InfoChart from "./components/infoChart";   // ✅ new fundamentals panel
+import InfoChart from "./components/infoChart";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
 
@@ -29,7 +29,7 @@ export default function FinanceModelsPage() {
       setSettings({
         ...chartSettings,
         symbol: data.symbol,
-        data: data.data,   // 👈 chart OHLCV
+        data: data.data,
       });
     } catch (error: any) {
       alert(error.message);
@@ -37,16 +37,18 @@ export default function FinanceModelsPage() {
   };
 
   return (
-    <main className="min-h-screen bg-gray-950 text-white">
+    <main className="min-h-screen bg-gradient-to-b from-gray-950 via-gray-900 to-black text-white">
       <Navbar />
 
       <div className="container mx-auto py-12 space-y-12">
-        <h1 className="text-4xl font-bold">📈 Stock Modeling</h1>
+        <h1 className="text-4xl font-extrabold tracking-tight mb-6">
+          📈 Stock Modeling Dashboard
+        </h1>
 
-        {/* Chart Section */}
-        <section className="rounded-lg border border-gray-800 bg-gray-900 p-6 shadow min-h-[500px] w-full grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Chart + Fundamentals */}
+        <section className="rounded-3xl border border-white/10 bg-black/40 backdrop-blur-xl p-8 shadow-2xl min-h-[500px] w-full grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Chart takes 2/3 width */}
-          <div className="lg:col-span-2 flex items-center justify-center">
+          <div className="lg:col-span-2 flex items-center justify-center rounded-2xl bg-gradient-to-br from-gray-800/40 to-gray-900/40 border border-white/10 p-4">
             {settings ? (
               <FinancePlot
                 data={settings.data}
@@ -55,16 +57,16 @@ export default function FinanceModelsPage() {
                 indicators={settings.indicators}
               />
             ) : (
-              <p className="text-gray-400">No chart to display yet.</p>
+              <p className="text-gray-500">Select a stock to load chart data.</p>
             )}
           </div>
 
-          {/* Fundamentals Panel takes 1/3 */}
-          <div>
+          {/* Fundamentals Panel */}
+          <div className="rounded-2xl bg-gradient-to-br from-gray-800/40 to-gray-900/40 border border-white/10 p-6">
             {settings?.symbol ? (
               <InfoChart symbol={settings.symbol} />
             ) : (
-              <p className="text-gray-400">No fundamentals to show yet.</p>
+              <p className="text-gray-500">Fundamentals will appear here.</p>
             )}
           </div>
         </section>
