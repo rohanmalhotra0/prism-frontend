@@ -14,7 +14,7 @@ interface ChartSettings {
 interface Props {
   onUpdate: (settings: ChartSettings) => void;
 }
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+
 const popularStocks = [
   { symbol: "AAPL", name: "Apple Inc." },
   { symbol: "MSFT", name: "Microsoft Corporation" },
@@ -49,74 +49,33 @@ export default function ChartSettingsPanel({ onUpdate }: Props) {
     setIndicators(updated);
   };
 
-  // inside ChartSettingsPanel.tsx
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-  
-    const endDate = new Date();
-    let startDate = new Date(endDate);
-  
-    switch (timePeriod) {
-      case "1d":
-        startDate.setDate(endDate.getDate() - 1);
-        break;
-      case "5d":
-        startDate.setDate(endDate.getDate() - 5);
-        break;
-      case "1mo":
-        startDate.setMonth(endDate.getMonth() - 1);
-        break;
-      case "3mo":
-        startDate.setMonth(endDate.getMonth() - 3);
-        break;
-      case "6mo":
-        startDate.setMonth(endDate.getMonth() - 6);
-        break;
-      case "1y":
-        startDate.setFullYear(endDate.getFullYear() - 1);
-        break;
-      case "2y":
-        startDate.setFullYear(endDate.getFullYear() - 2);
-        break;
-      case "5y":
-        startDate.setFullYear(endDate.getFullYear() - 5);
-        break;
-      case "ytd":
-        startDate = new Date(endDate.getFullYear(), 0, 1);
-        break;
-      default:
-        startDate.setFullYear(endDate.getFullYear() - 1);
-    }
-  
-    const payload: ChartSettings & { start: string; end: string } = {
-      symbol: symbol || search.toUpperCase(),
+
+    const payload: ChartSettings = {
+      symbol: symbol || search.toUpperCase(),   // ✅ backend expects "symbol"
       chartType,
       overlays: overlays.filter((o) => o !== ""),
       indicators: indicators.filter((i) => i !== ""),
       timePeriod,
-      start: startDate.toISOString().split("T")[0],
-      end: endDate.toISOString().split("T")[0],
     };
-  
+
     try {
-      const res = await fetch(`${API_BASE}/finance`, {
+      const res = await fetch("http://localhost:8000/finance", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
-  
+
       if (!res.ok) throw new Error(`Backend error: ${res.status}`);
+
       const result = await res.json();
-  
-      onUpdate({ ...payload, data: result.data }); // ✅ use result.data
+      onUpdate({ ...payload, data: result });
     } catch (err) {
       console.error("❌ Error fetching chart data:", err);
       alert("Failed to fetch chart data. Is the backend running?");
     }
   };
-  
-
 
   const filteredStocks = popularStocks.filter(
     (s) =>
@@ -189,16 +148,17 @@ export default function ChartSettingsPanel({ onUpdate }: Props) {
               onChange={(e) => setTimePeriod(e.target.value)}
               className="w-full rounded-xl border border-white/20 bg-black/40 p-4 text-white"
             >
-              <option value="Live">1 Day</option>
               <option value="1d">1 Day</option>
-              <option value="5d">1 Week</option>
+              <option value="5d">5 Days</option>
               <option value="1mo">1 Month</option>
               <option value="3mo">3 Months</option>
               <option value="6mo">6 Months</option>
               <option value="1y">1 Year</option>
               <option value="2y">2 Years</option>
               <option value="5y">5 Years</option>
+              <option value="10y">10 Years</option>
               <option value="ytd">Year-to-Date</option>
+              <option value="max">Max</option>
             </select>
           </div>
 
@@ -242,10 +202,6 @@ export default function ChartSettingsPanel({ onUpdate }: Props) {
                 <option value="sma200">SMA (200)</option>
                 <option value="bollinger">Bollinger Bands</option>
                 <option value="keltner">Keltner Channels</option>
-                <option value="ichimoku">Ichimoku Cloud</option>
-                <option value="parabolic">Parabolic SAR</option>
-                <option value="pivot">Pivot Points</option>
-                <option value="fib">Fibonacci Retracement</option>
               </select>
             ))}
           </div>
@@ -268,10 +224,6 @@ export default function ChartSettingsPanel({ onUpdate }: Props) {
                 <option value="volume">Volume</option>
                 <option value="atr">ATR</option>
                 <option value="roc">ROC</option>
-                <option value="stochastic">Stochastic Oscillator</option>
-                <option value="cci">CCI</option>
-                <option value="adx">ADX</option>
-                <option value="obv">OBV</option>
               </select>
             ))}
           </div>

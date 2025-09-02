@@ -33,6 +33,7 @@ interface MenuItem {
 interface NavigationProps {
   menuItems?: MenuItem[];
   components?: ComponentItem[];
+  community?: ComponentItem[];
   logo?: ReactNode;
   logoTitle?: string;
   logoDescription?: string;
@@ -47,71 +48,85 @@ interface NavigationProps {
 export default function Navigation({
   menuItems = [
     {
-      title: "Math Tools",
+      title: "Modeling Tools",
       content: "components",
     },
     {
       title: "Resources",
       content: "default",
     },
+    {
+      title: "Community",
+      content: "community",
+    },
   ],
   components = [
-    {
-      title: "Financial Modeling",
-      href: "/financePage",
-      description:
-        "Quantitative models for corporate finance, valuation, and forecasting.",
-    },
-    {
-      title: "Insurance Risk Analysis",
-      href: "/insurance",
-      description:
-        "Stochastic risk modeling for actuarial science and portfolio management.",
-    },
-    {
-      title: "Options & Derivatives",
-      href: "/options",
-      description:
-        "Options pricing, hedging strategies, and binomial/Black-Scholes models.",
-    },
-    {
-      title: "Crypto Modeling",
-      href: "/crypto",
-      description:
-        "On-chain data analysis, risk modeling, and DeFi pricing strategies.",
-    },
-    {
-      title: "General Modeling",
-      href: "/general",
-      description:
-        "Regression, simulation, and time-series forecasting techniques.",
-    },
+  {
+    title: "📈 Stocks & Indices",
+    href: "/financePage",
+    description:
+      "Quantitative models for corporate finance, valuation, and forecasting.",
+  },
+  {
+    title: "💱 Currency",
+    href: "/currency",
+    description:
+      "Forex spot rates, interest rate parity, and currency risk modeling.",
+  },
+  {
+    title: "📊 Options & Derivatives",
+    href: "/options",
+    description:
+      "Options pricing, hedging strategies, and binomial/Black-Scholes models.",
+  },
+  {
+    title: "₿ Crypto Modeling",
+    href: "/crypto",
+    description:
+      "On-chain data analysis, risk modeling, and DeFi pricing strategies.",
+  },
+  {
+    title: "🛡️ Insurance Risk Analysis",
+    href: "/insurance",
+    description:
+      "Stochastic risk modeling for actuarial science and portfolio management.",
+  },
+  {
+    title: "🔬 General Modeling",
+    href: "/general",
+    description:
+      "Regression, simulation, and time-series forecasting techniques.",
+  },
   ],
+  community = [
+  {
+    title: "📚 Research",
+    href: "/research",
+    description:
+      "Explore research examples using our models in research papers and articles.",
+  },
+],
+
+ 
   logo = <Image src={prismLogo} alt="Prism Logo" width={250} height={250} />,
   logoTitle = "Pricing",
   logoDescription =
     "Learn about Prism’s mission and how to get started with the platform.",
   logoHref = "#Pricing",
   introItems = [
-    {
-      title: "Research",
-      href: "/research",
-      description:
-        "Explore research examples using our models in research papers and articles.",
-    },
-    {
-      title: "Learn",
-      href: "/learn",
-      description:
-        "Understand the foundations of modeling, indicators, and workflows in Prism.",
-    },
-    {
-      title: "FAQ",
-      href: "/#FAQ",
-      description:
-        "Find answers to common questions about using Prism and our platform.",
-    },
-  ],
+  {
+    title: "🎓 Learn",
+    href: "/learn",
+    description:
+      "Understand the foundations of modeling, indicators, and workflows in Prism.",
+  },
+  {
+    title: "❓ FAQ",
+    href: "/#FAQ",
+    description:
+      "Find answers to common questions about using Prism and our platform.",
+  },
+],
 }: NavigationProps) {
   return (
     <NavigationMenu className="hidden md:flex">
