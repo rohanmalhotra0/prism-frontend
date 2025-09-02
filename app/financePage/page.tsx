@@ -86,6 +86,7 @@ export default function FinanceModelsPage() {
                   <ThreeStockChart
                   data={settings.data}
                   symbol={settings.symbol}
+                  chartType={settings.chartType}
                   height={20}
                   gap={0.9}
                   baseThickness={0.15}
