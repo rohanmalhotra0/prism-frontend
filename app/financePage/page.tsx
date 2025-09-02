@@ -88,8 +88,8 @@ export default function FinanceModelsPage() {
                   symbol={settings.symbol}
                   chartType={settings.chartType}
                   height={20}
-                  gap={0.9}
-                  baseThickness={0.15}
+                  gap={0.15}
+                  baseThickness={0.08}
                   threeDSettings={{
                     x: settings.x,
                     y: settings.y,
@@ -118,13 +118,41 @@ export default function FinanceModelsPage() {
             ) : (
               <p className="text-gray-500">Fundamentals will appear here.</p>
             )}
+            
+            {/* Navigation Controls - Only show in 3D view */}
+            {is3DView && (
+              <div className="mt-6 bg-gradient-to-br from-black/90 to-gray-900/90 backdrop-blur-md text-white text-sm p-4 rounded-xl shadow-2xl border border-white/10">
+                <div className="font-bold mb-3 text-blue-400">🎮 Navigation Controls</div>
+                <div className="space-y-2 text-gray-200">
+                  <div className="flex items-center space-x-2">
+                    <span className="text-lg">🖱️</span>
+                    <span><strong>Left drag:</strong> Rotate view</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <span className="text-lg">🖱️</span>
+                    <span><strong>Right drag:</strong> Pan view</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <span className="text-lg">🖱️</span>
+                    <span><strong>Scroll:</strong> Zoom in/out</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <span className="text-lg">👆</span>
+                    <span><strong>Hover:</strong> Show data</span>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </section>
 
         {/* Settings Panel */}
         <section className="space-y-8">
           {is3DView ? (
-            <ThreeDChartSettingsPanel onUpdate={fetchFinanceData} />
+            <ThreeDChartSettingsPanel 
+              onUpdate={setSettings} 
+              currentSettings={settings}
+            />
           ) : (
             <ChartSettingsPanel onUpdate={fetchFinanceData} />
           )}

@@ -19,6 +19,7 @@ interface ThreeDSettings {
 
 interface Props {
   onUpdate: (settings: ThreeDSettings) => void;
+  currentSettings?: any;
 }
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
@@ -35,20 +36,35 @@ const popularStocks = [
   { symbol: "NFLX", name: "Netflix Inc." },
 ];
 
-export default function ThreeDChartSettingsPanel({ onUpdate }: Props) {
-  const [symbol, setSymbol] = useState("");
-  const [search, setSearch] = useState("");
-  const [chartType, setChartType] = useState("candlestick");
-  const [overlays, setOverlays] = useState(["", "", ""]);
-  const [indicators, setIndicators] = useState(["", "", ""]);
-  const [timePeriod, setTimePeriod] = useState("1y");
+export default function ThreeDChartSettingsPanel({ onUpdate, currentSettings }: Props) {
+  const [symbol, setSymbol] = useState(currentSettings?.symbol || "");
+  const [search, setSearch] = useState(currentSettings?.symbol || "");
+  const [chartType, setChartType] = useState(currentSettings?.chartType || "candlestick");
+  const [overlays, setOverlays] = useState(currentSettings?.overlays || ["", "", ""]);
+  const [indicators, setIndicators] = useState(currentSettings?.indicators || ["", "", ""]);
+  const [timePeriod, setTimePeriod] = useState(currentSettings?.timePeriod || "1y");
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   
-  // 3D specific settings
-  const [xScale, setXScale] = useState(1.0);
-  const [yScale, setYScale] = useState(1.0);
-  const [zScale, setZScale] = useState(1.0);
+  // 3D specific settings - use current settings or defaults
+  const [xScale, setXScale] = useState(currentSettings?.x || 1.0);
+  const [yScale, setYScale] = useState(currentSettings?.y || 1.0);
+  const [zScale, setZScale] = useState(currentSettings?.z || 1.0);
+
+  // Update state when currentSettings change (when switching from 2D to 3D)
+  useEffect(() => {
+    if (currentSettings) {
+      setSymbol(currentSettings.symbol || "");
+      setSearch(currentSettings.symbol || "");
+      setChartType(currentSettings.chartType || "candlestick");
+      setOverlays(currentSettings.overlays || ["", "", ""]);
+      setIndicators(currentSettings.indicators || ["", "", ""]);
+      setTimePeriod(currentSettings.timePeriod || "1y");
+      setXScale(currentSettings.x || 1.0);
+      setYScale(currentSettings.y || 1.0);
+      setZScale(currentSettings.z || 1.0);
+    }
+  }, [currentSettings]);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -85,8 +101,8 @@ export default function ThreeDChartSettingsPanel({ onUpdate }: Props) {
     const settings: ThreeDSettings = {
       symbol: symbol.trim().toUpperCase(),
       chartType,
-      overlays: overlays.filter(o => o),
-      indicators: indicators.filter(i => i),
+      overlays: overlays.filter((o: string) => o),
+      indicators: indicators.filter((i: string) => i),
       timePeriod,
       x: xScale,
       y: yScale,
@@ -113,6 +129,23 @@ export default function ThreeDChartSettingsPanel({ onUpdate }: Props) {
       });
     } catch (error: any) {
       alert(error.message);
+    }
+  };
+
+  // Handle 3D settings update without fetching new data
+  const handle3DUpdate = () => {
+    if (currentSettings && currentSettings.data) {
+      // If we have existing data, just update the 3D settings
+      onUpdate({
+        ...currentSettings,
+        x: xScale,
+        y: yScale,
+        z: zScale,
+        chartType,
+      });
+    } else {
+      // If no existing data, fetch new data
+      handleSubmit();
     }
   };
 
@@ -216,7 +249,7 @@ export default function ThreeDChartSettingsPanel({ onUpdate }: Props) {
             <label className="block text-sm text-gray-300 mb-2">
               Overlays (up to 3)
             </label>
-            {overlays.map((overlay, i) => (
+            {overlays.map((overlay: string, i: number) => (
               <select
                 key={i}
                 value={overlay}
@@ -240,7 +273,7 @@ export default function ThreeDChartSettingsPanel({ onUpdate }: Props) {
             <label className="block text-sm text-gray-300 mb-2">
               Indicators (up to 3)
             </label>
-            {indicators.map((indicator, i) => (
+            {indicators.map((indicator: string, i: number) => (
               <select
                 key={i}
                 value={indicator}
@@ -327,8 +360,17 @@ export default function ThreeDChartSettingsPanel({ onUpdate }: Props) {
           onClick={handleSubmit}
           className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 px-6 rounded-xl transition-colors"
         >
-          Generate 3D Chart
+          {currentSettings?.data ? "Fetch New Data" : "Generate 3D Chart"}
         </button>
+        
+        {currentSettings?.data && (
+          <button
+            onClick={handle3DUpdate}
+            className="flex-1 bg-green-600 hover:bg-green-700 text-white font-semibold py-4 px-6 rounded-xl transition-colors"
+          >
+            Update 3D View
+          </button>
+        )}
         
         <button
           onClick={() => {
