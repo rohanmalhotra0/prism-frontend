@@ -2,14 +2,14 @@ import { ReactNode } from "react";
 
 import { cn } from "@/lib/utils";
 
-import { Button, type ButtonProps } from "../../ui/button";
+import { Button, buttonVariants } from "../../ui/button";
 import Glow from "../../ui/glow";
 import { Section } from "../../ui/section";
 
 interface CTAButtonProps {
   href: string;
   text: string;
-  variant?: ButtonProps["variant"];
+  variant?: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link";
   icon?: ReactNode;
   iconRight?: ReactNode;
 }
@@ -45,6 +45,7 @@ export default function CTA({
                 variant={button.variant || "default"}
                 size="lg"
                 asChild
+                className="rounded-full bg-gradient-to-r from-purple-600 via-purple-500 to-blue-600 hover:from-purple-500 hover:via-purple-400 hover:to-blue-500 text-white font-semibold shadow-lg transition-all duration-300 hover:shadow-xl hover:shadow-purple-500/25 hover:scale-105 focus:ring-4 focus:ring-purple-400/30 focus:outline-none active:scale-95"
               >
                 <a href={button.href}>
                   {button.icon}

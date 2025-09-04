@@ -1,6 +1,8 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import { useEffect, useState, useRef } from "react";
+
 const Plot = dynamic(() => import("react-plotly.js"), { ssr: false });
 
 interface PlotProps {
@@ -8,6 +10,7 @@ interface PlotProps {
   symbol: string;
   overlays?: string[];
   indicators?: string[];
+  live?: boolean;
 }
 
 export default function FinancePlot({
@@ -15,20 +18,61 @@ export default function FinancePlot({
   symbol,
   overlays = [],
   indicators = [],
+  live = false,
 }: PlotProps) {
-  if (!data || data.length === 0) {
+  const [chartData, setChartData] = useState<any[]>([]);
+  const intervalRef = useRef<number>(5 * 60 * 1000); // 🔹 5-minute buckets (match backend)
+
+  // ✅ Historical load
+  useEffect(() => {
+    if (!live && Array.isArray(data) && data.length > 0) {
+      setChartData(data);
+    }
+  }, [data, live]);
+
+  // ✅ Live merge handler
+  useEffect(() => {
+    if (!live || !Array.isArray(data) || data.length === 0) return;
+
+    const latest = data[data.length - 1]; // last trade/candle from backend
+    if (!latest) return;
+
+    setChartData((prev) => {
+      if (!prev || prev.length === 0) {
+        return [latest];
+      }
+
+      const last = { ...prev[prev.length - 1] };
+      const lastTime = new Date(last.Date).getTime();
+      const tradeTime = new Date(latest.Date).getTime();
+
+      // Same bucket → update existing candle
+      if (tradeTime - lastTime < intervalRef.current) {
+        last.Close = latest.Close;
+        last.High = Math.max(last.High, latest.High ?? latest.Close);
+        last.Low = Math.min(last.Low, latest.Low ?? latest.Close);
+        last.Volume += latest.Volume || 0;
+        return [...prev.slice(0, -1), last];
+      }
+
+      // New bucket → append new candle
+      return [...prev, latest];
+    });
+  }, [data, live]);
+
+  if (!chartData || chartData.length === 0) {
     return <p className="text-gray-400">No data to display</p>;
   }
 
-  // ✅ Ensure correct keys from backend
-  const dates = data.map((row) => row["Date"]);
-  const open = data.map((row) => row["Open"]);
-  const high = data.map((row) => row["High"]);
-  const low = data.map((row) => row["Low"]);
-  const close = data.map((row) => row["Close"]);
-  const volume = data.map((row) => row["Volume"]);
+  // ✅ Extract OHLCV
+  const dates = chartData.map((row) => new Date(row["Date"]));
+  const open = chartData.map((row) => row["Open"]);
+  const high = chartData.map((row) => row["High"]);
+  const low = chartData.map((row) => row["Low"]);
+  const close = chartData.map((row) => row["Close"]);
+  const volume = chartData.map((row) => row["Volume"]);
 
-  // ✅ Base candlestick + volume traces
+  // ✅ Base candlestick + volume
   const traces: any[] = [
     {
       x: dates,
@@ -54,12 +98,12 @@ export default function FinancePlot({
     },
   ];
 
-  // ✅ Add overlays if present (EMA, SMA, etc.)
+  // ✅ Add overlays
   overlays.forEach((overlay) => {
-    if (data[0][overlay] !== undefined) {
+    if (chartData.some((row) => row[overlay] !== undefined)) {
       traces.push({
         x: dates,
-        y: data.map((row) => row[overlay]),
+        y: chartData.map((row) => row[overlay]),
         type: "scatter",
         mode: "lines",
         name: overlay.toUpperCase(),
@@ -69,12 +113,12 @@ export default function FinancePlot({
     }
   });
 
-  // ✅ Add indicators (RSI, MACD, etc.)
+  // ✅ Add indicators
   indicators.forEach((indicator) => {
-    if (data[0][indicator] !== undefined) {
+    if (chartData.some((row) => row[indicator] !== undefined)) {
       traces.push({
         x: dates,
-        y: data.map((row) => row[indicator]),
+        y: chartData.map((row) => row[indicator]),
         type: "scatter",
         mode: "lines",
         name: indicator.toUpperCase(),
@@ -83,29 +127,27 @@ export default function FinancePlot({
       });
     }
   });
-  console.log("Plot data sample:", data[0], traces);
+
   return (
     <div className="w-full h-[700px]">
       <Plot
-  data={traces as any}
-  layout={{
-    title: { text: `${symbol} Stock Chart` },
-    dragmode: "zoom",
-    showlegend: true,
-    grid: { rows: 3, columns: 1, pattern: "independent" },
-    xaxis: { title: { text: "Date" }, rangeslider: { visible: false } },
-    yaxis: { title: { text: "Price (USD)" }, domain: [0.4, 1] },
-    yaxis2: { title: { text: "Volume" }, domain: [0.25, 0.35] },
-    yaxis3: { title: { text: "Indicators" }, domain: [0, 0.2] },
-    paper_bgcolor: "black",
-    plot_bgcolor: "black",
-    font: { color: "white" },
-  } as Partial<Plotly.Layout>}
-  config={{ responsive: true } as Partial<Plotly.Config>}
-  style={{ width: "100%", height: "100%" }}
-
-/>
+        data={traces as any}
+        layout={{
+          title: { text: `${symbol} Stock Chart` },
+          dragmode: "zoom",
+          showlegend: true,
+          grid: { rows: 3, columns: 1, pattern: "independent" },
+          xaxis: { title: { text: "Time" }, rangeslider: { visible: false }, type: "date" },
+          yaxis: { title: { text: "Price (USD)" }, domain: [0.4, 1] },
+          yaxis2: { title: { text: "Volume" }, domain: [0.25, 0.35] },
+          yaxis3: { title: { text: "Indicators" }, domain: [0, 0.2] },
+          paper_bgcolor: "black",
+          plot_bgcolor: "black",
+          font: { color: "white" },
+        } as Partial<Plotly.Layout>}
+        config={{ responsive: true } as Partial<Plotly.Config>}
+        style={{ width: "100%", height: "100%" }}
+      />
     </div>
   );
-  
 }

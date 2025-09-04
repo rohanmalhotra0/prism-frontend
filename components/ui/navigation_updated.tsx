@@ -128,12 +128,6 @@ export default function Navigation({
   logoHref = "#Pricing",
   introItems = [
   {
-    title: "👋 About Us",
-    href: "/about",
-    description:
-      "Learn about Rohan Malhotra and the team behind Prism's innovative analytics platform.",
-  },
-  {
     title: "❓ FAQ",
     href: "/#FAQ",
     description:

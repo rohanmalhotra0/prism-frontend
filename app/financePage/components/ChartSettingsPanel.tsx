@@ -1,20 +1,22 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 interface ChartSettings {
-  symbol: string;          // ✅ renamed from stock → symbol
+  symbol: string;
   chartType: string;
   overlays: string[];
   indicators: string[];
   timePeriod: string;
-  data?: any[];            // backend OHLC + indicators
+  data?: any[];
 }
 
 interface Props {
   onUpdate: (settings: ChartSettings) => void;
 }
+
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+
 const popularStocks = [
   { symbol: "AAPL", name: "Apple Inc." },
   { symbol: "MSFT", name: "Microsoft Corporation" },
@@ -29,13 +31,25 @@ const popularStocks = [
 ];
 
 export default function ChartSettingsPanel({ onUpdate }: Props) {
-  const [symbol, setSymbol] = useState("");   // ✅ renamed
+  const [symbol, setSymbol] = useState("");
   const [search, setSearch] = useState("");
   const [chartType, setChartType] = useState("candlestick");
   const [overlays, setOverlays] = useState(["", "", ""]);
   const [indicators, setIndicators] = useState(["", "", ""]);
-  const [timePeriod, setTimePeriod] = useState("1y");
+  const [timePeriod, setTimePeriod] = useState("Live"); // 🔹 default to Live
   const [showDropdown, setShowDropdown] = useState(false);
+
+  const wsRef = useRef<WebSocket | null>(null);
+
+  // 🔹 Cleanup WebSocket on unmount
+  useEffect(() => {
+    return () => {
+      if (wsRef.current) {
+        wsRef.current.close(1000, "Component unmounted");
+        wsRef.current = null;
+      }
+    };
+  }, []);
 
   const handleOverlayChange = (i: number, value: string) => {
     const updated = [...overlays];
@@ -49,74 +63,88 @@ export default function ChartSettingsPanel({ onUpdate }: Props) {
     setIndicators(updated);
   };
 
-  // inside ChartSettingsPanel.tsx
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-  
+
+    // 🔌 Close old WebSocket if switching
+    if (wsRef.current) {
+      wsRef.current.close();
+      wsRef.current = null;
+    }
+
     const endDate = new Date();
     let startDate = new Date(endDate);
-  
+
     switch (timePeriod) {
-      case "1d":
-        startDate.setDate(endDate.getDate() - 1);
-        break;
-      case "5d":
-        startDate.setDate(endDate.getDate() - 5);
-        break;
-      case "1mo":
-        startDate.setMonth(endDate.getMonth() - 1);
-        break;
-      case "3mo":
-        startDate.setMonth(endDate.getMonth() - 3);
-        break;
-      case "6mo":
-        startDate.setMonth(endDate.getMonth() - 6);
-        break;
-      case "1y":
-        startDate.setFullYear(endDate.getFullYear() - 1);
-        break;
-      case "2y":
-        startDate.setFullYear(endDate.getFullYear() - 2);
-        break;
-      case "5y":
-        startDate.setFullYear(endDate.getFullYear() - 5);
-        break;
-      case "ytd":
-        startDate = new Date(endDate.getFullYear(), 0, 1);
-        break;
-      default:
-        startDate.setFullYear(endDate.getFullYear() - 1);
+      case "1d": startDate.setDate(endDate.getDate() - 1); break;
+      case "5d": startDate.setDate(endDate.getDate() - 5); break;
+      case "1mo": startDate.setMonth(endDate.getMonth() - 1); break;
+      case "3mo": startDate.setMonth(endDate.getMonth() - 3); break;
+      case "6mo": startDate.setMonth(endDate.getMonth() - 6); break;
+      case "1y": startDate.setFullYear(endDate.getFullYear() - 1); break;
+      case "2y": startDate.setFullYear(endDate.getFullYear() - 2); break;
+      case "5y": startDate.setFullYear(endDate.getFullYear() - 5); break;
+      case "ytd": startDate = new Date(endDate.getFullYear(), 0, 1); break;
+      default: startDate.setFullYear(endDate.getFullYear() - 1);
     }
-  
+
     const payload: ChartSettings & { start: string; end: string } = {
-      symbol: symbol || search.toUpperCase(),
+      symbol: (symbol || search).toUpperCase(),
       chartType,
-      overlays: overlays.filter((o) => o !== ""),
-      indicators: indicators.filter((i) => i !== ""),
+      overlays: overlays.filter((o) => o),
+      indicators: indicators.filter((i) => i),
       timePeriod,
       start: startDate.toISOString().split("T")[0],
       end: endDate.toISOString().split("T")[0],
     };
-  
+
+    // 🔹 Live Mode
+    if (timePeriod === "Live") {
+      try {
+        const wsUrl = `${API_BASE.replace("http", "ws")}/ws/quotes/${payload.symbol}`;
+        console.log("🔌 Opening WS:", wsUrl);
+
+        const ws = new WebSocket(wsUrl);
+        wsRef.current = ws;
+
+        ws.onopen = () => console.log(`✅ Live stream opened for ${payload.symbol}`);
+
+        ws.onmessage = (event) => {
+          const candles = JSON.parse(event.data);
+          if (Array.isArray(candles)) {
+            console.log(`📊 Received ${candles.length} candles`);
+            onUpdate({ ...payload, data: candles });
+          } else {
+            console.warn("Unexpected WS payload:", candles);
+          }
+        };
+
+        ws.onerror = (err) => console.error("❌ WebSocket error:", err);
+        ws.onclose = () => console.log(`🔌 WebSocket closed for ${payload.symbol}`);
+      } catch (err) {
+        console.error("❌ Error connecting WebSocket:", err);
+        alert("Failed to connect to live feed.");
+      }
+      return;
+    }
+
+    // 🔹 Historical Mode
     try {
       const res = await fetch(`${API_BASE}/finance`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
-  
+
       if (!res.ok) throw new Error(`Backend error: ${res.status}`);
       const result = await res.json();
-  
-      onUpdate({ ...payload, data: result.data }); // ✅ use result.data
+
+      onUpdate({ ...payload, data: result.data });
     } catch (err) {
       console.error("❌ Error fetching chart data:", err);
-      alert("Failed to fetch chart data. Is the backend running?");
+      alert("Failed to fetch chart data.");
     }
   };
-  
-
 
   const filteredStocks = popularStocks.filter(
     (s) =>
@@ -142,9 +170,7 @@ export default function ChartSettingsPanel({ onUpdate }: Props) {
         <div className="space-y-6">
           {/* Stock Picker */}
           <div className="relative">
-            <label className="block text-sm text-gray-300 mb-2">
-              Choose Stock
-            </label>
+            <label className="block text-sm text-gray-300 mb-2">Choose Stock</label>
             <input
               type="text"
               placeholder="e.g. AAPL, Tesla"
@@ -169,9 +195,7 @@ export default function ChartSettingsPanel({ onUpdate }: Props) {
                     }}
                     className="cursor-pointer px-4 py-2 hover:bg-purple-500/20"
                   >
-                    <span className="font-semibold text-purple-300">
-                      {s.symbol}
-                    </span>{" "}
+                    <span className="font-semibold text-purple-300">{s.symbol}</span>{" "}
                     <span className="text-sm text-gray-400">— {s.name}</span>
                   </div>
                 ))}
@@ -181,15 +205,13 @@ export default function ChartSettingsPanel({ onUpdate }: Props) {
 
           {/* Time Period */}
           <div>
-            <label className="block text-sm text-gray-300 mb-2">
-              Time Period
-            </label>
+            <label className="block text-sm text-gray-300 mb-2">Time Period</label>
             <select
               value={timePeriod}
               onChange={(e) => setTimePeriod(e.target.value)}
               className="w-full rounded-xl border border-white/20 bg-black/40 p-4 text-white"
             >
-              <option value="Live">1 Day</option>
+              <option value="Live">Live (Streaming)</option>
               <option value="1d">1 Day</option>
               <option value="5d">1 Week</option>
               <option value="1mo">1 Month</option>
@@ -204,9 +226,7 @@ export default function ChartSettingsPanel({ onUpdate }: Props) {
 
           {/* Chart Type */}
           <div>
-            <label className="block text-sm text-gray-300 mb-2">
-              Chart Type
-            </label>
+            <label className="block text-sm text-gray-300 mb-2">Chart Type</label>
             <select
               value={chartType}
               onChange={(e) => setChartType(e.target.value)}
@@ -226,9 +246,7 @@ export default function ChartSettingsPanel({ onUpdate }: Props) {
         <div className="space-y-6">
           {/* Overlays */}
           <div>
-            <label className="block text-sm text-gray-300 mb-2">
-              Overlays (up to 3)
-            </label>
+            <label className="block text-sm text-gray-300 mb-2">Overlays (up to 3)</label>
             {overlays.map((ov, i) => (
               <select
                 key={i}
@@ -241,20 +259,13 @@ export default function ChartSettingsPanel({ onUpdate }: Props) {
                 <option value="sma50">SMA (50)</option>
                 <option value="sma200">SMA (200)</option>
                 <option value="bollinger">Bollinger Bands</option>
-                <option value="keltner">Keltner Channels</option>
-                <option value="ichimoku">Ichimoku Cloud</option>
-                <option value="parabolic">Parabolic SAR</option>
-                <option value="pivot">Pivot Points</option>
-                <option value="fib">Fibonacci Retracement</option>
               </select>
             ))}
           </div>
 
           {/* Indicators */}
           <div>
-            <label className="block text-sm text-gray-300 mb-2">
-              Indicators (up to 3)
-            </label>
+            <label className="block text-sm text-gray-300 mb-2">Indicators (up to 3)</label>
             {indicators.map((ind, i) => (
               <select
                 key={i}
@@ -268,10 +279,7 @@ export default function ChartSettingsPanel({ onUpdate }: Props) {
                 <option value="volume">Volume</option>
                 <option value="atr">ATR</option>
                 <option value="roc">ROC</option>
-                <option value="stochastic">Stochastic Oscillator</option>
-                <option value="cci">CCI</option>
-                <option value="adx">ADX</option>
-                <option value="obv">OBV</option>
+                <option value="stochastic">Stochastic</option>
               </select>
             ))}
           </div>

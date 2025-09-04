@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import ChatBot from "./chat/chatbot";
+import AuthModals from "@/components/sections/AuthModals";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,11 +26,15 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <script src="https://accounts.google.com/gsi/client" async></script>
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased dark text-foreground bg-background`}
       >
         {children}
         <ChatBot /> {/* 👈 mounted globally */}
+        <AuthModals /> {/* 👈 mounted globally */}
       </body>
     </html>
   );

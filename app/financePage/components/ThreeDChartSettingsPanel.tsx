@@ -3,18 +3,15 @@
 import { useState, useEffect, useRef } from "react";
 
 interface ThreeDSettings {
-  // 2D Chart Settings
   symbol: string;
-  chartType: string;
+  chartType: "candlestick" | "area"; // match backend/frontend
   overlays: string[];
   indicators: string[];
   timePeriod: string;
-  data?: any[];  // backend OHLC + indicators
-  
-  // 3D Specific Settings
-  x: number;  // X-axis scaling (time/position)
-  y: number;  // Y-axis scaling (price/height)
-  z: number;  // Z-axis scaling (indicators/depth)
+  data?: any[];
+  x: number;
+  y: number;
+  z: number;
 }
 
 interface Props {
@@ -22,7 +19,8 @@ interface Props {
   currentSettings?: any;
 }
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+
 const popularStocks = [
   { symbol: "AAPL", name: "Apple Inc." },
   { symbol: "MSFT", name: "Microsoft Corporation" },
@@ -39,19 +37,21 @@ const popularStocks = [
 export default function ThreeDChartSettingsPanel({ onUpdate, currentSettings }: Props) {
   const [symbol, setSymbol] = useState(currentSettings?.symbol || "");
   const [search, setSearch] = useState(currentSettings?.symbol || "");
-  const [chartType, setChartType] = useState(currentSettings?.chartType || "candlestick");
+  const [chartType, setChartType] = useState<"candlestick" | "area">(
+    currentSettings?.chartType || "candlestick"
+  );
   const [overlays, setOverlays] = useState(currentSettings?.overlays || ["", "", ""]);
   const [indicators, setIndicators] = useState(currentSettings?.indicators || ["", "", ""]);
   const [timePeriod, setTimePeriod] = useState(currentSettings?.timePeriod || "1y");
   const [showDropdown, setShowDropdown] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
-  
-  // 3D specific settings - use current settings or defaults
+
+  // 3D scaling
   const [xScale, setXScale] = useState(currentSettings?.x || 1.0);
   const [yScale, setYScale] = useState(currentSettings?.y || 1.0);
   const [zScale, setZScale] = useState(currentSettings?.z || 1.0);
 
-  // Update state when currentSettings change (when switching from 2D to 3D)
+  const wsRef = useRef<WebSocket | null>(null);
+
   useEffect(() => {
     if (currentSettings) {
       setSymbol(currentSettings.symbol || "");
@@ -66,17 +66,17 @@ export default function ThreeDChartSettingsPanel({ onUpdate, currentSettings }: 
     }
   }, [currentSettings]);
 
-  // Close dropdown when clicking outside
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setShowDropdown(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      if (wsRef.current) {
+        console.log("🔌 Cleaning up WebSocket on unmount");
+        try {
+          wsRef.current.close(1000, "Component unmounting");
+        } catch {
+          console.log("WebSocket already closed");
+        }
+        wsRef.current = null;
+      }
     };
   }, []);
 
@@ -98,7 +98,52 @@ export default function ThreeDChartSettingsPanel({ onUpdate, currentSettings }: 
       return;
     }
 
-    const settings: ThreeDSettings = {
+    if (wsRef.current) {
+      console.log("🔌 Closing existing WebSocket connection");
+      try {
+        wsRef.current.close(1000, "Switching to new symbol");
+      } catch {
+        console.log("WebSocket already closed");
+      }
+      wsRef.current = null;
+    }
+
+    const endDate = new Date();
+    let startDate = new Date(endDate);
+
+    switch (timePeriod) {
+      case "1d":
+        startDate.setDate(endDate.getDate() - 1);
+        break;
+      case "5d":
+        startDate.setDate(endDate.getDate() - 5);
+        break;
+      case "1mo":
+        startDate.setMonth(endDate.getMonth() - 1);
+        break;
+      case "3mo":
+        startDate.setMonth(endDate.getMonth() - 3);
+        break;
+      case "6mo":
+        startDate.setMonth(endDate.getMonth() - 6);
+        break;
+      case "1y":
+        startDate.setFullYear(endDate.getFullYear() - 1);
+        break;
+      case "2y":
+        startDate.setFullYear(endDate.getFullYear() - 2);
+        break;
+      case "5y":
+        startDate.setFullYear(endDate.getFullYear() - 5);
+        break;
+      case "ytd":
+        startDate = new Date(endDate.getFullYear(), 0, 1);
+        break;
+      default:
+        startDate.setFullYear(endDate.getFullYear() - 1);
+    }
+
+    const settings: ThreeDSettings & { start: string; end: string } = {
       symbol: symbol.trim().toUpperCase(),
       chartType,
       overlays: overlays.filter((o: string) => o),
@@ -107,282 +152,258 @@ export default function ThreeDChartSettingsPanel({ onUpdate, currentSettings }: 
       x: xScale,
       y: yScale,
       z: zScale,
+      start: startDate.toISOString().split("T")[0],
+      end: endDate.toISOString().split("T")[0],
     };
 
+    // Live mode
+    if (timePeriod === "Live") {
+      try {
+        const wsUrl = `${API_BASE.replace("http", "ws")}/ws/quotes/${settings.symbol}`;
+        console.log(`🔌 Connecting to WebSocket: ${wsUrl}`);
+
+        const ws = new WebSocket(wsUrl);
+        wsRef.current = ws;
+
+        ws.onopen = () => {
+          console.log(`✅ Connected to live stream for ${settings.symbol}`);
+          console.log("🔗 WebSocket ready state:", ws.readyState);
+        };
+
+        ws.onmessage = (event) => {
+          const data = JSON.parse(event.data);
+          if (Array.isArray(data)) {
+            const tradeData = data.map((candle: any) => ({
+              Date: candle.Date?.split("T")[0] || new Date().toISOString().split("T")[0],
+              Open: candle.Open || 0,
+              High: candle.High || 0,
+              Low: candle.Low || 0,
+              Close: candle.Close || 0,
+              Volume: candle.Volume || 0,
+              ...(candle.EMA_20 && { EMA_20: candle.EMA_20 }),
+              ...(candle.RSI && { RSI: candle.RSI }),
+              ...(candle.MACD && { MACD: candle.MACD }),
+              ...(candle.MACD_Signal && { MACD_Signal: candle.MACD_Signal }),
+            }));
+            onUpdate({ ...settings, data: tradeData });
+          } else if (data.error) {
+            console.error("❌ WebSocket error:", data.error);
+            alert(`Live feed error: ${data.error}`);
+          }
+        };
+
+        ws.onerror = (err) => {
+          console.error("❌ WebSocket error:", err);
+        };
+
+        ws.onclose = (event) => {
+          console.log(`🔌 WebSocket closed (code: ${event.code}, reason: ${event.reason})`);
+          wsRef.current = null;
+        };
+      } catch (error) {
+        console.error("❌ Error connecting WebSocket:", error);
+        alert("Failed to open live feed. Is the backend running?");
+      }
+      return;
+    }
+
+    // Historical
     try {
       const response = await fetch(`${API_BASE}/finance`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(settings),
       });
-      if (!response.ok) {
-        throw new Error("Failed to fetch chart data. Is the backend running?");
-      }
+
+      if (!response.ok) throw new Error(`Failed: ${response.status} ${response.statusText}`);
 
       const data = await response.json();
-      console.log("Backend returned:", data);
+      if (!data.data?.length) throw new Error("No data returned");
 
-      onUpdate({
-        ...settings,
-        symbol: data.symbol,
-        data: data.data,
-      });
+      onUpdate({ ...settings, data: data.data });
     } catch (error: any) {
-      alert(error.message);
+      console.error("Historical data fetch error:", error);
+      alert(`Error fetching data: ${error.message}`);
     }
   };
 
-  // Handle 3D settings update without fetching new data
-  const handle3DUpdate = () => {
-    if (currentSettings && currentSettings.data) {
-      // If we have existing data, just update the 3D settings
-      onUpdate({
-        ...currentSettings,
-        x: xScale,
-        y: yScale,
-        z: zScale,
-        chartType,
-      });
-    } else {
-      // If no existing data, fetch new data
-      handleSubmit();
-    }
-  };
-
-  const filteredStocks = popularStocks.filter(stock =>
-    stock.symbol.toLowerCase().includes(search.toLowerCase()) ||
-    stock.name.toLowerCase().includes(search.toLowerCase())
+  const filteredStocks = popularStocks.filter((s) =>
+    s.symbol.toLowerCase().includes(search.toLowerCase()) ||
+    s.name.toLowerCase().includes(search.toLowerCase())
   );
 
   return (
     <div className="rounded-3xl border border-white/10 bg-black/40 backdrop-blur-xl p-8 shadow-2xl">
       <h2 className="text-2xl font-bold mb-6 text-white">🎯 3D Chart Settings</h2>
-      
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Left Column - 2D Settings */}
-        <div className="space-y-6">
-          {/* Stock Selection */}
-          <div>
-            <label className="block text-sm text-gray-300 mb-2">
-              Choose Stock
-            </label>
-            <div className="relative" ref={dropdownRef}>
-              <input
-                type="text"
-                value={search}
-                onChange={(e) => {
-                  setSearch(e.target.value);
-                  setShowDropdown(true);
-                }}
-                onFocus={() => setShowDropdown(true)}
-                placeholder="e.g. AAPL, Tesla"
-                className="w-full rounded-xl border border-white/20 bg-black/40 p-4 text-white"
-              />
-              {showDropdown && (
-                <div className="absolute top-full left-0 right-0 mt-1 bg-gray-800 border border-white/20 rounded-xl overflow-hidden z-10 max-h-48 overflow-y-auto">
-                  {filteredStocks.map((stock) => (
-                    <button
-                      key={stock.symbol}
-                      onClick={() => {
-                        setSymbol(stock.symbol);
-                        setSearch(stock.symbol);
-                        setShowDropdown(false);
-                      }}
-                      className="w-full text-left px-4 py-3 hover:bg-gray-700 text-white border-b border-white/10 last:border-b-0"
-                    >
-                      <div className="font-semibold">{stock.symbol}</div>
-                      <div className="text-sm text-gray-400">{stock.name}</div>
-                    </button>
-                  ))}
-                </div>
-              )}
+
+      {/* Stock Symbol */}
+      <div className="mb-6">
+        <label className="block text-sm text-gray-300 mb-2">Stock Symbol</label>
+        <div className="relative">
+          <input
+            type="text"
+            value={search}
+            onChange={(e) => {
+              setSearch(e.target.value);
+              setSymbol(e.target.value);
+              setShowDropdown(true);
+            }}
+            onFocus={() => setShowDropdown(true)}
+            placeholder="Search stocks (e.g., AAPL, GOOGL)"
+            className="w-full rounded-xl border border-white/20 bg-black/40 p-4 text-white placeholder-gray-400 focus:border-blue-500 focus:outline-none"
+          />
+          {showDropdown && (
+            <div className="absolute top-full left-0 right-0 mt-1 bg-black/90 border border-white/20 rounded-xl overflow-hidden z-10 max-h-48 overflow-y-auto">
+              {filteredStocks.map((stock) => (
+                <button
+                  key={stock.symbol}
+                  onClick={() => {
+                    setSymbol(stock.symbol);
+                    setSearch(stock.symbol);
+                    setShowDropdown(false);
+                  }}
+                  className="w-full text-left px-4 py-3 text-white hover:bg-white/10 transition-colors"
+                >
+                  <div className="font-semibold">{stock.symbol}</div>
+                  <div className="text-sm text-gray-400">{stock.name}</div>
+                </button>
+              ))}
             </div>
-          </div>
-
-          {/* Time Period */}
-          <div>
-            <label className="block text-sm text-gray-300 mb-2">
-              Time Period
-            </label>
-            <select
-              value={timePeriod}
-              onChange={(e) => setTimePeriod(e.target.value)}
-              className="w-full rounded-xl border border-white/20 bg-black/40 p-4 text-white"
-            >
-              <option value="Live">1 Day</option>
-              <option value="1d">1 Day</option>
-              <option value="5d">1 Week</option>
-              <option value="1mo">1 Month</option>
-              <option value="3mo">3 Months</option>
-              <option value="6mo">6 Months</option>
-              <option value="1y">1 Year</option>
-              <option value="2y">2 Years</option>
-              <option value="5y">5 Years</option>
-              <option value="ytd">Year-to-Date</option>
-            </select>
-          </div>
-
-          {/* Chart Type */}
-          <div>
-            <label className="block text-sm text-gray-300 mb-2">
-              Chart Type
-            </label>
-            <select
-              value={chartType}
-              onChange={(e) => setChartType(e.target.value)}
-              className="w-full rounded-xl border border-white/20 bg-black/40 p-4 text-white"
-            >
-              <option value="candlestick">Candlestick</option>
-              <option value="ohlc">OHLC</option>
-              <option value="line">Line</option>
-              <option value="area">Area</option>
-              <option value="bar">Bar</option>
-              <option value="scatter">Scatter</option>
-            </select>
-          </div>
-        </div>
-
-        {/* Right Column - Overlays & Indicators */}
-        <div className="space-y-6">
-          {/* Overlays */}
-          <div>
-            <label className="block text-sm text-gray-300 mb-2">
-              Overlays (up to 3)
-            </label>
-            {overlays.map((overlay: string, i: number) => (
-              <select
-                key={i}
-                value={overlay}
-                onChange={(e) => handleOverlayChange(i, e.target.value)}
-                className="w-full rounded-xl border border-white/20 bg-black/40 p-4 text-white mb-2"
-              >
-                <option value="">-- Select Overlay --</option>
-                <option value="SMA_20">SMA 20</option>
-                <option value="SMA_50">SMA 50</option>
-                <option value="SMA_200">SMA 200</option>
-                <option value="EMA_12">EMA 12</option>
-                <option value="EMA_26">EMA 26</option>
-                <option value="BB_upper">Bollinger Upper</option>
-                <option value="BB_lower">Bollinger Lower</option>
-              </select>
-            ))}
-          </div>
-
-          {/* Indicators */}
-          <div>
-            <label className="block text-sm text-gray-300 mb-2">
-              Indicators (up to 3)
-            </label>
-            {indicators.map((indicator: string, i: number) => (
-              <select
-                key={i}
-                value={indicator}
-                onChange={(e) => handleIndicatorChange(i, e.target.value)}
-                className="w-full rounded-xl border border-white/20 bg-black/40 p-4 text-white mb-2"
-              >
-                <option value="">-- Select Indicator --</option>
-                <option value="RSI">RSI</option>
-                <option value="MACD">MACD</option>
-                <option value="MACD_signal">MACD Signal</option>
-                <option value="MACD_histogram">MACD Histogram</option>
-                <option value="Stoch_K">Stochastic %K</option>
-                <option value="Stoch_D">Stochastic %D</option>
-                <option value="Williams_R">Williams %R</option>
-                <option value="CCI">CCI</option>
-                <option value="ATR">ATR</option>
-                <option value="ADX">ADX</option>
-              </select>
-            ))}
-          </div>
+          )}
         </div>
       </div>
 
-      {/* 3D Controls */}
-      <div className="mt-8">
-        <h3 className="text-lg font-semibold text-gray-300 mb-4">3D Axis Controls</h3>
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* X-Axis (Time) */}
+      {/* Chart Type */}
+      <div className="mb-6">
+        <label className="block text-sm text-gray-300 mb-2">Chart Type</label>
+        <select
+          value={chartType}
+          onChange={(e) => setChartType(e.target.value as "candlestick" | "area")}
+          className="w-full rounded-xl border border-white/20 bg-black/40 p-4 text-white focus:border-blue-500 focus:outline-none"
+        >
+          <option value="candlestick">Candlestick</option>
+          <option value="area">Area</option>
+        </select>
+      </div>
+
+      {/* Time Period */}
+      <div className="mb-6">
+        <label className="block text-sm text-gray-300 mb-2">Time Period</label>
+        <select
+          value={timePeriod}
+          onChange={(e) => setTimePeriod(e.target.value)}
+          className="w-full rounded-xl border border-white/20 bg-black/40 p-4 text-white focus:border-blue-500 focus:outline-none"
+        >
+          <option value="1d">1 Day</option>
+          <option value="5d">5 Days</option>
+          <option value="1mo">1 Month</option>
+          <option value="3mo">3 Months</option>
+          <option value="6mo">6 Months</option>
+          <option value="1y">1 Year</option>
+          <option value="2y">2 Years</option>
+          <option value="5y">5 Years</option>
+          <option value="ytd">Year to Date</option>
+          <option value="Live">Live</option>
+        </select>
+      </div>
+
+      {/* Overlays */}
+      <div className="mb-6">
+        <label className="block text-sm text-gray-300 mb-2">Overlays</label>
+        {overlays.map((overlay: string, i: number) => (
+          <select
+            key={i}
+            value={overlay}
+            onChange={(e) => handleOverlayChange(i, e.target.value)}
+            className="w-full rounded-xl border border-white/20 bg-black/40 p-3 text-white mb-2 focus:border-blue-500 focus:outline-none"
+          >
+            <option value="">None</option>
+            <option value="SMA_20">SMA 20</option>
+            <option value="SMA_50">SMA 50</option>
+            <option value="EMA_20">EMA 20</option>
+            <option value="EMA_50">EMA 50</option>
+            <option value="Bollinger">Bollinger Bands</option>
+            <option value="Keltner">Keltner Channels</option>
+          </select>
+        ))}
+      </div>
+
+      {/* Indicators */}
+      <div className="mb-6">
+        <label className="block text-sm text-gray-300 mb-2">Indicators</label>
+        {indicators.map((indicator: string, i: number) => (
+          <select
+            key={i}
+            value={indicator}
+            onChange={(e) => handleIndicatorChange(i, e.target.value)}
+            className="w-full rounded-xl border border-white/20 bg-black/40 p-3 text-white mb-2 focus:border-blue-500 focus:outline-none"
+          >
+            <option value="">None</option>
+            <option value="RSI">RSI</option>
+            <option value="MACD">MACD</option>
+            <option value="ATR">ATR</option>
+            <option value="ROC">ROC</option>
+            <option value="Stochastic">Stochastic</option>
+            <option value="CCI">CCI</option>
+            <option value="ADX">ADX</option>
+            <option value="OBV">OBV</option>
+          </select>
+        ))}
+      </div>
+
+      {/* 3D Scaling */}
+      <div className="mb-6">
+        <h3 className="text-lg font-semibold text-white mb-4">3D Scaling</h3>
+        <div className="grid grid-cols-3 gap-4">
           <div>
-            <label className="block text-sm text-gray-300 mb-2">
-              X-Axis (Time Period)
-            </label>
+            <label className="block text-sm text-gray-300 mb-2">X Scale</label>
             <input
-              type="number"
-              min="0.1"
-              max="3.0"
+              type="range"
+              min="0.5"
+              max="3"
               step="0.1"
               value={xScale}
-              onChange={(e) => setXScale(parseFloat(e.target.value) || 1.0)}
-              className="w-full rounded-xl border border-white/20 bg-black/40 p-4 text-white"
-              placeholder="1.0"
+              onChange={(e) => setXScale(parseFloat(e.target.value))}
+              className="w-full"
             />
+            <div className="text-xs text-gray-400 text-center mt-1">{xScale.toFixed(1)}</div>
           </div>
-
-          {/* Y-Axis (Price) */}
           <div>
-            <label className="block text-sm text-gray-300 mb-2">
-              Y-Axis (Price/Height)
-            </label>
+            <label className="block text-sm text-gray-300 mb-2">Y Scale</label>
             <input
-              type="number"
-              min="0.1"
-              max="3.0"
+              type="range"
+              min="0.5"
+              max="3"
               step="0.1"
               value={yScale}
-              onChange={(e) => setYScale(parseFloat(e.target.value) || 1.0)}
-              className="w-full rounded-xl border border-white/20 bg-black/40 p-4 text-white"
-              placeholder="1.0"
+              onChange={(e) => setYScale(parseFloat(e.target.value))}
+              className="w-full"
             />
+            <div className="text-xs text-gray-400 text-center mt-1">{yScale.toFixed(1)}</div>
           </div>
-
-          {/* Z-Axis (Indicators) */}
           <div>
-            <label className="block text-sm text-gray-300 mb-2">
-              Z-Axis (Indicators/Depth)
-            </label>
+            <label className="block text-sm text-gray-300 mb-2">Z Scale</label>
             <input
-              type="number"
-              min="0.1"
-              max="3.0"
+              type="range"
+              min="0.5"
+              max="3"
               step="0.1"
               value={zScale}
-              onChange={(e) => setZScale(parseFloat(e.target.value) || 1.0)}
-              className="w-full rounded-xl border border-white/20 bg-black/40 p-4 text-white"
-              placeholder="1.0"
+              onChange={(e) => setZScale(parseFloat(e.target.value))}
+              className="w-full"
             />
+            <div className="text-xs text-gray-400 text-center mt-1">{zScale.toFixed(1)}</div>
           </div>
         </div>
       </div>
 
-      {/* Action Buttons */}
-      <div className="mt-8 flex gap-4">
-        <button
-          onClick={handleSubmit}
-          className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 px-6 rounded-xl transition-colors"
-        >
-          {currentSettings?.data ? "Fetch New Data" : "Generate 3D Chart"}
-        </button>
-        
-        {currentSettings?.data && (
-          <button
-            onClick={handle3DUpdate}
-            className="flex-1 bg-green-600 hover:bg-green-700 text-white font-semibold py-4 px-6 rounded-xl transition-colors"
-          >
-            Update 3D View
-          </button>
-        )}
-        
-        <button
-          onClick={() => {
-            setXScale(1.0);
-            setYScale(1.0);
-            setZScale(1.0);
-          }}
-          className="px-6 py-4 bg-gray-600 hover:bg-gray-700 text-white rounded-xl transition-colors"
-        >
-          Reset 3D
-        </button>
-      </div>
+      {/* Generate Chart Button */}
+      <button
+        onClick={handleSubmit}
+        className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-4 px-6 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl"
+      >
+        Generate 3D Chart
+      </button>
     </div>
   );
 }

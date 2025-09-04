@@ -1,6 +1,7 @@
 "use client";
 
 import Navbar from "@/components/sections/navbar/default";
+import Footer from "@/components/sections/footer/default";
 import { Button } from "@/components/ui/button";
 
 interface ResearchPaper {
@@ -10,8 +11,6 @@ interface ResearchPaper {
   date: string;
   abstract: string;
   pdfUrl: string;
-  datasetUrl?: string;
-  coverImage?: string;
   category: string;
   tags: string[];
 }
@@ -25,21 +24,18 @@ export default function ResearchPage() {
       date: "Feb 20, 2025",
       abstract:
         "This paper explores how Reddit sentiment, particularly from r/WallStreetBets, impacts quantitative financial models post-GameStop and AMC short squeezes.",
-      pdfUrl: "/papers/reddit-finance.pdf",
-      datasetUrl: "/datasets/reddit-finance-dataset.csv",
-      coverImage: "/components/logos/reddit-finance-cover.jpg",
+      pdfUrl: "/Reddit Data in Quantitative Financial Models (3).pdf",
       category: "Sentiment Analysis",
       tags: ["Reddit", "Sentiment", "GameStop", "Quantitative Finance"]
     },
     {
       id: 2,
-      title: "Capital Allocation with the Kelly Criterion",
+      title: "An Economic Approach to Optimize Capital Allocation",
       authors: "Rohan Malhotra",
       date: "Dec 12, 2024",
       abstract:
         "A study on how the Kelly Criterion can optimize portfolio growth under uncertainty, balancing risk and reward.",
-      pdfUrl: "/papers/kelly-criterion.pdf",
-      coverImage: "/components/logos/kelly-criterion.png",
+      pdfUrl: "/An Economic Approach to Optimize Capital Allocation.docx (2).pdf",
       category: "Portfolio Theory",
       tags: ["Kelly Criterion", "Portfolio", "Risk Management", "Optimization"]
     },
@@ -90,29 +86,34 @@ export default function ResearchPage() {
                     
                     {/* Content layout */}
                     <div className="flex flex-col lg:flex-row">
-                      {/* Image section */}
+                      {/* PDF Preview section */}
                       <div className="lg:w-2/5 relative overflow-hidden">
                         <div className="aspect-[4/3] relative group-hover:shadow-2xl transition-all duration-700">
-                          {paper.coverImage ? (
-                            <img
-                              src={paper.coverImage}
-                              alt={`Cover of ${paper.title}`}
-                              className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110 group-hover:rotate-1"
-                              onError={(e) => {
-                                // Fallback if image fails to load
-                                const target = e.target as HTMLImageElement;
-                                target.style.display = 'none';
-                                const fallback = target.nextElementSibling as HTMLElement;
-                                if (fallback) fallback.style.display = 'flex';
+                          {/* PDF Preview */}
+                          <div className="w-full h-full bg-gradient-to-br from-gray-800 via-gray-700 to-gray-800 flex items-center justify-center relative overflow-hidden">
+                            <iframe
+                              src={`${paper.pdfUrl}#toolbar=0&navpanes=0&scrollbar=0&view=FitH`}
+                              className="w-full h-full border-0"
+                              title={`Preview of ${paper.title}`}
+                              onError={() => {
+                                // Fallback if PDF fails to load
+                                const fallback = document.querySelector(`[data-paper-id="${paper.id}"] .pdf-fallback`);
+                                if (fallback) {
+                                  (fallback as HTMLElement).style.display = 'flex';
+                                }
                               }}
                             />
-                          ) : null}
-                          
-                          {/* Fallback placeholder */}
-                          <div className={`w-full h-full bg-gradient-to-br from-gray-800 via-gray-700 to-gray-800 flex items-center justify-center ${paper.coverImage ? 'hidden' : ''}`}>
-                            <div className="text-center">
-                              <div className="text-6xl mb-4 animate-pulse">📊</div>
-                              <div className="text-gray-400">Research Paper</div>
+                            
+                            {/* Fallback placeholder */}
+                            <div 
+                              className="pdf-fallback absolute inset-0 bg-gradient-to-br from-gray-800 via-gray-700 to-gray-800 flex items-center justify-center hidden"
+                              data-paper-id={paper.id}
+                            >
+                              <div className="text-center">
+                                <div className="text-6xl mb-4 animate-pulse">📄</div>
+                                <div className="text-gray-400">PDF Preview</div>
+                                <div className="text-gray-500 text-sm mt-2">Click to view full paper</div>
+                              </div>
                             </div>
                           </div>
                           
@@ -174,25 +175,23 @@ export default function ResearchPage() {
                         <div className="flex flex-col sm:flex-row gap-4">
                           <Button
                             asChild
-                            className="group/btn relative overflow-hidden rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 px-8 py-4 text-white font-semibold shadow-lg transition-all duration-300 hover:from-blue-500 hover:to-purple-500 hover:shadow-xl hover:shadow-blue-500/25 hover:scale-105 focus:ring-4 focus:ring-blue-400/30 focus:outline-none active:scale-95"
+                            className="group/btn relative overflow-hidden rounded-full bg-gradient-to-r from-blue-600 to-purple-600 px-8 py-4 text-white font-semibold shadow-lg transition-all duration-300 hover:from-blue-500 hover:to-purple-500 hover:shadow-xl hover:shadow-blue-500/25 hover:scale-105 focus:ring-4 focus:ring-blue-400/30 focus:outline-none active:scale-95"
                           >
-                            <a href={paper.pdfUrl} download className="flex items-center gap-2">
+                            <a href={paper.pdfUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
                               <span className="text-lg">📄</span>
-                              Download PDF
+                              View Full Paper
                             </a>
                           </Button>
 
-                          {paper.datasetUrl && (
-                            <Button
-                              asChild
-                              className="group/btn relative overflow-hidden rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 px-8 py-4 text-white font-semibold shadow-lg transition-all duration-300 hover:from-blue-500 hover:to-purple-500 hover:shadow-xl hover:shadow-blue-500/25 hover:scale-105 focus:ring-4 focus:ring-blue-400/30 focus:outline-none active:scale-95"
-                            >
-                              <a href={paper.datasetUrl} download className="flex items-center gap-2">
-                                <span className="text-lg">📊</span>
-                                Download Dataset
-                              </a>
-                            </Button>
-                          )}
+                          <Button
+                            asChild
+                            className="group/btn relative overflow-hidden rounded-full bg-gradient-to-r from-gray-600 to-gray-700 px-8 py-4 text-white font-semibold shadow-lg transition-all duration-300 hover:from-gray-500 hover:to-gray-600 hover:shadow-xl hover:shadow-gray-500/25 hover:scale-105 focus:ring-4 focus:ring-gray-400/30 focus:outline-none active:scale-95"
+                          >
+                            <a href={paper.pdfUrl} download className="flex items-center gap-2">
+                              <span className="text-lg">⬇️</span>
+                              Download PDF
+                            </a>
+                          </Button>
                         </div>
                       </div>
                     </div>
@@ -216,6 +215,9 @@ export default function ResearchPage() {
           </div>
         </div>
       </div>
+
+      {/* Footer */}
+      <Footer />
 
       {/* Custom CSS for animations */}
       <style jsx>{`

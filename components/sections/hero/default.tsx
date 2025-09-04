@@ -6,7 +6,7 @@ import Glow from "../../ui/glow";
 import { Mockup, MockupFrame } from "../../ui/mockup";
 import Screenshot from "../../ui/screenshot";
 import { Section } from "../../ui/section";
-import AuthModal from "@/components/sections/signInModal";
+
 import { ChartAreaInteractive } from "@/components/ui/ChartAreaInteractive"
 
 interface HeroProps {
@@ -45,7 +45,25 @@ export default function Hero({
 
           {/* ✨ Use your SignUp modal instead of href button */}
           <div className="animate-appear relative z-10 opacity-0 delay-300">
-            <AuthModal triggerText="Get Started" defaultView="signin" />
+            <button 
+              className="relative group px-6 py-3 rounded-full font-semibold text-white transition-all duration-300 hover:scale-105 active:scale-95 overflow-hidden"
+              onClick={() => window.dispatchEvent(new CustomEvent('openSignInModal'))}
+            >
+              {/* Background gradient */}
+              <div className="absolute inset-0 bg-gradient-to-r from-purple-600 via-purple-500 to-blue-600 rounded-full"></div>
+              
+              {/* Hover effect overlay */}
+              <div className="absolute inset-0 bg-gradient-to-r from-purple-500 via-purple-400 to-blue-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              
+              {/* Shine effect */}
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+              
+              {/* Border glow */}
+              <div className="absolute inset-0 rounded-full border border-white/20 group-hover:border-white/40 transition-colors duration-300"></div>
+              
+              {/* Text */}
+              <span className="relative z-10">Get Started</span>
+            </button>
           </div>
         </div>
 

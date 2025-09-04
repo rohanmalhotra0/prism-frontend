@@ -37,7 +37,7 @@ export default function FooterSection({
     {
       title: "Product",
       links: [
-        { text: "Pricing", href: "#pricing" }, // scrolls to pricing section
+        { text: "Pricing", href: "/#pricing" }, // scrolls to pricing section
         { text: "Documentation", href: "/docs" },
       ],
     },
