@@ -82,14 +82,6 @@ export default function Navbar({
 
           {/* Right side */}
           <NavbarRight>
-            {/* AI Assistant button */}
-            <a
-              href="/ai"
-              className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white px-4 py-2 rounded-full text-sm font-medium transition"
-            >
-              AI Assistant
-            </a>
-
             {/* Auth buttons */}
             {userEmail ? (
               <Button
@@ -103,7 +95,7 @@ export default function Navbar({
                 onClick={() =>
                   window.dispatchEvent(new CustomEvent("openAuthModal"))
                 }
-                className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-4 py-2 rounded-full font-medium transition"
+                className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-7 py-2 rounded-full text-sm font-medium transition"
               >
                 Sign In
               </Button>
