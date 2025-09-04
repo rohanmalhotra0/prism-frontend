@@ -103,26 +103,34 @@ export default function AboutPage() {
                 </Button>
                 <Button
                   asChild
-                  className="rounded-full bg-blue-600 hover:bg-blue-500"
+                  className="rounded-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600"
                 >
-                  <a href="https://www.linkedin.com/in/rohanamal/" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center">
+                  <a href="https://www.linkedin.com/in/rohanamal/" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2">
                     <LinkedInIcon className="w-5 h-5" />
+                    <span>LinkedIn</span>
                   </a>
                 </Button>
                 <Button
-                  asChild
-                  className="rounded-full bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-500 hover:to-gray-600"
-                >
-                  <a href="https://github.com/rohanmalhotra0" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center">
-                    <GitHubIcon className="w-5 h-5" />
-                  </a>
-                </Button>
+  asChild
+  className="rounded-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500"
+>
+  <a
+    href="https://github.com/rohanmalhotra0"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="flex items-center justify-center gap-2"
+  >
+    <GitHubIcon className="w-5 h-5" />
+    GitHub
+  </a>
+</Button>
                 <Button
                   asChild
-                  className="rounded-full bg-indigo-600 hover:bg-indigo-500"
+                  className="rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500"
                 >
-                  <a href="https://rohanm.org/" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center">
+                  <a href="https://rohanm.org/" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2">
                     <GlobeIcon className="w-5 h-5" />
+                    <span>Website</span>
                   </a>
                 </Button>
               </div>
@@ -179,26 +187,34 @@ export default function AboutPage() {
                 </Button>
                 <Button
                   asChild
-                  className="rounded-full bg-blue-600 hover:bg-blue-500"
+                  className="rounded-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600"
                 >
-                  <a href="#" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center">
+                  <a href="#" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2">
                     <LinkedInIcon className="w-5 h-5" />
+                    <span>LinkedIn</span>
                   </a>
                 </Button>
                 <Button
-                  asChild
-                  className="rounded-full bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-500 hover:to-gray-600"
-                >
-                  <a href="#" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center">
-                    <GitHubIcon className="w-5 h-5" />
-                  </a>
-                </Button>
+  asChild
+  className="rounded-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500"
+>
+  <a
+    href="https://github.com/rohanmalhotra0"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="flex items-center justify-center gap-2"
+  >
+    <GitHubIcon className="w-5 h-5" />
+    GitHub
+  </a>
+</Button>
                 <Button
                   asChild
-                  className="rounded-full bg-indigo-600 hover:bg-indigo-500"
+                  className="rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500"
                 >
-                  <a href="#" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center">
+                  <a href="#" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2">
                     <GlobeIcon className="w-5 h-5" />
+                    <span>Website</span>
                   </a>
                 </Button>
               </div>
@@ -234,9 +250,9 @@ export default function AboutPage() {
             </div>
           </div>
 
-          {/* Featured Projects Section */}
+          {/* Rohan's Projects & Research Section */}
           <div className="mb-16">
-            <h2 className="text-3xl font-bold text-white text-center mb-12">🌟 Featured Projects</h2>
+            <h2 className="text-3xl font-bold text-white text-center mb-12">🌟 Rohan's Projects & Research</h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-colors">
                 <div className="text-3xl mb-4">🔮</div>
@@ -258,9 +274,9 @@ export default function AboutPage() {
                   Finance app for tracking Indian stock market performance with advanced analytics and portfolio management.
                 </p>
                 <div className="flex flex-wrap gap-2">
-                  <span className="px-2 py-1 bg-green-500/20 text-green-300 text-xs rounded-full">Finance</span>
-                  <span className="px-2 py-1 bg-yellow-500/20 text-yellow-300 text-xs rounded-full">Analytics</span>
-                  <span className="px-2 py-1 bg-red-500/20 text-red-300 text-xs rounded-full">Portfolio</span>
+                  <span className="px-2 py-1 bg-green-500/20 text-green-300 text-xs rounded-full">Swift</span>
+                  <span className="px-2 py-1 bg-yellow-500/20 text-yellow-300 text-xs rounded-full">Flask</span>
+                  <span className="px-2 py-1 bg-red-500/20 text-red-300 text-xs rounded-full">Trading</span>
                 </div>
               </div>
 
@@ -271,22 +287,22 @@ export default function AboutPage() {
                   Algorithmic trading systems with machine learning models for automated market analysis and execution.
                 </p>
                 <div className="flex flex-wrap gap-2">
-                  <span className="px-2 py-1 bg-orange-500/20 text-orange-300 text-xs rounded-full">ML</span>
-                  <span className="px-2 py-1 bg-pink-500/20 text-pink-300 text-xs rounded-full">Algorithms</span>
-                  <span className="px-2 py-1 bg-cyan-500/20 text-cyan-300 text-xs rounded-full">Trading</span>
+                  <span className="px-2 py-1 bg-orange-500/20 text-orange-300 text-xs rounded-full">Python</span>
+                  <span className="px-2 py-1 bg-pink-500/20 text-pink-300 text-xs rounded-full">ML</span>
+                  <span className="px-2 py-1 bg-cyan-500/20 text-cyan-300 text-xs rounded-full">Algorithms</span>
                 </div>
               </div>
 
               <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-colors">
                 <div className="text-3xl mb-4">📈</div>
-                <h3 className="text-xl font-bold text-white mb-3">Actuarial Models</h3>
+                <h3 className="text-xl font-bold text-white mb-3">GBM Model</h3>
                 <p className="text-gray-300 text-sm mb-4">
-                  Risk assessment and pricing models for insurance products using advanced statistical methods.
+                  Geometric Brownian Motion model for stock option pricing with advanced mathematical modeling.
                 </p>
                 <div className="flex flex-wrap gap-2">
-                  <span className="px-2 py-1 bg-emerald-500/20 text-emerald-300 text-xs rounded-full">Risk</span>
-                  <span className="px-2 py-1 bg-violet-500/20 text-violet-300 text-xs rounded-full">Statistics</span>
-                  <span className="px-2 py-1 bg-rose-500/20 text-rose-300 text-xs rounded-full">Insurance</span>
+                  <span className="px-2 py-1 bg-emerald-500/20 text-emerald-300 text-xs rounded-full">Python</span>
+                  <span className="px-2 py-1 bg-violet-500/20 text-violet-300 text-xs rounded-full">Options</span>
+                  <span className="px-2 py-1 bg-rose-500/20 text-rose-300 text-xs rounded-full">Pricing</span>
                 </div>
               </div>
 
@@ -305,14 +321,53 @@ export default function AboutPage() {
 
               <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-colors">
                 <div className="text-3xl mb-4">📊</div>
-                <h3 className="text-xl font-bold text-white mb-3">Research Papers</h3>
+                <h3 className="text-xl font-bold text-white mb-3">RSI Random Forest</h3>
                 <p className="text-gray-300 text-sm mb-4">
-                  Published work on Reddit sentiment in financial markets and capital allocation using the Kelly Criterion.
+                  Machine learning model using Random Forest to predict market movements based on RSI indicators.
                 </p>
                 <div className="flex flex-wrap gap-2">
-                  <span className="px-2 py-1 bg-amber-500/20 text-amber-300 text-xs rounded-full">Sentiment</span>
-                  <span className="px-2 py-1 bg-fuchsia-500/20 text-fuchsia-300 text-xs rounded-full">Kelly</span>
-                  <span className="px-2 py-1 bg-slate-500/20 text-slate-300 text-xs rounded-full">Published</span>
+                  <span className="px-2 py-1 bg-amber-500/20 text-amber-300 text-xs rounded-full">ML</span>
+                  <span className="px-2 py-1 bg-fuchsia-500/20 text-fuchsia-300 text-xs rounded-full">RSI</span>
+                  <span className="px-2 py-1 bg-slate-500/20 text-slate-300 text-xs rounded-full">Prediction</span>
+                </div>
+              </div>
+
+              <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-colors">
+                <div className="text-3xl mb-4">📄</div>
+                <h3 className="text-xl font-bold text-white mb-3">Reddit Sentiment Research</h3>
+                <p className="text-gray-300 text-sm mb-4">
+                  Published research on how Reddit sentiment impacts quantitative financial models post-GameStop.
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <span className="px-2 py-1 bg-red-500/20 text-red-300 text-xs rounded-full">Sentiment</span>
+                  <span className="px-2 py-1 bg-orange-500/20 text-orange-300 text-xs rounded-full">Reddit</span>
+                  <span className="px-2 py-1 bg-blue-500/20 text-blue-300 text-xs rounded-full">Published</span>
+                </div>
+              </div>
+
+              <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-colors">
+                <div className="text-3xl mb-4">💰</div>
+                <h3 className="text-xl font-bold text-white mb-3">Kelly Criterion Research</h3>
+                <p className="text-gray-300 text-sm mb-4">
+                  Economic approach to optimize capital allocation using the Kelly Criterion for portfolio growth.
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <span className="px-2 py-1 bg-green-500/20 text-green-300 text-xs rounded-full">Kelly</span>
+                  <span className="px-2 py-1 bg-purple-500/20 text-purple-300 text-xs rounded-full">Capital</span>
+                  <span className="px-2 py-1 bg-indigo-500/20 text-indigo-300 text-xs rounded-full">Published</span>
+                </div>
+              </div>
+
+              <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-colors">
+                <div className="text-3xl mb-4">⚡</div>
+                <h3 className="text-xl font-bold text-white mb-3">Physics Models</h3>
+                <p className="text-gray-300 text-sm mb-4">
+                  Advanced physics calculations and modeling systems for complex scientific computations.
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <span className="px-2 py-1 bg-yellow-500/20 text-yellow-300 text-xs rounded-full">Physics</span>
+                  <span className="px-2 py-1 bg-cyan-500/20 text-cyan-300 text-xs rounded-full">Python</span>
+                  <span className="px-2 py-1 bg-pink-500/20 text-pink-300 text-xs rounded-full">Calculations</span>
                 </div>
               </div>
             </div>
