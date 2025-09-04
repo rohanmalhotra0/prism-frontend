@@ -138,9 +138,8 @@
   /* Borders / inputs */
   --border: oklch(25% 0.03 280);
   --input: oklch(20% 0.03 280);
-  --ring: oklch(60% 0.15 280); /* glowing purple outline */
+  --ring: oklch(60% 0.15 280); /* glowing purple outline */ --sidebar: hsl(0 0% 98%); --sidebar-foreground: hsl(240 5.3% 26.1%); --sidebar-primary: hsl(240 5.9% 10%); --sidebar-primary-foreground: hsl(0 0% 98%); --sidebar-accent: hsl(240 4.8% 95.9%); --sidebar-accent-foreground: hsl(240 5.9% 10%); --sidebar-border: hsl(220 13% 91%); --sidebar-ring: hsl(217.2 91.2% 59.8%);
 }
-
 
 .dark {
   --brand: oklch(75% 0.18 280); /* neon purple */
@@ -168,5 +167,14 @@
 
   --border: oklch(25% 0.05 280);
   --input: oklch(18% 0.05 280);
-  --ring: oklch(65% 0.2 280); /* brighter purple glow */
+  --ring: oklch(65% 0.2 280); /* brighter purple glow */ --sidebar: hsl(240 5.9% 10%); --sidebar-foreground: hsl(240 4.8% 95.9%); --sidebar-primary: hsl(224.3 76.3% 48%); --sidebar-primary-foreground: hsl(0 0% 100%); --sidebar-accent: hsl(240 3.7% 15.9%); --sidebar-accent-foreground: hsl(240 4.8% 95.9%); --sidebar-border: hsl(240 3.7% 15.9%); --sidebar-ring: hsl(217.2 91.2% 59.8%);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
 }

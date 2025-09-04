@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import ChatBot from "./chat/chatbot";
-import AuthModals from "@/components/sections/AuthModals";
+import AuthModal from "./AuthModals";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,7 +34,7 @@ export default function RootLayout({
       >
         {children}
         <ChatBot /> {/* 👈 mounted globally */}
-        <AuthModals /> {/* 👈 mounted globally */}
+        <AuthModal /> {/* 👈 mounted globally */}
       </body>
     </html>
   );
