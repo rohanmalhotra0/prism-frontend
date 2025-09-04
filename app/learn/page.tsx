@@ -164,7 +164,7 @@ export default function LearnPage() {
               </Button>
               <Button
                 asChild
-                className="rounded-full bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-500 hover:to-gray-600"
+                className="rounded-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500"
               >
                 <Link href="/research">
                   View Research
