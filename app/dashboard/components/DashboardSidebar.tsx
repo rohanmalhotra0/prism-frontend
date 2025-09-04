@@ -20,11 +20,10 @@ import { DialogTitle } from "@radix-ui/react-dialog";
 import { supabase } from "@/lib/supaBaseClient"; // ✅ make sure supabase client is imported
 
 const items = [
-  { title: "Account Profile", icon: LayoutDashboard, href: "/profile" },
+  { title: "Account Information", icon: LayoutDashboard, href: "/dashboard/profile" },
   { title: "Your AI Assistant", icon: MessageSquare, href: "/ai" },
-  { title: "Your Data Sets", icon: Database, href: "/datasets" },
-  { title: "Change Plan", icon: CreditCard, href: "/upgrade" },
-  { title: "Settings", icon: Settings, href: "/settings" },
+  { title: "Your Data Sets", icon: Database, href: "/dashboard/datasets" },
+  { title: "Change Plan", icon: CreditCard, href: "/dashboard/upgrade" },
 ];
 
 export function DashboardSidebar() {
