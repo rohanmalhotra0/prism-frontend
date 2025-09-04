@@ -36,16 +36,6 @@ export default function Navigation({
       href: "/crypto",
       description: "On-chain data analysis, risk modeling, DeFi pricing.",
     },
-    {
-      title: "🛡️ Insurance Risk Analysis",
-      href: "/insurance",
-      description: "Stochastic risk modeling for actuarial science.",
-    },
-    {
-      title: "🔬 General Modeling",
-      href: "/general",
-      description: "Regression, simulation, and time-series forecasting.",
-    },
    /* 
   {
       title: "💱 Currency",
@@ -59,7 +49,16 @@ export default function Navigation({
     }, 
     */
     
-    
+    {
+      title: "🛡️ Insurance Risk Analysis",
+      href: "/insurance",
+      description: "Stochastic risk modeling for actuarial science.",
+    },
+    {
+      title: "🔬 General Modeling",
+      href: "/general",
+      description: "Regression, simulation, and time-series forecasting.",
+    },
   ],
   community = [
     {
@@ -106,7 +105,7 @@ export default function Navigation({
           <NavigationMenuContent>
             <ul className="grid gap-3 p-4 w-[400px]">
               <ListItem href="/about" title="👋 About Us">
-                Learn about Rohan Malhotra and the Prism team.
+                Learn about the Prism team.
               </ListItem>
               <ListItem href="/#FAQ" title="❓ FAQ">
                 Find answers to common questions about Prism.

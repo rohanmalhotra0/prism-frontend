@@ -1,6 +1,5 @@
 "use client";
 
-
 import { ChevronDownIcon } from "@radix-ui/react-icons";
 import * as NavigationMenuPrimitive from "@radix-ui/react-navigation-menu";
 import { cva } from "class-variance-authority";
@@ -55,30 +54,19 @@ function NavigationMenuTrigger({
   children,
   ...props
 }: React.ComponentProps<typeof NavigationMenuPrimitive.Trigger>) {
-  const [open, setOpen] = React.useState(false);
-
   return (
     <NavigationMenuPrimitive.Trigger
       {...props}
-      onClick={(e) => {
-        e.preventDefault();
-        setOpen((prev) => !prev);
-      }}
-      data-state={open ? "open" : "closed"}
       className={cn(navigationMenuTriggerStyle(), "group", className)}
     >
       {children}
       <ChevronDownIcon
-        className={`relative top-[1px] ml-1 size-3 transition duration-300 ${
-          open ? "rotate-180" : ""
-        }`}
+        className="relative top-[1px] ml-1 size-3 transition duration-300 group-data-[state=open]:rotate-180"
         aria-hidden="true"
       />
     </NavigationMenuPrimitive.Trigger>
   );
 }
-
-
 
 function NavigationMenuContent({
   className,
