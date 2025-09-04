@@ -58,7 +58,7 @@ export default function AuthModal() {
         setFormData({ email: "", password: "", fullName: "" });
         setTimeout(() => {
           setOpen(false);
-          router.push("/dashboard");
+          router.push("/");
         }, 1000);
       }
     } else {
