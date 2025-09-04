@@ -23,7 +23,7 @@ const items = [
   { title: "Account Profile", icon: LayoutDashboard, href: "/profile" },
   { title: "Your AI Assistant", icon: MessageSquare, href: "/ai" },
   { title: "Your Data Sets", icon: Database, href: "/datasets" },
-  { title: "Upgrade Plan", icon: CreditCard, href: "/upgrade" },
+  { title: "Change Plan", icon: CreditCard, href: "/upgrade" },
   { title: "Settings", icon: Settings, href: "/settings" },
 ];
 

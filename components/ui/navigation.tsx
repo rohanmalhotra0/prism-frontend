@@ -32,16 +32,6 @@ export default function Navigation({
       description: "Quantitative models for corporate finance and forecasting.",
     },
     {
-      title: "💱 Currency",
-      href: "/currency",
-      description: "Forex spot rates, parity models, and risk simulations.",
-    },
-    {
-      title: "📊 Options & Derivatives",
-      href: "/options",
-      description: "Options pricing, hedging, and binomial/Black-Scholes models.",
-    },
-    {
       title: "₿ Crypto Modeling",
       href: "/crypto",
       description: "On-chain data analysis, risk modeling, DeFi pricing.",
@@ -56,6 +46,20 @@ export default function Navigation({
       href: "/general",
       description: "Regression, simulation, and time-series forecasting.",
     },
+   /* 
+  {
+      title: "💱 Currency",
+      href: "/currency",
+      description: "Forex spot rates, parity models, and risk simulations.",
+    },
+    {
+      title: "📊 Options & Derivatives",
+      href: "/options",
+      description: "Options pricing, hedging, and binomial/Black-Scholes models.",
+    }, 
+    */
+    
+    
   ],
   community = [
     {
