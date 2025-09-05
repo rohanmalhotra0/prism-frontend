@@ -38,7 +38,7 @@ export async function POST(req: Request) {
     }
 
     const data = await response.json();
-    const aiMessage = data.message || data.choices?.[0]?.message?.content ?? "⚠️ No response from AI";
+    const aiMessage = (data.message || data.choices?.[0]?.message?.content) ?? "⚠️ No response from AI";
 
     return NextResponse.json({ message: aiMessage });
   } catch (err) {

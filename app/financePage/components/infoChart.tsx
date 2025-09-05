@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { API_ENDPOINTS } from "@/lib/api-config";
 
 interface Fundamentals {
   market_cap?: number | null;
@@ -20,10 +21,8 @@ interface Fundamentals {
 
 interface Props {
   symbol: string;
-  live?: boolean; // 🔹 add flag to auto-refresh in live mode
+  live?: boolean; // 🔹 auto-refresh every 30s if true
 }
-
-import { API_ENDPOINTS } from "@/lib/api-config";
 
 export default function InfoChart({ symbol, live = false }: Props) {
   const [fundamentals, setFundamentals] = useState<Fundamentals | null>(null);
@@ -35,8 +34,12 @@ export default function InfoChart({ symbol, live = false }: Props) {
     try {
       const res = await fetch(API_ENDPOINTS.FUNDAMENTALS(symbol));
       if (!res.ok) throw new Error(`Backend error: ${res.status}`);
+
       const data = await res.json();
-      setFundamentals(data.metrics);
+      console.log("📊 Fundamentals API returned:", data);
+
+      // ✅ Expecting flat object from backend (no .metrics)
+      setFundamentals(data);
     } catch (err) {
       console.error("❌ Error fetching fundamentals:", err);
       setFundamentals(null);
@@ -50,7 +53,7 @@ export default function InfoChart({ symbol, live = false }: Props) {
     fetchFundamentals();
   }, [symbol]);
 
-  // 🔹 Poll every 30s if in Live mode
+  // 🔹 Poll every 30s if live mode is enabled
   useEffect(() => {
     if (!live) return;
     const interval = setInterval(fetchFundamentals, 30_000);
@@ -65,77 +68,77 @@ export default function InfoChart({ symbol, live = false }: Props) {
 
       {loading ? (
         <p className="text-gray-400">Loading...</p>
-      ) : (
+      ) : fundamentals ? (
         <ul className="space-y-3 text-base">
           <li>
             <span className="font-semibold text-purple-300">Market cap:</span>{" "}
-            {fundamentals?.market_cap
+            {fundamentals.market_cap
               ? `$${(fundamentals.market_cap / 1e9).toFixed(2)}B`
               : "N/A"}
           </li>
           <li>
             <span className="font-semibold text-purple-300">P/E ratio:</span>{" "}
-            {fundamentals?.pe_ratio
-              ? fundamentals.pe_ratio.toFixed(2)
-              : "N/A"}
+            {fundamentals.pe_ratio ? fundamentals.pe_ratio.toFixed(2) : "N/A"}
           </li>
           <li>
             <span className="font-semibold text-purple-300">Dividend yield:</span>{" "}
-            {fundamentals?.dividend_yield
+            {fundamentals.dividend_yield
               ? `${(fundamentals.dividend_yield * 100).toFixed(2)}%`
               : "N/A"}
           </li>
           <li>
             <span className="font-semibold text-purple-300">Avg volume:</span>{" "}
-            {fundamentals?.average_volume
+            {fundamentals.average_volume
               ? `${(fundamentals.average_volume / 1e6).toFixed(2)}M`
               : "N/A"}
           </li>
 
           <li>
             <span className="font-semibold text-purple-300">Last close:</span>{" "}
-            {fundamentals?.last_close
+            {fundamentals.last_close
               ? `$${fundamentals.last_close.toFixed(2)}`
               : "N/A"}
           </li>
           <li>
             <span className="font-semibold text-purple-300">Open price:</span>{" "}
-            {fundamentals?.open_price
+            {fundamentals.open_price
               ? `$${fundamentals.open_price.toFixed(2)}`
               : "N/A"}
           </li>
           <li>
             <span className="font-semibold text-purple-300">High today:</span>{" "}
-            {fundamentals?.high_today
+            {fundamentals.high_today
               ? `$${fundamentals.high_today.toFixed(2)}`
               : "N/A"}
           </li>
           <li>
             <span className="font-semibold text-purple-300">Low today:</span>{" "}
-            {fundamentals?.low_today
+            {fundamentals.low_today
               ? `$${fundamentals.low_today.toFixed(2)}`
               : "N/A"}
           </li>
           <li>
             <span className="font-semibold text-purple-300">Volume:</span>{" "}
-            {fundamentals?.volume
+            {fundamentals.volume
               ? `${(fundamentals.volume / 1e6).toFixed(2)}M`
               : "N/A"}
           </li>
 
           <li>
             <span className="font-semibold text-purple-300">52 Week high:</span>{" "}
-            {fundamentals?.fifty_two_week_high
+            {fundamentals.fifty_two_week_high
               ? `$${fundamentals.fifty_two_week_high.toFixed(2)}`
               : "N/A"}
           </li>
           <li>
             <span className="font-semibold text-purple-300">52 Week low:</span>{" "}
-            {fundamentals?.fifty_two_week_low
+            {fundamentals.fifty_two_week_low
               ? `$${fundamentals.fifty_two_week_low.toFixed(2)}`
               : "N/A"}
           </li>
         </ul>
+      ) : (
+        <p className="text-gray-400">No fundamentals available.</p>
       )}
     </div>
   );
