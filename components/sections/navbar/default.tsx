@@ -1,12 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Menu } from "lucide-react";
 import RefraxLogo from "@/components/logos/RefraxLogo.jpeg";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/lib/supaBaseClient";
+import { useAuth } from "@/lib/AuthProvider"; // 👈 new import
 
 import { Button } from "../../ui/button";
 import {
@@ -26,29 +26,11 @@ export default function Navbar({
   homeUrl?: string;
 }) {
   const router = useRouter();
-  const [userEmail, setUserEmail] = useState<string | null>(null);
-
-  // Track user session
-  useEffect(() => {
-    const getUser = async () => {
-      const { data } = await supabase.auth.getUser();
-      setUserEmail(data.user?.email ?? null);
-    };
-    getUser();
-
-    const { data: listener } = supabase.auth.onAuthStateChange(
-      (_event, session) => setUserEmail(session?.user?.email ?? null)
-    );
-
-    return () => {
-      listener.subscription.unsubscribe();
-    };
-  }, []);
+  const { user, loading } = useAuth(); // 👈 get user from context
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
-    setUserEmail(null);
-    router.push("/");
+    router.push("/"); // optional redirect
   };
 
   return (
@@ -83,22 +65,28 @@ export default function Navbar({
           {/* Right side */}
           <NavbarRight>
             {/* Auth buttons */}
-            {userEmail ? (
-              <Button
-                onClick={handleSignOut}
-                className="bg-gradient-to-r from-red-600 to-pink-600 hover:from-red-700 hover:to-pink-700 text-white px-4 py-2 rounded-full font-medium transition"
-              >
-                Sign Out
-              </Button>
+            {!loading && user ? (
+              <div className="flex items-center gap-4">
+                {/* Show user email */}
+                <span className="text-sm text-gray-300">{user.email}</span>
+                <Button
+                  onClick={handleSignOut}
+                  className="bg-gradient-to-r from-red-600 to-pink-600 hover:from-red-700 hover:to-pink-700 text-white px-4 py-2 rounded-full font-medium transition"
+                >
+                  Sign Out
+                </Button>
+              </div>
             ) : (
-              <Button
-                onClick={() =>
-                  window.dispatchEvent(new CustomEvent("openAuthModal"))
-                }
-                className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-7 py-2 rounded-full text-sm font-medium transition"
-              >
-                Sign In
-              </Button>
+              !loading && (
+                <Button
+                  onClick={() =>
+                    window.dispatchEvent(new CustomEvent("openAuthModal"))
+                  }
+                  className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-7 py-2 rounded-full text-sm font-medium transition"
+                >
+                  Sign In
+                </Button>
+              )
             )}
 
             {/* Mobile menu */}

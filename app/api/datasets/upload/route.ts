@@ -60,13 +60,22 @@ export async function POST(req: NextRequest) {
     })
     .eq("id", user.id);
 
-  const dataset = {
-    id: Date.now().toString(),
-    name: file.name,
-    size: file.size,
-    createdAt: new Date(),
-    path: filePath,
-  };
+  // ✅ Store dataset in Supabase
+  const { data: dataset, error: datasetError } = await supabase
+    .from("datasets")
+    .insert({
+      id: Date.now().toString(),
+      name: file.name,
+      size: file.size,
+      path: filePath,
+      user_id: user.id,
+    })
+    .select()
+    .single();
+
+  if (datasetError) {
+    return NextResponse.json({ error: "Failed to save dataset" }, { status: 500 });
+  }
 
   return NextResponse.json(dataset);
 }

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import ChatBot from "./chat/components/chatbot";
+import { AuthProvider } from "@/lib/AuthProvider";
 
 import AuthModal from "./AuthModals";
 
@@ -33,9 +34,11 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased dark text-foreground bg-background`}
       >
-        {children}
-        <ChatBot /> {/* 👈 mounted globally */}
-        <AuthModal /> {/* 👈 mounted globally */}
+        <AuthProvider>
+          {children}
+          <ChatBot /> {/* 👈 mounted globally */}
+          <AuthModal /> {/* 👈 mounted globally */}
+        </AuthProvider>
       </body>
     </html>
   );

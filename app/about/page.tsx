@@ -36,20 +36,9 @@ export default function AboutPage() {
       
       {/* Main content */}
       <div className="relative z-10 pt-20">
-        {/* Hero Section */}
         <div className="max-w-6xl mx-auto px-6 py-16">
-          <div className="text-center mb-16">
-            <h1 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-purple-400 via-blue-400 to-indigo-400 bg-clip-text text-transparent mb-6">
-              About Our Team
-            </h1>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-              Meet the minds behind Refrax - passionate students combining computer science, economics, 
-              and mathematics to build the future of financial analytics.
-            </p>
-          </div>
-
           {/* Team Members Section */}
-          <div className="grid lg:grid-cols-2 gap-12 mb-16">
+          <div className="grid lg:grid-cols-2 gap-12">
             {/* Rohan Malhotra */}
             <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-8 hover:bg-white/10 transition-colors">
               <div className="flex flex-col items-center text-center mb-6">
@@ -140,15 +129,17 @@ export default function AboutPage() {
             <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-8 hover:bg-white/10 transition-colors">
               <div className="flex flex-col items-center text-center mb-6">
                 <div className="relative mb-6">
-                  <div className="w-32 h-32 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center border-4 border-blue-500/50 shadow-lg">
-                    <span className="text-white text-4xl font-bold">MG</span>
-                  </div>
+                  <img
+                    src="/mihir-ganesan.jpeg"
+                    alt="Mihir Ganesan"
+                    className="w-32 h-32 rounded-full object-cover border-4 border-blue-500/50 shadow-lg"
+                  />
                   <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-green-500 rounded-full border-2 border-black flex items-center justify-center">
                     <span className="text-white text-sm">✓</span>
                   </div>
                 </div>
-                <h2 className="text-2xl font-bold text-white mb-2"> Ganesan</h2>
-                <p className="text-blue-400 font-medium">Buisness Lead</p>
+                <h2 className="text-2xl font-bold text-white mb-2">Mihir Ganesan</h2>
+                <p className="text-blue-400 font-medium">Business Lead</p>
                 <p className="text-gray-400 text-sm">Business and Computer Science, NYU</p>
               </div>
 
@@ -180,7 +171,7 @@ export default function AboutPage() {
                   asChild
                   className="flex-1 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500"
                 >
-                  <a href="#" className="flex items-center justify-center gap-2">
+                  <a href="#" className="flex items-center justify-center gap-2 opacity-50 cursor-not-allowed">
                     <span>📄</span>
                     Resume
                   </a>
@@ -189,30 +180,25 @@ export default function AboutPage() {
                   asChild
                   className="rounded-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600"
                 >
-                  <a href="#" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2">
+                  <a href="https://www.linkedin.com/in/mihir-ganesan/" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2">
                     <LinkedInIcon className="w-5 h-5" />
                     <span>LinkedIn</span>
                   </a>
                 </Button>
                 <Button
-  asChild
-  className="rounded-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500"
->
-  <a
-    href="https://github.com/rohanmalhotra0"
-    target="_blank"
-    rel="noopener noreferrer"
-    className="flex items-center justify-center gap-2"
-  >
-    <GitHubIcon className="w-5 h-5" />
-    GitHub
-  </a>
-</Button>
+                  asChild
+                  className="rounded-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500"
+                >
+                  <a href="#" className="flex items-center justify-center gap-2 opacity-50 cursor-not-allowed">
+                    <GitHubIcon className="w-5 h-5" />
+                    GitHub
+                  </a>
+                </Button>
                 <Button
                   asChild
                   className="rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500"
                 >
-                  <a href="#" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2">
+                  <a href="#" className="flex items-center justify-center gap-2 opacity-50 cursor-not-allowed">
                     <GlobeIcon className="w-5 h-5" />
                     <span>Website</span>
                   </a>
@@ -250,205 +236,6 @@ export default function AboutPage() {
             </div>
           </div>
 
-          {/* Rohan's Projects & Research Section */}
-          <div className="mb-16">
-            <h2 className="text-3xl font-bold text-white text-center mb-12">🌟 Rohan's Projects & Research</h2>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-colors">
-                <div className="text-3xl mb-4">🔮</div>
-                <h3 className="text-xl font-bold text-white mb-3">Refrax</h3>
-                <p className="text-gray-300 text-sm mb-4">
-                  3D interactive analytics platform for finance, insurance, and sports with real-time data visualization.
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  <span className="px-2 py-1 bg-purple-500/20 text-purple-300 text-xs rounded-full">React</span>
-                  <span className="px-2 py-1 bg-blue-500/20 text-blue-300 text-xs rounded-full">Three.js</span>
-                  <span className="px-2 py-1 bg-indigo-500/20 text-indigo-300 text-xs rounded-full">WebSockets</span>
-                </div>
-              </div>
-
-              <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-colors">
-                <div className="text-3xl mb-4">🚗</div>
-                <h3 className="text-xl font-bold text-white mb-3">IndiTrack</h3>
-                <p className="text-gray-300 text-sm mb-4">
-                  Finance app for tracking Indian stock market performance with advanced analytics and portfolio management.
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  <span className="px-2 py-1 bg-green-500/20 text-green-300 text-xs rounded-full">Swift</span>
-                  <span className="px-2 py-1 bg-yellow-500/20 text-yellow-300 text-xs rounded-full">Flask</span>
-                  <span className="px-2 py-1 bg-red-500/20 text-red-300 text-xs rounded-full">Trading</span>
-                </div>
-              </div>
-
-              <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-colors">
-                <div className="text-3xl mb-4">🤖</div>
-                <h3 className="text-xl font-bold text-white mb-3">Trading Bots</h3>
-                <p className="text-gray-300 text-sm mb-4">
-                  Algorithmic trading systems with machine learning models for automated market analysis and execution.
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  <span className="px-2 py-1 bg-orange-500/20 text-orange-300 text-xs rounded-full">Python</span>
-                  <span className="px-2 py-1 bg-pink-500/20 text-pink-300 text-xs rounded-full">ML</span>
-                  <span className="px-2 py-1 bg-cyan-500/20 text-cyan-300 text-xs rounded-full">Algorithms</span>
-                </div>
-              </div>
-
-              <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-colors">
-                <div className="text-3xl mb-4">📈</div>
-                <h3 className="text-xl font-bold text-white mb-3">GBM Model</h3>
-                <p className="text-gray-300 text-sm mb-4">
-                  Geometric Brownian Motion model for stock option pricing with advanced mathematical modeling.
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  <span className="px-2 py-1 bg-emerald-500/20 text-emerald-300 text-xs rounded-full">Python</span>
-                  <span className="px-2 py-1 bg-violet-500/20 text-violet-300 text-xs rounded-full">Options</span>
-                  <span className="px-2 py-1 bg-rose-500/20 text-rose-300 text-xs rounded-full">Pricing</span>
-                </div>
-              </div>
-
-              <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-colors">
-                <div className="text-3xl mb-4">🛰️</div>
-                <h3 className="text-xl font-bold text-white mb-3">CubeSat Research</h3>
-                <p className="text-gray-300 text-sm mb-4">
-                  Satellite imaging and signal processing research at Virginia Tech's Hume Center for National Security.
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  <span className="px-2 py-1 bg-sky-500/20 text-sky-300 text-xs rounded-full">Imaging</span>
-                  <span className="px-2 py-1 bg-teal-500/20 text-teal-300 text-xs rounded-full">Signals</span>
-                  <span className="px-2 py-1 bg-lime-500/20 text-lime-300 text-xs rounded-full">Research</span>
-                </div>
-              </div>
-
-              <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-colors">
-                <div className="text-3xl mb-4">📊</div>
-                <h3 className="text-xl font-bold text-white mb-3">RSI Random Forest</h3>
-                <p className="text-gray-300 text-sm mb-4">
-                  Machine learning model using Random Forest to predict market movements based on RSI indicators.
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  <span className="px-2 py-1 bg-amber-500/20 text-amber-300 text-xs rounded-full">ML</span>
-                  <span className="px-2 py-1 bg-fuchsia-500/20 text-fuchsia-300 text-xs rounded-full">RSI</span>
-                  <span className="px-2 py-1 bg-slate-500/20 text-slate-300 text-xs rounded-full">Prediction</span>
-                </div>
-              </div>
-
-              <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-colors">
-                <div className="text-3xl mb-4">📄</div>
-                <h3 className="text-xl font-bold text-white mb-3">Reddit Sentiment Research</h3>
-                <p className="text-gray-300 text-sm mb-4">
-                  Published research on how Reddit sentiment impacts quantitative financial models post-GameStop.
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  <span className="px-2 py-1 bg-red-500/20 text-red-300 text-xs rounded-full">Sentiment</span>
-                  <span className="px-2 py-1 bg-orange-500/20 text-orange-300 text-xs rounded-full">Reddit</span>
-                  <span className="px-2 py-1 bg-blue-500/20 text-blue-300 text-xs rounded-full">Published</span>
-                </div>
-              </div>
-
-              <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-colors">
-                <div className="text-3xl mb-4">💰</div>
-                <h3 className="text-xl font-bold text-white mb-3">Kelly Criterion Research</h3>
-                <p className="text-gray-300 text-sm mb-4">
-                  Economic approach to optimize capital allocation using the Kelly Criterion for portfolio growth.
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  <span className="px-2 py-1 bg-green-500/20 text-green-300 text-xs rounded-full">Kelly</span>
-                  <span className="px-2 py-1 bg-purple-500/20 text-purple-300 text-xs rounded-full">Capital</span>
-                  <span className="px-2 py-1 bg-indigo-500/20 text-indigo-300 text-xs rounded-full">Published</span>
-                </div>
-              </div>
-
-              <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-colors">
-                <div className="text-3xl mb-4">⚡</div>
-                <h3 className="text-xl font-bold text-white mb-3">Physics Models</h3>
-                <p className="text-gray-300 text-sm mb-4">
-                  Advanced physics calculations and modeling systems for complex scientific computations.
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  <span className="px-2 py-1 bg-yellow-500/20 text-yellow-300 text-xs rounded-full">Physics</span>
-                  <span className="px-2 py-1 bg-cyan-500/20 text-cyan-300 text-xs rounded-full">Python</span>
-                  <span className="px-2 py-1 bg-pink-500/20 text-pink-300 text-xs rounded-full">Calculations</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Skills Section */}
-          <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-8 mb-16">
-            <h2 className="text-2xl font-bold text-white mb-8 text-center">🛠️ Team Technical Skills</h2>
-            <div className="grid md:grid-cols-3 gap-8">
-              <div>
-                <h3 className="text-lg font-semibold text-white mb-4">Programming</h3>
-                <div className="flex flex-wrap gap-2">
-                  <span className="px-3 py-1 bg-blue-500/20 text-blue-300 text-sm rounded-full">Python</span>
-                  <span className="px-3 py-1 bg-yellow-500/20 text-yellow-300 text-sm rounded-full">JavaScript</span>
-                  <span className="px-3 py-1 bg-cyan-500/20 text-cyan-300 text-sm rounded-full">TypeScript</span>
-                  <span className="px-3 py-1 bg-green-500/20 text-green-300 text-sm rounded-full">React</span>
-                  <span className="px-3 py-1 bg-purple-500/20 text-purple-300 text-sm rounded-full">Next.js</span>
-                  <span className="px-3 py-1 bg-orange-500/20 text-orange-300 text-sm rounded-full">Node.js</span>
-                </div>
-              </div>
-              <div>
-                <h3 className="text-lg font-semibold text-white mb-4">Data & Analytics</h3>
-                <div className="flex flex-wrap gap-2">
-                  <span className="px-3 py-1 bg-orange-500/20 text-orange-300 text-sm rounded-full">Pandas</span>
-                  <span className="px-3 py-1 bg-red-500/20 text-red-300 text-sm rounded-full">NumPy</span>
-                  <span className="px-3 py-1 bg-pink-500/20 text-pink-300 text-sm rounded-full">Scikit-learn</span>
-                  <span className="px-3 py-1 bg-indigo-500/20 text-indigo-300 text-sm rounded-full">TensorFlow</span>
-                  <span className="px-3 py-1 bg-emerald-500/20 text-emerald-300 text-sm rounded-full">SQL</span>
-                  <span className="px-3 py-1 bg-teal-500/20 text-teal-300 text-sm rounded-full">PostgreSQL</span>
-                </div>
-              </div>
-              <div>
-                <h3 className="text-lg font-semibold text-white mb-4">Finance & Math</h3>
-                <div className="flex flex-wrap gap-2">
-                  <span className="px-3 py-1 bg-violet-500/20 text-violet-300 text-sm rounded-full">Quantitative Finance</span>
-                  <span className="px-3 py-1 bg-rose-500/20 text-rose-300 text-sm rounded-full">Actuarial Science</span>
-                  <span className="px-3 py-1 bg-teal-500/20 text-teal-300 text-sm rounded-full">Statistics</span>
-                  <span className="px-3 py-1 bg-lime-500/20 text-lime-300 text-sm rounded-full">Risk Modeling</span>
-                  <span className="px-3 py-1 bg-amber-500/20 text-amber-300 text-sm rounded-full">Algorithms</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Contact Section */}
-          <div className="text-center">
-            <h2 className="text-2xl font-bold text-white mb-6">Let's Connect!</h2>
-            <p className="text-gray-300 mb-8 max-w-2xl mx-auto">
-              We're always excited to discuss new opportunities in quantitative finance, 
-              actuarial science, or innovative tech projects. Feel free to reach out!
-            </p>
-            <div className="flex justify-center gap-4 flex-wrap">
-              <Button
-                asChild
-                className="rounded-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500"
-              >
-                <a href="https://www.linkedin.com/in/rohanamal/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
-                  <LinkedInIcon className="w-5 h-5" />
-                  LinkedIn
-                </a>
-              </Button>
-              <Button
-                asChild
-                className="rounded-full bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-500 hover:to-gray-600"
-              >
-                <a href="https://github.com/rohanmalhotra0" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
-                  <GitHubIcon className="w-5 h-5" />
-                  GitHub
-                </a>
-              </Button>
-              <Button
-                asChild
-                className="rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500"
-              >
-                <a href="https://rohanm.org/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
-                  <GlobeIcon className="w-5 h-5" />
-                  Website
-                </a>
-              </Button>
-            </div>
-          </div>
         </div>
       </div>
       

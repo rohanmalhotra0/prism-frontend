@@ -178,3 +178,27 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Disable hover behavior for navigation menus - click only */
+@layer components {
+  [data-radix-navigation-menu-trigger]:hover {
+    background-color: transparent !important;
+    color: currentColor !important;
+    opacity: 1 !important;
+  }
+  
+  [data-radix-navigation-menu-trigger][data-state="open"] {
+    background-color: hsl(var(--accent)) !important;
+    color: hsl(var(--accent-foreground)) !important;
+  }
+  
+  /* Ensure dropdowns only open on click, not hover */
+  [data-radix-navigation-menu-content] {
+    pointer-events: auto;
+  }
+  
+  /* Remove any hover effects from navigation menu items */
+  [data-radix-navigation-menu-trigger]:hover * {
+    color: currentColor !important;
+  }
+}

@@ -1,10 +1,11 @@
 "use client";
 
-
 import { useState, useRef, useEffect } from "react";
 import Navbar from "@/components/sections/navbar/default";
 import Footer from "@/components/sections/footer/default";
-import { SendHorizonal, Bot, User, Loader2, MessageSquare, Plus, Menu } from "lucide-react";
+import { SendHorizonal, Bot, User, Loader2, MessageSquare, Plus, Menu, Trash2, Save } from "lucide-react";
+import { useAuth } from "@/lib/AuthProvider";
+import { saveChatSession, updateChatSession, deleteChatSession, loadChatSessions } from "@/lib/api-utils";
 
 interface Message {
   role: "user" | "assistant";
@@ -16,12 +17,15 @@ interface ChatSession {
   id: string;
   title: string;
   messages: Message[];
-  createdAt: Date;
+  created_at: string;
+  updated_at: string;
+  user_id?: string;
 }
 
 export default function AIPage() {
+  const { user, loading: authLoading } = useAuth();
   const [currentSession, setCurrentSession] = useState<ChatSession>({
-    id: "1",
+    id: "temp",
     title: "New Chat",
     messages: [
       {
@@ -30,23 +34,143 @@ export default function AIPage() {
         timestamp: new Date(),
       },
     ],
-    createdAt: new Date(),
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
   });
 
-  const [sessions, setSessions] = useState<ChatSession[]>([currentSession]);
+  const [sessions, setSessions] = useState<ChatSession[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   useEffect(() => scrollToBottom(), [currentSession.messages]);
 
+  // Load chat sessions when user is authenticated
+  useEffect(() => {
+    if (user && !authLoading) {
+      loadSessions();
+    }
+  }, [user, authLoading]);
+
+  // Check for messages from chatbot widget
+  useEffect(() => {
+    const storedMessages = sessionStorage.getItem("chatbot-messages");
+    if (storedMessages) {
+      try {
+        const messages = JSON.parse(storedMessages);
+        if (messages.length > 0) {
+          setCurrentSession(prev => ({
+            ...prev,
+            messages: messages,
+            title: "Chat from Widget"
+          }));
+          sessionStorage.removeItem("chatbot-messages");
+        }
+      } catch (err) {
+        console.error("Error parsing stored messages:", err);
+      }
+    }
+  }, []);
+
+  const loadSessions = async () => {
+    try {
+      const chatSessions = await loadChatSessions();
+      setSessions(chatSessions);
+      if (chatSessions.length > 0) {
+        setCurrentSession(chatSessions[0]);
+      }
+    } catch (err) {
+      console.error("Error loading chat sessions:", err);
+      setError("Failed to load chat sessions");
+    }
+  };
+
+  const saveCurrentSession = async () => {
+    if (!user) {
+      setError("Please sign in to save chats");
+      return;
+    }
+
+    if (currentSession.id === "temp") {
+      // Create new session
+      try {
+        setSaving(true);
+        setError(null);
+        const newSession = await saveChatSession({
+          title: currentSession.title,
+          messages: currentSession.messages,
+        });
+        setCurrentSession(newSession);
+        setSessions([newSession, ...sessions]);
+      } catch (err: any) {
+        setError(err.message || "Failed to save chat");
+      } finally {
+        setSaving(false);
+      }
+    } else {
+      // Update existing session
+      try {
+        setSaving(true);
+        setError(null);
+        const updatedSession = await updateChatSession(currentSession.id, {
+          title: currentSession.title,
+          messages: currentSession.messages,
+        });
+        setCurrentSession(updatedSession);
+        setSessions(sessions.map(s => s.id === currentSession.id ? updatedSession : s));
+      } catch (err: any) {
+        setError(err.message || "Failed to update chat");
+      } finally {
+        setSaving(false);
+      }
+    }
+  };
+
+  const deleteSession = async (sessionId: string) => {
+    if (!user) {
+      setError("Please sign in to delete chats");
+      return;
+    }
+
+    try {
+      await deleteChatSession(sessionId);
+      setSessions(sessions.filter(s => s.id !== sessionId));
+      if (currentSession.id === sessionId) {
+        if (sessions.length > 1) {
+          const remainingSessions = sessions.filter(s => s.id !== sessionId);
+          setCurrentSession(remainingSessions[0]);
+        } else {
+          // Create a new temporary session
+          setCurrentSession({
+            id: "temp",
+            title: "New Chat",
+            messages: [
+              {
+                role: "assistant",
+                content: "👋 New chat started! I'm Tomas, your analytics master! What data challenge can I help you conquer today? 🚀",
+                timestamp: new Date(),
+              },
+            ],
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+          });
+        }
+      }
+    } catch (err: any) {
+      setError(err.message || "Failed to delete chat");
+    }
+  };
+
   const handleSend = async () => {
     if (!input.trim() || isLoading) return;
     const userMessage: Message = { role: "user", content: input.trim(), timestamp: new Date() };
 
-    setCurrentSession((prev) => ({ ...prev, messages: [...prev.messages, userMessage] }));
+    const updatedMessages = [...currentSession.messages, userMessage];
+    setCurrentSession((prev) => ({ ...prev, messages: updatedMessages }));
     setInput("");
     setIsLoading(true);
 
@@ -54,16 +178,24 @@ export default function AIPage() {
       const response = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: [...currentSession.messages, userMessage].map((m) => ({ role: m.role, content: m.content })) }),
+        body: JSON.stringify({ messages: updatedMessages.map((m) => ({ role: m.role, content: m.content })) }),
       });
       const data = await response.json();
       const assistantMessage: Message = { role: "assistant", content: data.message, timestamp: new Date() };
-      setCurrentSession((prev) => ({ ...prev, messages: [...prev.messages, assistantMessage] }));
+      
+      const finalMessages = [...updatedMessages, assistantMessage];
+      setCurrentSession((prev) => ({ ...prev, messages: finalMessages }));
+      
+      // Auto-save after getting AI response (if user is authenticated)
+      if (user && currentSession.id !== "temp") {
+        setTimeout(() => {
+          saveCurrentSession();
+        }, 1000);
+      }
     } catch (e) {
-      setCurrentSession((prev) => ({
-        ...prev,
-        messages: [...prev.messages, { role: "assistant", content: "⚠️ Something went wrong. Try again.", timestamp: new Date() }],
-      }));
+      const errorMessage: Message = { role: "assistant", content: "⚠️ Something went wrong. Try again.", timestamp: new Date() };
+      const finalMessages = [...updatedMessages, errorMessage];
+      setCurrentSession((prev) => ({ ...prev, messages: finalMessages }));
     } finally {
       setIsLoading(false);
     }
@@ -71,14 +203,14 @@ export default function AIPage() {
 
   const createNewChat = () => {
     const newSession: ChatSession = {
-      id: Date.now().toString(),
+      id: "temp",
       title: "New Chat",
       messages: [
         { role: "assistant", content: "👋 New chat started! I'm Tomas, your analytics master! What data challenge can I help you conquer today? 🚀", timestamp: new Date() },
       ],
-      createdAt: new Date(),
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
     };
-    setSessions([newSession, ...sessions]);
     setCurrentSession(newSession);
   };
 
@@ -96,7 +228,7 @@ export default function AIPage() {
         <div className={`${sidebarOpen ? "w-64" : "w-0"} transition-all duration-300 bg-white/5 backdrop-blur-xl border-r border-white/10 flex flex-col overflow-hidden`}>
           {sidebarOpen && (
             <>
-              <div className="p-4 border-b border-white/10">
+              <div className="p-4 border-b border-white/10 space-y-3">
                 <button
                   onClick={createNewChat}
                   className="w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-gradient-to-r from-purple-600 to-blue-600 hover:opacity-90 transition"
@@ -104,20 +236,60 @@ export default function AIPage() {
                   <Plus className="w-5 h-5" />
                   <span className="font-medium">New Chat</span>
                 </button>
+                
+                {user && (
+                  <button
+                    onClick={saveCurrentSession}
+                    disabled={saving || !user}
+                    className="w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-green-600 hover:opacity-90 disabled:opacity-50 transition"
+                  >
+                    <Save className="w-5 h-5" />
+                    <span className="font-medium">
+                      {saving ? "Saving..." : currentSession.id === "temp" ? "Save Chat" : "Update Chat"}
+                    </span>
+                  </button>
+                )}
+                
+                {!user && (
+                  <div className="text-center text-sm text-gray-400 p-2">
+                    Sign in to save your chats (max 5)
+                  </div>
+                )}
               </div>
               <div className="flex-1 overflow-y-auto p-2 space-y-1">
-                {sessions.map((session) => (
-                  <button
-                    key={session.id}
-                    onClick={() => setCurrentSession(session)}
-                    className={`w-full text-left px-3 py-2 rounded-lg text-sm ${
-                      currentSession.id === session.id ? "bg-white/10 text-white" : "text-gray-400 hover:bg-white/5"
-                    }`}
-                  >
-                    <MessageSquare className="inline w-4 h-4 mr-2" />
-                    {session.title}
-                  </button>
-                ))}
+                {sessions.length === 0 ? (
+                  <div className="text-center text-gray-400 text-sm p-4">
+                    No saved chats yet
+                  </div>
+                ) : (
+                  sessions.map((session) => (
+                    <div
+                      key={session.id}
+                      className={`group flex items-center justify-between px-3 py-2 rounded-lg text-sm ${
+                        currentSession.id === session.id ? "bg-white/10 text-white" : "text-gray-400 hover:bg-white/5"
+                      }`}
+                    >
+                      <button
+                        onClick={() => setCurrentSession(session)}
+                        className="flex-1 text-left flex items-center gap-2"
+                      >
+                        <MessageSquare className="w-4 h-4" />
+                        <span className="truncate">{session.title}</span>
+                      </button>
+                      {user && (
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            deleteSession(session.id);
+                          }}
+                          className="opacity-0 group-hover:opacity-100 text-red-400 hover:text-red-300 p-1 rounded transition"
+                        >
+                          <Trash2 className="w-3 h-3" />
+                        </button>
+                      )}
+                    </div>
+                  ))
+                )}
               </div>
             </>
           )}
@@ -144,7 +316,33 @@ export default function AIPage() {
                 </div>
               </div>
             </div>
+            <div className="flex items-center gap-2">
+              {user && sessions.length >= 5 && (
+                <div className="text-xs text-yellow-400 bg-yellow-400/10 px-2 py-1 rounded">
+                  Max 5 chats reached
+                </div>
+              )}
+              {saving && (
+                <div className="text-xs text-blue-400 bg-blue-400/10 px-2 py-1 rounded flex items-center gap-1">
+                  <Loader2 className="w-3 h-3 animate-spin" />
+                  Saving...
+                </div>
+              )}
+            </div>
           </div>
+
+          {/* Error Display */}
+          {error && (
+            <div className="mx-6 mt-4 p-3 bg-red-900/20 border border-red-500/50 rounded-lg text-red-400 text-sm">
+              {error}
+              <button
+                onClick={() => setError(null)}
+                className="ml-2 text-red-300 hover:text-red-200"
+              >
+                ✕
+              </button>
+            </div>
+          )}
 
           {/* Messages */}
           <div className="flex-1 overflow-y-auto px-6 py-6 space-y-6">

@@ -3,9 +3,6 @@ import fs from "fs/promises";
 import path from "path";
 import { supabase } from "@/lib/supaBaseClient";
 
-// Temporary in-memory store (replace with DB later)
-let datasets: any[] = [];
-
 export async function DELETE(
   req: NextRequest,
   { params }: { params: { id: string } }
@@ -24,24 +21,40 @@ export async function DELETE(
     return NextResponse.json({ error: "Invalid user" }, { status: 401 });
   }
 
-  // ✅ Find dataset
-  const index = datasets.findIndex((d) => d.id === id);
-  if (index === -1) {
+  // ✅ Get dataset from Supabase
+  const { data: dataset, error: datasetError } = await supabase
+    .from("datasets")
+    .select("*")
+    .eq("id", id)
+    .eq("user_id", user.id)
+    .single();
+
+  if (datasetError || !dataset) {
     return NextResponse.json({ error: "Dataset not found" }, { status: 404 });
   }
-  const [removed] = datasets.splice(index, 1);
+
+  // ✅ Delete from Supabase
+  const { error: deleteError } = await supabase
+    .from("datasets")
+    .delete()
+    .eq("id", id)
+    .eq("user_id", user.id);
+
+  if (deleteError) {
+    return NextResponse.json({ error: "Failed to delete dataset" }, { status: 500 });
+  }
 
   // ✅ Delete file from /uploads (if it exists)
-  if (removed?.path) {
+  if (dataset?.path) {
     try {
-      await fs.unlink(path.resolve(removed.path));
+      await fs.unlink(path.resolve(dataset.path));
     } catch (err) {
-      console.warn("File already deleted or not found:", removed.path);
+      console.warn("File already deleted or not found:", dataset.path);
     }
   }
 
   // ✅ Update profile stats
-  const sizeMB = Math.round((removed.size ?? 0) / (1024 * 1024));
+  const sizeMB = Math.round((dataset.size ?? 0) / (1024 * 1024));
 
   const { data: profile, error: profileError } = await supabase
     .from("profiles")
@@ -61,7 +74,7 @@ export async function DELETE(
 
   return NextResponse.json({
     success: true,
-    removed,
+    removed: dataset,
   });
 }
 
