@@ -8,7 +8,7 @@ import FinancePlot from "./components/plot";
 import InfoChart from "./components/infoChart";
 import ThreeStockChart  from "./components/threeD";
 
-const API_BASE = process.env.NEXT_API_URL || "http://127.0.0.1:8000";
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
 
 export default function FinanceModelsPage() {
   const [settings, setSettings] = useState<any>(null);
