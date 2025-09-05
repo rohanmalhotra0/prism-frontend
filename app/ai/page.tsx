@@ -85,7 +85,10 @@ export default function AIPage() {
       }
     } catch (err) {
       console.error("Error loading chat sessions:", err);
-      setError("Failed to load chat sessions");
+      // Don't show error for unauthenticated users
+      if (user) {
+        setError("Failed to load chat sessions");
+      }
     }
   };
 
@@ -180,8 +183,22 @@ export default function AIPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ messages: updatedMessages.map((m) => ({ role: m.role, content: m.content })) }),
       });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
       const data = await response.json();
-      const assistantMessage: Message = { role: "assistant", content: data.message, timestamp: new Date() };
+      
+      if (data.error) {
+        throw new Error(data.error);
+      }
+      
+      const assistantMessage: Message = { 
+        role: "assistant", 
+        content: data.message || "⚠️ No response received", 
+        timestamp: new Date() 
+      };
       
       const finalMessages = [...updatedMessages, assistantMessage];
       setCurrentSession((prev) => ({ ...prev, messages: finalMessages }));
@@ -193,7 +210,12 @@ export default function AIPage() {
         }, 1000);
       }
     } catch (e) {
-      const errorMessage: Message = { role: "assistant", content: "⚠️ Something went wrong. Try again.", timestamp: new Date() };
+      console.error("Chat error:", e);
+      const errorMessage: Message = { 
+        role: "assistant", 
+        content: "⚠️ I'm having trouble connecting right now. Please try again in a moment!", 
+        timestamp: new Date() 
+      };
       const finalMessages = [...updatedMessages, errorMessage];
       setCurrentSession((prev) => ({ ...prev, messages: finalMessages }));
     } finally {

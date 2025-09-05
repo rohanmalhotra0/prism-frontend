@@ -4,30 +4,47 @@ export async function POST(req: Request) {
   try {
     const { messages } = await req.json();
 
+    // Check if OpenAI API key is configured
+    if (!process.env.NEXT_OPENAI_API_KEY) {
+      console.error("OpenAI API key not configured");
+      return NextResponse.json({ 
+        message: "⚠️ AI service is currently unavailable. Please check back later or contact support if this issue persists." 
+      }, { status: 200 });
+    }
+
     // Get the last user message
     const lastUserMessage = messages?.filter((m: any) => m.role === "user").pop()?.content;
 
-    // Call OpenAI’s API
+    if (!lastUserMessage) {
+      return NextResponse.json({ error: "No user message found" }, { status: 400 });
+    }
+
+    // Call OpenAI's API
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${process.env.NEXT_OPENAI_API_KEY}`, // 🔑 use env variable
+        Authorization: `Bearer ${process.env.NEXT_OPENAI_API_KEY}`,
       },
       body: JSON.stringify({
         model: "gpt-4o-mini", // fast, cheaper chat model
         messages: [
-          { role: "system", content: "You are Tomas, the King of Analytics 👑. Answer like a master of data, stats, and financial modeling." },
+          { role: "system", content: "You are Tomas, the King of Analytics 👑. Answer like a master of data, stats, and financial modeling. Be helpful, engaging, and knowledgeable about financial analysis, statistics, and data science." },
           ...messages, // forward full conversation
         ],
         temperature: 0.7,
+        max_tokens: 1000,
       }),
     });
 
     if (!response.ok) {
       const errText = await response.text();
       console.error("OpenAI API error:", errText);
-      return NextResponse.json({ error: "Failed to get AI response" }, { status: 500 });
+      
+      // Return a user-friendly error message
+      return NextResponse.json({ 
+        message: "⚠️ I'm having trouble connecting to my analytics brain right now. Please try again in a moment!" 
+      }, { status: 200 });
     }
 
     const data = await response.json();
@@ -36,6 +53,8 @@ export async function POST(req: Request) {
     return NextResponse.json({ message: aiMessage });
   } catch (err) {
     console.error("API error:", err);
-    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+    return NextResponse.json({ 
+      message: "⚠️ Something went wrong on my end. Please try again or contact support if this continues!" 
+    }, { status: 200 });
   }
 }
