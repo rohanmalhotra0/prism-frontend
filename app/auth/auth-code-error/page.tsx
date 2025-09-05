@@ -1,20 +1,31 @@
 "use client";
 
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 
 export default function AuthCodeError() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const [error, setError] = useState<string | null>(null);
+  const [description, setDescription] = useState<string | null>(null);
 
   useEffect(() => {
-    // Auto-redirect after 5 seconds
+    const errorParam = searchParams.get('error');
+    const descriptionParam = searchParams.get('description');
+    
+    setError(errorParam);
+    setDescription(descriptionParam);
+    
+    console.log('Auth error details:', { error: errorParam, description: descriptionParam });
+
+    // Auto-redirect after 10 seconds
     const timer = setTimeout(() => {
       router.push("/");
-    }, 5000);
+    }, 10000);
 
     return () => clearTimeout(timer);
-  }, [router]);
+  }, [router, searchParams]);
 
   return (
     <div className="min-h-screen bg-black flex items-center justify-center">
@@ -26,6 +37,16 @@ export default function AuthCodeError() {
             </svg>
           </div>
           <h1 className="text-2xl font-bold text-white mb-2">Authentication Error</h1>
+          
+          {error && (
+            <div className="mb-4 p-4 bg-red-900/20 border border-red-500/50 rounded-lg">
+              <p className="text-red-300 font-semibold">Error: {error}</p>
+              {description && (
+                <p className="text-red-200 text-sm mt-1">{description}</p>
+              )}
+            </div>
+          )}
+          
           <p className="text-gray-400 mb-6">
             There was an error during the Google sign-in process. This could be due to:
           </p>
@@ -34,6 +55,7 @@ export default function AuthCodeError() {
             <li>• Network connectivity issues</li>
             <li>• Google OAuth configuration problems</li>
             <li>• Browser blocking popups or redirects</li>
+            <li>• Supabase configuration issues</li>
           </ul>
         </div>
 

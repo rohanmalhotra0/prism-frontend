@@ -86,23 +86,30 @@ export default function AuthModal() {
     setErrors(null);
     
     try {
-      const { error } = await supabase.auth.signInWithOAuth({
+      const { data, error } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
           redirectTo: `${window.location.origin}/auth/callback`,
+          queryParams: {
+            access_type: 'offline',
+            prompt: 'consent'
+          }
         },
       });
       
       if (error) {
         console.error('Google OAuth error:', error);
         setErrors(`Google sign-in failed: ${error.message}`);
+        setIsLoading(false);
+      } else {
+        // OAuth initiated successfully, redirect to Google
+        window.location.href = data.url;
       }
     } catch (err) {
       console.error('Unexpected error during Google sign-in:', err);
       setErrors('An unexpected error occurred. Please try again.');
+      setIsLoading(false);
     }
-    
-    setIsLoading(false);
   };
 
   return (
