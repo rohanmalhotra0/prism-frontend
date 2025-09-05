@@ -12,6 +12,7 @@ export default function DocumentationPage() {
     { id: "backend", title: "⚙️ Backend", icon: "⚙️" },
     { id: "database", title: "🗄️ Database", icon: "🗄️" },
     { id: "apis", title: "🔌 APIs", icon: "🔌" },
+    { id: "features", title: "✨ Features", icon: "✨" },
     { id: "deployment", title: "🚀 Deployment", icon: "🚀" },
     { id: "architecture", title: "🏗️ Architecture", icon: "🏗️" },
   ];
@@ -84,19 +85,25 @@ export default function DocumentationPage() {
                             <li>• <strong>Next.js 15</strong> - React framework with App Router</li>
                             <li>• <strong>TypeScript</strong> - Type-safe JavaScript</li>
                             <li>• <strong>Tailwind CSS</strong> - Utility-first styling</li>
+                            <li>• <strong>Radix UI</strong> - Accessible component primitives</li>
                             <li>• <strong>Plotly.js</strong> - Interactive data visualization</li>
-                            <li>• <strong>Three.js</strong> - 3D graphics and visualization</li>
+                            <li>• <strong>Three.js & React Three Fiber</strong> - 3D graphics</li>
+                            <li>• <strong>React Context API</strong> - Global state management</li>
+                            <li>• <strong>Lucide React</strong> - Beautiful icons</li>
                           </ul>
                         </div>
                         
                         <div className="bg-white/5 rounded-xl p-6 border border-white/10">
                           <h3 className="text-xl font-semibold text-white mb-3">⚙️ Backend Stack</h3>
                           <ul className="text-gray-300 space-y-2">
-                            <li>• <strong>Node.js</strong> - JavaScript runtime</li>
                             <li>• <strong>Next.js API Routes</strong> - Serverless functions</li>
-                            <li>• <strong>PostgreSQL</strong> - Primary database</li>
                             <li>• <strong>Supabase</strong> - Backend-as-a-Service</li>
-                            <li>• <strong>Polygon.io</strong> - Financial data API</li>
+                            <li>• <strong>PostgreSQL</strong> - Primary database</li>
+                            <li>• <strong>Row Level Security (RLS)</strong> - Database security</li>
+                            <li>• <strong>JWT Authentication</strong> - Secure sessions</li>
+                            <li>• <strong>Fly.io</strong> - Backend deployment</li>
+                            <li>• <strong>OpenAI API</strong> - AI chat functionality</li>
+                            <li>• <strong>File System Operations</strong> - Dataset management</li>
                           </ul>
                         </div>
                       </div>
@@ -104,11 +111,15 @@ export default function DocumentationPage() {
                       <div className="bg-gradient-to-r from-purple-600/20 to-blue-600/20 rounded-xl p-6 border border-purple-500/30">
                         <h3 className="text-xl font-semibold text-white mb-3">🚀 Key Features</h3>
                         <ul className="text-gray-300 space-y-2">
-                          <li>• Real-time financial data processing</li>
-                          <li>• Interactive 2D and 3D data visualization</li>
-                          <li>• User authentication with Google OAuth</li>
-                          <li>• Responsive design for all devices</li>
-                          <li>• Scalable cloud infrastructure</li>
+                          <li>• <strong>AI-Powered Chatbot</strong> - OpenAI integration for financial insights</li>
+                          <li>• <strong>Dataset Management</strong> - Upload, manage, and analyze financial data</li>
+                          <li>• <strong>Chat History</strong> - Save and manage up to 5 chat sessions per user</li>
+                          <li>• <strong>Real-time Financial Data</strong> - Live market data processing</li>
+                          <li>• <strong>Interactive 2D/3D Visualization</strong> - Advanced charting capabilities</li>
+                          <li>• <strong>User Authentication</strong> - Google OAuth + email/password</li>
+                          <li>• <strong>Protected Routes</strong> - Secure dashboard access</li>
+                          <li>• <strong>Responsive Design</strong> - Mobile-first approach</li>
+                          <li>• <strong>Cloud Infrastructure</strong> - Scalable Fly.io backend</li>
                         </ul>
                       </div>
                     </div>
@@ -174,6 +185,33 @@ export default function DocumentationPage() {
                       </div>
 
                       <div className="bg-white/5 rounded-xl p-6 border border-white/10">
+                        <h3 className="text-2xl font-semibold text-white mb-4">Radix UI</h3>
+                        <p className="text-gray-300 mb-4">
+                          Accessible component primitives for modern UI development:
+                        </p>
+                        <ul className="text-gray-300 space-y-2 ml-4">
+                          <li>• <strong>Navigation Menu</strong> - Accessible dropdown menus</li>
+                          <li>• <strong>Dialog Components</strong> - Modal and popup dialogs</li>
+                          <li>• <strong>Form Controls</strong> - Input, select, and form elements</li>
+                          <li>• <strong>Accessibility</strong> - WCAG compliant components</li>
+                          <li>• <strong>Customizable</strong> - Styled with Tailwind CSS</li>
+                        </ul>
+                      </div>
+
+                      <div className="bg-white/5 rounded-xl p-6 border border-white/10">
+                        <h3 className="text-2xl font-semibold text-white mb-4">React Context API</h3>
+                        <p className="text-gray-300 mb-4">
+                          Global state management for authentication and user data:
+                        </p>
+                        <ul className="text-gray-300 space-y-2 ml-4">
+                          <li>• <strong>AuthProvider</strong> - Centralized authentication state</li>
+                          <li>• <strong>useAuth Hook</strong> - Easy access to auth state</li>
+                          <li>• <strong>Protected Routes</strong> - HOC for route protection</li>
+                          <li>• <strong>Session Management</strong> - Automatic token handling</li>
+                        </ul>
+                      </div>
+
+                      <div className="bg-white/5 rounded-xl p-6 border border-white/10">
                         <h3 className="text-2xl font-semibold text-white mb-4">Three.js & React Three Fiber</h3>
                         <p className="text-gray-300 mb-4">
                           3D graphics library for advanced data visualization:
@@ -229,7 +267,34 @@ export default function DocumentationPage() {
                           <li>• <strong>Google OAuth</strong> - Social login integration</li>
                           <li>• <strong>Email/Password</strong> - Traditional authentication</li>
                           <li>• <strong>JWT tokens</strong> - Secure session management</li>
-                          <li>• <strong>Password hashing</strong> - bcrypt for security</li>
+                          <li>• <strong>Supabase Auth</strong> - Built-in authentication</li>
+                          <li>• <strong>Row Level Security</strong> - Database-level access control</li>
+                        </ul>
+                      </div>
+
+                      <div className="bg-white/5 rounded-xl p-6 border border-white/10">
+                        <h3 className="text-2xl font-semibold text-white mb-4">AI Integration</h3>
+                        <p className="text-gray-300 mb-4">
+                          OpenAI-powered chatbot for financial insights:
+                        </p>
+                        <ul className="text-gray-300 space-y-2 ml-4">
+                          <li>• <strong>OpenAI API</strong> - GPT integration for chat</li>
+                          <li>• <strong>Chat Sessions</strong> - Save up to 5 chats per user</li>
+                          <li>• <strong>Context Management</strong> - Maintain conversation history</li>
+                          <li>• <strong>Financial Focus</strong> - Specialized for financial queries</li>
+                        </ul>
+                      </div>
+
+                      <div className="bg-white/5 rounded-xl p-6 border border-white/10">
+                        <h3 className="text-2xl font-semibold text-white mb-4">File Management</h3>
+                        <p className="text-gray-300 mb-4">
+                          Dataset upload and management system:
+                        </p>
+                        <ul className="text-gray-300 space-y-2 ml-4">
+                          <li>• <strong>File Upload</strong> - Excel/CSV dataset uploads</li>
+                          <li>• <strong>Storage Management</strong> - User storage limits and tracking</li>
+                          <li>• <strong>File Validation</strong> - Type and size validation</li>
+                          <li>• <strong>CRUD Operations</strong> - Create, read, update, delete datasets</li>
                         </ul>
                       </div>
                     </div>
@@ -256,23 +321,37 @@ export default function DocumentationPage() {
                         <div className="mt-4 p-4 bg-gray-800 rounded-lg">
                           <h4 className="text-white font-semibold mb-2">Database Schema:</h4>
                           <pre className="text-gray-300 text-sm">
-{`-- Users table
-CREATE TABLE users (
-  id SERIAL PRIMARY KEY,
-  email VARCHAR(255) UNIQUE NOT NULL,
-  password_hash VARCHAR(255),
-  full_name VARCHAR(255),
-  google_id VARCHAR(255) UNIQUE,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+{`-- Profiles table (Supabase auth.users integration)
+CREATE TABLE profiles (
+  id UUID REFERENCES auth.users ON DELETE CASCADE PRIMARY KEY,
+  full_name TEXT,
+  subscription TEXT DEFAULT 'Free',
+  storage_used INT DEFAULT 0,
+  storage_limit INT DEFAULT 50,
+  datasets_count INT DEFAULT 0,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- Authentication logs
-CREATE TABLE authentication_logs (
-  id SERIAL PRIMARY KEY,
-  user_id INTEGER REFERENCES users(id),
-  action VARCHAR(50) NOT NULL,
-  auth_method VARCHAR(50) NOT NULL,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+-- Datasets table
+CREATE TABLE datasets (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
+  filename TEXT NOT NULL,
+  original_name TEXT NOT NULL,
+  file_size INT NOT NULL,
+  file_type TEXT NOT NULL,
+  file_path TEXT NOT NULL,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Chat sessions table
+CREATE TABLE chat_sessions (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
+  title TEXT NOT NULL,
+  messages JSONB NOT NULL DEFAULT '[]',
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );`}
                           </pre>
                         </div>
@@ -324,6 +403,33 @@ const data = await response.json();`}
                       </div>
 
                       <div className="bg-white/5 rounded-xl p-6 border border-white/10">
+                        <h3 className="text-2xl font-semibold text-white mb-4">OpenAI API</h3>
+                        <p className="text-gray-300 mb-4">
+                          AI-powered chatbot for financial insights:
+                        </p>
+                        <ul className="text-gray-300 space-y-2 ml-4">
+                          <li>• <strong>GPT Integration</strong> - Advanced language model</li>
+                          <li>• <strong>Financial Focus</strong> - Specialized for financial queries</li>
+                          <li>• <strong>Context Awareness</strong> - Maintains conversation history</li>
+                          <li>• <strong>Real-time Responses</strong> - Instant AI-powered answers</li>
+                        </ul>
+                      </div>
+
+                      <div className="bg-white/5 rounded-xl p-6 border border-white/10">
+                        <h3 className="text-2xl font-semibold text-white mb-4">Internal API Endpoints</h3>
+                        <p className="text-gray-300 mb-4">
+                          Custom API routes for application functionality:
+                        </p>
+                        <ul className="text-gray-300 space-y-2 ml-4">
+                          <li>• <strong>/api/chat</strong> - AI chatbot endpoint</li>
+                          <li>• <strong>/api/chats</strong> - Chat session management</li>
+                          <li>• <strong>/api/datasets</strong> - Dataset CRUD operations</li>
+                          <li>• <strong>/api/profile</strong> - User profile management</li>
+                          <li>• <strong>/api/datasets/upload</strong> - File upload handling</li>
+                        </ul>
+                      </div>
+
+                      <div className="bg-white/5 rounded-xl p-6 border border-white/10">
                         <h3 className="text-2xl font-semibold text-white mb-4">Google OAuth</h3>
                         <p className="text-gray-300 mb-4">
                           Authentication service for user login:
@@ -339,13 +445,110 @@ const data = await response.json();`}
                   </div>
                 )}
 
+                {activeSection === "features" && (
+                  <div>
+                    <h2 className="text-3xl font-bold text-white mb-6">✨ Application Features</h2>
+                    
+                    <div className="space-y-8">
+                      <div className="bg-white/5 rounded-xl p-6 border border-white/10">
+                        <h3 className="text-2xl font-semibold text-white mb-4">🤖 AI Chatbot</h3>
+                        <p className="text-gray-300 mb-4">
+                          Intelligent financial assistant powered by OpenAI:
+                        </p>
+                        <ul className="text-gray-300 space-y-2 ml-4">
+                          <li>• <strong>Financial Expertise</strong> - Specialized in financial modeling and analysis</li>
+                          <li>• <strong>Chat History</strong> - Save up to 5 conversation sessions per user</li>
+                          <li>• <strong>Context Awareness</strong> - Maintains conversation context</li>
+                          <li>• <strong>Real-time Responses</strong> - Instant AI-powered insights</li>
+                          <li>• <strong>Session Management</strong> - Create, update, and delete chat sessions</li>
+                        </ul>
+                      </div>
+
+                      <div className="bg-white/5 rounded-xl p-6 border border-white/10">
+                        <h3 className="text-2xl font-semibold text-white mb-4">📊 Dataset Management</h3>
+                        <p className="text-gray-300 mb-4">
+                          Comprehensive data upload and management system:
+                        </p>
+                        <ul className="text-gray-300 space-y-2 ml-4">
+                          <li>• <strong>File Upload</strong> - Support for Excel (.xlsx) and CSV files</li>
+                          <li>• <strong>Storage Tracking</strong> - Monitor storage usage and limits</li>
+                          <li>• <strong>File Validation</strong> - Type and size validation before upload</li>
+                          <li>• <strong>CRUD Operations</strong> - Create, read, update, delete datasets</li>
+                          <li>• <strong>User Isolation</strong> - Each user sees only their own datasets</li>
+                        </ul>
+                      </div>
+
+                      <div className="bg-white/5 rounded-xl p-6 border border-white/10">
+                        <h3 className="text-2xl font-semibold text-white mb-4">🔐 Authentication & Security</h3>
+                        <p className="text-gray-300 mb-4">
+                          Secure user authentication and data protection:
+                        </p>
+                        <ul className="text-gray-300 space-y-2 ml-4">
+                          <li>• <strong>Google OAuth</strong> - One-click social login</li>
+                          <li>• <strong>Email/Password</strong> - Traditional authentication method</li>
+                          <li>• <strong>Protected Routes</strong> - Dashboard requires authentication</li>
+                          <li>• <strong>Row Level Security</strong> - Database-level access control</li>
+                          <li>• <strong>JWT Tokens</strong> - Secure session management</li>
+                          <li>• <strong>Profile Management</strong> - User profile creation and updates</li>
+                        </ul>
+                      </div>
+
+                      <div className="bg-white/5 rounded-xl p-6 border border-white/10">
+                        <h3 className="text-2xl font-semibold text-white mb-4">📈 Financial Visualization</h3>
+                        <p className="text-gray-300 mb-4">
+                          Advanced charting and data visualization capabilities:
+                        </p>
+                        <ul className="text-gray-300 space-y-2 ml-4">
+                          <li>• <strong>2D Charts</strong> - Candlestick, OHLC, volume charts with Plotly.js</li>
+                          <li>• <strong>3D Visualization</strong> - Volume-based depth charts with Three.js</li>
+                          <li>• <strong>Real-time Data</strong> - WebSocket connections for live updates</li>
+                          <li>• <strong>Interactive Controls</strong> - Zoom, pan, hover tooltips</li>
+                          <li>• <strong>Multiple Chart Types</strong> - Area, line, candlestick, volume</li>
+                          <li>• <strong>Technical Indicators</strong> - Moving averages, RSI, MACD, etc.</li>
+                        </ul>
+                      </div>
+
+                      <div className="bg-white/5 rounded-xl p-6 border border-white/10">
+                        <h3 className="text-2xl font-semibold text-white mb-4">🎓 Learning Resources</h3>
+                        <p className="text-gray-300 mb-4">
+                          Comprehensive educational content for financial modeling:
+                        </p>
+                        <ul className="text-gray-300 space-y-2 ml-4">
+                          <li>• <strong>Machine Learning</strong> - ML techniques for finance</li>
+                          <li>• <strong>Financial Modeling</strong> - DCF, valuation, forecasting</li>
+                          <li>• <strong>Options & Derivatives</strong> - Black-Scholes, Greeks, volatility</li>
+                          <li>• <strong>Statistics & Probability</strong> - Statistical analysis methods</li>
+                          <li>• <strong>Insurance Risk Analysis</strong> - Actuarial science and risk assessment</li>
+                          <li>• <strong>Crypto Modeling</strong> - Blockchain and DeFi analysis</li>
+                          <li>• <strong>Code Examples</strong> - Python implementations for each topic</li>
+                        </ul>
+                      </div>
+
+                      <div className="bg-white/5 rounded-xl p-6 border border-white/10">
+                        <h3 className="text-2xl font-semibold text-white mb-4">🎨 User Interface</h3>
+                        <p className="text-gray-300 mb-4">
+                          Modern, responsive, and accessible user interface:
+                        </p>
+                        <ul className="text-gray-300 space-y-2 ml-4">
+                          <li>• <strong>Responsive Design</strong> - Mobile-first approach</li>
+                          <li>• <strong>Dark Theme</strong> - Professional dark mode interface</li>
+                          <li>• <strong>Accessibility</strong> - WCAG compliant with Radix UI</li>
+                          <li>• <strong>Click-only Navigation</strong> - Disabled hover menus for better UX</li>
+                          <li>• <strong>Glass Morphism</strong> - Modern UI design elements</li>
+                          <li>• <strong>Loading States</strong> - Proper loading and error handling</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
                 {activeSection === "deployment" && (
                   <div>
                     <h2 className="text-3xl font-bold text-white mb-6">🚀 Deployment & Infrastructure</h2>
                     
                     <div className="space-y-8">
                       <div className="bg-white/5 rounded-xl p-6 border border-white/10">
-                        <h3 className="text-2xl font-semibold text-white mb-4">Vercel (Recommended)</h3>
+                        <h3 className="text-2xl font-semibold text-white mb-4">Frontend: Vercel (Recommended)</h3>
                         <p className="text-gray-300 mb-4">
                           Optimal platform for Next.js applications:
                         </p>
@@ -358,29 +561,42 @@ const data = await response.json();`}
                       </div>
 
                       <div className="bg-white/5 rounded-xl p-6 border border-white/10">
+                        <h3 className="text-2xl font-semibold text-white mb-4">Backend: Fly.io</h3>
+                        <p className="text-gray-300 mb-4">
+                          Cloud platform for backend API deployment:
+                        </p>
+                        <ul className="text-gray-300 space-y-2 ml-4">
+                          <li>• <strong>Global deployment</strong> - Deploy close to users worldwide</li>
+                          <li>• <strong>Auto-scaling</strong> - Automatically scale based on demand</li>
+                          <li>• <strong>Health checks</strong> - Built-in monitoring and health checks</li>
+                          <li>• <strong>Custom domains</strong> - Easy custom domain configuration</li>
+                          <li>• <strong>Environment variables</strong> - Secure configuration management</li>
+                        </ul>
+                      </div>
+
+                      <div className="bg-white/5 rounded-xl p-6 border border-white/10">
                         <h3 className="text-2xl font-semibold text-white mb-4">Environment Variables</h3>
                         <p className="text-gray-300 mb-4">
                           Required environment variables for deployment:
                         </p>
                         <div className="mt-4 p-4 bg-gray-800 rounded-lg">
                           <pre className="text-gray-300 text-sm">
-{`# Google OAuth
+{`# Backend API
+NEXT_PUBLIC_API_URL=https://prismbackend.fly.dev
+
+# Supabase Configuration
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+
+# OpenAI API
+NEXT_OPENAI_API_KEY=your_openai_api_key
+
+# Google OAuth (if using)
 NEXT_GOOGLE_CLIENT_ID=your_google_client_id
+NEXT_GOOGLE_CLIENT_SECRET=your_google_client_secret
 
-# Database
-DATABASE_URL=postgresql://user:password@host:port/database
-DB_USER=your_db_user
-DB_PASSWORD=your_db_password
-DB_NAME=Refrax_auth
-DB_HOST=your_db_host
-DB_PORT=5432
-
-# Polygon.io API
-POLYGON_API_KEY=your_polygon_api_key
-
-# Supabase
-NEXT_SUPABASE_URL=your_supabase_url
-NEXT_SUPABASE_ANON_KEY=your_supabase_anon_key`}
+# Database (Supabase handles this)
+# DATABASE_URL is automatically provided by Supabase`}
                           </pre>
                         </div>
                       </div>
@@ -409,21 +625,30 @@ NEXT_SUPABASE_ANON_KEY=your_supabase_anon_key`}
                       <div className="bg-white/5 rounded-xl p-6 border border-white/10">
                         <h3 className="text-2xl font-semibold text-white mb-4">Application Flow</h3>
                         <div className="bg-gray-800 rounded-lg p-6">
-                          <div className="grid md:grid-cols-3 gap-4 text-center">
+                          <div className="grid md:grid-cols-4 gap-4 text-center">
                             <div className="bg-blue-600/20 rounded-lg p-4 border border-blue-500/30">
                               <h4 className="text-white font-semibold mb-2">Frontend</h4>
-                              <p className="text-gray-300 text-sm">Next.js React App</p>
+                              <p className="text-gray-300 text-sm">Next.js 15</p>
                               <p className="text-gray-300 text-sm">TypeScript + Tailwind</p>
+                              <p className="text-gray-300 text-sm">Radix UI</p>
                             </div>
                             <div className="bg-green-600/20 rounded-lg p-4 border border-green-500/30">
                               <h4 className="text-white font-semibold mb-2">API Layer</h4>
                               <p className="text-gray-300 text-sm">Next.js API Routes</p>
                               <p className="text-gray-300 text-sm">Authentication</p>
+                              <p className="text-gray-300 text-sm">File Management</p>
                             </div>
                             <div className="bg-purple-600/20 rounded-lg p-4 border border-purple-500/30">
                               <h4 className="text-white font-semibold mb-2">Database</h4>
                               <p className="text-gray-300 text-sm">PostgreSQL</p>
                               <p className="text-gray-300 text-sm">Supabase</p>
+                              <p className="text-gray-300 text-sm">Row Level Security</p>
+                            </div>
+                            <div className="bg-orange-600/20 rounded-lg p-4 border border-orange-500/30">
+                              <h4 className="text-white font-semibold mb-2">External APIs</h4>
+                              <p className="text-gray-300 text-sm">OpenAI GPT</p>
+                              <p className="text-gray-300 text-sm">Fly.io Backend</p>
+                              <p className="text-gray-300 text-sm">Google OAuth</p>
                             </div>
                           </div>
                         </div>
@@ -432,12 +657,15 @@ NEXT_SUPABASE_ANON_KEY=your_supabase_anon_key`}
                       <div className="bg-white/5 rounded-xl p-6 border border-white/10">
                         <h3 className="text-2xl font-semibold text-white mb-4">Data Flow</h3>
                         <ol className="text-gray-300 space-y-3 ml-4">
-                          <li><strong>1. User Authentication</strong> - Google OAuth or email/password</li>
-                          <li><strong>2. Data Fetching</strong> - Polygon.io API for financial data</li>
-                          <li><strong>3. Data Processing</strong> - Calculations and analysis in API routes</li>
-                          <li><strong>4. Data Storage</strong> - User data and logs in PostgreSQL</li>
-                          <li><strong>5. Data Visualization</strong> - Plotly.js and Three.js for charts</li>
-                          <li><strong>6. Real-time Updates</strong> - Supabase for live data streaming</li>
+                          <li><strong>1. User Authentication</strong> - Google OAuth or email/password via Supabase</li>
+                          <li><strong>2. Profile Creation</strong> - Automatic profile setup with storage limits</li>
+                          <li><strong>3. Data Upload</strong> - Excel/CSV files uploaded to server storage</li>
+                          <li><strong>4. AI Chat</strong> - OpenAI GPT integration for financial insights</li>
+                          <li><strong>5. Chat History</strong> - Save up to 5 chat sessions per user</li>
+                          <li><strong>6. Dataset Management</strong> - CRUD operations on user datasets</li>
+                          <li><strong>7. Data Visualization</strong> - Plotly.js and Three.js for charts</li>
+                          <li><strong>8. Real-time Updates</strong> - WebSocket connections for live data</li>
+                          <li><strong>9. Backend Integration</strong> - Fly.io backend for financial calculations</li>
                         </ol>
                       </div>
 
@@ -445,11 +673,14 @@ NEXT_SUPABASE_ANON_KEY=your_supabase_anon_key`}
                         <h3 className="text-2xl font-semibold text-white mb-4">Security Features</h3>
                         <ul className="text-gray-300 space-y-2 ml-4">
                           <li>• <strong>HTTPS encryption</strong> - Secure data transmission</li>
-                          <li>• <strong>JWT tokens</strong> - Secure session management</li>
-                          <li>• <strong>Password hashing</strong> - bcrypt for password security</li>
-                          <li>• <strong>API rate limiting</strong> - Prevent abuse and DDoS</li>
-                          <li>• <strong>CORS protection</strong> - Cross-origin request security</li>
+                          <li>• <strong>JWT tokens</strong> - Secure session management via Supabase</li>
+                          <li>• <strong>Row Level Security (RLS)</strong> - Database-level access control</li>
+                          <li>• <strong>Protected Routes</strong> - HOC for authentication enforcement</li>
+                          <li>• <strong>File Validation</strong> - Type and size validation for uploads</li>
+                          <li>• <strong>User Isolation</strong> - Each user sees only their own data</li>
+                          <li>• <strong>API Authentication</strong> - All API routes require valid JWT</li>
                           <li>• <strong>Environment variables</strong> - Secure configuration management</li>
+                          <li>• <strong>CORS protection</strong> - Cross-origin request security</li>
                         </ul>
                       </div>
 
