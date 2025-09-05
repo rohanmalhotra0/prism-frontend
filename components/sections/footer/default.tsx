@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { cn } from "@/lib/utils";
-import prismLogo from "@/components/logos/prismLogo.jpeg";
+import RefraxLogo from "@/components/logos/RefraxLogo.jpeg";
 import Image from "next/image";
 import {
   Footer,
@@ -31,8 +31,8 @@ interface FooterProps {
 }
 
 export default function FooterSection({
-  logo = <Image src={prismLogo} alt="Prism Logo" width={32} height={32} />,
-  name = "Prism",
+  logo = <Image src={RefraxLogo} alt="Refrax Logo" width={32} height={32} />,
+  name = "Refrax",
   columns = [
     {
       title: "Product",
@@ -57,7 +57,7 @@ export default function FooterSection({
       ],
     },
   ],
-  copyright = "© 2025 Prism. All rights reserved",
+  copyright = "© 2025 Refrax. All rights reserved",
   policies = [
     { text: "Privacy Policy", href: "/privacy" },
     { text: "Terms of Service", href: "/terms" },

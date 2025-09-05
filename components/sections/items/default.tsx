@@ -26,7 +26,7 @@ interface ItemsProps {
 }
 
 export default function Items({
-  title = "Prism gives you the tools to model, analyze, and scale.",
+  title = "Refrax gives you the tools to model, analyze, and scale.",
   items = [
     {
       title: "Advanced Charting",
@@ -65,7 +65,7 @@ export default function Items({
     },
     {
       title: "Production Ready",
-      description: "Move from prototype to deployment seamlessly with Prism.",
+      description: "Move from prototype to deployment seamlessly with Refrax.",
       icon: <RocketIcon className="size-5 stroke-1" />,
     },
   ],

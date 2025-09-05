@@ -64,7 +64,7 @@ export default function Navigation({
     {
       title: "📚 Research",
       href: "/research",
-      description: "Explore research examples using Prism models.",
+      description: "Explore research examples using Refrax models.",
     },
     {
       title: "🎓 Learn",
@@ -105,13 +105,13 @@ export default function Navigation({
           <NavigationMenuContent>
             <ul className="grid gap-3 p-4 w-[400px]">
               <ListItem href="/about" title="👋 About Us">
-                Learn about the Prism team.
+                Learn about the Refrax team.
               </ListItem>
               <ListItem href="/#FAQ" title="❓ FAQ">
-                Find answers to common questions about Prism.
+                Find answers to common questions about Refrax.
               </ListItem>
               <ListItem href="/docs" title="📖 Documentation">
-                Guides and API documentation for Prism features.
+                Guides and API documentation for Refrax features.
               </ListItem>
             </ul>
           </NavigationMenuContent>

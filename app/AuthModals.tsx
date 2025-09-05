@@ -100,7 +100,7 @@ export default function AuthModal() {
           {/* Header */}
           <div className="text-center space-y-1">
             <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
-              {mode === "signin" ? "Login to Prism" : "Create your Prism account"}
+              {mode === "signin" ? "Login to Refrax" : "Create your Refrax account"}
             </h1>
             <p className="text-gray-400 text-sm">
               {mode === "signin"

@@ -18,7 +18,7 @@ interface HeroProps {
 }
 
 export default function Hero({
-  title = "Prism",
+  title = "Refrax",
   description = "Turning complex data into clear, interactive insights  free and accessible for everyone.",
   mockup = <ChartAreaInteractive />,
   className,

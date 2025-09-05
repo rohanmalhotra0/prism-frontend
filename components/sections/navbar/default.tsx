@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Menu } from "lucide-react";
-import prismLogo from "@/components/logos/prismLogo.jpeg";
+import RefraxLogo from "@/components/logos/RefraxLogo.jpeg";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/lib/supaBaseClient";
 
@@ -64,13 +64,13 @@ export default function Navbar({
               className="flex items-center gap-2 text-xl font-bold hover:opacity-90 transition"
             >
               <Image
-                src={prismLogo}
-                alt="Prism Logo"
+                src={RefraxLogo}
+                alt="Refrax Logo"
                 width={32}
                 height={32}
                 className="rounded-lg"
               />
-              Prism
+              Refrax
             </a>
 
             {/* Dashboard Sidebar Trigger (desktop) */}
@@ -122,7 +122,7 @@ export default function Navbar({
                     href={homeUrl}
                     className="flex items-center gap-2 text-xl font-bold hover:opacity-90 transition"
                   >
-                    Prism
+                    Refrax
                   </a>
 
                   {/* Dashboard Sidebar Trigger (mobile) */}

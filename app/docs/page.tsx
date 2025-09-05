@@ -33,7 +33,7 @@ export default function DocumentationPage() {
               Documentation
             </h1>
             <p className="text-xl lg:text-2xl text-gray-400 max-w-4xl mx-auto leading-relaxed mb-12">
-              Complete technical documentation for Prism's financial modeling platform
+              Complete technical documentation for Refrax's financial modeling platform
             </p>
           </div>
         </div>
@@ -73,7 +73,7 @@ export default function DocumentationPage() {
                     <h2 className="text-3xl font-bold text-white mb-6">📋 Tech Stack Overview</h2>
                     <div className="prose prose-invert max-w-none">
                       <p className="text-gray-300 text-lg mb-6">
-                        Prism is a comprehensive financial modeling platform built with modern web technologies. 
+                        Refrax is a comprehensive financial modeling platform built with modern web technologies. 
                         Our tech stack is designed for scalability, performance, and developer experience.
                       </p>
                       
@@ -371,7 +371,7 @@ NEXT_GOOGLE_CLIENT_ID=your_google_client_id
 DATABASE_URL=postgresql://user:password@host:port/database
 DB_USER=your_db_user
 DB_PASSWORD=your_db_password
-DB_NAME=prism_auth
+DB_NAME=Refrax_auth
 DB_HOST=your_db_host
 DB_PORT=5432
 

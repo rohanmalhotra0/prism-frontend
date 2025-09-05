@@ -43,7 +43,7 @@ export default function AboutPage() {
               About Our Team
             </h1>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-              Meet the minds behind Prism - passionate students combining computer science, economics, 
+              Meet the minds behind Refrax - passionate students combining computer science, economics, 
               and mathematics to build the future of financial analytics.
             </p>
           </div>
@@ -256,7 +256,7 @@ export default function AboutPage() {
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-colors">
                 <div className="text-3xl mb-4">🔮</div>
-                <h3 className="text-xl font-bold text-white mb-3">Prism</h3>
+                <h3 className="text-xl font-bold text-white mb-3">Refrax</h3>
                 <p className="text-gray-300 text-sm mb-4">
                   3D interactive analytics platform for finance, insurance, and sports with real-time data visualization.
                 </p>

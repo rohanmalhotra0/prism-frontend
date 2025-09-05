@@ -1,5 +1,6 @@
 "use client";
 
+
 import { useState, useRef, useEffect } from "react";
 import Navbar from "@/components/sections/navbar/default";
 import Footer from "@/components/sections/footer/default";

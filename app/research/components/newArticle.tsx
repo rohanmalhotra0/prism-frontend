@@ -27,7 +27,7 @@ export default function NewArticlePage() {
         "This paper explores how Reddit sentiment, particularly from r/WallStreetBets, impacts quantitative financial models post-GameStop and AMC short squeezes.",
       pdfUrl: "/papers/reddit-finance.pdf",
       datasetUrl: "/datasets/reddit-finance-dataset.csv",
-      coverImage: "/components/logos/prismLogo.jpeg",
+      coverImage: "/components/logos/RefraxLogo.jpeg",
       category: "Sentiment Analysis",
       tags: ["Reddit", "Sentiment", "GameStop", "Quantitative Finance"]
     },
@@ -39,7 +39,7 @@ export default function NewArticlePage() {
       abstract:
         "A study on how the Kelly Criterion can optimize portfolio growth under uncertainty, balancing risk and reward.",
       pdfUrl: "/papers/kelly-criterion.pdf",
-      coverImage: "/components/logos/prismLogo.jpeg",
+      coverImage: "/components/logos/RefraxLogo.jpeg",
       category: "Portfolio Theory",
       tags: ["Kelly Criterion", "Portfolio", "Risk Management", "Optimization"]
     },

@@ -13,12 +13,12 @@ interface PricingProps {
 }
 
 export default function Pricing({
-  title = "Simple, transparent pricing for Prism.",
+  title = "Simple, transparent pricing for Refrax.",
   description = "Choose the plan that fits your journey — whether you’re experimenting with data science or building advanced financial models.",
   plans = [
     {
       name: "Free",
-      description: "For students, learners, and anyone curious about Prism.",
+      description: "For students, learners, and anyone curious about Refrax.",
       price: 0,
       priceNote: "Always free. No credit card required.",
       cta: {
