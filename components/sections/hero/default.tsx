@@ -47,7 +47,7 @@ export default function Hero({
           <div className="animate-appear relative z-10 opacity-0 delay-300">
             <button 
               className="relative group px-6 py-3 rounded-full font-semibold text-white transition-all duration-300 hover:scale-105 active:scale-95 overflow-hidden"
-              onClick={() => window.dispatchEvent(new CustomEvent('openSignInModal'))}
+              onClick={() => window.dispatchEvent(new CustomEvent('openAuthModal'))}
             >
               {/* Background gradient */}
               <div className="absolute inset-0 bg-gradient-to-r from-purple-600 via-purple-500 to-blue-600 rounded-full"></div>

@@ -24,7 +24,7 @@ export default function CTA({
   title = "Start Modeling",
   buttons = [
     {
-      href: "/",
+      href: "#",
       text: "Get Started",
       variant: "default",
     },
@@ -44,14 +44,18 @@ export default function CTA({
                 key={index}
                 variant={button.variant || "default"}
                 size="lg"
-                asChild
                 className="rounded-full bg-gradient-to-r from-purple-600 via-purple-500 to-blue-600 hover:from-purple-500 hover:via-purple-400 hover:to-blue-500 text-white font-semibold shadow-lg transition-all duration-300 hover:shadow-xl hover:shadow-purple-500/25 hover:scale-105 focus:ring-4 focus:ring-purple-400/30 focus:outline-none active:scale-95"
+                onClick={() => {
+                  if (button.href === "#") {
+                    window.dispatchEvent(new CustomEvent('openAuthModal'));
+                  } else {
+                    window.location.href = button.href;
+                  }
+                }}
               >
-                <a href={button.href}>
-                  {button.icon}
-                  {button.text}
-                  {button.iconRight}
-                </a>
+                {button.icon}
+                {button.text}
+                {button.iconRight}
               </Button>
             ))}
           </div>
