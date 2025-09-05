@@ -21,7 +21,7 @@ interface Fundamentals {
 
 interface Props {
   symbol: string;
-  live?: boolean; // 🔹 auto-refresh every 30s if true
+  live?: boolean; // auto-refresh every 30s if true
 }
 
 export default function InfoChart({ symbol, live = false }: Props) {
@@ -38,7 +38,7 @@ export default function InfoChart({ symbol, live = false }: Props) {
       const data = await res.json();
       console.log("📊 Fundamentals API returned:", data);
 
-      // ✅ Expecting flat object from backend (no .metrics)
+      // ✅ Using flat object (no .metrics anymore)
       setFundamentals(data);
     } catch (err) {
       console.error("❌ Error fetching fundamentals:", err);
@@ -48,12 +48,12 @@ export default function InfoChart({ symbol, live = false }: Props) {
     }
   };
 
-  // Fetch on mount + when symbol changes
+  // Fetch when component mounts or symbol changes
   useEffect(() => {
     fetchFundamentals();
   }, [symbol]);
 
-  // 🔹 Poll every 30s if live mode is enabled
+  // Poll every 30s if live mode is enabled
   useEffect(() => {
     if (!live) return;
     const interval = setInterval(fetchFundamentals, 30_000);
@@ -78,7 +78,9 @@ export default function InfoChart({ symbol, live = false }: Props) {
           </li>
           <li>
             <span className="font-semibold text-purple-300">P/E ratio:</span>{" "}
-            {fundamentals.pe_ratio ? fundamentals.pe_ratio.toFixed(2) : "N/A"}
+            {fundamentals.pe_ratio !== null && fundamentals.pe_ratio !== undefined
+              ? fundamentals.pe_ratio.toFixed(2)
+              : "N/A"}
           </li>
           <li>
             <span className="font-semibold text-purple-300">Dividend yield:</span>{" "}
