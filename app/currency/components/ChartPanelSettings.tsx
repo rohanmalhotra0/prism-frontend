@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { API_ENDPOINTS } from "@/lib/api-config";
 
 interface ChartSettings {
   symbol: string;          // ✅ renamed from stock → symbol
@@ -61,7 +62,7 @@ export default function ChartSettingsPanel({ onUpdate }: Props) {
     };
 
     try {
-      const res = await fetch("http://localhost:8000/finance", {
+      const res = await fetch(API_ENDPOINTS.FINANCE, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),

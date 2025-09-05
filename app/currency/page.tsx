@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import Navbar from "@/components/sections/navbar/default";
+import { API_ENDPOINTS } from "@/lib/api-config";
 // Make sure the path is correct; for example, if the file is at app/currency/components/ChartSettingsPanel.tsx:
 //import ChartSettingsPanel from "./components/ChartSettingsPanel";
-const API_BASE = process.env.NEXT_API_URL || "http://127.0.0.1:8000";
 
 export default function CurrencyPage() {
   const [settings, setSettings] = useState<any>(null);
@@ -13,7 +13,7 @@ export default function CurrencyPage() {
   const fetchFinanceData = async (chartSettings: any) => {
     try {
       
-      const response = await fetch(`${API_BASE}/finance`, {
+      const response = await fetch(API_ENDPOINTS.FINANCE, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(chartSettings),

@@ -19,7 +19,7 @@ interface Props {
   currentSettings?: any;
 }
 
-const API_BASE = process.env.NEXT_API_URL || "http://127.0.0.1:8000";
+import { API_ENDPOINTS } from "@/lib/api-config";
 
 const popularStocks = [
   { symbol: "AAPL", name: "Apple Inc." },
@@ -159,7 +159,7 @@ export default function ThreeDChartSettingsPanel({ onUpdate, currentSettings }: 
     // Live mode
     if (timePeriod === "Live") {
       try {
-        const wsUrl = `${API_BASE.replace("http", "ws")}/ws/quotes/${settings.symbol}`;
+        const wsUrl = API_ENDPOINTS.WEBSOCKET(settings.symbol);
         console.log(`🔌 Connecting to WebSocket: ${wsUrl}`);
 
         const ws = new WebSocket(wsUrl);
@@ -209,7 +209,7 @@ export default function ThreeDChartSettingsPanel({ onUpdate, currentSettings }: 
 
     // Historical
     try {
-      const response = await fetch(`${API_BASE}/finance`, {
+      const response = await fetch(API_ENDPOINTS.FINANCE, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(settings),

@@ -15,7 +15,7 @@ interface Props {
   onUpdate: (settings: ChartSettings) => void;
 }
 
-const API_BASE = process.env.NEXT_API_URL || "http://localhost:8000";
+import { API_ENDPOINTS } from "@/lib/api-config";
 
 const popularStocks = [
   { symbol: "AAPL", name: "Apple Inc." },
@@ -101,7 +101,7 @@ export default function ChartSettingsPanel({ onUpdate }: Props) {
     // 🔹 Live Mode
     if (timePeriod === "Live") {
       try {
-        const wsUrl = `${API_BASE.replace("http", "ws")}/ws/quotes/${payload.symbol}`;
+        const wsUrl = API_ENDPOINTS.WEBSOCKET(payload.symbol);
         console.log("🔌 Opening WS:", wsUrl);
 
         const ws = new WebSocket(wsUrl);
@@ -130,7 +130,7 @@ export default function ChartSettingsPanel({ onUpdate }: Props) {
 
     // 🔹 Historical Mode
     try {
-      const res = await fetch(`${API_BASE}/finance`, {
+      const res = await fetch(API_ENDPOINTS.FINANCE, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),

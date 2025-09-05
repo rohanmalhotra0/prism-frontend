@@ -23,7 +23,7 @@ interface Props {
   live?: boolean; // 🔹 add flag to auto-refresh in live mode
 }
 
-const API_BASE = process.env.NEXT_API_URL || "http://localhost:8000";
+import { API_ENDPOINTS } from "@/lib/api-config";
 
 export default function InfoChart({ symbol, live = false }: Props) {
   const [fundamentals, setFundamentals] = useState<Fundamentals | null>(null);
@@ -33,7 +33,7 @@ export default function InfoChart({ symbol, live = false }: Props) {
     if (!symbol) return;
     setLoading(true);
     try {
-      const res = await fetch(`${API_BASE}/fundamentals/${symbol}`);
+      const res = await fetch(API_ENDPOINTS.FUNDAMENTALS(symbol));
       if (!res.ok) throw new Error(`Backend error: ${res.status}`);
       const data = await res.json();
       setFundamentals(data.metrics);

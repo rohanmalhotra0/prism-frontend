@@ -7,8 +7,7 @@ import ThreeDChartSettingsPanel from "./components/ThreeDChartSettingsPanel";
 import FinancePlot from "./components/plot";
 import InfoChart from "./components/infoChart";
 import ThreeStockChart  from "./components/threeD";
-
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+import { API_ENDPOINTS } from "@/lib/api-config";
 
 export default function FinanceModelsPage() {
   const [settings, setSettings] = useState<any>(null);
@@ -17,7 +16,7 @@ export default function FinanceModelsPage() {
   // Fetch OHLCV data from backend
   const fetchFinanceData = async (chartSettings: any) => {
     try {
-      const response = await fetch(`${API_BASE}/finance`, {
+      const response = await fetch(API_ENDPOINTS.FINANCE, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(chartSettings),
