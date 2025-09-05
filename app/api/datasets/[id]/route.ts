@@ -84,9 +84,28 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   const { id } = params;
-  const dataset = datasets.find((d) => d.id === id);
 
-  if (!dataset) {
+  // ✅ Authenticate user
+  const authHeader = req.headers.get("authorization");
+  if (!authHeader) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+  const token = authHeader.replace("Bearer ", "");
+  const { data: { user }, error: authError } = await supabase.auth.getUser(token);
+
+  if (authError || !user) {
+    return NextResponse.json({ error: "Invalid user" }, { status: 401 });
+  }
+
+  // ✅ Get dataset from Supabase
+  const { data: dataset, error: datasetError } = await supabase
+    .from("datasets")
+    .select("*")
+    .eq("id", id)
+    .eq("user_id", user.id)
+    .single();
+
+  if (datasetError || !dataset) {
     return NextResponse.json({ error: "Dataset not found" }, { status: 404 });
   }
 
