@@ -23,7 +23,7 @@ interface Props {
   live?: boolean; // 🔹 add flag to auto-refresh in live mode
 }
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+const API_BASE = process.env.NEXT_API_URL || "http://localhost:8000";
 
 export default function InfoChart({ symbol, live = false }: Props) {
   const [fundamentals, setFundamentals] = useState<Fundamentals | null>(null);

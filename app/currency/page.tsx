@@ -4,7 +4,7 @@ import { useState } from "react";
 import Navbar from "@/components/sections/navbar/default";
 // Make sure the path is correct; for example, if the file is at app/currency/components/ChartSettingsPanel.tsx:
 //import ChartSettingsPanel from "./components/ChartSettingsPanel";
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+const API_BASE = process.env.NEXT_API_URL || "http://127.0.0.1:8000";
 
 export default function CurrencyPage() {
   const [settings, setSettings] = useState<any>(null);

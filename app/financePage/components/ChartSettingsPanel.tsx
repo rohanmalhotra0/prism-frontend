@@ -15,7 +15,7 @@ interface Props {
   onUpdate: (settings: ChartSettings) => void;
 }
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+const API_BASE = process.env.NEXT_API_URL || "http://localhost:8000";
 
 const popularStocks = [
   { symbol: "AAPL", name: "Apple Inc." },

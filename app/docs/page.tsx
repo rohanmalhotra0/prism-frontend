@@ -365,7 +365,7 @@ const data = await response.json();`}
                         <div className="mt-4 p-4 bg-gray-800 rounded-lg">
                           <pre className="text-gray-300 text-sm">
 {`# Google OAuth
-NEXT_PUBLIC_GOOGLE_CLIENT_ID=your_google_client_id
+NEXT_GOOGLE_CLIENT_ID=your_google_client_id
 
 # Database
 DATABASE_URL=postgresql://user:password@host:port/database
@@ -379,8 +379,8 @@ DB_PORT=5432
 POLYGON_API_KEY=your_polygon_api_key
 
 # Supabase
-NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key`}
+NEXT_SUPABASE_URL=your_supabase_url
+NEXT_SUPABASE_ANON_KEY=your_supabase_anon_key`}
                           </pre>
                         </div>
                       </div>
