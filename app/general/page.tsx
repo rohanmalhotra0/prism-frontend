@@ -2,12 +2,13 @@
 
 import { useState } from "react";
 import Navbar from "@/components/sections/navbar/default";
-import ThreeDComponent from "./components/threeD";
-import AnalyticsComponent from "./components/analytics"; 
-import PortfolioComponent from "./components/portfolio";
+import MathVisualizer from "./components/MathVisualizer";
+import DatasetLab from "./components/DatasetLab";
+import MLToolkit from "./components/MLToolkit";
 
-export default function GeneralPage() {
-  const [activeComponent, setActiveComponent] = useState<"3d" | "analytics" | "portfolio">("3d");
+export default function ModelingSandbox() {
+  const [activeMode, setActiveMode] = useState<"equations" | "datasets" | "ml">("equations");
+  const [sharedData, setSharedData] = useState<any>(null);
 
   return (
     <div className="relative min-h-screen bg-black overflow-hidden">
@@ -28,58 +29,58 @@ export default function GeneralPage() {
         <div className="pt-32 pb-16 px-6 lg:px-8">
           <div className="max-w-7xl mx-auto text-center">
             <h1 className="text-6xl lg:text-7xl font-black mb-8 bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text text-transparent">
-              General Dashboard
+              The Modeling Sandbox
             </h1>
             <p className="text-xl lg:text-2xl text-gray-400 max-w-4xl mx-auto leading-relaxed mb-12">
-              Comprehensive tools for 3D visualization, analytics, and portfolio management
+              Visualize equations, explore datasets, and apply ML models in one unified environment
             </p>
             
-            {/* Navigation Tabs */}
+            {/* Mode Navigation */}
             <div className="flex justify-center gap-4 mb-12">
               <button
-                onClick={() => setActiveComponent("3d")}
+                onClick={() => setActiveMode("equations")}
                 className={`px-8 py-3 rounded-xl font-semibold transition-all duration-300 ${
-                  activeComponent === "3d"
+                  activeMode === "equations"
                     ? "bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg shadow-purple-500/25"
                     : "bg-white/10 text-gray-300 hover:bg-white/20 border border-white/20"
                 }`}
               >
-                🎨 3D Visualization
+                🧮 Math Visualizer
               </button>
               <button
-                onClick={() => setActiveComponent("analytics")}
+                onClick={() => setActiveMode("datasets")}
                 className={`px-8 py-3 rounded-xl font-semibold transition-all duration-300 ${
-                  activeComponent === "analytics"
+                  activeMode === "datasets"
                     ? "bg-gradient-to-r from-blue-600 to-green-600 text-white shadow-lg shadow-blue-500/25"
                     : "bg-white/10 text-gray-300 hover:bg-white/20 border border-white/20"
                 }`}
               >
-                📊 Analytics
+                📊 Dataset Lab
               </button>
               <button
-                onClick={() => setActiveComponent("portfolio")}
+                onClick={() => setActiveMode("ml")}
                 className={`px-8 py-3 rounded-xl font-semibold transition-all duration-300 ${
-                  activeComponent === "portfolio"
+                  activeMode === "ml"
                     ? "bg-gradient-to-r from-green-600 to-purple-600 text-white shadow-lg shadow-green-500/25"
                     : "bg-white/10 text-gray-300 hover:bg-white/20 border border-white/20"
                 }`}
               >
-                💼 Portfolio
+                🤖 ML Toolkit
               </button>
             </div>
           </div>
         </div>
 
-        {/* Component Display */}
+        {/* Main Sandbox Interface */}
         <div className="px-6 lg:px-8 pb-20">
           <div className="max-w-7xl mx-auto">
             <div className="bg-gradient-to-br from-gray-900/50 via-gray-800/30 to-gray-900/50 backdrop-blur-xl rounded-3xl border border-white/10 overflow-hidden shadow-2xl">
               <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-500 via-blue-500 to-green-500"></div>
               
               <div className="p-8">
-                {activeComponent === "3d" && <ThreeDComponent />}
-                {activeComponent === "analytics" && <AnalyticsComponent />}
-                {activeComponent === "portfolio" && <PortfolioComponent />}
+                {activeMode === "equations" && <MathVisualizer sharedData={sharedData} setSharedData={setSharedData} />}
+                {activeMode === "datasets" && <DatasetLab sharedData={sharedData} setSharedData={setSharedData} />}
+                {activeMode === "ml" && <MLToolkit sharedData={sharedData} setSharedData={setSharedData} />}
               </div>
             </div>
           </div>
