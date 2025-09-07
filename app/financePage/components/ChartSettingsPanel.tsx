@@ -296,3 +296,7 @@ export default function ChartSettingsPanel({ onUpdate }: Props) {
     </form>
   );
 }
+
+
+
+
