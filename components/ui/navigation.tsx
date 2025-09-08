@@ -31,12 +31,13 @@ export default function Navigation({
       href: "/financePage",
       description: "Quantitative models for corporate finance and forecasting.",
     },
+    /* 
     {
       title: "₿ Crypto Modeling",
       href: "/crypto",
       description: "On-chain data analysis, risk modeling, DeFi pricing.",
     },
-   /* 
+    
   {
       title: "💱 Currency",
       href: "/currency",
@@ -47,13 +48,14 @@ export default function Navigation({
       href: "/options",
       description: "Options pricing, hedging, and binomial/Black-Scholes models.",
     }, 
-    */
+    
     
     {
       title: "🛡️ Insurance Risk Analysis",
       href: "/insurance",
       description: "Stochastic risk modeling for actuarial science.",
     },
+    */
     {
       title: "🔬 General Modeling",
       href: "/general",
@@ -62,20 +64,22 @@ export default function Navigation({
   ],
   community = [
     {
-      title: "📚 Research",
-      href: "/research",
-      description: "Explore research examples using Refrax models.",
-    },
-    {
       title: "🎓 Learn",
       href: "/learn",
       description: "Foundations of modeling, indicators, and workflows.",
     },
     {
+      title: "📚 Research",
+      href: "/research",
+      description: "Explore research examples using Refrax models.",
+    },
+    
+    /*{
       title: "💬 Forum",
       href: "/forum",
       description: "Ask questions, share insights, connect with community.",
     },
+    */
   ],
 }: NavigationProps) {
   return (

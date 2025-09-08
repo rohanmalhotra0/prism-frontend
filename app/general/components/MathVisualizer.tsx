@@ -38,8 +38,8 @@ export default function MathVisualizer({
   setSharedData,
 }: MathVisualizerProps) {
   const [equations, setEquations] = useState<Equation[]>([
-    { id: "1", expression: "sin(x+t)", color: "#ff6b6b", visible: true },
-    { id: "2", expression: "cos(x+t)", color: "#4ecdc4", visible: true },
+    { id: "1", expression: "sin(x+5t)", color: "#ff6b6b", visible: true },
+    { id: "2", expression: "cos(x+5t)", color: "#4ecdc4", visible: true },
     { id: "3", expression: "x^2", color: "#45b7d1", visible: true },
   ]);
 
@@ -97,9 +97,12 @@ export default function MathVisualizer({
 
       for (let xi = xRange.min; xi <= xRange.max; xi += step) {
         const yi = evaluateExpression(eq.expression, xi, undefined, t);
-        if (isFinite(yi) && yi >= yRange.min && yi <= yRange.max) {
-          x.push(xi);
-          y.push(yi);
+        if (isFinite(yi)) {
+          const yClamped = Math.max(0, yi);
+          if (yClamped >= yRange.min && yClamped <= yRange.max) {
+            x.push(xi);
+            y.push(yClamped);
+          }
         }
       }
 
@@ -130,7 +133,7 @@ export default function MathVisualizer({
         const row: number[] = [];
         xs.forEach((xv) => {
           const zv = evaluateExpression(eq.expression, xv, yv, t);
-          row.push(isFinite(zv) ? zv : 0);
+          row.push(isFinite(zv) ? Math.max(0, zv) : 0);
         });
         z.push(row);
       });
@@ -171,8 +174,8 @@ export default function MathVisualizer({
           title: { text: "3D Math Visualizer", font: { color: "white" } },
           scene: {
             xaxis: { range: [xRange.min, xRange.max], color: "white" },
-            yaxis: { range: [yRange.min, yRange.max], color: "white" },
-            zaxis: { range: [zRange.min, zRange.max], color: "white" },
+            yaxis: { range: [Math.max(0, yRange.min), yRange.max], color: "white", rangemode: "tozero" },
+            zaxis: { range: [Math.max(0, zRange.min), zRange.max], color: "white", rangemode: "tozero" },
             bgcolor: "rgba(0,0,0,0)",
             aspectmode: "manual",
             aspectratio: { x: 1, y: 1, z: 0.7 },
@@ -188,7 +191,7 @@ export default function MathVisualizer({
       : {
           title: { text: "2D Math Visualizer", font: { color: "white" } },
           xaxis: { range: [xRange.min, xRange.max], color: "white" },
-          yaxis: { range: [yRange.min, yRange.max], color: "white" },
+          yaxis: { range: [Math.max(0, yRange.min), yRange.max], color: "white", rangemode: "tozero" },
           margin: { l: 60, r: 20, t: 40, b: 40 },
           paper_bgcolor: "rgba(0,0,0,0)",
           plot_bgcolor: "rgba(0,0,0,0)",
@@ -236,7 +239,7 @@ export default function MathVisualizer({
     const colors = ["#ff6b6b", "#4ecdc4", "#45b7d1", "#96ceb4"];
     const newEq: Equation = {
       id: crypto.randomUUID(),
-      expression: "sin(x+t)",
+      expression: "sin(x+5t)",
       color: colors[equations.length % colors.length],
       visible: true,
     };
@@ -274,20 +277,28 @@ export default function MathVisualizer({
         <h2 className="text-2xl font-bold">
           {is3D ? "3D Math Visualizer" : "2D Math Visualizer"}
         </h2>
-        <div className="flex gap-2">
+        <div className="flex items-center space-x-3">
+          <span className={`text-sm ${!is3D ? "text-white" : "text-gray-400"}`}>2D</span>
           <button
             onClick={() => setIs3D(!is3D)}
-            className="px-4 py-2 rounded-lg bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 transition-colors"
+            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-900 ${
+              is3D ? "bg-blue-600" : "bg-gray-600"
+            }`}
           >
-            {is3D ? "Switch to 2D" : "Switch to 3D"}
+            <span
+              className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                is3D ? "translate-x-6" : "translate-x-1"
+              }`}
+            />
           </button>
+          <span className={`text-sm ${is3D ? "text-white" : "text-gray-400"}`}>3D</span>
           <button
             onClick={() => setIsAnimating(!isAnimating)}
             className={`px-4 py-2 rounded-lg transition-colors ${
               isAnimating ? "bg-green-600 hover:bg-green-700" : "bg-gray-700 hover:bg-gray-600"
             }`}
           >
-            {isAnimating ? "Stop" : "Start"}
+            {isAnimating ? "Stop" : "Animate"}
           </button>
         </div>
       </div>
@@ -339,13 +350,21 @@ export default function MathVisualizer({
                 }
                 className="w-full mb-2 px-3 py-2 bg-gray-800 rounded-lg border border-white/10 focus:outline-none focus:border-purple-500"
               />
+              <label
+                htmlFor={`color-${activeEq.id}`}
+                className="block text-sm text-gray-300 mb-1"
+              >
+                Change color
+              </label>
               <input
+                id={`color-${activeEq.id}`}
                 type="color"
                 value={activeEq.color}
                 onChange={(e) =>
                   updateEquation(activeEq.id, "color", e.target.value)
                 }
                 className="w-full h-10 rounded-lg"
+                aria-label="Change color"
               />
             </div>
           )}
