@@ -1,14 +1,21 @@
 // Centralized API configuration
-export const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+
+// Auto-detect API base
+export const API_BASE =
+  process.env.NEXT_PUBLIC_API_URL ||
+  (process.env.NODE_ENV === "development"
+    ? "http://127.0.0.1:8000"
+    : "https://prismbackend.fly.dev");
 
 // API endpoints
 export const API_ENDPOINTS = {
   FINANCE: `${API_BASE}/finance`,
   FUNDAMENTALS: (symbol: string) => `${API_BASE}/fundamentals/${symbol}`,
-  WEBSOCKET: (symbol: string) => `${API_BASE.replace("http", "ws")}/ws/quotes/${symbol}`,
+  WEBSOCKET: (symbol: string) =>
+    `${API_BASE.replace(/^http/, "ws")}/ws/quotes/${symbol}`,
 } as const;
 
-// Helper function to check if API is available
+// Health check
 export const checkApiHealth = async (): Promise<boolean> => {
   try {
     const response = await fetch(`${API_BASE}/health`, {
@@ -22,13 +29,13 @@ export const checkApiHealth = async (): Promise<boolean> => {
   }
 };
 
-// Helper function to make API requests with error handling
+// Helper for safe API requests
 export const apiRequest = async (
   endpoint: string,
   options: RequestInit = {}
 ): Promise<Response> => {
   const url = endpoint.startsWith("http") ? endpoint : `${API_BASE}${endpoint}`;
-  
+
   try {
     const response = await fetch(url, {
       ...options,
@@ -39,7 +46,9 @@ export const apiRequest = async (
     });
 
     if (!response.ok) {
-      throw new Error(`API request failed: ${response.status} ${response.statusText}`);
+      throw new Error(
+        `API request failed: ${response.status} ${response.statusText}`
+      );
     }
 
     return response;
