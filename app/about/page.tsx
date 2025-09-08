@@ -207,34 +207,7 @@ export default function AboutPage() {
             </div>
           </div>
 
-          {/* Our Mission Section */}
-          <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-8 mb-16">
-            <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold text-white mb-4">🚀 Our Mission</h2>
-              <p className="text-xl text-gray-300 max-w-4xl mx-auto">
-                We're building the future of financial analytics by combining cutting-edge technology with 
-                deep domain expertise in quantitative finance, actuarial science, and software engineering.
-              </p>
-            </div>
-            
-            <div className="grid md:grid-cols-3 gap-8">
-              <div className="text-center">
-                <div className="text-4xl mb-4">🎯</div>
-                <h3 className="text-xl font-bold text-white mb-2">Innovation</h3>
-                <p className="text-gray-300 text-sm">Pushing boundaries in 3D data visualization and real-time analytics</p>
-              </div>
-              <div className="text-center">
-                <div className="text-4xl mb-4">🤝</div>
-                <h3 className="text-xl font-bold text-white mb-2">Collaboration</h3>
-                <p className="text-gray-300 text-sm">Combining diverse skills to solve complex financial challenges</p>
-              </div>
-              <div className="text-center">
-                <div className="text-4xl mb-4">📈</div>
-                <h3 className="text-xl font-bold text-white mb-2">Impact</h3>
-                <p className="text-gray-300 text-sm">Making advanced financial tools accessible to everyone</p>
-              </div>
-            </div>
-          </div>
+          
 
         </div>
       </div>
