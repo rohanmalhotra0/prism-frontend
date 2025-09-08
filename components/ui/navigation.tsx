@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { cn } from "@/lib/utils";
 import {
   NavigationMenu,
@@ -24,7 +25,7 @@ interface NavigationProps {
   community?: ComponentItem[];
 }
 
-export default function Navigation({
+function NavigationComponent({
   components = [
     {
       title: "Stocks & Indices",
@@ -82,6 +83,15 @@ export default function Navigation({
     */
   ],
 }: NavigationProps) {
+  const [mounted, setMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return <div className="hidden md:flex h-9 w-32 bg-transparent" />;
+  }
   return (
     <NavigationMenu 
       className="hidden md:flex [&_[data-radix-navigation-menu-trigger]]:hover:bg-transparent [&_[data-radix-navigation-menu-trigger]]:hover:text-current [&_[data-radix-navigation-menu-trigger]]:hover:opacity-100"
@@ -93,8 +103,6 @@ export default function Navigation({
         <NavigationMenuItem>
           <NavigationMenuTrigger 
             className="hover:bg-transparent hover:text-current touch-manipulation"
-            onPointerEnter={(e) => e.preventDefault()}
-            onPointerLeave={(e) => e.preventDefault()}
           >
             Modeling Tools
           </NavigationMenuTrigger>
@@ -117,8 +125,6 @@ export default function Navigation({
         <NavigationMenuItem>
           <NavigationMenuTrigger 
             className="hover:bg-transparent hover:text-current touch-manipulation"
-            onPointerEnter={(e) => e.preventDefault()}
-            onPointerLeave={(e) => e.preventDefault()}
           >
             Resources
           </NavigationMenuTrigger>
@@ -141,8 +147,6 @@ export default function Navigation({
         <NavigationMenuItem>
           <NavigationMenuTrigger 
             className="hover:bg-transparent hover:text-current touch-manipulation"
-            onPointerEnter={(e) => e.preventDefault()}
-            onPointerLeave={(e) => e.preventDefault()}
           >
             Community
           </NavigationMenuTrigger>
@@ -186,3 +190,11 @@ function ListItem({
     </li>
   );
 }
+
+// Export with dynamic import to prevent hydration issues
+const Navigation = dynamic(() => Promise.resolve(NavigationComponent), {
+  ssr: false,
+  loading: () => <div className="hidden md:flex h-9 w-32 bg-transparent" />
+});
+
+export default Navigation;

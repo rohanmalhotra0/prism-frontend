@@ -147,7 +147,7 @@ export default function AboutPage() {
                 <div>
                   <h3 className="text-lg font-semibold text-white mb-2">Education</h3>
                   <p className="text-sm">BS Business and Computer Science</p>
-                  <p className="text-sm text-gray-400">University Student</p>
+                  <p className="text-sm text-gray-400">NYU Stern</p>
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold text-white mb-2">Expertise</h3>
@@ -167,15 +167,7 @@ export default function AboutPage() {
               </div>
 
               <div className="flex gap-3">
-                <Button
-                  asChild
-                  className="flex-1 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500"
-                >
-                  <a href="#" className="flex items-center justify-center gap-2 opacity-50 cursor-not-allowed">
-                    <span>📄</span>
-                    Resume
-                  </a>
-                </Button>
+                
                 <Button
                   asChild
                   className="rounded-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600"
@@ -185,24 +177,8 @@ export default function AboutPage() {
                     <span>LinkedIn</span>
                   </a>
                 </Button>
-                <Button
-                  asChild
-                  className="rounded-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500"
-                >
-                  <a href="#" className="flex items-center justify-center gap-2 opacity-50 cursor-not-allowed">
-                    <GitHubIcon className="w-5 h-5" />
-                    GitHub
-                  </a>
-                </Button>
-                <Button
-                  asChild
-                  className="rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500"
-                >
-                  <a href="#" className="flex items-center justify-center gap-2 opacity-50 cursor-not-allowed">
-                    <GlobeIcon className="w-5 h-5" />
-                    <span>Website</span>
-                  </a>
-                </Button>
+               
+                
               </div>
             </div>
           </div>
