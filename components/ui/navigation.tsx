@@ -92,7 +92,7 @@ export default function Navigation({
         {/* Modeling Tools */}
         <NavigationMenuItem>
           <NavigationMenuTrigger 
-            className="hover:bg-transparent hover:text-current"
+            className="hover:bg-transparent hover:text-current touch-manipulation"
             onPointerEnter={(e) => e.preventDefault()}
             onPointerLeave={(e) => e.preventDefault()}
           >
@@ -116,7 +116,7 @@ export default function Navigation({
         {/* Resources */}
         <NavigationMenuItem>
           <NavigationMenuTrigger 
-            className="hover:bg-transparent hover:text-current"
+            className="hover:bg-transparent hover:text-current touch-manipulation"
             onPointerEnter={(e) => e.preventDefault()}
             onPointerLeave={(e) => e.preventDefault()}
           >
@@ -140,7 +140,7 @@ export default function Navigation({
         {/* Community */}
         <NavigationMenuItem>
           <NavigationMenuTrigger 
-            className="hover:bg-transparent hover:text-current"
+            className="hover:bg-transparent hover:text-current touch-manipulation"
             onPointerEnter={(e) => e.preventDefault()}
             onPointerLeave={(e) => e.preventDefault()}
           >

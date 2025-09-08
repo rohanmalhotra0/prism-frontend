@@ -103,7 +103,7 @@ export default function Navbar({
               </SheetTrigger>
               <SheetContent
                 side="right"
-                className="bg-black/95 backdrop-blur-xl"
+                className="bg-black/95 backdrop-blur-xl w-80 touch-manipulation"
               >
                 <nav className="grid gap-6 text-lg font-medium mt-6">
                   <a
@@ -116,9 +116,57 @@ export default function Navbar({
                   {/* Dashboard Sidebar Trigger (mobile) */}
                   <DashboardSidebar />
 
-                  <a href="/ai" className="hover:text-white transition">
-                    AI Assistant
-                  </a>
+                  {/* Modeling Tools Section */}
+                  <div className="space-y-3">
+                    <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider">Modeling Tools</h3>
+                    <div className="space-y-2 pl-4">
+                      <a href="/financePage" className="block hover:text-white transition text-base py-2 px-3 -mx-3 rounded-lg touch-manipulation">
+                        Stocks & Indices
+                      </a>
+                      <a href="/general" className="block hover:text-white transition text-base py-2 px-3 -mx-3 rounded-lg touch-manipulation">
+                        General Modeling
+                      </a>
+                    </div>
+                  </div>
+
+                  {/* Resources Section */}
+                  <div className="space-y-3">
+                    <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider">Resources</h3>
+                    <div className="space-y-2 pl-4">
+                      <a href="/about" className="block hover:text-white transition text-base py-2 px-3 -mx-3 rounded-lg touch-manipulation">
+                        About Us
+                      </a>
+                      <a href="/#FAQ" className="block hover:text-white transition text-base py-2 px-3 -mx-3 rounded-lg touch-manipulation">
+                        FAQ
+                      </a>
+                      <a href="/docs" className="block hover:text-white transition text-base py-2 px-3 -mx-3 rounded-lg touch-manipulation">
+                        Documentation
+                      </a>
+                    </div>
+                  </div>
+
+                  {/* Community Section */}
+                  <div className="space-y-3">
+                    <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider">Community</h3>
+                    <div className="space-y-2 pl-4">
+                      <a href="/learn" className="block hover:text-white transition text-base py-2 px-3 -mx-3 rounded-lg touch-manipulation">
+                        Learn
+                      </a>
+                      <a href="/research" className="block hover:text-white transition text-base py-2 px-3 -mx-3 rounded-lg touch-manipulation">
+                        Research
+                      </a>
+                    </div>
+                  </div>
+
+                  {/* AI Assistant */}
+                  <div className="space-y-3">
+                    <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider">AI</h3>
+                    <div className="space-y-2 pl-4">
+                      <a href="/ai" className="block hover:text-white transition text-base py-2 px-3 -mx-3 rounded-lg touch-manipulation">
+                        AI Assistant
+                      </a>
+                    </div>
+                  </div>
                 </nav>
               </SheetContent>
             </Sheet>
