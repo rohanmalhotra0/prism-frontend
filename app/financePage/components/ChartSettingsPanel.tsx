@@ -83,7 +83,7 @@ export default function ChartSettingsPanel({ onUpdate }: Props) {
       const res = await fetch(API_ENDPOINTS.FINANCE, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
+        body: JSON.stringify(payload)
       });
 
       if (!res.ok) throw new Error(`Backend error: ${res.status}`);

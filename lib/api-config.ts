@@ -4,15 +4,13 @@
 export const API_BASE =
   process.env.NEXT_PUBLIC_API_URL ||
   (process.env.NODE_ENV === "development"
-    ? "http://127.0.0.1:8000"
+    ? "http://localhost:8000"
     : "https://prismbackend.fly.dev");
 
 // API endpoints
 export const API_ENDPOINTS = {
   FINANCE: `${API_BASE}/finance`,
   FUNDAMENTALS: (symbol: string) => `${API_BASE}/fundamentals/${symbol}`,
-  WEBSOCKET: (symbol: string) =>
-    `${API_BASE.replace(/^http/, "ws")}/ws/quotes/${symbol}`,
 } as const;
 
 // Health check
