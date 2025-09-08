@@ -97,12 +97,9 @@ export default function MathVisualizer({
 
       for (let xi = xRange.min; xi <= xRange.max; xi += step) {
         const yi = evaluateExpression(eq.expression, xi, undefined, t);
-        if (isFinite(yi)) {
-          const yClamped = Math.max(0, yi);
-          if (yClamped >= yRange.min && yClamped <= yRange.max) {
-            x.push(xi);
-            y.push(yClamped);
-          }
+        if (isFinite(yi) && yi >= yRange.min && yi <= yRange.max) {
+          x.push(xi);
+          y.push(yi);
         }
       }
 
@@ -133,7 +130,7 @@ export default function MathVisualizer({
         const row: number[] = [];
         xs.forEach((xv) => {
           const zv = evaluateExpression(eq.expression, xv, yv, t);
-          row.push(isFinite(zv) ? Math.max(0, zv) : 0);
+          row.push(isFinite(zv) ? zv : 0);
         });
         z.push(row);
       });
@@ -174,8 +171,8 @@ export default function MathVisualizer({
           title: { text: "3D Math Visualizer", font: { color: "white" } },
           scene: {
             xaxis: { range: [xRange.min, xRange.max], color: "white" },
-            yaxis: { range: [Math.max(0, yRange.min), yRange.max], color: "white", rangemode: "tozero" },
-            zaxis: { range: [Math.max(0, zRange.min), zRange.max], color: "white", rangemode: "tozero" },
+            yaxis: { range: [yRange.min, yRange.max], color: "white" },
+            zaxis: { range: [zRange.min, zRange.max], color: "white" },
             bgcolor: "rgba(0,0,0,0)",
             aspectmode: "manual",
             aspectratio: { x: 1, y: 1, z: 0.7 },
@@ -191,7 +188,7 @@ export default function MathVisualizer({
       : {
           title: { text: "2D Math Visualizer", font: { color: "white" } },
           xaxis: { range: [xRange.min, xRange.max], color: "white" },
-          yaxis: { range: [Math.max(0, yRange.min), yRange.max], color: "white", rangemode: "tozero" },
+          yaxis: { range: [yRange.min, yRange.max], color: "white" },
           margin: { l: 60, r: 20, t: 40, b: 40 },
           paper_bgcolor: "rgba(0,0,0,0)",
           plot_bgcolor: "rgba(0,0,0,0)",

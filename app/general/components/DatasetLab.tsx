@@ -19,6 +19,7 @@ export default function DatasetLab({ sharedData, setSharedData }: DatasetLabProp
   const [columns, setColumns] = useState<string[]>([]);
   const [selectedColumns, setSelectedColumns] = useState<string[]>([]);
   const [visualizationType, setVisualizationType] = useState<'scatter' | 'line' | '3d'>('scatter');
+  const [is3D, setIs3D] = useState(false);
   const [filters, setFilters] = useState<{[key: string]: any}>({});
   const [transformations, setTransformations] = useState<{[key: string]: string}>({});
   const [isLoading, setIsLoading] = useState(false);
@@ -40,6 +41,18 @@ export default function DatasetLab({ sharedData, setSharedData }: DatasetLabProp
       setSelectedColumns(['x', 'y']);
     }
   }, [sharedData]);
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
+      if (rendererRef.current) {
+        rendererRef.current.dispose();
+      }
+    };
+  }, []);
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -78,6 +91,7 @@ export default function DatasetLab({ sharedData, setSharedData }: DatasetLabProp
         const headers = (jsonData[0] as string[]).map(h => h?.toString().trim() || '');
         const dataRows = jsonData.slice(1) as any[][];
         
+        let rowIndex = 0;
         const parsedData = dataRows.map(row => {
           const dataPoint: DataPoint = {};
           headers.forEach((header, index) => {
@@ -85,12 +99,28 @@ export default function DatasetLab({ sharedData, setSharedData }: DatasetLabProp
             // Try to parse as number, otherwise keep as string
             dataPoint[header] = isNaN(Number(value)) ? value : Number(value);
           });
+          // Excel serial date -> ISO string; also create date_index for plotting
+          if (dataPoint["Date"] !== undefined) {
+            const v = dataPoint["Date"];
+            if (typeof v === "number" && v > 20000) {
+              const jsDate = new Date(Math.round((v - 25569) * 86400 * 1000));
+              dataPoint["Date"] = jsDate.toISOString().slice(0, 10);
+            }
+            dataPoint["date_index"] = rowIndex++;
+          }
           return dataPoint;
         });
 
         setDataset(parsedData);
-        setColumns(headers);
-        setSelectedColumns(headers.slice(0, 2));
+        const cols = [...headers];
+        if (!cols.includes("date_index") && parsedData[0]?.date_index !== undefined) cols.push("date_index");
+        setColumns(cols);
+        // Prefer date_index with Close if available
+        if (cols.includes("date_index") && cols.includes("Close")) {
+          setSelectedColumns(["date_index", "Close"]);
+        } else {
+          setSelectedColumns(cols.slice(0, 2));
+        }
         setIsLoading(false);
         setError(null);
       } catch (error) {
@@ -119,6 +149,7 @@ export default function DatasetLab({ sharedData, setSharedData }: DatasetLabProp
           }
 
           // Convert string numbers to actual numbers
+          let rowIndex = 0;
           const processedData = data.map(row => {
             const processedRow: DataPoint = {};
             Object.keys(row).forEach(key => {
@@ -126,13 +157,28 @@ export default function DatasetLab({ sharedData, setSharedData }: DatasetLabProp
               // Try to parse as number, otherwise keep as string
               processedRow[key] = isNaN(Number(value)) ? value : Number(value);
             });
+            // Convert possible Excel serial date and add date_index
+            if (processedRow["Date"] !== undefined) {
+              const v = processedRow["Date"];
+              if (typeof v === "number" && v > 20000) {
+                const jsDate = new Date(Math.round((v - 25569) * 86400 * 1000));
+                processedRow["Date"] = jsDate.toISOString().slice(0, 10);
+              }
+              processedRow["date_index"] = rowIndex++;
+            }
             return processedRow;
           });
 
           const headers = Object.keys(processedData[0] || {});
           setDataset(processedData);
-          setColumns(headers);
-          setSelectedColumns(headers.slice(0, 2));
+          const cols = [...headers];
+          if (!cols.includes("date_index") && processedData[0]?.date_index !== undefined) cols.push("date_index");
+          setColumns(cols);
+          if (cols.includes("date_index") && cols.includes("Close")) {
+            setSelectedColumns(["date_index", "Close"]);
+          } else {
+            setSelectedColumns(cols.slice(0, 2));
+          }
           setIsLoading(false);
           setError(null);
         } catch (error) {
@@ -200,6 +246,16 @@ export default function DatasetLab({ sharedData, setSharedData }: DatasetLabProp
   const initThreeJS = () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
+
+    // Dispose of existing renderer if it exists
+    if (rendererRef.current) {
+      rendererRef.current.dispose();
+      rendererRef.current = null;
+    }
+
+    // Clear the canvas completely by resetting its dimensions
+    canvas.width = canvas.clientWidth;
+    canvas.height = canvas.clientHeight;
 
     // Scene
     const scene = new THREE.Scene();
@@ -307,11 +363,17 @@ export default function DatasetLab({ sharedData, setSharedData }: DatasetLabProp
 
     if (filteredData.length === 0) return;
 
-    const xCol = selectedColumns[0];
+    // Prefer a numeric index for X if Date is categorical
+    let xCol = selectedColumns[0];
     const yCol = selectedColumns[1];
     const zCol = selectedColumns[2];
 
     if (!xCol || !yCol) return;
+
+    // If X is Date (string), switch to date_index if exists
+    if (xCol === 'Date' && columns.includes('date_index')) {
+      xCol = 'date_index';
+    }
 
     const xValues = filteredData.map(d => d[xCol]).filter(v => typeof v === 'number');
     const yValues = filteredData.map(d => d[yCol]).filter(v => typeof v === 'number');
@@ -320,15 +382,16 @@ export default function DatasetLab({ sharedData, setSharedData }: DatasetLabProp
 
     const xMin = Math.min(...xValues);
     const xMax = Math.max(...xValues);
-    const yMin = Math.min(...yValues);
+    const yMinRaw = Math.min(...yValues);
     const yMax = Math.max(...yValues);
+    const yMin = Math.max(0, yMinRaw);
 
     const xRange = xMax - xMin || 1;
     const yRange = yMax - yMin || 1;
 
     // Normalize data to -10 to 10 range
     const normalizeX = (x: number) => ((x - xMin) / xRange) * 20 - 10;
-    const normalizeY = (y: number) => ((y - yMin) / yRange) * 20 - 10;
+    const normalizeY = (y: number) => ((Math.max(0, y) - yMin) / yRange) * 20 - 10;
 
     console.log('Creating', filteredData.length, 'data points');
     filteredData.forEach((row, index) => {
@@ -384,10 +447,13 @@ export default function DatasetLab({ sharedData, setSharedData }: DatasetLabProp
 
     if (filteredData.length === 0) return;
 
-    const xCol = selectedColumns[0];
+    let xCol = selectedColumns[0];
     const yCol = selectedColumns[1];
 
     if (!xCol || !yCol) return;
+    if (xCol === 'Date' && columns.includes('date_index')) {
+      xCol = 'date_index';
+    }
 
     const sortedData = filteredData
       .filter(row => typeof row[xCol] === 'number' && typeof row[yCol] === 'number')
@@ -400,8 +466,9 @@ export default function DatasetLab({ sharedData, setSharedData }: DatasetLabProp
 
     const xMin = Math.min(...xValues);
     const xMax = Math.max(...xValues);
-    const yMin = Math.min(...yValues);
+    const yMinRaw = Math.min(...yValues);
     const yMax = Math.max(...yValues);
+    const yMin = Math.max(0, yMinRaw);
 
     const xRange = xMax - xMin || 1;
     const yRange = yMax - yMin || 1;
@@ -409,7 +476,7 @@ export default function DatasetLab({ sharedData, setSharedData }: DatasetLabProp
     // Create line geometry
     const points = sortedData.map(row => {
       const x = ((row[xCol] - xMin) / xRange) * 20 - 10;
-      const y = ((row[yCol] - yMin) / yRange) * 20 - 10;
+      const y = ((Math.max(0, row[yCol]) - yMin) / yRange) * 20 - 10;
       return new THREE.Vector3(x, y, 0);
     });
 
@@ -441,11 +508,14 @@ export default function DatasetLab({ sharedData, setSharedData }: DatasetLabProp
 
     if (filteredData.length === 0) return;
 
-    const xCol = selectedColumns[0];
+    let xCol = selectedColumns[0];
     const yCol = selectedColumns[1];
     const zCol = selectedColumns[2];
 
     if (!xCol || !yCol) return;
+    if (xCol === 'Date' && columns.includes('date_index')) {
+      xCol = 'date_index';
+    }
 
     const xValues = filteredData.map(d => d[xCol]).filter(v => typeof v === 'number');
     const yValues = filteredData.map(d => d[yCol]).filter(v => typeof v === 'number');
@@ -455,9 +525,11 @@ export default function DatasetLab({ sharedData, setSharedData }: DatasetLabProp
 
     const xMin = Math.min(...xValues);
     const xMax = Math.max(...xValues);
-    const yMin = Math.min(...yValues);
+    const yMinRaw = Math.min(...yValues);
     const yMax = Math.max(...yValues);
-    const zMin = zValues.length > 0 ? Math.min(...zValues) : 0;
+    const yMin = Math.max(0, yMinRaw);
+    const zMinRaw = zValues.length > 0 ? Math.min(...zValues) : 0;
+    const zMin = Math.max(0, zMinRaw);
     const zMax = zValues.length > 0 ? Math.max(...zValues) : 0;
 
     const xRange = xMax - xMin || 1;
@@ -466,8 +538,8 @@ export default function DatasetLab({ sharedData, setSharedData }: DatasetLabProp
 
     // Normalize data to -10 to 10 range
     const normalizeX = (x: number) => ((x - xMin) / xRange) * 20 - 10;
-    const normalizeY = (y: number) => ((y - yMin) / yRange) * 20 - 10;
-    const normalizeZ = (z: number) => ((z - zMin) / zRange) * 20 - 10;
+    const normalizeY = (y: number) => ((Math.max(0, y) - yMin) / yRange) * 20 - 10;
+    const normalizeZ = (z: number) => ((Math.max(0, z) - zMin) / zRange) * 20 - 10;
 
     filteredData.forEach((row, index) => {
       const x = row[xCol];
@@ -500,6 +572,85 @@ export default function DatasetLab({ sharedData, setSharedData }: DatasetLabProp
     cameraRef.current!.lookAt(0, 0, 0);
   };
 
+  const create2DPlot = () => {
+    // For 2D mode, we'll use a simple 2D canvas rendering
+    // This is a placeholder - in a real implementation, you might want to use Plotly or D3
+    if (!canvasRef.current) return;
+
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    // Clear canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    const filteredData = dataset.filter(row => {
+      return Object.entries(filters).every(([key, value]) => {
+        if (value === '') return true;
+        return row[key]?.toString().toLowerCase().includes(value.toString().toLowerCase());
+      });
+    });
+
+    if (filteredData.length === 0) return;
+
+    let xCol = selectedColumns[0];
+    const yCol = selectedColumns[1];
+
+    if (!xCol || !yCol) return;
+    if (xCol === 'Date' && columns.includes('date_index')) {
+      xCol = 'date_index';
+    }
+
+    const xValues = filteredData.map(d => d[xCol]).filter(v => typeof v === 'number');
+    const yValues = filteredData.map(d => d[yCol]).filter(v => typeof v === 'number');
+
+    if (xValues.length === 0 || yValues.length === 0) return;
+
+    // Clamp values to be >= 0 for 2D plots
+    const clampedYValues = yValues.map(y => Math.max(0, y));
+
+    const minX = Math.min(...xValues);
+    const maxX = Math.max(...xValues);
+    const minY = Math.max(0, Math.min(...clampedYValues));
+    const maxY = Math.max(...clampedYValues);
+
+    const padding = 50;
+    const plotWidth = canvas.width - 2 * padding;
+    const plotHeight = canvas.height - 2 * padding;
+
+    // Draw axes
+    ctx.strokeStyle = '#666';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(padding, padding);
+    ctx.lineTo(padding, canvas.height - padding);
+    ctx.lineTo(canvas.width - padding, canvas.height - padding);
+    ctx.stroke();
+
+    // Draw data points
+    ctx.fillStyle = '#3b82f6';
+    xValues.forEach((x, i) => {
+      if (i < clampedYValues.length) {
+        const plotX = padding + ((x - minX) / (maxX - minX)) * plotWidth;
+        const plotY = canvas.height - padding - ((clampedYValues[i] - minY) / (maxY - minY)) * plotHeight;
+        
+        ctx.beginPath();
+        ctx.arc(plotX, plotY, 3, 0, 2 * Math.PI);
+        ctx.fill();
+      }
+    });
+
+    // Draw labels
+    ctx.fillStyle = '#fff';
+    ctx.font = '12px Arial';
+    ctx.fillText(xCol, canvas.width - padding - 50, canvas.height - 10);
+    ctx.save();
+    ctx.translate(10, canvas.height / 2);
+    ctx.rotate(-Math.PI / 2);
+    ctx.fillText(yCol, 0, 0);
+    ctx.restore();
+  };
+
   const animate = () => {
     if (!sceneRef.current || !cameraRef.current || !rendererRef.current) return;
 
@@ -527,51 +678,87 @@ export default function DatasetLab({ sharedData, setSharedData }: DatasetLabProp
     animationRef.current = requestAnimationFrame(animate);
   };
 
-  // Initialize Three.js
+  // Initialize Three.js only for 3D mode
   useEffect(() => {
-    initThreeJS();
-    // Start the render loop immediately
-    animate();
-    
-    // Handle window resize
-    const handleResize = () => {
-      if (canvasRef.current && rendererRef.current && cameraRef.current) {
-        const canvas = canvasRef.current;
-        const width = canvas.clientWidth;
-        const height = canvas.clientHeight;
-        
-        cameraRef.current.aspect = width / height;
-        cameraRef.current.updateProjectionMatrix();
-        rendererRef.current.setSize(width, height);
+    if (is3D) {
+      // Clean up any existing 2D context
+      const canvas = canvasRef.current;
+      if (canvas) {
+        const ctx = canvas.getContext('2d');
+        if (ctx) {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
       }
-    };
-    
-    window.addEventListener('resize', handleResize);
-    
-    return () => {
-      if (animationRef.current) {
-        cancelAnimationFrame(animationRef.current);
+      
+      initThreeJS();
+      // Start the render loop immediately
+      animate();
+      
+      // Handle window resize
+      const handleResize = () => {
+        if (canvasRef.current && rendererRef.current && cameraRef.current) {
+          const canvas = canvasRef.current;
+          const width = canvas.clientWidth;
+          const height = canvas.clientHeight;
+          
+          cameraRef.current.aspect = width / height;
+          cameraRef.current.updateProjectionMatrix();
+          rendererRef.current.setSize(width, height);
+        }
+      };
+      
+      window.addEventListener('resize', handleResize);
+      
+      return () => {
+        if (animationRef.current) {
+          cancelAnimationFrame(animationRef.current);
+        }
+        window.removeEventListener('resize', handleResize);
+      };
+    } else {
+      // For 2D mode, clean up Three.js resources
+      if (rendererRef.current) {
+        rendererRef.current.dispose();
+        rendererRef.current = null;
       }
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
+      if (sceneRef.current) {
+        sceneRef.current = null;
+      }
+      if (cameraRef.current) {
+        cameraRef.current = null;
+      }
+      
+      // Clear canvas and render 2D plot
+      const canvas = canvasRef.current;
+      if (canvas) {
+        canvas.width = canvas.clientWidth;
+        canvas.height = canvas.clientHeight;
+      }
+      create2DPlot();
+    }
+  }, [is3D]);
 
   // Update visualization when data changes
   useEffect(() => {
     if (dataset.length === 0) return;
 
-    switch (visualizationType) {
-      case 'scatter':
-        createScatterPlot();
-        break;
-      case 'line':
-        createLinePlot();
-        break;
-      case '3d':
-        create3DPlot();
-        break;
+    if (is3D) {
+      switch (visualizationType) {
+        case 'scatter':
+          createScatterPlot();
+          break;
+        case 'line':
+          createLinePlot();
+          break;
+        case '3d':
+          create3DPlot();
+          break;
+      }
+    } else {
+      // 2D mode - use Plotly for 2D visualizations
+      create2DPlot();
     }
-  }, [dataset, selectedColumns, visualizationType, filters]);
+  }, [dataset, selectedColumns, visualizationType, filters, is3D]);
 
   // Animation state is now handled within the animate function
 
@@ -683,6 +870,33 @@ export default function DatasetLab({ sharedData, setSharedData }: DatasetLabProp
             </div>
           </div>
 
+          {/* 2D/3D Toggle */}
+          <div className="bg-gray-800/50 rounded-lg p-4">
+            <h3 className="text-lg font-semibold text-white mb-3">View Mode</h3>
+            <div className="flex space-x-2">
+              <button
+                onClick={() => setIs3D(false)}
+                className={`flex-1 p-2 rounded text-sm transition-colors ${
+                  !is3D
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                }`}
+              >
+                2D
+              </button>
+              <button
+                onClick={() => setIs3D(true)}
+                className={`flex-1 p-2 rounded text-sm transition-colors ${
+                  is3D
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                }`}
+              >
+                3D
+              </button>
+            </div>
+          </div>
+
           {/* Animation Controls */}
           <div className="bg-gray-800/50 rounded-lg p-4">
             <h3 className="text-lg font-semibold text-white mb-3">Animation</h3>
@@ -781,12 +995,17 @@ export default function DatasetLab({ sharedData, setSharedData }: DatasetLabProp
             </div>
           )}
 
-          {/* Three.js Visualization */}
+          {/* Visualization */}
           <div className="bg-gray-900/50 rounded-lg p-4">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-lg font-semibold text-white">
-                {visualizationType === 'scatter' ? '3D Scatter Plot' : 
-                 visualizationType === 'line' ? '3D Line Plot' : '3D Scatter Plot'}
+                {is3D ? (
+                  visualizationType === 'scatter' ? '3D Scatter Plot' : 
+                  visualizationType === 'line' ? '3D Line Plot' : '3D Scatter Plot'
+                ) : (
+                  visualizationType === 'scatter' ? '2D Scatter Plot' : 
+                  visualizationType === 'line' ? '2D Line Plot' : '2D Scatter Plot'
+                )}
               </h3>
               <div className="text-sm text-gray-400">
                 {dataset.length} data points
@@ -798,14 +1017,22 @@ export default function DatasetLab({ sharedData, setSharedData }: DatasetLabProp
                 ref={canvasRef}
                 className="w-full h-full"
                 style={{ display: 'block' }}
+                width={800}
+                height={500}
               />
             </div>
             
             <div className="mt-4 p-3 bg-gray-700/50 rounded text-xs text-gray-400">
-              <div className="font-semibold mb-1">3D Controls:</div>
-              <div>• Mouse: Rotate view</div>
-              <div>• Scroll: Zoom in/out</div>
-              <div>• Right click + drag: Pan</div>
+              <div className="font-semibold mb-1">{is3D ? '3D Controls:' : '2D Plot:'}</div>
+              {is3D ? (
+                <>
+                  <div>• Mouse: Rotate view</div>
+                  <div>• Scroll: Zoom in/out</div>
+                  <div>• Right click + drag: Pan</div>
+                </>
+              ) : (
+                <div>• Static 2D visualization with automatic scaling</div>
+              )}
             </div>
           </div>
         </div>
