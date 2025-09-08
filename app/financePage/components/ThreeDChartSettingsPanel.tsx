@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
+import { API_ENDPOINTS } from "@/lib/api-config";
 
 interface ThreeDSettings {
   symbol: string;
@@ -18,8 +19,6 @@ interface Props {
   onUpdate: (settings: ThreeDSettings) => void;
   currentSettings?: any;
 }
-
-import { API_ENDPOINTS } from "@/lib/api-config";
 
 const popularStocks = [
   { symbol: "AAPL", name: "Apple Inc." },
@@ -50,8 +49,6 @@ export default function ThreeDChartSettingsPanel({ onUpdate, currentSettings }: 
   const [yScale, setYScale] = useState(currentSettings?.y || 1.0);
   const [zScale, setZScale] = useState(currentSettings?.z || 1.0);
 
-  const wsRef = useRef<WebSocket | null>(null);
-
   useEffect(() => {
     if (currentSettings) {
       setSymbol(currentSettings.symbol || "");
@@ -65,20 +62,6 @@ export default function ThreeDChartSettingsPanel({ onUpdate, currentSettings }: 
       setZScale(currentSettings.z || 1.0);
     }
   }, [currentSettings]);
-
-  useEffect(() => {
-    return () => {
-      if (wsRef.current) {
-        console.log("🔌 Cleaning up WebSocket on unmount");
-        try {
-          wsRef.current.close(1000, "Component unmounting");
-        } catch {
-          console.log("WebSocket already closed");
-        }
-        wsRef.current = null;
-      }
-    };
-  }, []);
 
   const handleOverlayChange = (i: number, value: string) => {
     const updated = [...overlays];
@@ -96,16 +79,6 @@ export default function ThreeDChartSettingsPanel({ onUpdate, currentSettings }: 
     if (!symbol.trim()) {
       alert("Please enter a stock symbol");
       return;
-    }
-
-    if (wsRef.current) {
-      console.log("🔌 Closing existing WebSocket connection");
-      try {
-        wsRef.current.close(1000, "Switching to new symbol");
-      } catch {
-        console.log("WebSocket already closed");
-      }
-      wsRef.current = null;
     }
 
     const endDate = new Date();
@@ -156,58 +129,6 @@ export default function ThreeDChartSettingsPanel({ onUpdate, currentSettings }: 
       end: endDate.toISOString().split("T")[0],
     };
 
-    // Live mode
-    if (timePeriod === "Live") {
-      try {
-        const wsUrl = API_ENDPOINTS.WEBSOCKET(settings.symbol);
-        console.log(`🔌 Connecting to WebSocket: ${wsUrl}`);
-
-        const ws = new WebSocket(wsUrl);
-        wsRef.current = ws;
-
-        ws.onopen = () => {
-          console.log(`✅ Connected to live stream for ${settings.symbol}`);
-          console.log("🔗 WebSocket ready state:", ws.readyState);
-        };
-
-        ws.onmessage = (event) => {
-          const data = JSON.parse(event.data);
-          if (Array.isArray(data)) {
-            const tradeData = data.map((candle: any) => ({
-              Date: candle.Date?.split("T")[0] || new Date().toISOString().split("T")[0],
-              Open: candle.Open || 0,
-              High: candle.High || 0,
-              Low: candle.Low || 0,
-              Close: candle.Close || 0,
-              Volume: candle.Volume || 0,
-              ...(candle.EMA_20 && { EMA_20: candle.EMA_20 }),
-              ...(candle.RSI && { RSI: candle.RSI }),
-              ...(candle.MACD && { MACD: candle.MACD }),
-              ...(candle.MACD_Signal && { MACD_Signal: candle.MACD_Signal }),
-            }));
-            onUpdate({ ...settings, data: tradeData });
-          } else if (data.error) {
-            console.error("❌ WebSocket error:", data.error);
-            alert(`Live feed error: ${data.error}`);
-          }
-        };
-
-        ws.onerror = (err) => {
-          console.error("❌ WebSocket error:", err);
-        };
-
-        ws.onclose = (event) => {
-          console.log(`🔌 WebSocket closed (code: ${event.code}, reason: ${event.reason})`);
-          wsRef.current = null;
-        };
-      } catch (error) {
-        console.error("❌ Error connecting WebSocket:", error);
-        alert("Failed to open live feed. Is the backend running?");
-      }
-      return;
-    }
-
-    // Historical
     try {
       const response = await fetch(API_ENDPOINTS.FINANCE, {
         method: "POST",
@@ -222,7 +143,7 @@ export default function ThreeDChartSettingsPanel({ onUpdate, currentSettings }: 
 
       onUpdate({ ...settings, data: data.data });
     } catch (error: any) {
-      console.error("Historical data fetch error:", error);
+      console.error("Data fetch error:", error);
       alert(`Error fetching data: ${error.message}`);
     }
   };
@@ -303,7 +224,6 @@ export default function ThreeDChartSettingsPanel({ onUpdate, currentSettings }: 
           <option value="2y">2 Years</option>
           <option value="5y">5 Years</option>
           <option value="ytd">Year to Date</option>
-          <option value="Live">Live</option>
         </select>
       </div>
 
@@ -318,12 +238,12 @@ export default function ThreeDChartSettingsPanel({ onUpdate, currentSettings }: 
             className="w-full rounded-xl border border-white/20 bg-black/40 p-3 text-white mb-2 focus:border-blue-500 focus:outline-none"
           >
             <option value="">None</option>
-            <option value="SMA_20">SMA 20</option>
-            <option value="SMA_50">SMA 50</option>
-            <option value="EMA_20">EMA 20</option>
-            <option value="EMA_50">EMA 50</option>
-            <option value="Bollinger">Bollinger Bands</option>
-            <option value="Keltner">Keltner Channels</option>
+            <option value="sma20">SMA 20</option>
+            <option value="sma50">SMA 50</option>
+            <option value="ema20">EMA 20</option>
+            <option value="ema50">EMA 50</option>
+            <option value="bollinger">Bollinger Bands</option>
+            <option value="keltner">Keltner Channels</option>
           </select>
         ))}
       </div>
@@ -339,14 +259,14 @@ export default function ThreeDChartSettingsPanel({ onUpdate, currentSettings }: 
             className="w-full rounded-xl border border-white/20 bg-black/40 p-3 text-white mb-2 focus:border-blue-500 focus:outline-none"
           >
             <option value="">None</option>
-            <option value="RSI">RSI</option>
-            <option value="MACD">MACD</option>
-            <option value="ATR">ATR</option>
-            <option value="ROC">ROC</option>
-            <option value="Stochastic">Stochastic</option>
-            <option value="CCI">CCI</option>
-            <option value="ADX">ADX</option>
-            <option value="OBV">OBV</option>
+            <option value="rsi">RSI</option>
+            <option value="macd">MACD</option>
+            <option value="atr">ATR</option>
+            <option value="roc">ROC</option>
+            <option value="stochastic">Stochastic</option>
+            <option value="cci">CCI</option>
+            <option value="adx">ADX</option>
+            <option value="obv">OBV</option>
           </select>
         ))}
       </div>

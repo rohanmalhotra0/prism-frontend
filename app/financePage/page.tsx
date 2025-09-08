@@ -6,37 +6,11 @@ import ChartSettingsPanel from "./components/ChartSettingsPanel";
 import ThreeDChartSettingsPanel from "./components/ThreeDChartSettingsPanel";
 import FinancePlot from "./components/plot";
 import InfoChart from "./components/infoChart";
-import ThreeStockChart  from "./components/threeD";
-import { API_ENDPOINTS } from "@/lib/api-config";
+import ThreeStockChart from "./components/threeD";
 
 export default function FinanceModelsPage() {
   const [settings, setSettings] = useState<any>(null);
   const [is3DView, setIs3DView] = useState(false);
-
-  // Fetch OHLCV data from backend
-  const fetchFinanceData = async (chartSettings: any) => {
-    try {
-      const response = await fetch(API_ENDPOINTS.FINANCE, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(chartSettings),
-      });
-      if (!response.ok) {
-        throw new Error("Failed to fetch chart data. Is the backend running?");
-      }
-
-      const data = await response.json();
-      console.log("Backend returned:", data);
-
-      setSettings({
-        ...chartSettings,
-        symbol: data.symbol,
-        data: data.data, // OHLCV data
-      });
-    } catch (error: any) {
-      alert(error.message);
-    }
-  };
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-gray-950 via-gray-900 to-black text-white">
@@ -83,19 +57,18 @@ export default function FinanceModelsPage() {
               {settings ? (
                 is3DView ? (
                   <ThreeStockChart
-                  data={settings.data}
-                  symbol={settings.symbol}
-                  chartType={settings.chartType}
-                  height={20}
-                  gap={0.15}
-                  baseThickness={0.08}
-                  threeDSettings={{
-                    x: settings.x,
-                    y: settings.y,
-                    z: settings.z,
-                  }}
-                />
-                
+                    data={settings.data}
+                    symbol={settings.symbol}
+                    chartType={settings.chartType}
+                    height={20}
+                    gap={0.15}
+                    baseThickness={0.08}
+                    threeDSettings={{
+                      x: settings.x,
+                      y: settings.y,
+                      z: settings.z,
+                    }}
+                  />
                 ) : (
                   <FinancePlot
                     data={settings.data}
@@ -117,7 +90,7 @@ export default function FinanceModelsPage() {
             ) : (
               <p className="text-gray-500">Fundamentals will appear here.</p>
             )}
-            
+
             {/* Navigation Controls - Only show in 3D view */}
             {is3DView && (
               <div className="mt-6 bg-gradient-to-br from-black/90 to-gray-900/90 backdrop-blur-md text-white text-sm p-4 rounded-xl shadow-2xl border border-white/10">
@@ -148,12 +121,12 @@ export default function FinanceModelsPage() {
         {/* Settings Panel */}
         <section className="space-y-8">
           {is3DView ? (
-            <ThreeDChartSettingsPanel 
-              onUpdate={setSettings} 
+            <ThreeDChartSettingsPanel
+              onUpdate={setSettings}
               currentSettings={settings}
             />
           ) : (
-            <ChartSettingsPanel onUpdate={fetchFinanceData} />
+            <ChartSettingsPanel onUpdate={setSettings} />
           )}
         </section>
       </div>
