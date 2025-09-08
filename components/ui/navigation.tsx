@@ -27,7 +27,7 @@ interface NavigationProps {
 export default function Navigation({
   components = [
     {
-      title: "📈 Stocks & Indices",
+      title: "Stocks & Indices",
       href: "/financePage",
       description: "Quantitative models for corporate finance and forecasting.",
     },
@@ -44,32 +44,32 @@ export default function Navigation({
       description: "Forex spot rates, parity models, and risk simulations.",
     },
     {
-      title: "📊 Options & Derivatives",
+      title: "Options & Derivatives",
       href: "/options",
       description: "Options pricing, hedging, and binomial/Black-Scholes models.",
     }, 
     
     
     {
-      title: "🛡️ Insurance Risk Analysis",
+      title: "Insurance Risk Analysis",
       href: "/insurance",
       description: "Stochastic risk modeling for actuarial science.",
     },
     */
     {
-      title: "🔬 General Modeling",
+      title: "General Modeling",
       href: "/general",
       description: "Regression, simulation, and time-series forecasting.",
     },
   ],
   community = [
     {
-      title: "🎓 Learn",
+      title: "Learn",
       href: "/learn",
       description: "Foundations of modeling, indicators, and workflows.",
     },
     {
-      title: "📚 Research",
+      title: "Research",
       href: "/research",
       description: "Explore research examples using Refrax models.",
     },
@@ -124,13 +124,13 @@ export default function Navigation({
           </NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid gap-3 p-4 w-[400px]">
-              <ListItem href="/about" title="👋 About Us">
+              <ListItem href="/about" title="About Us">
                 Learn about the Refrax team.
               </ListItem>
-              <ListItem href="/#FAQ" title="❓ FAQ">
+              <ListItem href="/#FAQ" title=" FAQ">
                 Find answers to common questions about Refrax.
               </ListItem>
-              <ListItem href="/docs" title="📖 Documentation">
+              <ListItem href="/docs" title="Documentation">
                 Guides and API documentation for Refrax features.
               </ListItem>
             </ul>

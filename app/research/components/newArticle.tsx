@@ -119,7 +119,7 @@ export default function NewArticlePage() {
                           ) : (
                             <div className="w-full h-full bg-gradient-to-br from-gray-800 via-gray-700 to-gray-800 flex items-center justify-center">
                               <div className="text-center">
-                                <div className="text-6xl mb-4 animate-pulse">📊</div>
+                                <div className="text-6xl mb-4 animate-pulse">•</div>
                                 <div className="text-gray-400">Research Paper</div>
                               </div>
                             </div>
@@ -197,7 +197,7 @@ export default function NewArticlePage() {
                               className="group/btn relative overflow-hidden rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 px-8 py-4 text-white font-semibold shadow-lg transition-all duration-300 hover:from-purple-500 hover:to-pink-500 hover:shadow-xl hover:shadow-purple-500/25 hover:scale-105 focus:ring-4 focus:ring-purple-400/30 focus:outline-none active:scale-95"
                             >
                               <a href={paper.datasetUrl} download className="flex items-center gap-2">
-                                <span className="text-lg">📊</span>
+                                <span className="text-lg">•</span>
                                 Download Dataset
                               </a>
                             </Button>

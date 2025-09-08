@@ -30,7 +30,7 @@ export default function AIPage() {
     messages: [
       {
         role: "assistant",
-        content: "👋 Hey there! I'm Tomas, the King of Analytics! 👑 I'm a master at data, stats, and all things analytical. Whether you need help with financial modeling, statistical analysis, or just want to chat about data - I'm your guy! What can I help you analyze today?",
+        content: "Hey there! I'm Tomas, the King of Analytics! I'm a master at data, stats, and all things analytical. Whether you need help with financial modeling, statistical analysis, or just want to chat about data - I'm your guy! What can I help you analyze today?",
         timestamp: new Date(),
       },
     ],
@@ -168,7 +168,7 @@ export default function AIPage() {
             messages: [
               {
                 role: "assistant",
-                content: "👋 New chat started! I'm Tomas, your analytics master! What data challenge can I help you conquer today? 🚀",
+                content: "New chat started! I'm Tomas, your analytics master! What data challenge can I help you conquer today?",
                 timestamp: new Date(),
               },
             ],
@@ -210,7 +210,7 @@ export default function AIPage() {
       
       const assistantMessage: Message = { 
         role: "assistant", 
-        content: data.message || "⚠️ No response received", 
+        content: data.message || "No response received", 
         timestamp: new Date() 
       };
       
@@ -227,7 +227,7 @@ export default function AIPage() {
       console.error("Chat error:", e);
       const errorMessage: Message = { 
         role: "assistant", 
-        content: "⚠️ I'm having trouble connecting right now. Please try again in a moment!", 
+        content: "I'm having trouble connecting right now. Please try again in a moment!", 
         timestamp: new Date() 
       };
       const finalMessages = [...updatedMessages, errorMessage];
@@ -242,7 +242,7 @@ export default function AIPage() {
       id: "temp",
       title: "New Chat",
       messages: [
-        { role: "assistant", content: "👋 New chat started! I'm Tomas, your analytics master! What data challenge can I help you conquer today? 🚀", timestamp: new Date() },
+        { role: "assistant", content: "New chat started! I'm Tomas, your analytics master! What data challenge can I help you conquer today?", timestamp: new Date() },
       ],
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),

@@ -9,7 +9,7 @@ export default function GeneralModelingPage() {
   const modelingTopics = [
     {
       title: "Linear Regression",
-      icon: "📈",
+      icon: "•",
       description: "A fundamental statistical method that models the relationship between a dependent variable and one or more independent variables.",
       details: {
         howItWorks: "Finds the best straight line through data points by minimizing the sum of squared residuals between predicted and actual values.",
@@ -88,7 +88,7 @@ def time_series_analysis(price_data):
     },
     {
       title: "Monte Carlo Simulation",
-      icon: "🎲",
+      icon: "•",
       description: "A computational method that uses random sampling to model uncertainty and assess risk in complex systems.",
       details: {
         howItWorks: "Runs thousands of simulations with random inputs following specified probability distributions to generate outcome distributions.",
@@ -125,7 +125,7 @@ def monte_carlo_portfolio(returns, weights, n_simulations=10000):
     },
     {
       title: "Logistic Regression",
-      icon: "📊",
+      icon: "•",
       description: "A statistical method for modeling binary outcomes using a logistic function to estimate probabilities.",
       details: {
         howItWorks: "Uses the logistic function to model the probability of a binary outcome, with coefficients representing log-odds ratios.",
@@ -164,7 +164,7 @@ def logistic_regression_model(X, y):
     },
     {
       title: "Clustering Analysis",
-      icon: "🎪",
+      icon: "•",
       description: "An unsupervised learning technique that groups similar data points together based on their characteristics.",
       details: {
         howItWorks: "Groups data points into clusters by minimizing within-cluster variance and maximizing between-cluster separation.",
@@ -210,7 +210,7 @@ def clustering_analysis(data, max_clusters=10):
     },
     {
       title: "Principal Component Analysis (PCA)",
-      icon: "🔍",
+      icon: "•",
       description: "A dimensionality reduction technique that transforms data into a lower-dimensional space while preserving maximum variance.",
       details: {
         howItWorks: "Finds orthogonal directions of maximum variance in the data and projects the data onto these principal components.",
@@ -409,25 +409,25 @@ def pca_analysis(data, n_components=None):
         {/* Learning Path Section */}
         <div className="max-w-7xl mx-auto px-6 lg:px-8 pb-20">
           <div className="bg-gradient-to-r from-purple-600/20 to-blue-600/20 rounded-2xl p-8 border border-purple-500/30">
-            <h3 className="text-2xl font-bold text-white mb-6 text-center">🎯 Learning Path</h3>
+            <h3 className="text-2xl font-bold text-white mb-6 text-center">• Learning Path</h3>
             <div className="grid md:grid-cols-4 gap-6">
               <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
-                <div className="text-2xl mb-2">1️⃣</div>
+                <div className="text-2xl mb-2">1</div>
                 <h4 className="text-white font-semibold mb-2">Statistics Basics</h4>
                 <p className="text-gray-300 text-sm">Descriptive statistics, distributions</p>
               </div>
               <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
-                <div className="text-2xl mb-2">2️⃣</div>
+                <div className="text-2xl mb-2">2</div>
                 <h4 className="text-white font-semibold mb-2">Linear Models</h4>
                 <p className="text-gray-300 text-sm">Regression, correlation analysis</p>
               </div>
               <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
-                <div className="text-2xl mb-2">3️⃣</div>
+                <div className="text-2xl mb-2">3</div>
                 <h4 className="text-white font-semibold mb-2">Advanced Techniques</h4>
                 <p className="text-gray-300 text-sm">Time series, clustering, PCA</p>
               </div>
               <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
-                <div className="text-2xl mb-2">4️⃣</div>
+                <div className="text-2xl mb-2">4</div>
                 <h4 className="text-white font-semibold mb-2">Simulation</h4>
                 <p className="text-gray-300 text-sm">Monte Carlo, risk modeling</p>
               </div>
@@ -446,7 +446,7 @@ def pca_analysis(data, n_components=None):
                 <p className="text-gray-400 text-xs">Primary programming language</p>
               </div>
               <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
-                <div className="text-2xl mb-2">📊</div>
+                <div className="text-2xl mb-2">•</div>
                 <h4 className="text-white font-semibold mb-1">Pandas</h4>
                 <p className="text-gray-400 text-xs">Data manipulation</p>
               </div>
@@ -456,27 +456,27 @@ def pca_analysis(data, n_components=None):
                 <p className="text-gray-400 text-xs">Numerical computing</p>
               </div>
               <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
-                <div className="text-2xl mb-2">📈</div>
+                <div className="text-2xl mb-2">•</div>
                 <h4 className="text-white font-semibold mb-1">SciPy</h4>
                 <p className="text-gray-400 text-xs">Scientific computing</p>
               </div>
               <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
-                <div className="text-2xl mb-2">📊</div>
+                <div className="text-2xl mb-2">•</div>
                 <h4 className="text-white font-semibold mb-1">Statsmodels</h4>
                 <p className="text-gray-400 text-xs">Statistical modeling</p>
               </div>
               <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
-                <div className="text-2xl mb-2">🎯</div>
+                <div className="text-2xl mb-2">•</div>
                 <h4 className="text-white font-semibold mb-1">Scikit-learn</h4>
                 <p className="text-gray-400 text-xs">Machine learning</p>
               </div>
               <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
-                <div className="text-2xl mb-2">📊</div>
+                <div className="text-2xl mb-2">•</div>
                 <h4 className="text-white font-semibold mb-1">Matplotlib</h4>
                 <p className="text-gray-400 text-xs">Data visualization</p>
               </div>
               <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
-                <div className="text-2xl mb-2">📈</div>
+                <div className="text-2xl mb-2">•</div>
                 <h4 className="text-white font-semibold mb-1">Seaborn</h4>
                 <p className="text-gray-400 text-xs">Statistical plots</p>
               </div>

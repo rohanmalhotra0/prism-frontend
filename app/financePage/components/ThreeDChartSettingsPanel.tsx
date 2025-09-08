@@ -155,7 +155,7 @@ export default function ThreeDChartSettingsPanel({ onUpdate, currentSettings }: 
 
   return (
     <div className="rounded-3xl border border-white/10 bg-black/40 backdrop-blur-xl p-8 shadow-2xl">
-      <h2 className="text-2xl font-bold mb-6 text-white">🎯 3D Chart Settings</h2>
+      <h2 className="text-2xl font-bold mb-6 text-white">3D Chart Settings</h2>
 
       {/* Stock Symbol */}
       <div className="mb-6">

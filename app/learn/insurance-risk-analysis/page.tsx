@@ -58,7 +58,7 @@ def premium_calculation(sum_assured, age, term, interest_rate, mortality_table):
     },
     {
       title: "Risk Assessment",
-      icon: "⚠️",
+      icon: "•",
       description: "The process of identifying, analyzing, and evaluating risks to determine appropriate risk management strategies.",
       details: {
         howItWorks: "Systematically identifies potential risks, quantifies their probability and impact, and prioritizes them for management action.",
@@ -103,7 +103,7 @@ def premium_calculation(sum_assured, age, term, interest_rate, mortality_table):
     },
     {
       title: "Pricing Models",
-      icon: "💰",
+      icon: "•",
       description: "Mathematical models used to determine appropriate premiums and pricing for insurance products.",
       details: {
         howItWorks: "Combines actuarial principles with statistical modeling to estimate expected claims and set competitive premiums.",
@@ -148,7 +148,7 @@ def premium_calculation(sum_assured, age, term, interest_rate, mortality_table):
     },
     {
       title: "Reserve Setting",
-      icon: "🏦",
+      icon: "•",
       description: "The process of setting aside funds to cover future claims and obligations in insurance and pension funds.",
       details: {
         howItWorks: "Uses actuarial methods to estimate future liabilities and determine appropriate reserve levels to ensure solvency.",
@@ -213,7 +213,7 @@ def premium_calculation(sum_assured, age, term, interest_rate, mortality_table):
     },
     {
       title: "Solvency Analysis",
-      icon: "⚖️",
+      icon: "•",
       description: "The assessment of an insurer's ability to meet its financial obligations and regulatory capital requirements.",
       details: {
         howItWorks: "Compares available capital against required capital using various stress scenarios and regulatory frameworks.",
@@ -285,7 +285,7 @@ def premium_calculation(sum_assured, age, term, interest_rate, mortality_table):
     },
     {
       title: "Catastrophe Modeling",
-      icon: "🌪️",
+      icon: "•",
       description: "Advanced modeling techniques for assessing and pricing catastrophic risks such as natural disasters.",
       details: {
         howItWorks: "Uses historical data, scientific models, and Monte Carlo simulation to estimate the frequency and severity of catastrophic events.",
@@ -428,7 +428,7 @@ def catastrophe_modeling(exposure_data, historical_events, simulation_years=1000
         {/* Risk Topics Section */}
         <div id="topics" className="max-w-7xl mx-auto px-6 lg:px-8 pb-20">
           <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-white mb-4">🛡️ Core Risk Analysis Concepts</h2>
+            <h2 className="text-4xl font-bold text-white mb-4">• Core Risk Analysis Concepts</h2>
             <p className="text-gray-300 text-lg max-w-3xl mx-auto">
               Learn essential actuarial science and risk management methods used in insurance and financial institutions.
             </p>
@@ -517,25 +517,25 @@ def catastrophe_modeling(exposure_data, historical_events, simulation_years=1000
         {/* Learning Path Section */}
         <div className="max-w-7xl mx-auto px-6 lg:px-8 pb-20">
           <div className="bg-gradient-to-r from-purple-600/20 to-blue-600/20 rounded-2xl p-8 border border-purple-500/30">
-            <h3 className="text-2xl font-bold text-white mb-6 text-center">🎯 Learning Path</h3>
+            <h3 className="text-2xl font-bold text-white mb-6 text-center">• Learning Path</h3>
             <div className="grid md:grid-cols-4 gap-6">
               <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
-                <div className="text-2xl mb-2">1️⃣</div>
+                <div className="text-2xl mb-2">1</div>
                 <h4 className="text-white font-semibold mb-2">Probability</h4>
                 <p className="text-gray-300 text-sm">Basic probability theory</p>
               </div>
               <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
-                <div className="text-2xl mb-2">2️⃣</div>
+                <div className="text-2xl mb-2">2</div>
                 <h4 className="text-white font-semibold mb-2">Actuarial Math</h4>
                 <p className="text-gray-300 text-sm">Life contingencies, annuities</p>
               </div>
               <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
-                <div className="text-2xl mb-2">3️⃣</div>
+                <div className="text-2xl mb-2">3</div>
                 <h4 className="text-white font-semibold mb-2">Risk Models</h4>
                 <p className="text-gray-300 text-sm">Pricing, reserving, solvency</p>
               </div>
               <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
-                <div className="text-2xl mb-2">4️⃣</div>
+                <div className="text-2xl mb-2">4</div>
                 <h4 className="text-white font-semibold mb-2">Advanced Topics</h4>
                 <p className="text-gray-300 text-sm">Catastrophe modeling, regulation</p>
               </div>
@@ -554,12 +554,12 @@ def catastrophe_modeling(exposure_data, historical_events, simulation_years=1000
                 <p className="text-gray-400 text-xs">Programming language</p>
               </div>
               <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
-                <div className="text-2xl mb-2">📊</div>
+                <div className="text-2xl mb-2">•</div>
                 <h4 className="text-white font-semibold mb-1">R</h4>
                 <p className="text-gray-400 text-xs">Statistical computing</p>
               </div>
               <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
-                <div className="text-2xl mb-2">📈</div>
+                <div className="text-2xl mb-2">•</div>
                 <h4 className="text-white font-semibold mb-1">Excel</h4>
                 <p className="text-gray-400 text-xs">Spreadsheet modeling</p>
               </div>
@@ -569,12 +569,12 @@ def catastrophe_modeling(exposure_data, historical_events, simulation_years=1000
                 <p className="text-gray-400 text-xs">Risk modeling platform</p>
               </div>
               <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
-                <div className="text-2xl mb-2">🎯</div>
+                <div className="text-2xl mb-2">•</div>
                 <h4 className="text-white font-semibold mb-1">RMS</h4>
                 <p className="text-gray-400 text-xs">Catastrophe modeling</p>
               </div>
               <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
-                <div className="text-2xl mb-2">📊</div>
+                <div className="text-2xl mb-2">•</div>
                 <h4 className="text-white font-semibold mb-1">AIR</h4>
                 <p className="text-gray-400 text-xs">Catastrophe risk models</p>
               </div>
@@ -584,7 +584,7 @@ def catastrophe_modeling(exposure_data, historical_events, simulation_years=1000
                 <p className="text-gray-400 text-xs">Statistical analysis</p>
               </div>
               <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
-                <div className="text-2xl mb-2">🔍</div>
+                <div className="text-2xl mb-2">•</div>
                 <h4 className="text-white font-semibold mb-1">SPSS</h4>
                 <p className="text-gray-400 text-xs">Statistical software</p>
               </div>

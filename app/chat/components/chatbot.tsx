@@ -19,7 +19,7 @@ export default function ChatBot() {
     {
       role: "assistant",
       content:
-        "👋 Hey there! I'm Tomas, the King of Analytics! 👑 I'm a master at data, stats, and all things analytical. Whether you need help with financial modeling, statistical analysis, or just want to chat about data - I'm your guy! What can I help you analyze today?",
+        "Hey there! I'm Tomas, the King of Analytics! I'm a master at data, stats, and all things analytical. Whether you need help with financial modeling, statistical analysis, or just want to chat about data - I'm your guy! What can I help you analyze today?",
       timestamp: new Date(),
     },
   ]);
@@ -82,7 +82,7 @@ export default function ChatBot() {
       const errorMessage: Message = {
         role: "assistant",
         content:
-          "⚠️ I’m having trouble connecting right now. Please try again shortly.",
+          "I'm having trouble connecting right now. Please try again shortly.",
         timestamp: new Date(),
       };
       setMessages([...newMessages, errorMessage]);
@@ -169,7 +169,7 @@ export default function ChatBot() {
           <div className="p-4 border-t border-white/10 bg-black/70 backdrop-blur">
             {!user && (
               <div className="mb-3 p-2 bg-yellow-900/20 border border-yellow-500/50 rounded-lg text-yellow-400 text-xs text-center">
-                💡 Sign in to save your chats (max 5)
+                Sign in to save your chats (max 5)
               </div>
             )}
             <div className="flex gap-3">

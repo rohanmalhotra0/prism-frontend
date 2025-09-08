@@ -20,16 +20,16 @@ export default function PortfolioComponent() {
   };
 
   const views = [
-    { id: "overview", name: "Overview", icon: "📊" },
+    { id: "overview", name: "Overview", icon: "•" },
     { id: "holdings", name: "Holdings", icon: "💼" },
-    { id: "performance", name: "Performance", icon: "📈" },
-    { id: "allocation", name: "Allocation", icon: "🎯" },
+    { id: "performance", name: "Performance", icon: "•" },
+    { id: "allocation", name: "Allocation", icon: "•" },
   ];
 
   const assetClasses = [
-    { id: "stocks", name: "Stocks", icon: "📈", color: "from-green-500 to-emerald-500" },
+    { id: "stocks", name: "Stocks", icon: "•", color: "from-green-500 to-emerald-500" },
     { id: "bonds", name: "Bonds", icon: "📉", color: "from-blue-500 to-cyan-500" },
-    { id: "etfs", name: "ETFs", icon: "📊", color: "from-purple-500 to-indigo-500" },
+    { id: "etfs", name: "ETFs", icon: "•", color: "from-purple-500 to-indigo-500" },
     { id: "alternatives", name: "Alternatives", icon: "💎", color: "from-yellow-500 to-orange-500" },
   ];
 
@@ -118,7 +118,7 @@ export default function PortfolioComponent() {
                 🔄 Rebalance
               </button>
               <button className="w-full p-3 bg-purple-600/20 border border-purple-500/30 rounded-lg text-purple-300 hover:bg-purple-600/30 transition-colors">
-                📊 Generate Report
+                • Generate Report
               </button>
             </div>
           </div>
@@ -156,7 +156,7 @@ export default function PortfolioComponent() {
         <h3 className="text-xl font-semibold text-white mb-6">Portfolio Performance</h3>
         <div className="aspect-video bg-gradient-to-br from-gray-800/50 to-gray-700/30 rounded-xl border border-white/20 flex items-center justify-center">
           <div className="text-center">
-            <div className="text-6xl mb-4 animate-pulse">📈</div>
+            <div className="text-6xl mb-4 animate-pulse">•</div>
             <p className="text-gray-300 text-lg mb-2">Performance Chart</p>
             <p className="text-gray-400 text-sm">Interactive portfolio performance will render here</p>
           </div>

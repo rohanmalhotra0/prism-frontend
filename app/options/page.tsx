@@ -41,7 +41,7 @@ export default function OptionsPage() {
                 bg-gradient-to-br from-gray-800/40 to-gray-700/20 rounded-2xl border border-white/10 p-8">
                 {settings ? (
                   <div className="text-center">
-                    <div className="text-7xl mb-6">📊</div>
+                    <div className="text-7xl mb-6">•</div>
                     <p className="text-gray-200 text-xl mb-2 font-semibold">
                       {settings.underlying} Options Chart
                     </p>
@@ -51,7 +51,7 @@ export default function OptionsPage() {
                   </div>
                 ) : (
                   <div className="text-center">
-                    <div className="text-7xl mb-6">🎯</div>
+                    <div className="text-7xl mb-6">•</div>
                     <p className="text-gray-200 text-xl mb-2 font-semibold">No Chart Selected</p>
                     <p className="text-gray-400 text-base">Configure your options model below</p>
                   </div>

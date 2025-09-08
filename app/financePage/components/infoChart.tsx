@@ -31,7 +31,7 @@ export default function InfoChart({ symbol, live = false }: Props) {
       if (!res.ok) throw new Error(`Backend error: ${res.status}`);
 
       const data = await res.json();
-      console.log("📊 Fundamentals API returned:", data);
+      console.log("Fundamentals API returned:", data);
 
       setFundamentals(data);
     } catch (err) {

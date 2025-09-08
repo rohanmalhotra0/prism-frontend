@@ -10,7 +10,7 @@ export const CATEGORIES = [
     name: "Financial Modeling", 
     slug: "financial-modeling", 
     description: "Learn about DCF models, valuation techniques, and financial forecasting methods.",
-    icon: "📊",
+    icon: "•",
     topics: ["DCF Models", "Valuation", "Forecasting", "Financial Statements"],
     difficulty: "Intermediate",
     duration: "4-6 weeks"
@@ -28,7 +28,7 @@ export const CATEGORIES = [
     name: "Options & Derivatives", 
     slug: "options-derivatives", 
     description: "Master Black-Scholes, binomial models, and options pricing strategies.",
-    icon: "📈",
+    icon: "•",
     topics: ["Black-Scholes", "Binomial Models", "Greeks", "Volatility"],
     difficulty: "Advanced",
     duration: "6-8 weeks"
@@ -37,7 +37,7 @@ export const CATEGORIES = [
     name: "Insurance Risk Analysis", 
     slug: "insurance-risk-analysis", 
     description: "Understand actuarial science, risk assessment, and insurance mathematics.",
-    icon: "🛡️",
+    icon: "•",
     topics: ["Actuarial Science", "Risk Assessment", "Pricing Models", "Reserves"],
     difficulty: "Advanced",
     duration: "8-10 weeks"
@@ -55,7 +55,7 @@ export const CATEGORIES = [
     name: "Statistics & Probability", 
     slug: "statistics-probability", 
     description: "Build foundations in probability theory, distributions, and statistical inference.",
-    icon: "🎲",
+    icon: "•",
     topics: ["Probability", "Distributions", "Hypothesis Testing", "Bayesian"],
     difficulty: "Beginner",
     duration: "4-5 weeks"

@@ -7,9 +7,9 @@ export default function ThreeDComponent() {
   const [rotation, setRotation] = useState({ x: 0, y: 0, z: 0 });
 
   const models = [
-    { id: "portfolio", name: "Portfolio Model", icon: "📊" },
-    { id: "market", name: "Market Structure", icon: "🏛️" },
-    { id: "risk", name: "Risk Analysis", icon: "⚠️" },
+    { id: "portfolio", name: "Portfolio Model", icon: "•" },
+    { id: "market", name: "Market Structure", icon: "•" },
+    { id: "risk", name: "Risk Analysis", icon: "•" },
     { id: "correlation", name: "Correlation Matrix", icon: "🔗" },
   ];
 
@@ -29,7 +29,7 @@ export default function ThreeDComponent() {
           <div className="aspect-square bg-gradient-to-br from-gray-800/50 to-gray-700/30 rounded-xl border border-white/20 flex items-center justify-center relative overflow-hidden">
             {/* 3D Model Placeholder */}
             <div className="text-center">
-              <div className="text-8xl mb-4 animate-pulse">🎯</div>
+              <div className="text-8xl mb-4 animate-pulse">•</div>
               <p className="text-gray-300 text-lg mb-2">{selectedModel.charAt(0).toUpperCase() + selectedModel.slice(1)} Model</p>
               <p className="text-gray-400 text-sm">3D visualization will render here</p>
             </div>

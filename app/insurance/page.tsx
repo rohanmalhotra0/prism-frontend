@@ -58,13 +58,13 @@ export default function InsurancePage() {
                 bg-gradient-to-br from-gray-800/40 to-gray-700/20 rounded-2xl border border-white/10 p-8">
                 {settings ? (
                   <div className="text-center">
-                    <div className="text-7xl mb-6">📊</div>
+                    <div className="text-7xl mb-6">•</div>
                     <p className="text-gray-200 text-xl font-semibold">Risk Analysis Rendered</p>
                     <p className="text-gray-400">Chart will render here with your selected model & stress tests</p>
                   </div>
                 ) : (
                   <div className="text-center">
-                    <div className="text-7xl mb-6">🎯</div>
+                    <div className="text-7xl mb-6">•</div>
                     <p className="text-gray-200 text-xl font-semibold">No Model Selected</p>
                     <p className="text-gray-400">Configure your insurance risk settings below</p>
                   </div>

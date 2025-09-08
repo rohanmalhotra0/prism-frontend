@@ -191,7 +191,7 @@ function DatasetsContent() {
         ) : datasets.length === 0 ? (
           <div className="text-center py-12">
             <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
-              📊
+              •
             </div>
             <p className="text-muted-foreground text-lg mb-2">No datasets uploaded yet</p>
             <p className="text-muted-foreground/70 text-sm">Upload your first dataset to get started!</p>
@@ -206,7 +206,7 @@ function DatasetsContent() {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4">
                     <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-blue-500 rounded-xl flex items-center justify-center">
-                      📊
+                      •
                     </div>
                     <div>
                       <h3 className="font-semibold text-card-foreground text-lg">{dataset.name}</h3>

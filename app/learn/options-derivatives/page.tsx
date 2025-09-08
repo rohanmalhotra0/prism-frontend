@@ -45,7 +45,7 @@ def black_scholes_put(S, K, T, r, sigma):
     },
     {
       title: "Greeks",
-      icon: "📊",
+      icon: "•",
       description: "Sensitivity measures that quantify how option prices change with respect to various underlying factors.",
       details: {
         howItWorks: "Partial derivatives of the option price function with respect to different variables, measuring price sensitivity.",
@@ -131,7 +131,7 @@ def black_scholes_put(S, K, T, r, sigma):
     },
     {
       title: "Implied Volatility",
-      icon: "📈",
+      icon: "•",
       description: "The volatility level that makes the theoretical option price equal to the market price, derived from market data.",
       details: {
         howItWorks: "Uses numerical methods to find the volatility parameter that produces the observed market price when plugged into a pricing model.",
@@ -170,7 +170,7 @@ def volatility_smile(strikes, market_prices, S, T, r):
     },
     {
       title: "Hedging Strategies",
-      icon: "🛡️",
+      icon: "•",
       description: "Techniques to reduce or eliminate risk exposure using derivatives and other financial instruments.",
       details: {
         howItWorks: "Uses derivatives to offset the risk of an underlying position, creating a portfolio with reduced or zero net exposure.",
@@ -208,7 +208,7 @@ def portfolio_hedge(portfolio, hedge_instruments):
     },
     {
       title: "Exotic Options",
-      icon: "🎭",
+      icon: "•",
       description: "Complex options with non-standard features that go beyond simple call and put options.",
       details: {
         howItWorks: "Uses advanced mathematical models and numerical methods to price options with complex payoff structures and exercise conditions.",
@@ -321,7 +321,7 @@ def portfolio_hedge(portfolio, hedge_instruments):
         {/* Derivatives Models Section */}
         <div id="models" className="max-w-7xl mx-auto px-6 lg:px-8 pb-20">
           <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-white mb-4">📊 Core Derivatives Models</h2>
+            <h2 className="text-4xl font-bold text-white mb-4">• Core Derivatives Models</h2>
             <p className="text-gray-300 text-lg max-w-3xl mx-auto">
               Learn the essential mathematical models and pricing techniques used in options and derivatives markets.
             </p>
@@ -410,25 +410,25 @@ def portfolio_hedge(portfolio, hedge_instruments):
         {/* Learning Path Section */}
         <div className="max-w-7xl mx-auto px-6 lg:px-8 pb-20">
           <div className="bg-gradient-to-r from-purple-600/20 to-blue-600/20 rounded-2xl p-8 border border-purple-500/30">
-            <h3 className="text-2xl font-bold text-white mb-6 text-center">🎯 Learning Path</h3>
+            <h3 className="text-2xl font-bold text-white mb-6 text-center">• Learning Path</h3>
             <div className="grid md:grid-cols-4 gap-6">
               <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
-                <div className="text-2xl mb-2">1️⃣</div>
+                <div className="text-2xl mb-2">1</div>
                 <h4 className="text-white font-semibold mb-2">Basics</h4>
                 <p className="text-gray-300 text-sm">Options terminology, payoffs</p>
               </div>
               <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
-                <div className="text-2xl mb-2">2️⃣</div>
+                <div className="text-2xl mb-2">2</div>
                 <h4 className="text-white font-semibold mb-2">Pricing Models</h4>
                 <p className="text-gray-300 text-sm">Black-Scholes, Binomial</p>
               </div>
               <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
-                <div className="text-2xl mb-2">3️⃣</div>
+                <div className="text-2xl mb-2">3</div>
                 <h4 className="text-white font-semibold mb-2">Greeks & Risk</h4>
                 <p className="text-gray-300 text-sm">Sensitivity analysis, hedging</p>
               </div>
               <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
-                <div className="text-2xl mb-2">4️⃣</div>
+                <div className="text-2xl mb-2">4</div>
                 <h4 className="text-white font-semibold mb-2">Advanced</h4>
                 <p className="text-gray-300 text-sm">Exotic options, strategies</p>
               </div>
@@ -447,7 +447,7 @@ def portfolio_hedge(portfolio, hedge_instruments):
                 <p className="text-gray-400 text-xs">Programming language</p>
               </div>
               <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
-                <div className="text-2xl mb-2">📊</div>
+                <div className="text-2xl mb-2">•</div>
                 <h4 className="text-white font-semibold mb-1">QuantLib</h4>
                 <p className="text-gray-400 text-xs">Quantitative finance library</p>
               </div>
@@ -457,7 +457,7 @@ def portfolio_hedge(portfolio, hedge_instruments):
                 <p className="text-gray-400 text-xs">Scientific computing</p>
               </div>
               <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
-                <div className="text-2xl mb-2">📈</div>
+                <div className="text-2xl mb-2">•</div>
                 <h4 className="text-white font-semibold mb-1">Bloomberg</h4>
                 <p className="text-gray-400 text-xs">Market data & analytics</p>
               </div>
@@ -467,12 +467,12 @@ def portfolio_hedge(portfolio, hedge_instruments):
                 <p className="text-gray-400 text-xs">Financial data platform</p>
               </div>
               <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
-                <div className="text-2xl mb-2">🎯</div>
+                <div className="text-2xl mb-2">•</div>
                 <h4 className="text-white font-semibold mb-1">Derivatives Pro</h4>
                 <p className="text-gray-400 text-xs">Options pricing software</p>
               </div>
               <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
-                <div className="text-2xl mb-2">📊</div>
+                <div className="text-2xl mb-2">•</div>
                 <h4 className="text-white font-semibold mb-1">Excel</h4>
                 <p className="text-gray-400 text-xs">Spreadsheet modeling</p>
               </div>

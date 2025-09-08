@@ -45,7 +45,7 @@ export default function ModelingSandbox() {
                     : "bg-white/10 text-gray-300 hover:bg-white/20 border border-white/20"
                 }`}
               >
-                🧮 Math Visualizer
+                Math Visualizer
               </button>
               <button
                 onClick={() => setActiveMode("datasets")}
@@ -55,7 +55,7 @@ export default function ModelingSandbox() {
                     : "bg-white/10 text-gray-300 hover:bg-white/20 border border-white/20"
                 }`}
               >
-                📊 Dataset Lab
+                Dataset Lab
               </button>
               <button
                 onClick={() => setActiveMode("ml")}
@@ -65,7 +65,7 @@ export default function ModelingSandbox() {
                     : "bg-white/10 text-gray-300 hover:bg-white/20 border border-white/20"
                 }`}
               >
-                🤖 ML Toolkit
+                Machine Learning
               </button>
             </div>
           </div>

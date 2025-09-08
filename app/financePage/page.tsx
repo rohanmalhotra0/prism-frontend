@@ -18,7 +18,7 @@ export default function FinanceModelsPage() {
 
       <div className="container mx-auto py-12 space-y-12">
         <h1 className="text-4xl font-extrabold tracking-tight mb-6">
-          📈 Stock Modeling Dashboard
+          Stock Modeling Dashboard
         </h1>
 
         {/* Chart + Fundamentals */}
@@ -94,18 +94,18 @@ export default function FinanceModelsPage() {
             {/* Navigation Controls - Only show in 3D view */}
             {is3DView && (
               <div className="mt-6 bg-gradient-to-br from-black/90 to-gray-900/90 backdrop-blur-md text-white text-sm p-4 rounded-xl shadow-2xl border border-white/10">
-                <div className="font-bold mb-3 text-blue-400">🎮 Navigation Controls</div>
+                <div className="font-bold mb-3 text-blue-400">Navigation Controls</div>
                 <div className="space-y-2 text-gray-200">
                   <div className="flex items-center space-x-2">
-                    <span className="text-lg">🖱️</span>
+                    <span className="text-lg">•</span>
                     <span><strong>Left drag:</strong> Rotate view</span>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <span className="text-lg">🖱️</span>
+                    <span className="text-lg">•</span>
                     <span><strong>Right drag:</strong> Pan view</span>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <span className="text-lg">🖱️</span>
+                    <span className="text-lg">•</span>
                     <span><strong>Scroll:</strong> Zoom in/out</span>
                   </div>
                   <div className="flex items-center space-x-2">

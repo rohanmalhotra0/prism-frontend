@@ -56,7 +56,7 @@ export default function ForumPage() {
                     : "bg-white/10 text-gray-300 hover:bg-white/20 border border-white/20"
                 }`}
               >
-                🏆 Showcase
+                • Showcase
               </button>
             </div>
           </div>
@@ -135,21 +135,21 @@ export default function ForumPage() {
                 <h2 className="text-3xl font-bold text-white mb-6">Community Showcase</h2>
                 <div className="space-y-6">
                   <div className="bg-white/5 rounded-xl p-6 border border-white/10">
-                    <h3 className="text-xl font-semibold text-white mb-2">🏆 Advanced Portfolio Optimization Model</h3>
+                    <h3 className="text-xl font-semibold text-white mb-2">• Advanced Portfolio Optimization Model</h3>
                     <p className="text-gray-400 mb-4">A comprehensive model that combines multiple optimization techniques for institutional portfolios.</p>
                     <div className="flex items-center gap-4 text-sm text-gray-500">
                       <span>👤 David Park</span>
                       <span>📅 2 days ago</span>
-                      <span>⭐ 24 likes</span>
+                      <span>• 24 likes</span>
                     </div>
                   </div>
                   <div className="bg-white/5 rounded-xl p-6 border border-white/10">
-                    <h3 className="text-xl font-semibold text-white mb-2">🎯 Real-time Risk Monitoring Dashboard</h3>
+                    <h3 className="text-xl font-semibold text-white mb-2">• Real-time Risk Monitoring Dashboard</h3>
                     <p className="text-gray-400 mb-4">An innovative dashboard for real-time portfolio risk monitoring with automated alerts.</p>
                     <div className="flex items-center gap-4 text-sm text-gray-500">
                       <span>👤 Lisa Zhang</span>
                       <span>📅 4 days ago</span>
-                      <span>⭐ 18 likes</span>
+                      <span>• 18 likes</span>
                     </div>
                   </div>
                 </div>

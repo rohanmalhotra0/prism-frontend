@@ -7,10 +7,10 @@ export default function AnalyticsComponent() {
   const [timeRange, setTimeRange] = useState("1y");
 
   const metrics = [
-    { id: "performance", name: "Performance", icon: "📈", color: "from-green-500 to-emerald-500" },
-    { id: "risk", name: "Risk Metrics", icon: "⚠️", color: "from-red-500 to-pink-500" },
+    { id: "performance", name: "Performance", icon: "•", color: "from-green-500 to-emerald-500" },
+    { id: "risk", name: "Risk Metrics", icon: "•", color: "from-red-500 to-pink-500" },
     { id: "correlation", name: "Correlation", icon: "🔗", color: "from-blue-500 to-cyan-500" },
-    { id: "volatility", name: "Volatility", icon: "📊", color: "from-purple-500 to-indigo-500" },
+    { id: "volatility", name: "Volatility", icon: "•", color: "from-purple-500 to-indigo-500" },
   ];
 
   const timeRanges = [
@@ -110,7 +110,7 @@ export default function AnalyticsComponent() {
             {/* Chart Placeholder */}
             <div className="aspect-video bg-gradient-to-br from-gray-800/50 to-gray-700/30 rounded-xl border border-white/20 flex items-center justify-center">
               <div className="text-center">
-                <div className="text-6xl mb-4 animate-pulse">📊</div>
+                <div className="text-6xl mb-4 animate-pulse">•</div>
                 <p className="text-gray-300 text-lg mb-2">{selectedMetric.charAt(0).toUpperCase() + selectedMetric.slice(1)} Analysis</p>
                 <p className="text-gray-400 text-sm">Interactive chart will render here</p>
               </div>

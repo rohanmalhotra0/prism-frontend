@@ -188,7 +188,7 @@ export default function ResearchPage() {
                             className="group/btn relative overflow-hidden rounded-full bg-gradient-to-r from-gray-600 to-gray-700 px-8 py-4 text-white font-semibold shadow-lg transition-all duration-300 hover:from-gray-500 hover:to-gray-600 hover:shadow-xl hover:shadow-gray-500/25 hover:scale-105 focus:ring-4 focus:ring-gray-400/30 focus:outline-none active:scale-95"
                           >
                             <a href={paper.pdfUrl} download className="flex items-center gap-2">
-                              <span className="text-lg">⬇️</span>
+                              <span className="text-lg">↓</span>
                               Download PDF
                             </a>
                           </Button>

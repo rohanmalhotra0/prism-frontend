@@ -62,7 +62,7 @@ model.fit(X_train, y_train, epochs=100, validation_split=0.2)`
     },
     {
       title: "Support Vector Machines",
-      icon: "🎯",
+      icon: "•",
       description: "A powerful classification and regression algorithm that finds optimal decision boundaries in high-dimensional space.",
       details: {
         howItWorks: "SVM finds the best hyperplane that separates different classes with maximum margin, using kernel functions for non-linear data.",
@@ -85,7 +85,7 @@ predictions = svm.predict(X_test_scaled)`
     },
     {
       title: "Linear Regression",
-      icon: "📈",
+      icon: "•",
       description: "A fundamental statistical method that models the relationship between dependent and independent variables.",
       details: {
         howItWorks: "Finds the best straight line through data points by minimizing the sum of squared residuals between predicted and actual values.",
@@ -110,7 +110,7 @@ print(f"R-squared: {lr.score(X, y)}")`
     },
     {
       title: "K-Means Clustering",
-      icon: "🎪",
+      icon: "•",
       description: "An unsupervised learning algorithm that groups similar data points into clusters based on feature similarity.",
       details: {
         howItWorks: "K-means iteratively assigns data points to the nearest cluster center and updates cluster centers based on assigned points.",
@@ -136,7 +136,7 @@ clusters = kmeans.fit_predict(X)`
     },
     {
       title: "Gradient Boosting",
-      icon: "🚀",
+      icon: "•",
       description: "An ensemble method that builds models sequentially, with each new model correcting errors of previous models.",
       details: {
         howItWorks: "Gradient boosting trains models sequentially, where each new model focuses on the mistakes made by previous models.",
@@ -321,25 +321,25 @@ print(f"Mean CV Score: {scores.mean():.4f}")`
         {/* Learning Path Section */}
         <div className="max-w-7xl mx-auto px-6 lg:px-8 pb-20">
           <div className="bg-gradient-to-r from-purple-600/20 to-blue-600/20 rounded-2xl p-8 border border-purple-500/30">
-            <h3 className="text-2xl font-bold text-white mb-6 text-center">🎯 Learning Path</h3>
+            <h3 className="text-2xl font-bold text-white mb-6 text-center">• Learning Path</h3>
             <div className="grid md:grid-cols-4 gap-6">
               <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
-                <div className="text-2xl mb-2">1️⃣</div>
+                <div className="text-2xl mb-2">1</div>
                 <h4 className="text-white font-semibold mb-2">Foundation</h4>
                 <p className="text-gray-300 text-sm">Linear Regression, Basic Statistics</p>
               </div>
               <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
-                <div className="text-2xl mb-2">2️⃣</div>
+                <div className="text-2xl mb-2">2</div>
                 <h4 className="text-white font-semibold mb-2">Supervised Learning</h4>
                 <p className="text-gray-300 text-sm">Random Forest, SVM, Neural Networks</p>
               </div>
               <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
-                <div className="text-2xl mb-2">3️⃣</div>
+                <div className="text-2xl mb-2">3</div>
                 <h4 className="text-white font-semibold mb-2">Unsupervised Learning</h4>
                 <p className="text-gray-300 text-sm">Clustering, Dimensionality Reduction</p>
               </div>
               <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
-                <div className="text-2xl mb-2">4️⃣</div>
+                <div className="text-2xl mb-2">4</div>
                 <h4 className="text-white font-semibold mb-2">Advanced Topics</h4>
                 <p className="text-gray-300 text-sm">Deep Learning, Reinforcement Learning</p>
               </div>
@@ -373,7 +373,7 @@ print(f"Mean CV Score: {scores.mean():.4f}")`
                 <p className="text-gray-400 text-xs">Dynamic neural networks</p>
               </div>
               <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
-                <div className="text-2xl mb-2">📈</div>
+                <div className="text-2xl mb-2">•</div>
                 <h4 className="text-white font-semibold mb-1">XGBoost</h4>
                 <p className="text-gray-400 text-xs">Gradient boosting</p>
               </div>
@@ -388,7 +388,7 @@ print(f"Mean CV Score: {scores.mean():.4f}")`
                 <p className="text-gray-400 text-xs">ML lifecycle management</p>
               </div>
               <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
-                <div className="text-2xl mb-2">🎯</div>
+                <div className="text-2xl mb-2">•</div>
                 <h4 className="text-white font-semibold mb-1">Optuna</h4>
                 <p className="text-gray-400 text-xs">Hyperparameter optimization</p>
               </div>

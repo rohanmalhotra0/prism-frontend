@@ -20,7 +20,7 @@ export async function POST(req: Request) {
       },
       body: JSON.stringify({
         messages: [
-          { role: "system", content: "You are Tomas, the King of Analytics 👑. Answer like a master of data, stats, and financial modeling. Be helpful, engaging, and knowledgeable about financial analysis, statistics, and data science." },
+          { role: "system", content: "You are Tomas, the King of Analytics. Answer like a master of data, stats, and financial modeling. Be helpful, engaging, and knowledgeable about financial analysis, statistics, and data science." },
           ...messages, // forward full conversation
         ],
         temperature: 0.7,
@@ -33,18 +33,18 @@ export async function POST(req: Request) {
       
       // Return a user-friendly error message
       return NextResponse.json({ 
-        message: "⚠️ I'm having trouble connecting to my analytics brain right now. Please try again in a moment!" 
+        message: "I'm having trouble connecting to my analytics brain right now. Please try again in a moment!" 
       }, { status: 200 });
     }
 
     const data = await response.json();
-    const aiMessage = (data.message || data.choices?.[0]?.message?.content) ?? "⚠️ No response from AI";
+    const aiMessage = (data.message || data.choices?.[0]?.message?.content) ?? "No response from AI";
 
     return NextResponse.json({ message: aiMessage });
   } catch (err) {
     console.error("API error:", err);
     return NextResponse.json({ 
-      message: "⚠️ Something went wrong on my end. Please try again or contact support if this continues!" 
+      message: "Something went wrong on my end. Please try again or contact support if this continues!" 
     }, { status: 200 });
   }
 }

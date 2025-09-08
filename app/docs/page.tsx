@@ -8,13 +8,13 @@ export default function DocumentationPage() {
 
   const sections = [
     { id: "overview", title: "📋 Overview", icon: "📋" },
-    { id: "frontend", title: "🎨 Frontend", icon: "🎨" },
-    { id: "backend", title: "⚙️ Backend", icon: "⚙️" },
-    { id: "database", title: "🗄️ Database", icon: "🗄️" },
+    { id: "frontend", title: "Frontend", icon: "🎨" },
+    { id: "backend", title: "Backend", icon: "⚙️" },
+    { id: "database", title: "Database", icon: "🗄️" },
     { id: "apis", title: "🔌 APIs", icon: "🔌" },
     { id: "features", title: "✨ Features", icon: "✨" },
-    { id: "deployment", title: "🚀 Deployment", icon: "🚀" },
-    { id: "architecture", title: "🏗️ Architecture", icon: "🏗️" },
+    { id: "deployment", title: "Deployment", icon: "🚀" },
+    { id: "architecture", title: "Architecture", icon: "🏗️" },
   ];
 
   return (
@@ -80,7 +80,7 @@ export default function DocumentationPage() {
                       
                       <div className="grid md:grid-cols-2 gap-6 mb-8">
                         <div className="bg-white/5 rounded-xl p-6 border border-white/10">
-                          <h3 className="text-xl font-semibold text-white mb-3">🎨 Frontend Stack</h3>
+                          <h3 className="text-xl font-semibold text-white mb-3">Frontend Stack</h3>
                           <ul className="text-gray-300 space-y-2">
                             <li>• <strong>Next.js 15</strong> - React framework with App Router</li>
                             <li>• <strong>TypeScript</strong> - Type-safe JavaScript</li>
@@ -94,7 +94,7 @@ export default function DocumentationPage() {
                         </div>
                         
                         <div className="bg-white/5 rounded-xl p-6 border border-white/10">
-                          <h3 className="text-xl font-semibold text-white mb-3">⚙️ Backend Stack</h3>
+                          <h3 className="text-xl font-semibold text-white mb-3">Backend Stack</h3>
                           <ul className="text-gray-300 space-y-2">
                             <li>• <strong>Next.js API Routes</strong> - Serverless functions</li>
                             <li>• <strong>Supabase</strong> - Backend-as-a-Service</li>
@@ -109,7 +109,7 @@ export default function DocumentationPage() {
                       </div>
 
                       <div className="bg-gradient-to-r from-purple-600/20 to-blue-600/20 rounded-xl p-6 border border-purple-500/30">
-                        <h3 className="text-xl font-semibold text-white mb-3">🚀 Key Features</h3>
+                        <h3 className="text-xl font-semibold text-white mb-3">Key Features</h3>
                         <ul className="text-gray-300 space-y-2">
                           <li>• <strong>AI-Powered Chatbot</strong> - OpenAI integration for financial insights</li>
                           <li>• <strong>Dataset Management</strong> - Upload, manage, and analyze financial data</li>
@@ -128,7 +128,7 @@ export default function DocumentationPage() {
 
                 {activeSection === "frontend" && (
                   <div>
-                    <h2 className="text-3xl font-bold text-white mb-6">🎨 Frontend Technologies</h2>
+                    <h2 className="text-3xl font-bold text-white mb-6">Frontend Technologies</h2>
                     
                     <div className="space-y-8">
                       <div className="bg-white/5 rounded-xl p-6 border border-white/10">
@@ -229,7 +229,7 @@ export default function DocumentationPage() {
 
                 {activeSection === "backend" && (
                   <div>
-                    <h2 className="text-3xl font-bold text-white mb-6">⚙️ Backend Technologies</h2>
+                    <h2 className="text-3xl font-bold text-white mb-6">Backend Technologies</h2>
                     
                     <div className="space-y-8">
                       <div className="bg-white/5 rounded-xl p-6 border border-white/10">
@@ -303,7 +303,7 @@ export default function DocumentationPage() {
 
                 {activeSection === "database" && (
                   <div>
-                    <h2 className="text-3xl font-bold text-white mb-6">🗄️ Database Technologies</h2>
+                    <h2 className="text-3xl font-bold text-white mb-6">Database Technologies</h2>
                     
                     <div className="space-y-8">
                       <div className="bg-white/5 rounded-xl p-6 border border-white/10">
@@ -465,7 +465,7 @@ const data = await response.json();`}
                       </div>
 
                       <div className="bg-white/5 rounded-xl p-6 border border-white/10">
-                        <h3 className="text-2xl font-semibold text-white mb-4">📊 Dataset Management</h3>
+                        <h3 className="text-2xl font-semibold text-white mb-4">Dataset Management</h3>
                         <p className="text-gray-300 mb-4">
                           Comprehensive data upload and management system:
                         </p>
@@ -494,7 +494,7 @@ const data = await response.json();`}
                       </div>
 
                       <div className="bg-white/5 rounded-xl p-6 border border-white/10">
-                        <h3 className="text-2xl font-semibold text-white mb-4">📈 Financial Visualization</h3>
+                        <h3 className="text-2xl font-semibold text-white mb-4">Financial Visualization</h3>
                         <p className="text-gray-300 mb-4">
                           Advanced charting and data visualization capabilities:
                         </p>
@@ -509,7 +509,7 @@ const data = await response.json();`}
                       </div>
 
                       <div className="bg-white/5 rounded-xl p-6 border border-white/10">
-                        <h3 className="text-2xl font-semibold text-white mb-4">🎓 Learning Resources</h3>
+                        <h3 className="text-2xl font-semibold text-white mb-4">Learning Resources</h3>
                         <p className="text-gray-300 mb-4">
                           Comprehensive educational content for financial modeling:
                         </p>
@@ -525,7 +525,7 @@ const data = await response.json();`}
                       </div>
 
                       <div className="bg-white/5 rounded-xl p-6 border border-white/10">
-                        <h3 className="text-2xl font-semibold text-white mb-4">🎨 User Interface</h3>
+                        <h3 className="text-2xl font-semibold text-white mb-4">User Interface</h3>
                         <p className="text-gray-300 mb-4">
                           Modern, responsive, and accessible user interface:
                         </p>
@@ -544,7 +544,7 @@ const data = await response.json();`}
 
                 {activeSection === "deployment" && (
                   <div>
-                    <h2 className="text-3xl font-bold text-white mb-6">🚀 Deployment & Infrastructure</h2>
+                    <h2 className="text-3xl font-bold text-white mb-6">Deployment & Infrastructure</h2>
                     
                     <div className="space-y-8">
                       <div className="bg-white/5 rounded-xl p-6 border border-white/10">
@@ -619,7 +619,7 @@ NEXT_GOOGLE_CLIENT_SECRET=your_google_client_secret
 
                 {activeSection === "architecture" && (
                   <div>
-                    <h2 className="text-3xl font-bold text-white mb-6">🏗️ System Architecture</h2>
+                    <h2 className="text-3xl font-bold text-white mb-6">System Architecture</h2>
                     
                     <div className="space-y-8">
                       <div className="bg-white/5 rounded-xl p-6 border border-white/10">
@@ -685,7 +685,7 @@ NEXT_GOOGLE_CLIENT_SECRET=your_google_client_secret
                       </div>
 
                       <div className="bg-gradient-to-r from-purple-600/20 to-blue-600/20 rounded-xl p-6 border border-purple-500/30">
-                        <h3 className="text-xl font-semibold text-white mb-3">🚀 Performance Optimizations</h3>
+                        <h3 className="text-xl font-semibold text-white mb-3">Performance Optimizations</h3>
                         <ul className="text-gray-300 space-y-2">
                           <li>• <strong>Code splitting</strong> - Lazy loading for faster initial load</li>
                           <li>• <strong>Image optimization</strong> - Next.js automatic image optimization</li>

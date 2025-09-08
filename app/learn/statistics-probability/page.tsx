@@ -9,7 +9,7 @@ export default function StatisticsProbabilityPage() {
   const statsTopics = [
     {
       title: "Probability Distributions",
-      icon: "📊",
+      icon: "•",
       description: "Mathematical functions that describe the likelihood of different outcomes in random experiments.",
       details: {
         howItWorks: "Distributions characterize the behavior of random variables through probability density functions and cumulative distribution functions.",
@@ -48,7 +48,7 @@ def analyze_distributions(data):
     },
     {
       title: "Hypothesis Testing",
-      icon: "🔍",
+      icon: "•",
       description: "Statistical methods for making decisions about population parameters based on sample data.",
       details: {
         howItWorks: "Formulates null and alternative hypotheses, calculates test statistics, and determines statistical significance using p-values.",
@@ -90,7 +90,7 @@ def hypothesis_tests(sample1, sample2, alpha=0.05):
     },
     {
       title: "Bayesian Statistics",
-      icon: "🎯",
+      icon: "•",
       description: "A statistical approach that updates probability estimates as new evidence becomes available.",
       details: {
         howItWorks: "Uses Bayes' theorem to update prior beliefs with observed data, resulting in posterior probability distributions.",
@@ -238,7 +238,7 @@ def confidence_intervals(data, confidence_level=0.95):
     },
     {
       title: "Regression Analysis",
-      icon: "📈",
+      icon: "•",
       description: "Statistical methods for modeling relationships between dependent and independent variables.",
       details: {
         howItWorks: "Fits mathematical models to data to understand and predict relationships, measuring how well the model explains the data.",
@@ -364,7 +364,7 @@ def regression_analysis(X, y):
         {/* Statistics Topics Section */}
         <div id="topics" className="max-w-7xl mx-auto px-6 lg:px-8 pb-20">
           <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-white mb-4">📊 Core Statistical Concepts</h2>
+            <h2 className="text-4xl font-bold text-white mb-4">• Core Statistical Concepts</h2>
             <p className="text-gray-300 text-lg max-w-3xl mx-auto">
               Master the fundamental statistical methods and probability theory essential for quantitative finance.
             </p>
@@ -453,25 +453,25 @@ def regression_analysis(X, y):
         {/* Learning Path Section */}
         <div className="max-w-7xl mx-auto px-6 lg:px-8 pb-20">
           <div className="bg-gradient-to-r from-purple-600/20 to-blue-600/20 rounded-2xl p-8 border border-purple-500/30">
-            <h3 className="text-2xl font-bold text-white mb-6 text-center">🎯 Learning Path</h3>
+            <h3 className="text-2xl font-bold text-white mb-6 text-center">• Learning Path</h3>
             <div className="grid md:grid-cols-4 gap-6">
               <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
-                <div className="text-2xl mb-2">1️⃣</div>
+                <div className="text-2xl mb-2">1</div>
                 <h4 className="text-white font-semibold mb-2">Descriptive Stats</h4>
                 <p className="text-gray-300 text-sm">Means, variances, distributions</p>
               </div>
               <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
-                <div className="text-2xl mb-2">2️⃣</div>
+                <div className="text-2xl mb-2">2</div>
                 <h4 className="text-white font-semibold mb-2">Probability</h4>
                 <p className="text-gray-300 text-sm">Distributions, Bayes' theorem</p>
               </div>
               <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
-                <div className="text-2xl mb-2">3️⃣</div>
+                <div className="text-2xl mb-2">3</div>
                 <h4 className="text-white font-semibold mb-2">Inference</h4>
                 <p className="text-gray-300 text-sm">Hypothesis testing, CIs</p>
               </div>
               <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
-                <div className="text-2xl mb-2">4️⃣</div>
+                <div className="text-2xl mb-2">4</div>
                 <h4 className="text-white font-semibold mb-2">Regression</h4>
                 <p className="text-gray-300 text-sm">Linear models, correlation</p>
               </div>
@@ -490,7 +490,7 @@ def regression_analysis(X, y):
                 <p className="text-gray-400 text-xs">Primary language</p>
               </div>
               <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
-                <div className="text-2xl mb-2">📊</div>
+                <div className="text-2xl mb-2">•</div>
                 <h4 className="text-white font-semibold mb-1">NumPy</h4>
                 <p className="text-gray-400 text-xs">Numerical computing</p>
               </div>
@@ -500,27 +500,27 @@ def regression_analysis(X, y):
                 <p className="text-gray-400 text-xs">Scientific computing</p>
               </div>
               <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
-                <div className="text-2xl mb-2">📈</div>
+                <div className="text-2xl mb-2">•</div>
                 <h4 className="text-white font-semibold mb-1">Pandas</h4>
                 <p className="text-gray-400 text-xs">Data manipulation</p>
               </div>
               <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
-                <div className="text-2xl mb-2">📊</div>
+                <div className="text-2xl mb-2">•</div>
                 <h4 className="text-white font-semibold mb-1">Statsmodels</h4>
                 <p className="text-gray-400 text-xs">Statistical modeling</p>
               </div>
               <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
-                <div className="text-2xl mb-2">🎯</div>
+                <div className="text-2xl mb-2">•</div>
                 <h4 className="text-white font-semibold mb-1">Scikit-learn</h4>
                 <p className="text-gray-400 text-xs">Machine learning</p>
               </div>
               <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
-                <div className="text-2xl mb-2">📊</div>
+                <div className="text-2xl mb-2">•</div>
                 <h4 className="text-white font-semibold mb-1">Matplotlib</h4>
                 <p className="text-gray-400 text-xs">Data visualization</p>
               </div>
               <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
-                <div className="text-2xl mb-2">📈</div>
+                <div className="text-2xl mb-2">•</div>
                 <h4 className="text-white font-semibold mb-1">Seaborn</h4>
                 <p className="text-gray-400 text-xs">Statistical plots</p>
               </div>

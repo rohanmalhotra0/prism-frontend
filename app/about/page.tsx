@@ -59,7 +59,7 @@ export default function AboutPage() {
 
               <div className="space-y-4 text-gray-300 mb-6">
                 <div>
-                  <h3 className="text-lg font-semibold text-white mb-2">🎓 Education</h3>
+                  <h3 className="text-lg font-semibold text-white mb-2">Education</h3>
                   <p className="text-sm">BS Computer Science & Economics, Mathematics Minor</p>
                   <p className="text-sm text-gray-400">New York University</p>
                 </div>
@@ -68,7 +68,7 @@ export default function AboutPage() {
                   <p className="text-sm">Virginia Tech Hume Center - CubeSats & Signal Processing</p>
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-white mb-2">🎯 Goals</h3>
+                  <h3 className="text-lg font-semibold text-white mb-2">Goals</h3>
                   <p className="text-sm">FCAS Actuary • Quantitative Finance • Full-Stack Development</p>
                 </div>
               </div>
@@ -145,16 +145,16 @@ export default function AboutPage() {
 
               <div className="space-y-4 text-gray-300 mb-6">
                 <div>
-                  <h3 className="text-lg font-semibold text-white mb-2">🎓 Education</h3>
+                  <h3 className="text-lg font-semibold text-white mb-2">Education</h3>
                   <p className="text-sm">BS Business and Computer Science</p>
                   <p className="text-sm text-gray-400">University Student</p>
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-white mb-2">💻 Expertise</h3>
+                  <h3 className="text-lg font-semibold text-white mb-2">Expertise</h3>
                   <p className="text-sm">Full-Stack Development • Data Structures • Algorithms</p>
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-white mb-2">🎯 Goals</h3>
+                  <h3 className="text-lg font-semibold text-white mb-2">Goals</h3>
                   <p className="text-sm">Software Engineering • Tech Innovation • Startup Development</p>
                 </div>
               </div>

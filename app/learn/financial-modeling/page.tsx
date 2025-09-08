@@ -9,7 +9,7 @@ export default function FinancialModelingPage() {
   const modelingTopics = [
     {
       title: "Discounted Cash Flow (DCF)",
-      icon: "💰",
+      icon: "•",
       description: "A fundamental valuation method that estimates the value of an investment based on its expected future cash flows.",
       details: {
         howItWorks: "DCF calculates the present value of projected future cash flows by discounting them back to today using a required rate of return.",
@@ -43,7 +43,7 @@ export default function FinancialModelingPage() {
     },
     {
       title: "Comparable Company Analysis",
-      icon: "📊",
+      icon: "•",
       description: "A relative valuation method that compares a company's metrics to similar companies in the same industry.",
       details: {
         howItWorks: "Identifies similar companies, calculates valuation multiples (P/E, EV/EBITDA, etc.), and applies them to the target company.",
@@ -84,7 +84,7 @@ def comparable_analysis(target_company, peer_companies):
     },
     {
       title: "Leveraged Buyout (LBO) Model",
-      icon: "🏗️",
+      icon: "•",
       description: "A financial model used to evaluate leveraged buyout transactions, focusing on debt capacity and returns.",
       details: {
         howItWorks: "Models the acquisition using significant debt financing, projects cash flows to service debt, and calculates returns to equity investors.",
@@ -171,7 +171,7 @@ def comparable_analysis(target_company, peer_companies):
     },
     {
       title: "Monte Carlo Simulation",
-      icon: "🎲",
+      icon: "•",
       description: "A statistical method that uses random sampling to model uncertainty and risk in financial projections.",
       details: {
         howItWorks: "Runs thousands of simulations with random inputs to generate a distribution of possible outcomes and assess risk.",
@@ -216,7 +216,7 @@ def monte_carlo_simulation(n_simulations=10000):
     },
     {
       title: "Sensitivity Analysis",
-      icon: "🔍",
+      icon: "•",
       description: "A technique to understand how changes in input variables affect the output of a financial model.",
       details: {
         howItWorks: "Systematically varies key input variables while holding others constant to measure their impact on model outputs.",
@@ -321,7 +321,7 @@ def monte_carlo_simulation(n_simulations=10000):
         {/* Financial Models Section */}
         <div id="models" className="max-w-7xl mx-auto px-6 lg:px-8 pb-20">
           <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-white mb-4">📊 Core Financial Models</h2>
+            <h2 className="text-4xl font-bold text-white mb-4">• Core Financial Models</h2>
             <p className="text-gray-300 text-lg max-w-3xl mx-auto">
               Learn the essential financial modeling techniques used in investment banking, private equity, and corporate finance.
             </p>
@@ -410,25 +410,25 @@ def monte_carlo_simulation(n_simulations=10000):
         {/* Learning Path Section */}
         <div className="max-w-7xl mx-auto px-6 lg:px-8 pb-20">
           <div className="bg-gradient-to-r from-purple-600/20 to-blue-600/20 rounded-2xl p-8 border border-purple-500/30">
-            <h3 className="text-2xl font-bold text-white mb-6 text-center">🎯 Learning Path</h3>
+            <h3 className="text-2xl font-bold text-white mb-6 text-center">• Learning Path</h3>
             <div className="grid md:grid-cols-4 gap-6">
               <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
-                <div className="text-2xl mb-2">1️⃣</div>
+                <div className="text-2xl mb-2">1</div>
                 <h4 className="text-white font-semibold mb-2">Excel Fundamentals</h4>
                 <p className="text-gray-300 text-sm">Formulas, functions, and best practices</p>
               </div>
               <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
-                <div className="text-2xl mb-2">2️⃣</div>
+                <div className="text-2xl mb-2">2</div>
                 <h4 className="text-white font-semibold mb-2">Basic Models</h4>
                 <p className="text-gray-300 text-sm">DCF, Comparable Analysis</p>
               </div>
               <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
-                <div className="text-2xl mb-2">3️⃣</div>
+                <div className="text-2xl mb-2">3</div>
                 <h4 className="text-white font-semibold mb-2">Advanced Models</h4>
                 <p className="text-gray-300 text-sm">LBO, Three-Statement Models</p>
               </div>
               <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
-                <div className="text-2xl mb-2">4️⃣</div>
+                <div className="text-2xl mb-2">4</div>
                 <h4 className="text-white font-semibold mb-2">Risk Analysis</h4>
                 <p className="text-gray-300 text-sm">Monte Carlo, Sensitivity Analysis</p>
               </div>
@@ -442,7 +442,7 @@ def monte_carlo_simulation(n_simulations=10000):
             <h3 className="text-2xl font-bold text-white mb-6 text-center">🛠️ Essential Tools & Software</h3>
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
               <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
-                <div className="text-2xl mb-2">📊</div>
+                <div className="text-2xl mb-2">•</div>
                 <h4 className="text-white font-semibold mb-1">Excel</h4>
                 <p className="text-gray-400 text-xs">Primary modeling platform</p>
               </div>
@@ -462,12 +462,12 @@ def monte_carlo_simulation(n_simulations=10000):
                 <p className="text-gray-400 text-xs">Financial data platform</p>
               </div>
               <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
-                <div className="text-2xl mb-2">🔍</div>
+                <div className="text-2xl mb-2">•</div>
                 <h4 className="text-white font-semibold mb-1">@RISK</h4>
                 <p className="text-gray-400 text-xs">Risk analysis add-in</p>
               </div>
               <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
-                <div className="text-2xl mb-2">📊</div>
+                <div className="text-2xl mb-2">•</div>
                 <h4 className="text-white font-semibold mb-1">Tableau</h4>
                 <p className="text-gray-400 text-xs">Data visualization</p>
               </div>
@@ -477,7 +477,7 @@ def monte_carlo_simulation(n_simulations=10000):
                 <p className="text-gray-400 text-xs">Business intelligence</p>
               </div>
               <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
-                <div className="text-2xl mb-2">🎯</div>
+                <div className="text-2xl mb-2">•</div>
                 <h4 className="text-white font-semibold mb-1">VBA</h4>
                 <p className="text-gray-400 text-xs">Excel automation</p>
               </div>
