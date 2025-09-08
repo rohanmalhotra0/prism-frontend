@@ -6,15 +6,10 @@ import { API_ENDPOINTS } from "@/lib/api-config";
 interface Fundamentals {
   market_cap?: number | null;
   pe_ratio?: number | null;
+  forward_pe?: number | null;
   dividend_yield?: number | null;
+  beta?: number | null;
   average_volume?: number | null;
-
-  high_today?: number | null;
-  low_today?: number | null;
-  open_price?: number | null;
-  last_close?: number | null;
-  volume?: number | null;
-
   fifty_two_week_high?: number | null;
   fifty_two_week_low?: number | null;
 }
@@ -38,7 +33,6 @@ export default function InfoChart({ symbol, live = false }: Props) {
       const data = await res.json();
       console.log("📊 Fundamentals API returned:", data);
 
-      // ✅ Using flat object (no .metrics anymore)
       setFundamentals(data);
     } catch (err) {
       console.error("❌ Error fetching fundamentals:", err);
@@ -48,12 +42,10 @@ export default function InfoChart({ symbol, live = false }: Props) {
     }
   };
 
-  // Fetch when component mounts or symbol changes
   useEffect(() => {
     fetchFundamentals();
   }, [symbol]);
 
-  // Poll every 30s if live mode is enabled
   useEffect(() => {
     if (!live) return;
     const interval = setInterval(fetchFundamentals, 30_000);
@@ -83,9 +75,21 @@ export default function InfoChart({ symbol, live = false }: Props) {
               : "N/A"}
           </li>
           <li>
+            <span className="font-semibold text-purple-300">Forward P/E:</span>{" "}
+            {fundamentals.forward_pe !== null && fundamentals.forward_pe !== undefined
+              ? fundamentals.forward_pe.toFixed(2)
+              : "N/A"}
+          </li>
+          <li>
             <span className="font-semibold text-purple-300">Dividend yield:</span>{" "}
             {fundamentals.dividend_yield
               ? `${(fundamentals.dividend_yield * 100).toFixed(2)}%`
+              : "N/A"}
+          </li>
+          <li>
+            <span className="font-semibold text-purple-300">Beta:</span>{" "}
+            {fundamentals.beta !== null && fundamentals.beta !== undefined
+              ? fundamentals.beta.toFixed(2)
               : "N/A"}
           </li>
           <li>
@@ -94,38 +98,6 @@ export default function InfoChart({ symbol, live = false }: Props) {
               ? `${(fundamentals.average_volume / 1e6).toFixed(2)}M`
               : "N/A"}
           </li>
-
-          <li>
-            <span className="font-semibold text-purple-300">Last close:</span>{" "}
-            {fundamentals.last_close
-              ? `$${fundamentals.last_close.toFixed(2)}`
-              : "N/A"}
-          </li>
-          <li>
-            <span className="font-semibold text-purple-300">Open price:</span>{" "}
-            {fundamentals.open_price
-              ? `$${fundamentals.open_price.toFixed(2)}`
-              : "N/A"}
-          </li>
-          <li>
-            <span className="font-semibold text-purple-300">High today:</span>{" "}
-            {fundamentals.high_today
-              ? `$${fundamentals.high_today.toFixed(2)}`
-              : "N/A"}
-          </li>
-          <li>
-            <span className="font-semibold text-purple-300">Low today:</span>{" "}
-            {fundamentals.low_today
-              ? `$${fundamentals.low_today.toFixed(2)}`
-              : "N/A"}
-          </li>
-          <li>
-            <span className="font-semibold text-purple-300">Volume:</span>{" "}
-            {fundamentals.volume
-              ? `${(fundamentals.volume / 1e6).toFixed(2)}M`
-              : "N/A"}
-          </li>
-
           <li>
             <span className="font-semibold text-purple-300">52 Week high:</span>{" "}
             {fundamentals.fifty_two_week_high

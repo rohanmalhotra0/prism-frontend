@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
+import { API_ENDPOINTS } from "@/lib/api-config";
 
 interface ChartSettings {
   symbol: string;
@@ -14,8 +15,6 @@ interface ChartSettings {
 interface Props {
   onUpdate: (settings: ChartSettings) => void;
 }
-
-import { API_ENDPOINTS } from "@/lib/api-config";
 
 const popularStocks = [
   { symbol: "AAPL", name: "Apple Inc." },
@@ -36,20 +35,8 @@ export default function ChartSettingsPanel({ onUpdate }: Props) {
   const [chartType, setChartType] = useState("candlestick");
   const [overlays, setOverlays] = useState(["", "", ""]);
   const [indicators, setIndicators] = useState(["", "", ""]);
-  const [timePeriod, setTimePeriod] = useState("Live"); // 🔹 default to Live
+  const [timePeriod, setTimePeriod] = useState("1y"); // default 1y
   const [showDropdown, setShowDropdown] = useState(false);
-
-  const wsRef = useRef<WebSocket | null>(null);
-
-  // 🔹 Cleanup WebSocket on unmount
-  useEffect(() => {
-    return () => {
-      if (wsRef.current) {
-        wsRef.current.close(1000, "Component unmounted");
-        wsRef.current = null;
-      }
-    };
-  }, []);
 
   const handleOverlayChange = (i: number, value: string) => {
     const updated = [...overlays];
@@ -65,12 +52,6 @@ export default function ChartSettingsPanel({ onUpdate }: Props) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    // 🔌 Close old WebSocket if switching
-    if (wsRef.current) {
-      wsRef.current.close();
-      wsRef.current = null;
-    }
 
     const endDate = new Date();
     let startDate = new Date(endDate);
@@ -98,37 +79,6 @@ export default function ChartSettingsPanel({ onUpdate }: Props) {
       end: endDate.toISOString().split("T")[0],
     };
 
-    // 🔹 Live Mode
-    if (timePeriod === "Live") {
-      try {
-        const wsUrl = API_ENDPOINTS.WEBSOCKET(payload.symbol);
-        console.log("🔌 Opening WS:", wsUrl);
-
-        const ws = new WebSocket(wsUrl);
-        wsRef.current = ws;
-
-        ws.onopen = () => console.log(`✅ Live stream opened for ${payload.symbol}`);
-
-        ws.onmessage = (event) => {
-          const candles = JSON.parse(event.data);
-          if (Array.isArray(candles)) {
-            console.log(`📊 Received ${candles.length} candles`);
-            onUpdate({ ...payload, data: candles });
-          } else {
-            console.warn("Unexpected WS payload:", candles);
-          }
-        };
-
-        ws.onerror = (err) => console.error("❌ WebSocket error:", err);
-        ws.onclose = () => console.log(`🔌 WebSocket closed for ${payload.symbol}`);
-      } catch (err) {
-        console.error("❌ Error connecting WebSocket:", err);
-        alert("Failed to connect to live feed.");
-      }
-      return;
-    }
-
-    // 🔹 Historical Mode
     try {
       const res = await fetch(API_ENDPOINTS.FINANCE, {
         method: "POST",
@@ -211,7 +161,6 @@ export default function ChartSettingsPanel({ onUpdate }: Props) {
               onChange={(e) => setTimePeriod(e.target.value)}
               className="w-full rounded-xl border border-white/20 bg-black/40 p-4 text-white"
             >
-              <option value="Live">Live (Streaming)</option>
               <option value="1d">1 Day</option>
               <option value="5d">1 Week</option>
               <option value="1mo">1 Month</option>
@@ -296,7 +245,3 @@ export default function ChartSettingsPanel({ onUpdate }: Props) {
     </form>
   );
 }
-
-
-
-
