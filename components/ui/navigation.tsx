@@ -100,12 +100,12 @@ function NavigationComponent({
       skipDelayDuration={0}
     >
       <NavigationMenuList>
-        {/* Modeling Tools */}
+        {/*  */}
         <NavigationMenuItem>
           <NavigationMenuTrigger 
             className="hover:bg-transparent hover:text-current touch-manipulation"
           >
-            Modeling Tools
+            Math Tools
           </NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
@@ -122,12 +122,31 @@ function NavigationComponent({
           </NavigationMenuContent>
         </NavigationMenuItem>
 
+        
+
+        {/* Community */}
+        <NavigationMenuItem>
+          <NavigationMenuTrigger 
+            className="hover:bg-transparent hover:text-current touch-manipulation"
+          >
+            Study
+          </NavigationMenuTrigger>
+          <NavigationMenuContent>
+            <ul className="grid gap-3 p-4 w-[400px]">
+              {community.map((item) => (
+                <ListItem key={item.title} href={item.href} title={item.title}>
+                  {item.description}
+                </ListItem>
+              ))}
+            </ul>
+          </NavigationMenuContent>
+        </NavigationMenuItem>
         {/* Resources */}
         <NavigationMenuItem>
           <NavigationMenuTrigger 
             className="hover:bg-transparent hover:text-current touch-manipulation"
           >
-            Resources
+            Docs
           </NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid gap-3 p-4 w-[400px]">
@@ -140,24 +159,6 @@ function NavigationComponent({
               <ListItem href="/docs" title="Documentation">
                 Guides and API documentation for Refrax features.
               </ListItem>
-            </ul>
-          </NavigationMenuContent>
-        </NavigationMenuItem>
-
-        {/* Community */}
-        <NavigationMenuItem>
-          <NavigationMenuTrigger 
-            className="hover:bg-transparent hover:text-current touch-manipulation"
-          >
-            Community
-          </NavigationMenuTrigger>
-          <NavigationMenuContent>
-            <ul className="grid gap-3 p-4 w-[400px]">
-              {community.map((item) => (
-                <ListItem key={item.title} href={item.href} title={item.title}>
-                  {item.description}
-                </ListItem>
-              ))}
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>

@@ -125,7 +125,7 @@ export default function Navbar({
                   <div className="space-y-1">
                     <div className="flex items-center gap-2 mb-2">
                       <GraduationCap className="w-3 h-3 text-gray-400" />
-                      <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Community</h3>
+                      <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Learn</h3>
                     </div>
                     <div className="space-y-0.5">
                       <a 
@@ -133,7 +133,7 @@ export default function Navbar({
                         className="group flex items-center gap-2 p-1.5 rounded-lg hover:bg-gray-800/50 transition-all duration-200 touch-manipulation"
                       >
                         <BookOpen className="w-3 h-3 text-gray-500 group-hover:text-white transition-colors" />
-                        <span className="text-gray-300 group-hover:text-white transition-colors text-xs">Learn</span>
+                        <span className="text-gray-300 group-hover:text-white transition-colors text-xs">Study</span>
                       </a>
                       <a 
                         href="/research" 
@@ -148,7 +148,7 @@ export default function Navbar({
                   <div className="space-y-1">
                     <div className="flex items-center gap-2 mb-2">
                       <FileText className="w-3 h-3 text-gray-400" />
-                      <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Resources</h3>
+                      <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Docs</h3>
                     </div>
                     <div className="space-y-0.5">
                       <a 
