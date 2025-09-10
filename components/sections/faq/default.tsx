@@ -75,30 +75,19 @@ export default function FAQ({
       ),
     },
     {
-      question: "Is there a free version of Refrax?",
+      question:  "Why is Refrax free?",
       answer: (
         <p className="text-muted-foreground mb-4 max-w-[640px]">
-          Absolutely. Refrax offers a free plan for students, learners, and
-          hobbyists. You’ll have access to core indicators, charting, and
-          community support. When you’re ready for advanced features like
-          custom modeling and team dashboards, you can upgrade to{" "}
-          <Link href="#pricing" className="text-foreground underline">
-            a paid plan
-          </Link>
-          .
+         Refrax is completely free with no registration required. 
+         We believe that learning complex concepts should be interactive, 
+         engaging, and accessible to everyone. Our platform provides hands-on tools
+          for 2D and 3D mathematical visualization, financial data analysis, 
+          and comprehensive learning resources - all completely free with no 
+          registration required.
         </p>
       ),
     },
-    {
-      question: "Can I use Refrax with my team?",
-      answer: (
-        <p className="text-muted-foreground mb-4 max-w-[640px]">
-          Yes — Refrax’s Team plan is perfect for startups, research groups, and
-          agencies. You’ll get unlimited seats, shared dashboards, and priority
-          support to help your team collaborate effectively.
-        </p>
-      ),
-    },
+ 
   ],
   className,
 }: FAQProps) {

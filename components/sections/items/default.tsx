@@ -26,46 +26,46 @@ interface ItemsProps {
 }
 
 export default function Items({
-  title = "Refrax gives you the tools to model, analyze, and scale.",
+  title = "Learn data analytics, financial modeling, and math visualization with interactive tools.",
   items = [
     {
-      title: "Advanced Charting",
-      description: "Interactive charts for indicators, simulations, and backtests.",
+      title: "2D & 3D Math Visualization",
+      description: "Interactive mathematical plots, surfaces, and animations for learning complex concepts.",
       icon: <LineChartIcon className="size-5 stroke-1" />,
     },
     {
-      title: "Financial Modeling",
-      description: "Options, derivatives, and portfolio risk models out-of-the-box.",
+      title: "Financial Data Analysis",
+      description: "Upload and analyze Excel/CSV files with real-time visualizations and insights.",
       icon: <CalculatorIcon className="size-5 stroke-1" />,
     },
     {
-      title: "Data Integrations",
-      description: "Connect to APIs, live markets, and alternative datasets.",
+      title: "Dataset Lab",
+      description: "Import, explore, and transform datasets with drag-and-drop functionality.",
       icon: <DatabaseIcon className="size-5 stroke-1" />,
     },
     {
-      title: "Team Collaboration",
-      description: "Share dashboards and research with your team in real time.",
+      title: "Free Learning Resources",
+      description: "Comprehensive tutorials and examples for data analytics and modeling.",
       icon: <UsersIcon className="size-5 stroke-1" />,
     },
     {
-      title: "Strategy Backtesting",
-      description: "Simulate and evaluate trading strategies before going live.",
+      title: "Interactive Charts",
+      description: "Create dynamic financial charts and mathematical visualizations.",
       icon: <BarChart3Icon className="size-5 stroke-1" />,
     },
     {
-      title: "Cloud Powered",
-      description: "Run heavy simulations in the cloud without slowing down.",
+      title: "AI-Powered Insights",
+      description: "Get help and explanations from our AI assistant for complex topics.",
       icon: <CloudIcon className="size-5 stroke-1" />,
     },
     {
-      title: "Custom Indicators",
-      description: "Build and visualize your own financial metrics and signals.",
+      title: "Mathematical Functions",
+      description: "Plot trigonometric, exponential, and logarithmic functions in 2D and 3D.",
       icon: <LayersIcon className="size-5 stroke-1" />,
     },
     {
-      title: "Production Ready",
-      description: "Move from prototype to deployment seamlessly with Refrax.",
+      title: "No Registration Required",
+      description: "Start learning immediately with our free, accessible platform.",
       icon: <RocketIcon className="size-5 stroke-1" />,
     },
   ],

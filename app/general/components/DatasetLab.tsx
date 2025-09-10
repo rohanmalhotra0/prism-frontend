@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import * as XLSX from "xlsx";
 import Papa from "papaparse";
 import * as THREE from "three";
@@ -253,9 +253,25 @@ export default function DatasetLab({ sharedData, setSharedData }: DatasetLabProp
       rendererRef.current = null;
     }
 
-    // Clear the canvas completely by resetting its dimensions
-    canvas.width = canvas.clientWidth;
-    canvas.height = canvas.clientHeight;
+    // Clear any existing context by removing and recreating the canvas
+    const parent = canvas.parentNode;
+    if (parent) {
+      // Remove the old canvas
+      parent.removeChild(canvas);
+      
+      // Create a completely new canvas element
+      const newCanvas = document.createElement('canvas');
+      newCanvas.className = canvas.className;
+      newCanvas.style.cssText = canvas.style.cssText;
+      newCanvas.width = canvas.clientWidth;
+      newCanvas.height = canvas.clientHeight;
+      
+      // Insert the new canvas
+      parent.appendChild(newCanvas);
+      
+      // Update the ref to point to the new canvas
+      canvasRef.current = newCanvas;
+    }
 
     // Scene
     const scene = new THREE.Scene();
@@ -263,13 +279,16 @@ export default function DatasetLab({ sharedData, setSharedData }: DatasetLabProp
     sceneRef.current = scene;
 
     // Camera
-    const camera = new THREE.PerspectiveCamera(75, canvas.clientWidth / canvas.clientHeight, 0.1, 1000);
+    const newCanvas = canvasRef.current;
+    if (!newCanvas) return;
+    
+    const camera = new THREE.PerspectiveCamera(75, newCanvas.clientWidth / newCanvas.clientHeight, 0.1, 1000);
     camera.position.set(0, 0, 10);
     cameraRef.current = camera;
 
-    // Renderer
-    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
-    renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+    // Renderer - use the new canvas
+    const renderer = new THREE.WebGLRenderer({ canvas: newCanvas, antialias: true });
+    renderer.setSize(newCanvas.clientWidth, newCanvas.clientHeight);
     rendererRef.current = renderer;
 
     // Lighting
@@ -331,18 +350,66 @@ export default function DatasetLab({ sharedData, setSharedData }: DatasetLabProp
       cameraRef.current.position.copy(normalizedPosition.multiplyScalar(newRadius));
     };
 
-    canvas.addEventListener('mousedown', handleMouseDown);
-    canvas.addEventListener('mouseup', handleMouseUp);
-    canvas.addEventListener('mousemove', handleMouseMove);
-    canvas.addEventListener('wheel', handleWheel);
+    if (newCanvas) {
+      newCanvas.addEventListener('mousedown', handleMouseDown);
+      newCanvas.addEventListener('mouseup', handleMouseUp);
+      newCanvas.addEventListener('mousemove', handleMouseMove);
+      newCanvas.addEventListener('wheel', handleWheel);
+    }
 
     // Cleanup function
     return () => {
-      canvas.removeEventListener('mousedown', handleMouseDown);
-      canvas.removeEventListener('mouseup', handleMouseUp);
-      canvas.removeEventListener('mousemove', handleMouseMove);
-      canvas.removeEventListener('wheel', handleWheel);
+      if (newCanvas) {
+        newCanvas.removeEventListener('mousedown', handleMouseDown);
+        newCanvas.removeEventListener('mouseup', handleMouseUp);
+        newCanvas.removeEventListener('mousemove', handleMouseMove);
+        newCanvas.removeEventListener('wheel', handleWheel);
+      }
     };
+  };
+
+  const addAxisLabels = (xLabel: string, yLabel: string, zLabel?: string) => {
+    if (!sceneRef.current) return;
+
+    // Remove existing labels
+    const existingLabels = sceneRef.current.children.filter(child => child.userData.isAxisLabel);
+    existingLabels.forEach(label => sceneRef.current!.remove(label));
+
+    // Create simple text sprites for axis labels
+    const createTextSprite = (text: string, position: THREE.Vector3, color: number = 0xffffff) => {
+      const canvas = document.createElement('canvas');
+      const context = canvas.getContext('2d');
+      if (!context) return null;
+
+      canvas.width = 256;
+      canvas.height = 64;
+      context.fillStyle = '#ffffff';
+      context.font = '24px Arial';
+      context.textAlign = 'center';
+      context.fillText(text, 128, 40);
+
+      const texture = new THREE.CanvasTexture(canvas);
+      const material = new THREE.SpriteMaterial({ map: texture });
+      const sprite = new THREE.Sprite(material);
+      sprite.position.copy(position);
+      sprite.scale.set(2, 0.5, 1);
+      sprite.userData.isAxisLabel = true;
+      return sprite;
+    };
+
+    // Add X-axis label
+    const xLabelSprite = createTextSprite(xLabel, new THREE.Vector3(12, -1, 0));
+    if (xLabelSprite) sceneRef.current.add(xLabelSprite);
+
+    // Add Y-axis label
+    const yLabelSprite = createTextSprite(yLabel, new THREE.Vector3(-1, 12, 0));
+    if (yLabelSprite) sceneRef.current.add(yLabelSprite);
+
+    // Add Z-axis label if provided
+    if (zLabel) {
+      const zLabelSprite = createTextSprite(zLabel, new THREE.Vector3(0, -1, 12));
+      if (zLabelSprite) sceneRef.current.add(zLabelSprite);
+    }
   };
 
   const createScatterPlot = () => {
@@ -377,6 +444,7 @@ export default function DatasetLab({ sharedData, setSharedData }: DatasetLabProp
 
     const xValues = filteredData.map(d => d[xCol]).filter(v => typeof v === 'number');
     const yValues = filteredData.map(d => d[yCol]).filter(v => typeof v === 'number');
+    const zValues = zCol ? filteredData.map(d => d[zCol]).filter(v => typeof v === 'number') : [];
     
     if (xValues.length === 0 || yValues.length === 0) return;
 
@@ -384,50 +452,62 @@ export default function DatasetLab({ sharedData, setSharedData }: DatasetLabProp
     const xMax = Math.max(...xValues);
     const yMinRaw = Math.min(...yValues);
     const yMax = Math.max(...yValues);
-    const yMin = Math.max(0, yMinRaw);
+    const yMin = yMinRaw;
+
+    // Calculate Z range if we have Z values, otherwise use a default range
+    let zMin = 0, zMax = 1, zRange = 1;
+    if (zValues.length > 0) {
+      zMin = Math.min(...zValues);
+      zMax = Math.max(...zValues);
+      zRange = zMax - zMin || 1;
+    }
 
     const xRange = xMax - xMin || 1;
     const yRange = yMax - yMin || 1;
 
     // Normalize data to -10 to 10 range
     const normalizeX = (x: number) => ((x - xMin) / xRange) * 20 - 10;
-    const normalizeY = (y: number) => ((Math.max(0, y) - yMin) / yRange) * 20 - 10;
+    const normalizeY = (y: number) => ((y - yMin) / yRange) * 20 - 10;
+    const normalizeZ = (z: number) => zValues.length > 0 ? ((z - zMin) / zRange) * 20 - 10 : 0;
 
     console.log('Creating', filteredData.length, 'data points');
     filteredData.forEach((row, index) => {
       const x = row[xCol];
       const y = row[yCol];
+      const z = zCol ? row[zCol] : 0;
       
       if (typeof x !== 'number' || typeof y !== 'number') return;
 
-      const geometry = new THREE.SphereGeometry(0.2, 8, 8);
+      const geometry = new THREE.SphereGeometry(0.4, 12, 12);
       
       // Color based on z-value or index
       let color = 0x8b5cf6;
-      if (zCol && typeof row[zCol] === 'number') {
-        const z = row[zCol];
-        const zMin = Math.min(...filteredData.map(d => d[zCol]).filter(v => typeof v === 'number'));
-        const zMax = Math.max(...filteredData.map(d => d[zCol]).filter(v => typeof v === 'number'));
-        const intensity = (z - zMin) / (zMax - zMin);
+      if (zCol && typeof z === 'number' && zValues.length > 0) {
+        const intensity = (z - zMin) / zRange;
         color = new THREE.Color().setHSL(0.7, 1, 0.3 + intensity * 0.7).getHex();
       }
 
       const material = new THREE.MeshBasicMaterial({ color });
       const sphere = new THREE.Mesh(geometry, material);
       
-      sphere.position.set(normalizeX(x), normalizeY(y), 0);
+      // Use actual Z position for true 3D positioning
+      const zPos = zCol && typeof z === 'number' ? normalizeZ(z) : 0;
+      sphere.position.set(normalizeX(x), normalizeY(y), zPos);
       sphere.userData.isDataPoint = true;
       sphere.userData.originalIndex = index;
       
       sceneRef.current!.add(sphere);
       
       if (index < 5) {
-        console.log(`Point ${index}: x=${normalizeX(x).toFixed(2)}, y=${normalizeY(y).toFixed(2)}`);
+        console.log(`Point ${index}: x=${normalizeX(x).toFixed(2)}, y=${normalizeY(y).toFixed(2)}, z=${zPos.toFixed(2)}`);
       }
     });
 
-    // Set camera position for 2D view
-    cameraRef.current!.position.set(0, 0, 15);
+    // Add axis labels
+    addAxisLabels(xCol, yCol, zCol);
+
+    // Set camera position for 3D view
+    cameraRef.current!.position.set(15, 15, 15);
     cameraRef.current!.lookAt(0, 0, 0);
   };
 
@@ -468,7 +548,7 @@ export default function DatasetLab({ sharedData, setSharedData }: DatasetLabProp
     const xMax = Math.max(...xValues);
     const yMinRaw = Math.min(...yValues);
     const yMax = Math.max(...yValues);
-    const yMin = Math.max(0, yMinRaw);
+    const yMin = yMinRaw;
 
     const xRange = xMax - xMin || 1;
     const yRange = yMax - yMin || 1;
@@ -476,7 +556,7 @@ export default function DatasetLab({ sharedData, setSharedData }: DatasetLabProp
     // Create line geometry
     const points = sortedData.map(row => {
       const x = ((row[xCol] - xMin) / xRange) * 20 - 10;
-      const y = ((Math.max(0, row[yCol]) - yMin) / yRange) * 20 - 10;
+      const y = ((row[yCol] - yMin) / yRange) * 20 - 10;
       return new THREE.Vector3(x, y, 0);
     });
 
@@ -486,6 +566,9 @@ export default function DatasetLab({ sharedData, setSharedData }: DatasetLabProp
     
     line.userData.isDataLine = true;
     sceneRef.current.add(line);
+
+    // Add axis labels
+    addAxisLabels(xCol, yCol);
 
     // Set camera position for 2D view
     cameraRef.current!.position.set(0, 0, 15);
@@ -527,9 +610,9 @@ export default function DatasetLab({ sharedData, setSharedData }: DatasetLabProp
     const xMax = Math.max(...xValues);
     const yMinRaw = Math.min(...yValues);
     const yMax = Math.max(...yValues);
-    const yMin = Math.max(0, yMinRaw);
+    const yMin = yMinRaw;
     const zMinRaw = zValues.length > 0 ? Math.min(...zValues) : 0;
-    const zMin = Math.max(0, zMinRaw);
+    const zMin = zMinRaw;
     const zMax = zValues.length > 0 ? Math.max(...zValues) : 0;
 
     const xRange = xMax - xMin || 1;
@@ -538,8 +621,8 @@ export default function DatasetLab({ sharedData, setSharedData }: DatasetLabProp
 
     // Normalize data to -10 to 10 range
     const normalizeX = (x: number) => ((x - xMin) / xRange) * 20 - 10;
-    const normalizeY = (y: number) => ((Math.max(0, y) - yMin) / yRange) * 20 - 10;
-    const normalizeZ = (z: number) => ((Math.max(0, z) - zMin) / zRange) * 20 - 10;
+    const normalizeY = (y: number) => ((y - yMin) / yRange) * 20 - 10;
+    const normalizeZ = (z: number) => ((z - zMin) / zRange) * 20 - 10;
 
     filteredData.forEach((row, index) => {
       const x = row[xCol];
@@ -548,7 +631,7 @@ export default function DatasetLab({ sharedData, setSharedData }: DatasetLabProp
       
       if (typeof x !== 'number' || typeof y !== 'number') return;
 
-      const geometry = new THREE.SphereGeometry(0.3, 8, 8);
+      const geometry = new THREE.SphereGeometry(0.5, 12, 12);
       
       // Color based on z-value or index
       let color = 0x8b5cf6;
@@ -567,14 +650,15 @@ export default function DatasetLab({ sharedData, setSharedData }: DatasetLabProp
       sceneRef.current!.add(sphere);
     });
 
+    // Add axis labels
+    addAxisLabels(xCol, yCol, zCol);
+
     // Set camera position for 3D view
     cameraRef.current!.position.set(15, 15, 15);
     cameraRef.current!.lookAt(0, 0, 0);
   };
 
-  const create2DPlot = () => {
-    // For 2D mode, we'll use a simple 2D canvas rendering
-    // This is a placeholder - in a real implementation, you might want to use Plotly or D3
+  const create2DScatterPlot = () => {
     if (!canvasRef.current) return;
 
     const canvas = canvasRef.current;
@@ -606,13 +690,10 @@ export default function DatasetLab({ sharedData, setSharedData }: DatasetLabProp
 
     if (xValues.length === 0 || yValues.length === 0) return;
 
-    // Clamp values to be >= 0 for 2D plots
-    const clampedYValues = yValues.map(y => Math.max(0, y));
-
     const minX = Math.min(...xValues);
     const maxX = Math.max(...xValues);
-    const minY = Math.max(0, Math.min(...clampedYValues));
-    const maxY = Math.max(...clampedYValues);
+    const minY = Math.min(...yValues);
+    const maxY = Math.max(...yValues);
 
     const padding = 50;
     const plotWidth = canvas.width - 2 * padding;
@@ -627,12 +708,154 @@ export default function DatasetLab({ sharedData, setSharedData }: DatasetLabProp
     ctx.lineTo(canvas.width - padding, canvas.height - padding);
     ctx.stroke();
 
-    // Draw data points
-    ctx.fillStyle = '#3b82f6';
+    // Draw grid lines
+    ctx.strokeStyle = '#333';
+    ctx.lineWidth = 0.5;
+    for (let i = 0; i <= 10; i++) {
+      const x = padding + (i / 10) * plotWidth;
+      const y = padding + (i / 10) * plotHeight;
+      ctx.beginPath();
+      ctx.moveTo(x, padding);
+      ctx.lineTo(x, canvas.height - padding);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(padding, y);
+      ctx.lineTo(canvas.width - padding, y);
+      ctx.stroke();
+    }
+
+    // Draw data points as circles
+    ctx.fillStyle = '#8b5cf6';
     xValues.forEach((x, i) => {
-      if (i < clampedYValues.length) {
+      if (i < yValues.length) {
         const plotX = padding + ((x - minX) / (maxX - minX)) * plotWidth;
-        const plotY = canvas.height - padding - ((clampedYValues[i] - minY) / (maxY - minY)) * plotHeight;
+        const plotY = canvas.height - padding - ((yValues[i] - minY) / (maxY - minY)) * plotHeight;
+        
+        ctx.beginPath();
+        ctx.arc(plotX, plotY, 4, 0, 2 * Math.PI);
+        ctx.fill();
+      }
+    });
+
+    // Draw title
+    ctx.fillStyle = '#fff';
+    ctx.font = 'bold 16px Arial';
+    ctx.textAlign = 'center';
+    ctx.fillText('2D Scatter Plot', canvas.width / 2, 25);
+    
+    // Draw axis labels
+    ctx.fillStyle = '#fff';
+    ctx.font = '14px Arial';
+    ctx.textAlign = 'right';
+    ctx.fillText(xCol, canvas.width - padding - 10, canvas.height - 10);
+    ctx.save();
+    ctx.translate(15, canvas.height / 2);
+    ctx.rotate(-Math.PI / 2);
+    ctx.textAlign = 'center';
+    ctx.fillText(yCol, 0, 0);
+    ctx.restore();
+    
+    // Draw data count
+    ctx.fillStyle = '#888';
+    ctx.font = '12px Arial';
+    ctx.textAlign = 'left';
+    ctx.fillText(`${filteredData.length} data points`, padding, canvas.height - 10);
+  };
+
+  const create2DLinePlot = () => {
+    if (!canvasRef.current) return;
+
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    // Clear canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    const filteredData = dataset.filter(row => {
+      return Object.entries(filters).every(([key, value]) => {
+        if (value === '') return true;
+        return row[key]?.toString().toLowerCase().includes(value.toString().toLowerCase());
+      });
+    });
+
+    if (filteredData.length === 0) return;
+
+    let xCol = selectedColumns[0];
+    const yCol = selectedColumns[1];
+
+    if (!xCol || !yCol) return;
+    if (xCol === 'Date' && columns.includes('date_index')) {
+      xCol = 'date_index';
+    }
+
+    const sortedData = filteredData
+      .filter(row => typeof row[xCol] === 'number' && typeof row[yCol] === 'number')
+      .sort((a, b) => a[xCol] - b[xCol]);
+
+    if (sortedData.length === 0) return;
+
+    const xValues = sortedData.map(d => d[xCol]);
+    const yValues = sortedData.map(d => d[yCol]);
+
+    const minX = Math.min(...xValues);
+    const maxX = Math.max(...xValues);
+    const minY = Math.min(...yValues);
+    const maxY = Math.max(...yValues);
+
+    const padding = 50;
+    const plotWidth = canvas.width - 2 * padding;
+    const plotHeight = canvas.height - 2 * padding;
+
+    // Draw axes
+    ctx.strokeStyle = '#666';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(padding, padding);
+    ctx.lineTo(padding, canvas.height - padding);
+    ctx.lineTo(canvas.width - padding, canvas.height - padding);
+    ctx.stroke();
+
+    // Draw grid lines
+    ctx.strokeStyle = '#333';
+    ctx.lineWidth = 0.5;
+    for (let i = 0; i <= 10; i++) {
+      const x = padding + (i / 10) * plotWidth;
+      const y = padding + (i / 10) * plotHeight;
+      ctx.beginPath();
+      ctx.moveTo(x, padding);
+      ctx.lineTo(x, canvas.height - padding);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(padding, y);
+      ctx.lineTo(canvas.width - padding, y);
+      ctx.stroke();
+    }
+
+    // Draw line
+    ctx.strokeStyle = '#8b5cf6';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    xValues.forEach((x, i) => {
+      if (i < yValues.length) {
+        const plotX = padding + ((x - minX) / (maxX - minX)) * plotWidth;
+        const plotY = canvas.height - padding - ((yValues[i] - minY) / (maxY - minY)) * plotHeight;
+        
+        if (i === 0) {
+          ctx.moveTo(plotX, plotY);
+        } else {
+          ctx.lineTo(plotX, plotY);
+        }
+      }
+    });
+    ctx.stroke();
+
+    // Draw data points
+    ctx.fillStyle = '#8b5cf6';
+    xValues.forEach((x, i) => {
+      if (i < yValues.length) {
+        const plotX = padding + ((x - minX) / (maxX - minX)) * plotWidth;
+        const plotY = canvas.height - padding - ((yValues[i] - minY) / (maxY - minY)) * plotHeight;
         
         ctx.beginPath();
         ctx.arc(plotX, plotY, 3, 0, 2 * Math.PI);
@@ -640,18 +863,32 @@ export default function DatasetLab({ sharedData, setSharedData }: DatasetLabProp
       }
     });
 
-    // Draw labels
+    // Draw title
     ctx.fillStyle = '#fff';
-    ctx.font = '12px Arial';
-    ctx.fillText(xCol, canvas.width - padding - 50, canvas.height - 10);
+    ctx.font = 'bold 16px Arial';
+    ctx.textAlign = 'center';
+    ctx.fillText('2D Line Plot', canvas.width / 2, 25);
+    
+    // Draw axis labels
+    ctx.fillStyle = '#fff';
+    ctx.font = '14px Arial';
+    ctx.textAlign = 'right';
+    ctx.fillText(xCol, canvas.width - padding - 10, canvas.height - 10);
     ctx.save();
-    ctx.translate(10, canvas.height / 2);
+    ctx.translate(15, canvas.height / 2);
     ctx.rotate(-Math.PI / 2);
+    ctx.textAlign = 'center';
     ctx.fillText(yCol, 0, 0);
     ctx.restore();
+    
+    // Draw data count
+    ctx.fillStyle = '#888';
+    ctx.font = '12px Arial';
+    ctx.textAlign = 'left';
+    ctx.fillText(`${filteredData.length} data points`, padding, canvas.height - 10);
   };
 
-  const animate = () => {
+  const animate = useCallback(() => {
     if (!sceneRef.current || !cameraRef.current || !rendererRef.current) return;
 
     if (isAnimating) {
@@ -676,7 +913,19 @@ export default function DatasetLab({ sharedData, setSharedData }: DatasetLabProp
     // Always render the scene, regardless of animation state
     rendererRef.current.render(sceneRef.current, cameraRef.current);
     animationRef.current = requestAnimationFrame(animate);
-  };
+  }, [isAnimating]);
+
+  // Restart animation when isAnimating changes
+  useEffect(() => {
+    if (is3D && rendererRef.current && sceneRef.current && cameraRef.current) {
+      // Cancel existing animation
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
+      // Start new animation
+      animate();
+    }
+  }, [isAnimating, animate, is3D]);
 
   // Initialize Three.js only for 3D mode
   useEffect(() => {
@@ -717,6 +966,10 @@ export default function DatasetLab({ sharedData, setSharedData }: DatasetLabProp
       };
     } else {
       // For 2D mode, clean up Three.js resources
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+        animationRef.current = undefined;
+      }
       if (rendererRef.current) {
         rendererRef.current.dispose();
         rendererRef.current = null;
@@ -733,10 +986,29 @@ export default function DatasetLab({ sharedData, setSharedData }: DatasetLabProp
       if (canvas) {
         canvas.width = canvas.clientWidth;
         canvas.height = canvas.clientHeight;
+        // Force clear the canvas
+        const ctx = canvas.getContext('2d');
+        if (ctx) {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
       }
-      create2DPlot();
+      
+      // Immediately render 2D plot based on current visualization type
+      if (dataset.length > 0) {
+        switch (visualizationType) {
+          case 'scatter':
+            create2DScatterPlot();
+            break;
+          case 'line':
+            create2DLinePlot();
+            break;
+          case '3d':
+            create2DScatterPlot(); // For 2D mode, 3D scatter becomes 2D scatter
+            break;
+        }
+      }
     }
-  }, [is3D]);
+  }, [is3D, dataset, visualizationType]);
 
   // Update visualization when data changes
   useEffect(() => {
@@ -755,8 +1027,18 @@ export default function DatasetLab({ sharedData, setSharedData }: DatasetLabProp
           break;
       }
     } else {
-      // 2D mode - use Plotly for 2D visualizations
-      create2DPlot();
+      // 2D mode - use different 2D visualizations based on type
+      switch (visualizationType) {
+        case 'scatter':
+          create2DScatterPlot();
+          break;
+        case 'line':
+          create2DLinePlot();
+          break;
+        case '3d':
+          create2DScatterPlot(); // For 2D mode, 3D scatter becomes 2D scatter
+          break;
+      }
     }
   }, [dataset, selectedColumns, visualizationType, filters, is3D]);
 
@@ -850,7 +1132,7 @@ export default function DatasetLab({ sharedData, setSharedData }: DatasetLabProp
               {[
                 { value: 'scatter', label: 'Scatter Plot', desc: '3D points' },
                 { value: 'line', label: 'Line Plot', desc: 'Connected lines' },
-                { value: '3d', label: '3D Scatter', desc: 'Full 3D view' }
+              
               ].map((type) => (
                 <button
                   key={type.value}
@@ -875,7 +1157,16 @@ export default function DatasetLab({ sharedData, setSharedData }: DatasetLabProp
             <h3 className="text-lg font-semibold text-white mb-3">View Mode</h3>
             <div className="flex space-x-2">
               <button
-                onClick={() => setIs3D(false)}
+                onClick={() => {
+                  setIs3D(false);
+                  // Ensure we have at least 2 columns for 2D mode
+                  if (selectedColumns.length < 2 && columns.length >= 2) {
+                    const newYColumn = columns[1]; // Select the second column as Y
+                    if (!selectedColumns.includes(newYColumn)) {
+                      setSelectedColumns(prev => [...prev, newYColumn]);
+                    }
+                  }
+                }}
                 className={`flex-1 p-2 rounded text-sm transition-colors ${
                   !is3D
                     ? 'bg-blue-600 text-white'
@@ -885,7 +1176,16 @@ export default function DatasetLab({ sharedData, setSharedData }: DatasetLabProp
                 2D
               </button>
               <button
-                onClick={() => setIs3D(true)}
+                onClick={() => {
+                  setIs3D(true);
+                  // Auto-select Z column for 3D mode
+                  if (selectedColumns.length < 3 && columns.length >= 3) {
+                    const newZColumn = columns[2]; // Select the third column as Z
+                    if (!selectedColumns.includes(newZColumn)) {
+                      setSelectedColumns(prev => [...prev, newZColumn]);
+                    }
+                  }
+                }}
                 className={`flex-1 p-2 rounded text-sm transition-colors ${
                   is3D
                     ? 'bg-blue-600 text-white'

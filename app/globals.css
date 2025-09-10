@@ -169,7 +169,13 @@
   --input: oklch(18% 0.05 280);
   --ring: oklch(65% 0.2 280); /* brighter purple glow */ --sidebar: hsl(240 5.9% 10%); --sidebar-foreground: hsl(240 4.8% 95.9%); --sidebar-primary: hsl(224.3 76.3% 48%); --sidebar-primary-foreground: hsl(0 0% 100%); --sidebar-accent: hsl(240 3.7% 15.9%); --sidebar-accent-foreground: hsl(240 4.8% 95.9%); --sidebar-border: hsl(240 3.7% 15.9%); --sidebar-ring: hsl(217.2 91.2% 59.8%);
 }
-
+a:hover, a:hover * {
+  background: none !important;
+  border-color: inherit !important;
+  color: inherit !important;
+  opacity: 1 !important;
+  transform: none !important;
+}
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -181,24 +187,19 @@
 
 /* Disable hover behavior for navigation menus - click only */
 @layer components {
+  /* Disable hover entirely */
   [data-radix-navigation-menu-trigger]:hover {
-    background-color: transparent !important;
-    color: currentColor !important;
-    opacity: 1 !important;
+    all: unset !important;
   }
-  
+
+  /* Keep styles only when open (click) */
   [data-radix-navigation-menu-trigger][data-state="open"] {
     background-color: hsl(var(--accent)) !important;
     color: hsl(var(--accent-foreground)) !important;
   }
-  
-  /* Ensure dropdowns only open on click, not hover */
+
+  /* Ensure dropdowns still open on click */
   [data-radix-navigation-menu-content] {
     pointer-events: auto;
-  }
-  
-  /* Remove any hover effects from navigation menu items */
-  [data-radix-navigation-menu-trigger]:hover * {
-    color: currentColor !important;
   }
 }

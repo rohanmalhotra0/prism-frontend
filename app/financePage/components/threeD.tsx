@@ -270,7 +270,7 @@ function AreaChart({
 function Grid3D({ width, height, depth }: { width: number; height: number; depth: number }) {
   const gridPoints = useMemo(() => {
     const points: THREE.Vector3[] = [];
-    const gridDensity = 80; // Extremely dense grid for wireframe effect
+    const gridDensity = 100; // Increased density for better visibility
 
     // X-Y plane grid (floor) - Main grid with perspective
     for (let i = 0; i <= gridDensity; i++) {
@@ -307,15 +307,45 @@ function Grid3D({ width, height, depth }: { width: number; height: number; depth
 
   return (
     <group>
-      {/* Main grid lines - Light gray and highly visible */}
+      {/* Main grid lines - Enhanced visibility */}
       <line>
         <bufferGeometry attach="geometry" setFromPoints={gridPoints} />
-        <lineBasicMaterial attach="material" color="#d1d5db" opacity={1.0} transparent linewidth={3} />
+        <lineBasicMaterial attach="material" color="#94a3b8" opacity={0.8} transparent linewidth={2} />
       </line>
       
       {/* Highlighted major grid lines for better structure */}
       <MajorGridLines width={width} height={height} depth={depth} />
+      
+      {/* Enhanced floor grid for better depth perception */}
+      <FloorGrid width={width} depth={depth} />
     </group>
+  );
+}
+
+/* ---------------- Enhanced Floor Grid ---------------- */
+function FloorGrid({ width, depth }: { width: number; depth: number }) {
+  const floorPoints = useMemo(() => {
+    const points: THREE.Vector3[] = [];
+    const floorDensity = 20; // Dense floor grid for better depth perception
+
+    // Create a more prominent floor grid
+    for (let i = 0; i <= floorDensity; i++) {
+      const x = (i / floorDensity) * width;
+      points.push(new THREE.Vector3(x, -0.01, 0), new THREE.Vector3(x, -0.01, depth));
+    }
+    for (let i = 0; i <= floorDensity; i++) {
+      const z = (i / floorDensity) * depth;
+      points.push(new THREE.Vector3(0, -0.01, z), new THREE.Vector3(width, -0.01, z));
+    }
+
+    return points;
+  }, [width, depth]);
+
+  return (
+    <line>
+      <bufferGeometry attach="geometry" setFromPoints={floorPoints} />
+      <lineBasicMaterial attach="material" color="#64748b" opacity={0.6} transparent linewidth={1} />
+    </line>
   );
 }
 
@@ -323,7 +353,7 @@ function Grid3D({ width, height, depth }: { width: number; height: number; depth
 function MajorGridLines({ width, height, depth }: { width: number; height: number; depth: number }) {
   const majorPoints = useMemo(() => {
     const points: THREE.Vector3[] = [];
-    const majorDivisions = 30; // Every 30th line is highlighted for extremely dense grid
+    const majorDivisions = 10; // Every 10th line is highlighted for better visibility
 
     // Major X-Y plane lines
     for (let i = 0; i <= majorDivisions; i++) {
@@ -359,10 +389,10 @@ function MajorGridLines({ width, height, depth }: { width: number; height: numbe
   }, [width, height, depth]);
 
   return (
-          <line>
-        <bufferGeometry attach="geometry" setFromPoints={majorPoints} />
-        <lineBasicMaterial attach="material" color="#f3f4f6" opacity={1.0} transparent linewidth={4} />
-      </line>
+    <line>
+      <bufferGeometry attach="geometry" setFromPoints={majorPoints} />
+      <lineBasicMaterial attach="material" color="#e2e8f0" opacity={1.0} transparent linewidth={3} />
+    </line>
   );
 }
 
@@ -385,11 +415,14 @@ function Axes3D({ width, height, depth }: { width: number; height: number; depth
 
   return (
     <group>
-      {/* Main axis lines */}
+      {/* Main axis lines with enhanced visibility */}
       <line>
         <bufferGeometry attach="geometry" setFromPoints={axisPoints} />
-        <lineBasicMaterial attach="material" color="#ffffff" linewidth={3} />
+        <lineBasicMaterial attach="material" color="#ffffff" linewidth={4} />
       </line>
+      
+      {/* Colored axis lines for better identification */}
+      <ColoredAxes width={width} height={height} depth={depth} />
       
       {/* Axis markers for better reference */}
       <AxisMarkers width={width} height={height} depth={depth} />
@@ -397,37 +430,124 @@ function Axes3D({ width, height, depth }: { width: number; height: number; depth
   );
 }
 
-/* ---------------- Axis Markers ---------------- */
+/* ---------------- Colored Axis Lines ---------------- */
+function ColoredAxes({ width, height, depth }: { width: number; height: number; depth: number }) {
+  const xAxisPoints = useMemo(() => [
+    new THREE.Vector3(0, 0, 0), 
+    new THREE.Vector3(width + 2, 0, 0)
+  ], [width]);
+
+  const yAxisPoints = useMemo(() => [
+    new THREE.Vector3(0, 0, 0), 
+    new THREE.Vector3(0, height + 2, 0)
+  ], [height]);
+
+  const zAxisPoints = useMemo(() => [
+    new THREE.Vector3(0, 0, 0), 
+    new THREE.Vector3(0, 0, depth + 2)
+  ], [depth]);
+
+  return (
+    <group>
+      {/* X-axis (red) */}
+      <line>
+        <bufferGeometry attach="geometry" setFromPoints={xAxisPoints} />
+        <lineBasicMaterial attach="material" color="#ef4444" linewidth={2} />
+      </line>
+      
+      {/* Y-axis (green) */}
+      <line>
+        <bufferGeometry attach="geometry" setFromPoints={yAxisPoints} />
+        <lineBasicMaterial attach="material" color="#22c55e" linewidth={2} />
+      </line>
+      
+      {/* Z-axis (blue) */}
+      <line>
+        <bufferGeometry attach="geometry" setFromPoints={zAxisPoints} />
+        <lineBasicMaterial attach="material" color="#3b82f6" linewidth={2} />
+      </line>
+    </group>
+  );
+}
+
+/* ---------------- Enhanced Axis Markers ---------------- */
 function AxisMarkers({ width, height, depth }: { width: number; height: number; depth: number }) {
   const markerPoints = useMemo(() => {
     const points: THREE.Vector3[] = [];
-    const markerCount = 5;
+    const markerCount = 8; // Increased marker count
 
     // X-axis markers
     for (let i = 1; i <= markerCount; i++) {
       const x = (i / markerCount) * width;
-      points.push(new THREE.Vector3(x, -0.2, 0), new THREE.Vector3(x, 0.2, 0));
+      points.push(new THREE.Vector3(x, -0.3, 0), new THREE.Vector3(x, 0.3, 0));
     }
 
     // Y-axis markers
     for (let i = 1; i <= markerCount; i++) {
       const y = (i / markerCount) * height;
-      points.push(new THREE.Vector3(-0.2, y, 0), new THREE.Vector3(0.2, y, 0));
+      points.push(new THREE.Vector3(-0.3, y, 0), new THREE.Vector3(0.3, y, 0));
     }
 
     // Z-axis markers
     for (let i = 1; i <= markerCount; i++) {
       const z = (i / markerCount) * depth;
-      points.push(new THREE.Vector3(0, -0.2, z), new THREE.Vector3(0, 0.2, z));
+      points.push(new THREE.Vector3(0, -0.3, z), new THREE.Vector3(0, 0.3, z));
     }
 
     return points;
   }, [width, height, depth]);
 
   return (
+    <group>
+      {/* Main markers */}
+      <line>
+        <bufferGeometry attach="geometry" setFromPoints={markerPoints} />
+        <lineBasicMaterial attach="material" color="#f1f5f9" opacity={0.8} transparent linewidth={2} />
+      </line>
+      
+      {/* Corner markers for better reference */}
+      <CornerMarkers width={width} height={height} depth={depth} />
+    </group>
+  );
+}
+
+/* ---------------- Corner Markers ---------------- */
+function CornerMarkers({ width, height, depth }: { width: number; height: number; depth: number }) {
+  const cornerPoints = useMemo(() => {
+    const points: THREE.Vector3[] = [];
+    const markerSize = 0.5;
+
+    // Corner markers at key positions
+    const corners = [
+      [0, 0, 0], [width, 0, 0], [0, height, 0], [width, height, 0],
+      [0, 0, depth], [width, 0, depth], [0, height, depth], [width, height, depth]
+    ];
+
+    corners.forEach(([x, y, z]) => {
+      // X-axis marker
+      points.push(
+        new THREE.Vector3(x - markerSize, y, z), 
+        new THREE.Vector3(x + markerSize, y, z)
+      );
+      // Y-axis marker
+      points.push(
+        new THREE.Vector3(x, y - markerSize, z), 
+        new THREE.Vector3(x, y + markerSize, z)
+      );
+      // Z-axis marker
+      points.push(
+        new THREE.Vector3(x, y, z - markerSize), 
+        new THREE.Vector3(x, y, z + markerSize)
+      );
+    });
+
+    return points;
+  }, [width, height, depth]);
+
+  return (
     <line>
-      <bufferGeometry attach="geometry" setFromPoints={markerPoints} />
-      <lineBasicMaterial attach="material" color="#d1d5db" opacity={0.7} transparent linewidth={1} />
+      <bufferGeometry attach="geometry" setFromPoints={cornerPoints} />
+      <lineBasicMaterial attach="material" color="#e2e8f0" opacity={0.6} transparent linewidth={1} />
     </line>
   );
 }

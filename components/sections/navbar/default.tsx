@@ -2,11 +2,9 @@
 
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { Menu, X, BarChart3, Calculator, BookOpen, HelpCircle, FileText, GraduationCap, Search, Home, User } from "lucide-react";
+import { Menu, BarChart3, Calculator, BookOpen, HelpCircle, FileText, GraduationCap, Search, User } from "lucide-react";
 import RefraxLogo from "@/components/logos/RefraxLogo.jpeg";
 import { cn } from "@/lib/utils";
-import { supabase } from "@/lib/supaBaseClient";
-import { useAuth } from "@/lib/AuthProvider"; // 👈 new import
 
 import { Button } from "../../ui/button";
 import {
@@ -16,7 +14,6 @@ import {
 } from "../../ui/navbar";
 import Navigation from "../../ui/navigation";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "../../ui/sheet";
-import { DashboardSidebar } from "@/app/dashboard/components/DashboardSidebar";
 
 export default function Navbar({
   className,
@@ -26,12 +23,6 @@ export default function Navbar({
   homeUrl?: string;
 }) {
   const router = useRouter();
-  const { user, loading } = useAuth(); // 👈 get user from context
-
-  const handleSignOut = async () => {
-    await supabase.auth.signOut();
-    router.push("/"); // optional redirect
-  };
 
   return (
     <header className={cn("sticky top-0 z-50 px-4 py-3", className)}>
@@ -55,8 +46,6 @@ export default function Navbar({
               Refrax
             </a>
 
-            {/* Dashboard Sidebar Trigger (desktop) */}
-            <DashboardSidebar />
 
             {/* Global Navigation */}
             <Navigation />
@@ -64,30 +53,6 @@ export default function Navbar({
 
           {/* Right side */}
           <NavbarRight>
-            {/* Auth buttons */}
-            {!loading && user ? (
-              <div className="flex items-center gap-4">
-                {/* Show user email */}
-                <span className="text-sm text-gray-300">{user.email}</span>
-                <Button
-                  onClick={handleSignOut}
-                  className="bg-gradient-to-r from-red-600 to-pink-600 hover:from-red-700 hover:to-pink-700 text-white px-4 py-2 rounded-full font-medium transition"
-                >
-                  Sign Out
-                </Button>
-              </div>
-            ) : (
-              !loading && (
-                <Button
-                  onClick={() =>
-                    window.dispatchEvent(new CustomEvent("openAuthModal"))
-                  }
-                  className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-7 py-2 rounded-full text-sm font-medium transition"
-                >
-                  Sign In
-                </Button>
-              )
-            )}
 
             {/* Mobile menu */}
             <Sheet>
@@ -121,14 +86,6 @@ export default function Navbar({
                 </div>
 
                 <nav className="space-y-3">
-                  {/* Dashboard Section */}
-                  <div className="space-y-1">
-                    <div className="flex items-center gap-2 mb-2">
-                      <Home className="w-3 h-3 text-purple-400" />
-                      <h3 className="text-xs font-semibold text-purple-400 uppercase tracking-wider">Dashboard</h3>
-                    </div>
-                    <DashboardSidebar />
-                  </div>
 
                   {/* Quick Access Section */}
                   <div className="space-y-1">
@@ -164,7 +121,29 @@ export default function Navbar({
                       </a>
                     </div>
                   </div>
-
+                  {/* Community Section */}
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2 mb-2">
+                      <GraduationCap className="w-3 h-3 text-gray-400" />
+                      <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Community</h3>
+                    </div>
+                    <div className="space-y-0.5">
+                      <a 
+                        href="/learn" 
+                        className="group flex items-center gap-2 p-1.5 rounded-lg hover:bg-gray-800/50 transition-all duration-200 touch-manipulation"
+                      >
+                        <BookOpen className="w-3 h-3 text-gray-500 group-hover:text-white transition-colors" />
+                        <span className="text-gray-300 group-hover:text-white transition-colors text-xs">Learn</span>
+                      </a>
+                      <a 
+                        href="/research" 
+                        className="group flex items-center gap-2 p-1.5 rounded-lg hover:bg-gray-800/50 transition-all duration-200 touch-manipulation"
+                      >
+                        <Search className="w-3 h-3 text-gray-500 group-hover:text-white transition-colors" />
+                        <span className="text-gray-300 group-hover:text-white transition-colors text-xs">Research</span>
+                      </a>
+                    </div>
+                  </div>
                   {/* Resources Section */}
                   <div className="space-y-1">
                     <div className="flex items-center gap-2 mb-2">
@@ -196,29 +175,7 @@ export default function Navbar({
                     </div>
                   </div>
 
-                  {/* Community Section */}
-                  <div className="space-y-1">
-                    <div className="flex items-center gap-2 mb-2">
-                      <GraduationCap className="w-3 h-3 text-gray-400" />
-                      <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Community</h3>
-                    </div>
-                    <div className="space-y-0.5">
-                      <a 
-                        href="/learn" 
-                        className="group flex items-center gap-2 p-1.5 rounded-lg hover:bg-gray-800/50 transition-all duration-200 touch-manipulation"
-                      >
-                        <BookOpen className="w-3 h-3 text-gray-500 group-hover:text-white transition-colors" />
-                        <span className="text-gray-300 group-hover:text-white transition-colors text-xs">Learn</span>
-                      </a>
-                      <a 
-                        href="/research" 
-                        className="group flex items-center gap-2 p-1.5 rounded-lg hover:bg-gray-800/50 transition-all duration-200 touch-manipulation"
-                      >
-                        <Search className="w-3 h-3 text-gray-500 group-hover:text-white transition-colors" />
-                        <span className="text-gray-300 group-hover:text-white transition-colors text-xs">Research</span>
-                      </a>
-                    </div>
-                  </div>
+                  
 
                   {/* AI Assistant Section */}
                   <div className="space-y-1">

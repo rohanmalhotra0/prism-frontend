@@ -31,7 +31,7 @@ export default function DocumentationPage() {
               Documentation
             </h1>
             <p className="text-xl lg:text-2xl text-gray-400 max-w-4xl mx-auto leading-relaxed mb-12">
-              Complete technical documentation for Refrax's financial modeling platform
+              Complete technical documentation for Refrax's free educational platform for data analytics and mathematical visualization
             </p>
           </div>
         </div>
@@ -75,9 +75,9 @@ export default function DocumentationPage() {
                       <div className="bg-gradient-to-r from-purple-600/20 to-blue-600/20 rounded-2xl p-8 border border-purple-500/30">
                         <h3 className="text-2xl font-semibold text-white mb-4">What is Refrax?</h3>
                         <p className="text-gray-300 text-lg leading-relaxed">
-                          Refrax is a comprehensive financial modeling platform that combines advanced data visualization, 
-                          machine learning capabilities, and interactive tools to help users analyze financial data, 
-                          build predictive models, and make informed investment decisions.
+                          Refrax is a completely free educational platform that combines advanced data visualization, 
+                          mathematical modeling, and interactive tools to help students learn data analytics, 
+                          financial modeling, and 2D/3D mathematical visualization through hands-on experience.
                         </p>
                       </div>
 
@@ -85,24 +85,24 @@ export default function DocumentationPage() {
                         <div className="bg-white/5 rounded-xl p-6 border border-white/10">
                           <h3 className="text-xl font-semibold text-white mb-4">Core Features</h3>
                           <ul className="text-gray-300 space-y-3">
-                            <li>• Interactive financial charts and visualizations</li>
-                            <li>• AI-powered chatbot for financial insights</li>
-                            <li>• Dataset management and analysis tools</li>
-                            <li>• Machine learning model integration</li>
-                            <li>• Real-time market data processing</li>
-                            <li>• Educational learning modules</li>
+                            <li>• Interactive 2D and 3D mathematical visualizations</li>
+                            <li>• AI-powered learning assistant for complex topics</li>
+                            <li>• Dataset upload and analysis tools (Excel/CSV)</li>
+                            <li>• Financial data modeling and analysis</li>
+                            <li>• Real-time mathematical calculations</li>
+                            <li>• Free educational resources and tutorials</li>
                           </ul>
                         </div>
                         
                         <div className="bg-white/5 rounded-xl p-6 border border-white/10">
                           <h3 className="text-xl font-semibold text-white mb-4">Key Benefits</h3>
                           <ul className="text-gray-300 space-y-3">
+                            <li>• Completely free with no registration required</li>
                             <li>• User-friendly interface for all skill levels</li>
-                            <li>• Scalable architecture for large datasets</li>
-                            <li>• Secure authentication and data protection</li>
-                            <li>• Mobile-responsive design</li>
-                            <li>• Cloud-based infrastructure</li>
-                            <li>• Real-time collaboration features</li>
+                            <li>• Interactive learning through hands-on tools</li>
+                            <li>• Mobile-responsive design for learning anywhere</li>
+                            <li>• Cloud-based infrastructure for reliability</li>
+                            <li>• Educational focus on data analytics and math</li>
                           </ul>
                         </div>
                       </div>
@@ -113,30 +113,38 @@ export default function DocumentationPage() {
                           <div>
                             <h4 className="text-lg font-semibold text-white mb-3">Frontend</h4>
                             <ul className="text-gray-300 space-y-2 text-sm">
-                              <li>• Next.js 15</li>
+                              <li>• Next.js 15 (App Router)</li>
                               <li>• TypeScript</li>
                               <li>• Tailwind CSS</li>
-                              <li>• Plotly.js</li>
+                              <li>• Plotly.js & react-plotly.js</li>
+                              <li>• Three.js & @react-three/fiber</li>
+                              <li>• Radix UI Components</li>
+                              <li>• MathJS</li>
+                              <li>• XLSX & PapaParse</li>
+                              <li>• Recharts</li>
                             </ul>
                           </div>
                           <div>
                             <h4 className="text-lg font-semibold text-white mb-3">Backend</h4>
                             <ul className="text-gray-300 space-y-2 text-sm">
                               <li>• Next.js API Routes</li>
-                              <li>• Supabase</li>
+                              <li>• FastAPI (Python Backend)</li>
+                              <li>• Supabase (BaaS)</li>
+                              <li>• PostgreSQL Database</li>
+                              <li>• Finnhub WebSockets</li>
                               <li>• Polygon API</li>
-                              <li>• FinnHub Websockets</li>
-                              <li>• PostgreSQL</li>
                               <li>• OpenAI API</li>
+                              <li>• Stripe Integration</li>
                             </ul>
                           </div>
                           <div>
                             <h4 className="text-lg font-semibold text-white mb-3">Infrastructure</h4>
                             <ul className="text-gray-300 space-y-2 text-sm">
-                              <li>• Netlify (Frontend)</li>
-                              <li>• Fly.io (Backend)</li>
-                              <li>• Supabase (Database)</li>
+                              <li>• Netlify (Frontend Hosting)</li>
+                              <li>• Fly.io (Backend Hosting)</li>
+                              <li>• Supabase (Database & Auth)</li>
                               <li>• Cloudflare (CDN)</li>
+                              <li>• GitHub (Version Control)</li>
                             </ul>
                           </div>
                         </div>
@@ -240,7 +248,7 @@ export default function DocumentationPage() {
                         <h3 className="text-2xl font-semibold text-white mb-4">Data Visualization</h3>
                         <div className="grid md:grid-cols-2 gap-6">
                           <div>
-                            <h4 className="text-lg font-semibold text-white mb-3">Plotly.js</h4>
+                            <h4 className="text-lg font-semibold text-white mb-3">Plotly.js & react-plotly.js</h4>
                             <p className="text-gray-300 text-sm mb-3">
                               Interactive charting library for financial data visualization with real-time updates and export capabilities.
                             </p>
@@ -249,10 +257,11 @@ export default function DocumentationPage() {
                               <li>• Interactive zoom and pan</li>
                               <li>• Real-time data streaming</li>
                               <li>• Multiple export formats</li>
+                              <li>• 2D/3D mathematical plots</li>
                             </ul>
                           </div>
                           <div>
-                            <h4 className="text-lg font-semibold text-white mb-3">Three.js</h4>
+                            <h4 className="text-lg font-semibold text-white mb-3">Three.js & @react-three/fiber</h4>
                             <p className="text-gray-300 text-sm mb-3">
                               3D graphics library for advanced visualizations including volume charts and 3D data representations.
                             </p>
@@ -261,6 +270,67 @@ export default function DocumentationPage() {
                               <li>• Interactive 3D controls</li>
                               <li>• WebGL rendering</li>
                               <li>• Custom 3D visualizations</li>
+                              <li>• @react-three/drei helpers</li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="bg-white/5 rounded-xl p-6 border border-white/10">
+                        <h3 className="text-2xl font-semibold text-white mb-4">Mathematical & Data Processing</h3>
+                        <div className="grid md:grid-cols-2 gap-6">
+                          <div>
+                            <h4 className="text-lg font-semibold text-white mb-3">MathJS</h4>
+                            <p className="text-gray-300 text-sm mb-3">
+                              JavaScript library for mathematical expression parsing and evaluation in the Math Visualizer.
+                            </p>
+                            <ul className="text-gray-300 space-y-1 text-sm">
+                              <li>• Mathematical expression parsing</li>
+                              <li>• Safe evaluation of equations</li>
+                              <li>• Support for sin, cos, exp, log, sqrt</li>
+                              <li>• Real-time equation evaluation</li>
+                            </ul>
+                          </div>
+                          <div>
+                            <h4 className="text-lg font-semibold text-white mb-3">File Processing</h4>
+                            <p className="text-gray-300 text-sm mb-3">
+                              Libraries for handling Excel and CSV file uploads and processing in the Dataset Lab.
+                            </p>
+                            <ul className="text-gray-300 space-y-1 text-sm">
+                              <li>• XLSX - Excel file processing</li>
+                              <li>• PapaParse - CSV file parsing</li>
+                              <li>• Data validation & cleaning</li>
+                              <li>• Date conversion & formatting</li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="bg-white/5 rounded-xl p-6 border border-white/10">
+                        <h3 className="text-2xl font-semibold text-white mb-4">Additional Libraries</h3>
+                        <div className="grid md:grid-cols-2 gap-6">
+                          <div>
+                            <h4 className="text-lg font-semibold text-white mb-3">Recharts</h4>
+                            <p className="text-gray-300 text-sm mb-3">
+                              Composable charting library built on React and D3 for additional chart types and visualizations.
+                            </p>
+                            <ul className="text-gray-300 space-y-1 text-sm">
+                              <li>• Responsive chart components</li>
+                              <li>• Multiple chart types</li>
+                              <li>• React integration</li>
+                              <li>• Custom styling support</li>
+                            </ul>
+                          </div>
+                          <div>
+                            <h4 className="text-lg font-semibold text-white mb-3">Lucide React</h4>
+                            <p className="text-gray-300 text-sm mb-3">
+                              Beautiful & consistent icon toolkit with 1000+ icons for UI components and navigation.
+                            </p>
+                            <ul className="text-gray-300 space-y-1 text-sm">
+                              <li>• 1000+ customizable icons</li>
+                              <li>• Consistent design system</li>
+                              <li>• Tree-shakeable imports</li>
+                              <li>• TypeScript support</li>
                             </ul>
                           </div>
                         </div>
@@ -331,6 +401,34 @@ export default function DocumentationPage() {
                       </div>
 
                       <div className="bg-white/5 rounded-xl p-6 border border-white/10">
+                        <h3 className="text-2xl font-semibold text-white mb-4">FastAPI Backend</h3>
+                        <p className="text-gray-300 mb-4">
+                          Python-based backend service providing advanced financial data processing, 
+                          machine learning capabilities, and real-time data streaming.
+                        </p>
+                        <div className="grid md:grid-cols-2 gap-4">
+                          <div>
+                            <h4 className="text-lg font-semibold text-white mb-2">Core Features</h4>
+                            <ul className="text-gray-300 space-y-1 text-sm">
+                              <li>• Financial data processing</li>
+                              <li>• Machine learning model training</li>
+                              <li>• Real-time WebSocket connections</li>
+                              <li>• CORS middleware configuration</li>
+                            </ul>
+                          </div>
+                          <div>
+                            <h4 className="text-lg font-semibold text-white mb-2">Endpoints</h4>
+                            <ul className="text-gray-300 space-y-1 text-sm">
+                              <li>• /finance - Market data</li>
+                              <li>• /fundamentals/[symbol] - Company data</li>
+                              <li>• /chat - AI chat processing</li>
+                              <li>• /health - Service health check</li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="bg-white/5 rounded-xl p-6 border border-white/10">
                         <h3 className="text-2xl font-semibold text-white mb-4">External Services</h3>
                         <div className="grid md:grid-cols-2 gap-6">
                           <div>
@@ -346,7 +444,25 @@ export default function DocumentationPage() {
                             </ul>
                           </div>
                           <div>
-                            <h4 className="text-lg font-semibold text-white mb-3">File Management</h4>
+                            <h4 className="text-lg font-semibold text-white mb-3">Stripe Integration</h4>
+                            <p className="text-gray-300 text-sm mb-3">
+                              Payment processing and subscription management for premium features and services.
+                            </p>
+                            <ul className="text-gray-300 space-y-1 text-sm">
+                              <li>• Payment processing</li>
+                              <li>• Subscription management</li>
+                              <li>• Webhook handling</li>
+                              <li>• Security compliance</li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="bg-white/5 rounded-xl p-6 border border-white/10">
+                        <h3 className="text-2xl font-semibold text-white mb-4">File Management</h3>
+                        <div className="grid md:grid-cols-2 gap-6">
+                          <div>
+                            <h4 className="text-lg font-semibold text-white mb-3">Data Processing</h4>
                             <p className="text-gray-300 text-sm mb-3">
                               Secure file storage and processing for Excel and CSV datasets with validation and user isolation.
                             </p>
@@ -355,6 +471,18 @@ export default function DocumentationPage() {
                               <li>• File validation & security</li>
                               <li>• User storage limits</li>
                               <li>• Metadata tracking</li>
+                            </ul>
+                          </div>
+                          <div>
+                            <h4 className="text-lg font-semibold text-white mb-3">Real-time Features</h4>
+                            <p className="text-gray-300 text-sm mb-3">
+                              WebSocket connections and real-time data streaming for live market updates and chat functionality.
+                            </p>
+                            <ul className="text-gray-300 space-y-1 text-sm">
+                              <li>• Finnhub WebSocket integration</li>
+                              <li>• Real-time market data</li>
+                              <li>• Live chat updates</li>
+                              <li>• Connection management</li>
                             </ul>
                           </div>
                         </div>
@@ -382,15 +510,47 @@ export default function DocumentationPage() {
                               <li>• datasets - File metadata</li>
                               <li>• chat_sessions - AI conversations</li>
                               <li>• auth.users - Authentication</li>
+                              <li>• storage.objects - File storage</li>
                             </ul>
                           </div>
                           <div>
-                            <h4 className="text-lg font-semibold text-white mb-2">Features</h4>
+                            <h4 className="text-lg font-semibold text-white mb-2">PostgreSQL Features</h4>
+                            <ul className="text-gray-300 space-y-1 text-sm">
+                              <li>• ACID compliance</li>
+                              <li>• Advanced indexing</li>
+                              <li>• JSON/JSONB support</li>
+                              <li>• Full-text search</li>
+                              <li>• Extensions & functions</li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="bg-white/5 rounded-xl p-6 border border-white/10">
+                        <h3 className="text-2xl font-semibold text-white mb-4">Supabase Backend-as-a-Service</h3>
+                        <p className="text-gray-300 mb-4">
+                          Complete backend solution providing database, authentication, storage, 
+                          and real-time capabilities with built-in security and scalability.
+                        </p>
+                        <div className="grid md:grid-cols-2 gap-4">
+                          <div>
+                            <h4 className="text-lg font-semibold text-white mb-2">Core Services</h4>
+                            <ul className="text-gray-300 space-y-1 text-sm">
+                              <li>• PostgreSQL database hosting</li>
+                              <li>• Real-time subscriptions</li>
+                              <li>• File storage & CDN</li>
+                              <li>• Edge functions</li>
+                              <li>• Database backups</li>
+                            </ul>
+                          </div>
+                          <div>
+                            <h4 className="text-lg font-semibold text-white mb-2">Supabase Features</h4>
                             <ul className="text-gray-300 space-y-1 text-sm">
                               <li>• Row Level Security (RLS)</li>
-                              <li>• Real-time subscriptions</li>
                               <li>• Automatic API generation</li>
                               <li>• Built-in authentication</li>
+                              <li>• Real-time subscriptions</li>
+                              <li>• Dashboard & monitoring</li>
                             </ul>
                           </div>
                         </div>
@@ -510,15 +670,45 @@ export default function DocumentationPage() {
                             </ul>
                           </div>
                           <div>
-                            <h4 className="text-lg font-semibold text-white mb-3">Financial Data APIs</h4>
+                            <h4 className="text-lg font-semibold text-white mb-3">Polygon API</h4>
                             <p className="text-gray-300 text-sm mb-3">
-                              Real-time financial data integration for market analysis and visualization.
+                              Comprehensive financial data provider offering real-time and historical market data.
                             </p>
                             <ul className="text-gray-300 space-y-1 text-sm">
-                              <li>• Market data endpoints</li>
-                              <li>• Real-time price feeds</li>
-                              <li>• Historical data access</li>
-                              <li>• Data validation & caching</li>
+                              <li>• Real-time stock prices</li>
+                              <li>• Historical market data</li>
+                              <li>• Company fundamentals</li>
+                              <li>• Market indicators</li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="bg-white/5 rounded-xl p-6 border border-white/10">
+                        <h3 className="text-2xl font-semibold text-white mb-4">Real-time Data & WebSockets</h3>
+                        <div className="grid md:grid-cols-2 gap-6">
+                          <div>
+                            <h4 className="text-lg font-semibold text-white mb-3">Finnhub WebSockets</h4>
+                            <p className="text-gray-300 text-sm mb-3">
+                              Real-time financial data streaming for live market updates and price feeds.
+                            </p>
+                            <ul className="text-gray-300 space-y-1 text-sm">
+                              <li>• Real-time price streaming</li>
+                              <li>• WebSocket connections</li>
+                              <li>• Market data feeds</li>
+                              <li>• Connection management</li>
+                            </ul>
+                          </div>
+                          <div>
+                            <h4 className="text-lg font-semibold text-white mb-3">Stripe API</h4>
+                            <p className="text-gray-300 text-sm mb-3">
+                              Payment processing and subscription management for premium features.
+                            </p>
+                            <ul className="text-gray-300 space-y-1 text-sm">
+                              <li>• Payment processing</li>
+                              <li>• Subscription management</li>
+                              <li>• Webhook handling</li>
+                              <li>• Security compliance</li>
                             </ul>
                           </div>
                         </div>

@@ -37,6 +37,23 @@ export default function AboutPage() {
       {/* Main content */}
       <div className="relative z-10 pt-20">
         <div className="max-w-6xl mx-auto px-6 py-16">
+          {/* Mission Statement */}
+          <div className="text-center mb-16">
+            <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
+              About Refrax
+            </h1>
+            <div className="bg-gradient-to-r from-purple-600/20 to-blue-600/20 rounded-2xl p-8 border border-purple-500/30 max-w-4xl mx-auto">
+              <h2 className="text-2xl font-semibold text-white mb-4">Our Mission</h2>
+              <p className="text-gray-300 text-lg leading-relaxed">
+                Refrax is a completely free educational platform designed to democratize access to data analytics, 
+                financial modeling, and mathematical visualization. We believe that learning complex concepts 
+                should be interactive, engaging, and accessible to everyone. Our platform provides hands-on 
+                tools for 2D and 3D mathematical visualization, financial data analysis, and comprehensive 
+                learning resources - all completely free with no registration required.
+              </p>
+            </div>
+          </div>
+
           {/* Team Members Section */}
           <div className="grid lg:grid-cols-2 gap-12">
             {/* Rohan Malhotra */}
@@ -48,9 +65,6 @@ export default function AboutPage() {
                     alt="Rohan Malhotra"
                     className="w-32 h-32 rounded-full object-cover border-4 border-purple-500/50 shadow-lg"
                   />
-                  <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-green-500 rounded-full border-2 border-black flex items-center justify-center">
-                    <span className="text-white text-sm">✓</span>
-                  </div>
                 </div>
                 <h2 className="text-2xl font-bold text-white mb-2">Rohan Malhotra</h2>
                 <p className="text-purple-400 font-medium">Founder & Developer</p>
@@ -134,9 +148,6 @@ export default function AboutPage() {
                     alt="Mihir Ganesan"
                     className="w-32 h-32 rounded-full object-cover border-4 border-blue-500/50 shadow-lg"
                   />
-                  <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-green-500 rounded-full border-2 border-black flex items-center justify-center">
-                    <span className="text-white text-sm">✓</span>
-                  </div>
                 </div>
                 <h2 className="text-2xl font-bold text-white mb-2">Mihir Ganesan</h2>
                 <p className="text-blue-400 font-medium">Business Lead</p>
@@ -167,7 +178,6 @@ export default function AboutPage() {
               </div>
 
               <div className="flex gap-3">
-                
                 <Button
                   asChild
                   className="rounded-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600"
@@ -177,8 +187,6 @@ export default function AboutPage() {
                     <span>LinkedIn</span>
                   </a>
                 </Button>
-               
-                
               </div>
             </div>
           </div>

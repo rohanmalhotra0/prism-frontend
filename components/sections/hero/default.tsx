@@ -19,7 +19,7 @@ interface HeroProps {
 
 export default function Hero({
   title = "Refrax",
-  description = "Turning complex data into clear, interactive insights  free and accessible for everyone.",
+  description = "Free education platform for data analytics, financial modeling, and 2D/3D math visualization. Learn by doing with interactive tools.",
   mockup = <ChartAreaInteractive />,
   className,
 }: HeroProps) {
@@ -43,11 +43,11 @@ export default function Hero({
             {description}
           </p>
 
-          {/* ✨ Use your SignUp modal instead of href button */}
+          {/* Start Learning Free Button */}
           <div className="animate-appear relative z-10 opacity-0 delay-300">
-            <button 
-              className="relative group px-6 py-3 rounded-full font-semibold text-white transition-all duration-300 hover:scale-105 active:scale-95 overflow-hidden"
-              onClick={() => window.dispatchEvent(new CustomEvent('openAuthModal'))}
+            <a 
+              href="/general"
+              className="relative group px-6 py-3 rounded-full font-semibold text-white transition-all duration-300 hover:scale-105 active:scale-95 overflow-hidden inline-block"
             >
               {/* Background gradient */}
               <div className="absolute inset-0 bg-gradient-to-r from-purple-600 via-purple-500 to-blue-600 rounded-full"></div>
@@ -62,8 +62,8 @@ export default function Hero({
               <div className="absolute inset-0 rounded-full border border-white/20 group-hover:border-white/40 transition-colors duration-300"></div>
               
               {/* Text */}
-              <span className="relative z-10">Get Started</span>
-            </button>
+              <span className="relative z-10">Start Learning Free</span>
+            </a>
           </div>
         </div>
 

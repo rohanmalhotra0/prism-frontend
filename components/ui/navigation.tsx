@@ -28,9 +28,14 @@ interface NavigationProps {
 function NavigationComponent({
   components = [
     {
-      title: "Stocks & Indices",
+      title: "General Modeling",
+      href: "/general",
+      description: "Regression, simulation, and time-series forecasting.",
+    },
+    {
+      title: "Financial Modeling",
       href: "/financePage",
-      description: "Quantitative models for corporate finance and forecasting.",
+      description: "Quantitative 2D/3D models for corporate finance and forecasting.",
     },
     /* 
     {
@@ -57,11 +62,7 @@ function NavigationComponent({
       description: "Stochastic risk modeling for actuarial science.",
     },
     */
-    {
-      title: "General Modeling",
-      href: "/general",
-      description: "Regression, simulation, and time-series forecasting.",
-    },
+  
   ],
   community = [
     {
