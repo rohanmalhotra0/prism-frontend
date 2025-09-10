@@ -4,13 +4,14 @@ import Navbar from "@/components/sections/navbar/default";
 import Footer from "@/components/sections/footer/default";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { LineChart, FlaskConical, Sigma, ShieldCheck, Bitcoin, FunctionSquare, Cpu } from "lucide-react";
 
 export const CATEGORIES = [
   { 
     name: "Financial Modeling", 
     slug: "financial-modeling", 
     description: "Learn about DCF models, valuation techniques, and financial forecasting methods.",
-    icon: "•",
+    icon: LineChart,
     topics: ["DCF Models", "Valuation", "Forecasting", "Financial Statements"],
     difficulty: "Intermediate",
     duration: "4-6 weeks"
@@ -19,7 +20,7 @@ export const CATEGORIES = [
     name: "General Modeling", 
     slug: "general-modeling", 
     description: "Explore regression analysis, time series, and statistical modeling techniques.",
-    icon: "🔬",
+    icon: FlaskConical,
     topics: ["Regression", "Time Series", "Monte Carlo", "Simulation"],
     difficulty: "Beginner",
     duration: "3-4 weeks"
@@ -28,7 +29,7 @@ export const CATEGORIES = [
     name: "Options & Derivatives", 
     slug: "options-derivatives", 
     description: "Master Black-Scholes, binomial models, and options pricing strategies.",
-    icon: "•",
+    icon: Sigma,
     topics: ["Black-Scholes", "Binomial Models", "Greeks", "Volatility"],
     difficulty: "Advanced",
     duration: "6-8 weeks"
@@ -37,7 +38,7 @@ export const CATEGORIES = [
     name: "Insurance Risk Analysis", 
     slug: "insurance-risk-analysis", 
     description: "Understand actuarial science, risk assessment, and insurance mathematics.",
-    icon: "•",
+    icon: ShieldCheck,
     topics: ["Actuarial Science", "Risk Assessment", "Pricing Models", "Reserves"],
     difficulty: "Advanced",
     duration: "8-10 weeks"
@@ -46,7 +47,7 @@ export const CATEGORIES = [
     name: "Crypto Modeling", 
     slug: "crypto-modeling", 
     description: "Dive into blockchain analysis, DeFi protocols, and cryptocurrency valuation.",
-    icon: "₿",
+    icon: Bitcoin,
     topics: ["Blockchain", "DeFi", "Tokenomics", "Market Analysis"],
     difficulty: "Intermediate",
     duration: "5-7 weeks"
@@ -55,7 +56,7 @@ export const CATEGORIES = [
     name: "Statistics & Probability", 
     slug: "statistics-probability", 
     description: "Build foundations in probability theory, distributions, and statistical inference.",
-    icon: "•",
+    icon: FunctionSquare,
     topics: ["Probability", "Distributions", "Hypothesis Testing", "Bayesian"],
     difficulty: "Beginner",
     duration: "4-5 weeks"
@@ -64,7 +65,7 @@ export const CATEGORIES = [
     name: "Machine Learning", 
     slug: "machine-learning", 
     description: "Apply AI and ML techniques to financial data analysis and prediction.",
-    icon: "🤖",
+    icon: Cpu,
     topics: ["Neural Networks", "Random Forest", "Sentiment Analysis", "Prediction"],
     difficulty: "Advanced",
     duration: "6-8 weeks"
@@ -107,7 +108,7 @@ export default function LearnPage() {
                     <Link href={`/learn/${cat.slug}`} className="block group">
                       <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-purple-500/20">
                         <div className="flex items-center gap-3 mb-4">
-                          <span className="text-3xl">{cat.icon}</span>
+                          <cat.icon className="w-6 h-6 text-blue-400" />
                           <div>
                             <h2 className="text-xl font-semibold text-white group-hover:text-blue-400 transition-colors">
                               {cat.name}

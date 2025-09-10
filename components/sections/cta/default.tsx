@@ -26,7 +26,7 @@ export default function CTA({
   title = "Start Modeling",
   buttons = [
     {
-      href: "#",
+      href: "/general",
       text: "Get Started",
       variant: "default",
     },
