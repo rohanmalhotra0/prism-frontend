@@ -286,11 +286,7 @@ export default function AIPage() {
                   </button>
                 )}
                 
-                {!user && (
-                  <div className="text-center text-sm text-gray-400 p-2">
-                    Sign in to save your chats (max 5)
-                  </div>
-                )}
+                
               </div>
               <div className="flex-1 overflow-y-auto p-2 space-y-1">
                 {sessions.length === 0 ? (

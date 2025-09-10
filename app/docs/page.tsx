@@ -208,7 +208,7 @@ export default function DocumentationPage() {
                               <li>• Reduced runtime errors</li>
                               <li>• Better code quality</li>
                               <li>• Easier maintenance</li>
-                              <li>• Team collaboration</li>
+                        
                             </ul>
                           </div>
                         </div>
