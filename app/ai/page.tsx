@@ -349,11 +349,7 @@ export default function AIPage() {
               </div>
             </div>
             <div className="flex items-center gap-2">
-              {user && sessions.length >= 5 && (
-                <div className="text-xs text-yellow-400 bg-yellow-400/10 px-2 py-1 rounded">
-                  Max 5 chats reached
-                </div>
-              )}
+              
               {saving && (
                 <div className="text-xs text-blue-400 bg-blue-400/10 px-2 py-1 rounded flex items-center gap-1">
                   <Loader2 className="w-3 h-3 animate-spin" />
