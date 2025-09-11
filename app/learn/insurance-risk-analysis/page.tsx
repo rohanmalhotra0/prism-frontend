@@ -505,7 +505,7 @@ def catastrophe_modeling(exposure_data, historical_events, simulation_years=1000
                               >
                                 <div className="flex items-center justify-center gap-2">
                                   <div className="w-2 h-2 bg-orange-400 rounded-full"></div>
-                                  Key Formulas
+                                  Math Formulas
                                 </div>
                               </button>
                             )}

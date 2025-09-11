@@ -302,7 +302,7 @@ print(f"Mean CV Score: {scores.mean():.4f}")`
                               >
                                 <div className="flex items-center justify-center gap-2">
                                   <div className="w-2 h-2 bg-orange-400 rounded-full"></div>
-                                  Key Formulas
+                                  Math Formulas
                                 </div>
                               </button>
                             )}

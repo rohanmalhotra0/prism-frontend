@@ -397,7 +397,7 @@ def monte_carlo_simulation(n_simulations=10000):
                               >
                                 <div className="flex items-center justify-center gap-2">
                                   <div className="w-2 h-2 bg-orange-400 rounded-full"></div>
-                                  Key Formulas
+                                  Math Formulas
                                 </div>
                               </button>
                             )}

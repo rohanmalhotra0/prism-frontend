@@ -376,7 +376,7 @@ def portfolio_hedge(portfolio, hedge_instruments):
                               >
                                 <div className="flex items-center justify-center gap-2">
                                   <div className="w-2 h-2 bg-orange-400 rounded-full"></div>
-                                  Key Formulas
+                                  Math Formulas
                                 </div>
                               </button>
                             )}
