@@ -4,6 +4,8 @@ import Navbar from "@/components/sections/navbar/default";
 import Footer from "@/components/sections/footer/default";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import 'katex/dist/katex.min.css';
+import { InlineMath, BlockMath } from 'react-katex';
 
 export default function StatisticsProbabilityPage() {
   const statsTopics = [
@@ -15,6 +17,13 @@ export default function StatisticsProbabilityPage() {
         howItWorks: "Distributions characterize the behavior of random variables through probability density functions and cumulative distribution functions.",
         keyComponents: ["Normal Distribution", "Binomial Distribution", "Poisson Distribution", "Exponential Distribution", "Student's t-distribution"],
         useCases: ["Risk modeling", "Portfolio optimization", "Credit scoring", "Market analysis"],
+        formulas: {
+          normal: "f(x) = \\frac{1}{\\sigma\\sqrt{2\\pi}} e^{-\\frac{1}{2}\\left(\\frac{x-\\mu}{\\sigma}\\right)^2}",
+          binomial: "P(X = k) = \\binom{n}{k} p^k (1-p)^{n-k}",
+          poisson: "P(X = k) = \\frac{\\lambda^k e^{-\\lambda}}{k!}",
+          exponential: "f(x) = \\lambda e^{-\\lambda x} \\text{ for } x \\geq 0",
+          t_distribution: "f(t) = \\frac{\\Gamma\\left(\\frac{\\nu+1}{2}\\right)}{\\sqrt{\\nu\\pi}\\Gamma\\left(\\frac{\\nu}{2}\\right)}\\left(1+\\frac{t^2}{\\nu}\\right)^{-\\frac{\\nu+1}{2}}"
+        },
         codeExample: `import numpy as np
 import matplotlib.pyplot as plt
 from scipy import stats
@@ -54,6 +63,12 @@ def analyze_distributions(data):
         howItWorks: "Formulates null and alternative hypotheses, calculates test statistics, and determines statistical significance using p-values.",
         keyComponents: ["Null Hypothesis", "Alternative Hypothesis", "Test Statistics", "P-values", "Type I/II Errors"],
         useCases: ["A/B testing", "Model validation", "Risk assessment", "Performance evaluation"],
+        formulas: {
+          t_test: "t = \\frac{\\bar{x} - \\mu_0}{s/\\sqrt{n}}",
+          chi_square: "\\chi^2 = \\sum_{i=1}^{n} \\frac{(O_i - E_i)^2}{E_i}",
+          p_value: "p = P(T \\geq |t_{obs}| | H_0 \\text{ is true})",
+          confidence_interval: "CI = \\bar{x} \\pm t_{\\alpha/2, n-1} \\cdot \\frac{s}{\\sqrt{n}}"
+        },
         codeExample: `from scipy import stats
 import numpy as np
 
@@ -96,6 +111,12 @@ def hypothesis_tests(sample1, sample2, alpha=0.05):
         howItWorks: "Uses Bayes' theorem to update prior beliefs with observed data, resulting in posterior probability distributions.",
         keyComponents: ["Prior Distribution", "Likelihood Function", "Posterior Distribution", "Bayes' Theorem", "Markov Chain Monte Carlo"],
         useCases: ["Risk assessment", "Portfolio optimization", "Model uncertainty", "Parameter estimation"],
+        formulas: {
+          bayes_theorem: "P(\\theta|D) = \\frac{P(D|\\theta) \\cdot P(\\theta)}{P(D)}",
+          posterior: "\\text{Posterior} \\propto \\text{Likelihood} \\times \\text{Prior}",
+          marginal_likelihood: "P(D) = \\int P(D|\\theta) \\cdot P(\\theta) \\, d\\theta",
+          conjugate_prior: "\\text{If } \\theta \\sim \\text{Beta}(\\alpha, \\beta) \\text{ and } x|\\theta \\sim \\text{Binomial}(n, \\theta), \\text{ then } \\theta|x \\sim \\text{Beta}(\\alpha + x, \\beta + n - x)"
+        },
         codeExample: `import numpy as np
 from scipy import stats
 import matplotlib.pyplot as plt
@@ -143,6 +164,12 @@ def bayesian_analysis(prior_mean, prior_std, data, likelihood_std):
         howItWorks: "Calculates correlation coefficients that quantify linear relationships, ranging from -1 (perfect negative) to +1 (perfect positive).",
         keyComponents: ["Pearson Correlation", "Spearman Correlation", "Kendall's Tau", "Partial Correlation", "Correlation Matrix"],
         useCases: ["Portfolio diversification", "Risk factor analysis", "Market relationships", "Feature selection"],
+        formulas: {
+          pearson: "r = \\frac{\\sum_{i=1}^{n}(x_i - \\bar{x})(y_i - \\bar{y})}{\\sqrt{\\sum_{i=1}^{n}(x_i - \\bar{x})^2\\sum_{i=1}^{n}(y_i - \\bar{y})^2}}",
+          spearman: "\\rho = 1 - \\frac{6\\sum d_i^2}{n(n^2-1)}",
+          kendall: "\\tau = \\frac{C - D}{\\binom{n}{2}}",
+          partial_correlation: "r_{xy.z} = \\frac{r_{xy} - r_{xz}r_{yz}}{\\sqrt{(1-r_{xz}^2)(1-r_{yz}^2)}}"
+        },
         codeExample: `import numpy as np
 import pandas as pd
 from scipy.stats import pearsonr, spearmanr, kendalltau
@@ -244,6 +271,13 @@ def confidence_intervals(data, confidence_level=0.95):
         howItWorks: "Fits mathematical models to data to understand and predict relationships, measuring how well the model explains the data.",
         keyComponents: ["Linear Regression", "Multiple Regression", "R-squared", "Residual Analysis", "Assumptions Testing"],
         useCases: ["Risk factor modeling", "Performance attribution", "Price prediction", "Market analysis"],
+        formulas: {
+          linear_regression: "y = \\beta_0 + \\beta_1 x + \\epsilon",
+          multiple_regression: "y = \\beta_0 + \\beta_1 x_1 + \\beta_2 x_2 + \\cdots + \\beta_k x_k + \\epsilon",
+          r_squared: "R^2 = 1 - \\frac{SS_{res}}{SS_{tot}} = \\frac{SS_{reg}}{SS_{tot}}",
+          adjusted_r_squared: "R^2_{adj} = 1 - \\frac{(1-R^2)(n-1)}{n-k-1}",
+          f_statistic: "F = \\frac{MS_{reg}}{MS_{res}} = \\frac{SS_{reg}/k}{SS_{res}/(n-k-1)}"
+        },
         codeExample: `from sklearn.linear_model import LinearRegression
 from sklearn.metrics import r2_score, mean_squared_error
 from sklearn.model_selection import train_test_split
@@ -399,6 +433,24 @@ def regression_analysis(X, y):
                             <li key={idx}>• {useCase}</li>
                           ))}
                         </ul>
+                        
+                        {topic.details.formulas && (
+                          <div className="mb-4">
+                            <h4 className="text-lg font-semibold text-orange-400 mb-3">Key Formulas</h4>
+                            <div className="space-y-3">
+                              {Object.entries(topic.details.formulas).map(([key, formula]) => (
+                                <div key={key} className="bg-gray-900/30 rounded-lg p-3 border border-gray-700">
+                                  <div className="text-gray-300 text-xs mb-1 capitalize">
+                                    {key.replace(/_/g, ' ')}:
+                                  </div>
+                                  <div className="text-center">
+                                    <BlockMath math={formula} />
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
                         
                         <h4 className="text-lg font-semibold text-yellow-400 mb-3">Code Example</h4>
                         <div className="bg-gray-900/50 rounded-lg p-4 border border-gray-700">

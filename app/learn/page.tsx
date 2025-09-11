@@ -4,14 +4,27 @@ import Navbar from "@/components/sections/navbar/default";
 import Footer from "@/components/sections/footer/default";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { LineChart, FlaskConical, Sigma, ShieldCheck, Bitcoin, FunctionSquare, Cpu } from "lucide-react";
+import { 
+  TrendingUp, 
+  FlaskConical, 
+  Sigma, 
+  Shield, 
+  Bitcoin, 
+  BarChart3, 
+  Brain,
+  Calculator,
+  PieChart,
+  Target,
+  Zap,
+  Database
+} from "lucide-react";
 
 export const CATEGORIES = [
   { 
     name: "Financial Modeling", 
     slug: "financial-modeling", 
     description: "Learn about DCF models, valuation techniques, and financial forecasting methods.",
-    icon: LineChart,
+    icon: TrendingUp,
     topics: ["DCF Models", "Valuation", "Forecasting", "Financial Statements"],
     difficulty: "Intermediate",
     duration: "4-6 weeks"
@@ -38,7 +51,7 @@ export const CATEGORIES = [
     name: "Insurance Risk Analysis", 
     slug: "insurance-risk-analysis", 
     description: "Understand actuarial science, risk assessment, and insurance mathematics.",
-    icon: ShieldCheck,
+    icon: Shield,
     topics: ["Actuarial Science", "Risk Assessment", "Pricing Models", "Reserves"],
     difficulty: "Advanced",
     duration: "8-10 weeks"
@@ -56,7 +69,7 @@ export const CATEGORIES = [
     name: "Statistics & Probability", 
     slug: "statistics-probability", 
     description: "Build foundations in probability theory, distributions, and statistical inference.",
-    icon: FunctionSquare,
+    icon: BarChart3,
     topics: ["Probability", "Distributions", "Hypothesis Testing", "Bayesian"],
     difficulty: "Beginner",
     duration: "4-5 weeks"
@@ -65,7 +78,7 @@ export const CATEGORIES = [
     name: "Machine Learning", 
     slug: "machine-learning", 
     description: "Apply AI and ML techniques to financial data analysis and prediction.",
-    icon: Cpu,
+    icon: Brain,
     topics: ["Neural Networks", "Random Forest", "Sentiment Analysis", "Prediction"],
     difficulty: "Advanced",
     duration: "6-8 weeks"
@@ -108,7 +121,9 @@ export default function LearnPage() {
                     <Link href={`/learn/${cat.slug}`} className="block group">
                       <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-purple-500/20">
                         <div className="flex items-center gap-3 mb-4">
-                          <cat.icon className="w-6 h-6 text-blue-400" />
+                          <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl flex items-center justify-center">
+                            <cat.icon className="w-6 h-6 text-white" />
+                          </div>
                           <div>
                             <h2 className="text-xl font-semibold text-white group-hover:text-blue-400 transition-colors">
                               {cat.name}

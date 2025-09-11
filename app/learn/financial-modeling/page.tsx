@@ -4,17 +4,37 @@ import Navbar from "@/components/sections/navbar/default";
 import Footer from "@/components/sections/footer/default";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import 'katex/dist/katex.min.css';
+import { InlineMath, BlockMath } from 'react-katex';
+import { 
+  TrendingUp, 
+  Calculator, 
+  PieChart, 
+  BarChart3, 
+  Target, 
+  Zap,
+  Database,
+  FileText,
+  DollarSign,
+  Percent
+} from "lucide-react";
 
 export default function FinancialModelingPage() {
   const modelingTopics = [
     {
       title: "Discounted Cash Flow (DCF)",
-      icon: "•",
+      icon: DollarSign,
       description: "A fundamental valuation method that estimates the value of an investment based on its expected future cash flows.",
       details: {
         howItWorks: "DCF calculates the present value of projected future cash flows by discounting them back to today using a required rate of return.",
         keyComponents: ["Free Cash Flow Projections", "Terminal Value", "Discount Rate (WACC)", "Present Value Calculation"],
         useCases: ["Company valuation", "Investment analysis", "M&A transactions", "Project evaluation"],
+        formulas: {
+          dcf_value: "\\text{DCF Value} = \\sum_{t=1}^{n} \\frac{\\text{FCF}_t}{(1+r)^t} + \\frac{\\text{TV}}{(1+r)^n}",
+          terminal_value: "\\text{TV} = \\frac{\\text{FCF}_{n+1}}{r - g} = \\frac{\\text{FCF}_n \\times (1+g)}{r - g}",
+          wacc: "\\text{WACC} = \\frac{E}{V} \\times r_e + \\frac{D}{V} \\times r_d \\times (1-T)",
+          free_cash_flow: "\\text{FCF} = \\text{EBIT} \\times (1-T) + \\text{Depreciation} - \\text{Capex} - \\Delta \\text{NWC}"
+        },
         codeExample: `def dcf_valuation(cash_flows, discount_rate, terminal_growth_rate):
     """
     Calculate DCF valuation
@@ -43,7 +63,7 @@ export default function FinancialModelingPage() {
     },
     {
       title: "Comparable Company Analysis",
-      icon: "•",
+      icon: BarChart3,
       description: "A relative valuation method that compares a company's metrics to similar companies in the same industry.",
       details: {
         howItWorks: "Identifies similar companies, calculates valuation multiples (P/E, EV/EBITDA, etc.), and applies them to the target company.",
@@ -84,12 +104,18 @@ def comparable_analysis(target_company, peer_companies):
     },
     {
       title: "Leveraged Buyout (LBO) Model",
-      icon: "•",
+      icon: TrendingUp,
       description: "A financial model used to evaluate leveraged buyout transactions, focusing on debt capacity and returns.",
       details: {
         howItWorks: "Models the acquisition using significant debt financing, projects cash flows to service debt, and calculates returns to equity investors.",
         keyComponents: ["Sources & Uses", "Debt Schedule", "Cash Flow Waterfall", "IRR Calculation"],
         useCases: ["Private equity analysis", "M&A evaluation", "Debt capacity analysis", "Investment returns"],
+        formulas: {
+          irr: "\\text{IRR}: \\sum_{t=0}^{n} \\frac{\\text{CF}_t}{(1+\\text{IRR})^t} = 0",
+          debt_capacity: "\\text{Max Debt} = \\frac{\\text{EBITDA} \\times \\text{Leverage Multiple}}{\\text{Interest Coverage Ratio}}",
+          equity_multiple: "\\text{Equity Multiple} = \\frac{\\text{Exit Value}}{\\text{Initial Equity Investment}}",
+          cash_flow_waterfall: "\\text{Free Cash} = \\text{EBITDA} - \\text{Interest} - \\text{Taxes} - \\text{Capex} - \\Delta \\text{NWC}"
+        },
         codeExample: `def lbo_model(acquisition_price, debt_ratio, interest_rate, exit_multiple):
     """
     Basic LBO model framework
@@ -126,7 +152,7 @@ def comparable_analysis(target_company, peer_companies):
     },
     {
       title: "Three-Statement Model",
-      icon: "📋",
+      icon: FileText,
       description: "An integrated financial model that links the income statement, balance sheet, and cash flow statement.",
       details: {
         howItWorks: "Creates a dynamic model where changes in one statement automatically flow through to the other statements using accounting relationships.",
@@ -171,12 +197,18 @@ def comparable_analysis(target_company, peer_companies):
     },
     {
       title: "Monte Carlo Simulation",
-      icon: "•",
+      icon: Target,
       description: "A statistical method that uses random sampling to model uncertainty and risk in financial projections.",
       details: {
         howItWorks: "Runs thousands of simulations with random inputs to generate a distribution of possible outcomes and assess risk.",
         keyComponents: ["Input Variables", "Probability Distributions", "Simulation Runs", "Risk Metrics"],
         useCases: ["Risk assessment", "Portfolio optimization", "Project evaluation", "Stress testing"],
+        formulas: {
+          var: "\\text{VaR}_{\\alpha} = F^{-1}(\\alpha) \\text{ where } F \\text{ is the cumulative distribution}",
+          expected_shortfall: "\\text{ES}_{\\alpha} = \\frac{1}{1-\\alpha} \\int_{\\alpha}^{1} \\text{VaR}_u \\, du",
+          monte_carlo_estimate: "\\hat{E}[f(X)] = \\frac{1}{N} \\sum_{i=1}^{N} f(X_i)",
+          confidence_interval: "\\text{CI} = \\hat{\\mu} \\pm z_{\\alpha/2} \\frac{\\sigma}{\\sqrt{N}}"
+        },
         codeExample: `import numpy as np
 import matplotlib.pyplot as plt
 
@@ -216,7 +248,7 @@ def monte_carlo_simulation(n_simulations=10000):
     },
     {
       title: "Sensitivity Analysis",
-      icon: "•",
+      icon: PieChart,
       description: "A technique to understand how changes in input variables affect the output of a financial model.",
       details: {
         howItWorks: "Systematically varies key input variables while holding others constant to measure their impact on model outputs.",
@@ -331,7 +363,9 @@ def monte_carlo_simulation(n_simulations=10000):
             {modelingTopics.map((topic, index) => (
               <div key={index} className="bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10 hover:bg-white/10 transition-colors">
                 <div className="flex items-start gap-6">
-                  <div className="text-4xl">{topic.icon}</div>
+                  <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl flex items-center justify-center flex-shrink-0">
+                    <topic.icon className="w-8 h-8 text-white" />
+                  </div>
                   <div className="flex-1">
                     <h3 className="text-2xl font-bold text-white mb-3">{topic.title}</h3>
                     <p className="text-gray-300 mb-6 text-lg">{topic.description}</p>
@@ -356,6 +390,24 @@ def monte_carlo_simulation(n_simulations=10000):
                             <li key={idx}>• {useCase}</li>
                           ))}
                         </ul>
+                        
+                        {topic.details.formulas && (
+                          <div className="mb-4">
+                            <h4 className="text-lg font-semibold text-orange-400 mb-3">Key Formulas</h4>
+                            <div className="space-y-3">
+                              {Object.entries(topic.details.formulas).map(([key, formula]) => (
+                                <div key={key} className="bg-gray-900/30 rounded-lg p-3 border border-gray-700">
+                                  <div className="text-gray-300 text-xs mb-1 capitalize">
+                                    {key.replace(/_/g, ' ')}:
+                                  </div>
+                                  <div className="text-center">
+                                    <BlockMath math={formula} />
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
                         
                         <h4 className="text-lg font-semibold text-yellow-400 mb-3">Code Example</h4>
                         <div className="bg-gray-900/50 rounded-lg p-4 border border-gray-700">
@@ -442,42 +494,58 @@ def monte_carlo_simulation(n_simulations=10000):
             <h3 className="text-2xl font-bold text-white mb-6 text-center">🛠️ Essential Tools & Software</h3>
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
               <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
-                <div className="text-2xl mb-2">•</div>
+                <div className="w-12 h-12 bg-green-500 rounded-xl flex items-center justify-center mx-auto mb-2">
+                  <FileText className="w-6 h-6 text-white" />
+                </div>
                 <h4 className="text-white font-semibold mb-1">Excel</h4>
                 <p className="text-gray-400 text-xs">Primary modeling platform</p>
               </div>
               <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
-                <div className="text-2xl mb-2">🐍</div>
+                <div className="w-12 h-12 bg-yellow-500 rounded-xl flex items-center justify-center mx-auto mb-2">
+                  <Database className="w-6 h-6 text-white" />
+                </div>
                 <h4 className="text-white font-semibold mb-1">Python</h4>
                 <p className="text-gray-400 text-xs">Advanced modeling & analysis</p>
               </div>
               <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
-                <div className="text-2xl mb-2">📈</div>
+                <div className="w-12 h-12 bg-orange-500 rounded-xl flex items-center justify-center mx-auto mb-2">
+                  <BarChart3 className="w-6 h-6 text-white" />
+                </div>
                 <h4 className="text-white font-semibold mb-1">Bloomberg Terminal</h4>
                 <p className="text-gray-400 text-xs">Market data & analytics</p>
               </div>
               <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
-                <div className="text-2xl mb-2">💼</div>
+                <div className="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center mx-auto mb-2">
+                  <TrendingUp className="w-6 h-6 text-white" />
+                </div>
                 <h4 className="text-white font-semibold mb-1">FactSet</h4>
                 <p className="text-gray-400 text-xs">Financial data platform</p>
               </div>
               <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
-                <div className="text-2xl mb-2">•</div>
+                <div className="w-12 h-12 bg-red-500 rounded-xl flex items-center justify-center mx-auto mb-2">
+                  <Target className="w-6 h-6 text-white" />
+                </div>
                 <h4 className="text-white font-semibold mb-1">@RISK</h4>
                 <p className="text-gray-400 text-xs">Risk analysis add-in</p>
               </div>
               <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
-                <div className="text-2xl mb-2">•</div>
+                <div className="w-12 h-12 bg-purple-500 rounded-xl flex items-center justify-center mx-auto mb-2">
+                  <PieChart className="w-6 h-6 text-white" />
+                </div>
                 <h4 className="text-white font-semibold mb-1">Tableau</h4>
                 <p className="text-gray-400 text-xs">Data visualization</p>
               </div>
               <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
-                <div className="text-2xl mb-2">⚡</div>
+                <div className="w-12 h-12 bg-indigo-500 rounded-xl flex items-center justify-center mx-auto mb-2">
+                  <Zap className="w-6 h-6 text-white" />
+                </div>
                 <h4 className="text-white font-semibold mb-1">Power BI</h4>
                 <p className="text-gray-400 text-xs">Business intelligence</p>
               </div>
               <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
-                <div className="text-2xl mb-2">•</div>
+                <div className="w-12 h-12 bg-gray-500 rounded-xl flex items-center justify-center mx-auto mb-2">
+                  <Calculator className="w-6 h-6 text-white" />
+                </div>
                 <h4 className="text-white font-semibold mb-1">VBA</h4>
                 <p className="text-gray-400 text-xs">Excel automation</p>
               </div>

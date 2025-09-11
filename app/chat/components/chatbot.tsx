@@ -28,9 +28,17 @@ export default function ChatBot() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const expandToFullPage = () => {
-    // Store current messages in session storage for the AI page
-    sessionStorage.setItem("chatbot-messages", JSON.stringify(messages));
-    router.push("/ai");
+    try {
+      // Store current messages in session storage for the AI page
+      if (typeof window !== 'undefined') {
+        sessionStorage.setItem("chatbot-messages", JSON.stringify(messages));
+      }
+      router.push("/ai");
+    } catch (error) {
+      console.error("Error expanding to full page:", error);
+      // Still navigate even if sessionStorage fails
+      router.push("/ai");
+    }
   };
 
   const scrollToBottom = () =>
@@ -167,6 +175,11 @@ export default function ChatBot() {
 
           {/* Input */}
           <div className="p-4 border-t border-white/10 bg-black/70 backdrop-blur">
+            {!user && (
+              <div className="mb-3 p-2 bg-yellow-900/20 border border-yellow-500/50 rounded-lg text-yellow-400 text-xs text-center">
+                Sign in to save your chats (max 5)
+              </div>
+            )}
             <div className="flex gap-3">
               <input
                 value={input}

@@ -2,16 +2,47 @@
 
 import { useState } from "react";
 import Navbar from "@/components/sections/navbar/default";
+import Footer from "@/components/sections/footer/default";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { 
+  BookOpen, 
+  Code, 
+  Database, 
+  Server, 
+  Globe, 
+  Zap, 
+  Shield, 
+  Layers,
+  ArrowRight,
+  CheckCircle,
+  Star,
+  Rocket,
+  Cpu,
+  FileText,
+  GitBranch,
+  Settings,
+  BarChart3,
+  Brain,
+  Target,
+  TrendingUp,
+  Search,
+  Users,
+  Lightbulb,
+  ExternalLink
+} from "lucide-react";
 
 export default function DocumentationPage() {
   const [activeSection, setActiveSection] = useState("overview");
 
   const sections = [
-    { id: "overview", title: "Overview" },
-    { id: "frontend", title: "Frontend" },
-    { id: "backend", title: "Backend" },
-    { id: "database", title: "Database" },
-    { id: "apis", title: "APIs" },
+    { id: "overview", title: "Overview", icon: BookOpen, description: "Platform introduction and features" },
+    { id: "frontend", title: "Frontend", icon: Code, description: "React, Next.js, and UI components" },
+    { id: "backend", title: "Backend", icon: Server, description: "API routes and Python services" },
+    { id: "database", title: "Database", icon: Database, description: "Supabase and data management" },
+    { id: "apis", title: "APIs", icon: Globe, description: "External integrations and services" },
+    { id: "deployment", title: "Deployment", icon: Rocket, description: "Infrastructure and hosting" },
+    { id: "features", title: "Features", icon: Star, description: "Core functionality deep dive" },
   ];
 
   return (
@@ -25,14 +56,71 @@ export default function DocumentationPage() {
         <Navbar />
 
         {/* Hero section */}
-        <div className="pt-32 pb-16 px-6 lg:px-8">
+        <div className="pt-32 pb-20 px-6 lg:px-8">
           <div className="max-w-7xl mx-auto text-center">
+            <div className="inline-flex items-center gap-3 bg-gradient-to-r from-purple-600/20 to-blue-600/20 rounded-full px-6 py-3 border border-purple-500/30 mb-8">
+              <BookOpen className="w-6 h-6 text-purple-400" />
+              <span className="text-purple-300 font-semibold">Technical Documentation</span>
+            </div>
             <h1 className="text-6xl lg:text-7xl font-black mb-8 bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text text-transparent">
-              Documentation
+              Developer Guide
             </h1>
             <p className="text-xl lg:text-2xl text-gray-400 max-w-4xl mx-auto leading-relaxed mb-12">
               Complete technical documentation for Refrax's free educational platform for data analytics and mathematical visualization
             </p>
+            
+            {/* Quick Stats */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto mb-12">
+              <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10">
+                <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center mx-auto mb-3">
+                  <Code className="w-6 h-6 text-white" />
+                </div>
+                <div className="text-2xl font-bold text-white">15+</div>
+                <div className="text-sm text-gray-400">Technologies</div>
+              </div>
+              <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10">
+                <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-500 rounded-xl flex items-center justify-center mx-auto mb-3">
+                  <Zap className="w-6 h-6 text-white" />
+                </div>
+                <div className="text-2xl font-bold text-white">100%</div>
+                <div className="text-sm text-gray-400">Free</div>
+              </div>
+              <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10">
+                <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl flex items-center justify-center mx-auto mb-3">
+                  <BarChart3 className="w-6 h-6 text-white" />
+                </div>
+                <div className="text-2xl font-bold text-white">2D/3D</div>
+                <div className="text-sm text-gray-400">Visualization</div>
+              </div>
+              <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10">
+                <div className="w-12 h-12 bg-gradient-to-r from-orange-500 to-red-500 rounded-xl flex items-center justify-center mx-auto mb-3">
+                  <Brain className="w-6 h-6 text-white" />
+                </div>
+                <div className="text-2xl font-bold text-white">AI</div>
+                <div className="text-sm text-gray-400">Powered</div>
+              </div>
+            </div>
+
+            <div className="flex justify-center gap-4">
+              <Button
+                asChild
+                className="rounded-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500"
+              >
+                <Link href="#overview">
+                  Start Reading
+                  <ArrowRight className="w-4 h-4 ml-2" />
+                </Link>
+              </Button>
+              <Button
+                asChild
+                variant="outline"
+                className="rounded-full border-gray-600 hover:bg-white/10"
+              >
+                <Link href="/learn">
+                  Explore Platform
+                </Link>
+              </Button>
+            </div>
           </div>
         </div>
 
@@ -43,21 +131,45 @@ export default function DocumentationPage() {
             <div className="lg:col-span-1">
               <div className="sticky top-32">
                 <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
-                  <h3 className="text-xl font-bold text-white mb-6">Table of Contents</h3>
+                  <div className="flex items-center gap-3 mb-6">
+                    <FileText className="w-6 h-6 text-purple-400" />
+                    <h3 className="text-xl font-bold text-white">Table of Contents</h3>
+                  </div>
                   <nav className="space-y-2">
-                    {sections.map((section) => (
-                      <button
-                        key={section.id}
-                        onClick={() => setActiveSection(section.id)}
-                        className={`w-full text-left px-4 py-3 rounded-lg transition-all duration-300 ${
-                          activeSection === section.id
-                            ? "bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg"
-                            : "text-gray-400 hover:text-white hover:bg-white/10"
-                        }`}
-                      >
-                        {section.title}
-                      </button>
-                    ))}
+                    {sections.map((section) => {
+                      const Icon = section.icon;
+                      return (
+                        <button
+                          key={section.id}
+                          onClick={() => setActiveSection(section.id)}
+                          className={`w-full text-left px-4 py-4 rounded-xl transition-all duration-300 group ${
+                            activeSection === section.id
+                              ? "bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg transform scale-105"
+                              : "text-gray-400 hover:text-white hover:bg-white/10 hover:transform hover:scale-105"
+                          }`}
+                        >
+                          <div className="flex items-center gap-3">
+                            <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
+                              activeSection === section.id
+                                ? "bg-white/20"
+                                : "bg-gray-700/50 group-hover:bg-white/10"
+                            }`}>
+                              <Icon className="w-4 h-4" />
+                            </div>
+                            <div>
+                              <div className="font-semibold">{section.title}</div>
+                              <div className={`text-xs ${
+                                activeSection === section.id
+                                  ? "text-white/70"
+                                  : "text-gray-500 group-hover:text-gray-300"
+                              }`}>
+                                {section.description}
+                              </div>
+                            </div>
+                          </div>
+                        </button>
+                      );
+                    })}
                   </nav>
                 </div>
               </div>
@@ -69,11 +181,22 @@ export default function DocumentationPage() {
                 
                 {activeSection === "overview" && (
                   <div>
-                    <h2 className="text-3xl font-bold text-white mb-8">Platform Overview</h2>
+                    <div className="flex items-center gap-4 mb-8">
+                      <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-blue-500 rounded-2xl flex items-center justify-center">
+                        <BookOpen className="w-6 h-6 text-white" />
+                      </div>
+                      <div>
+                        <h2 className="text-3xl font-bold text-white">Platform Overview</h2>
+                        <p className="text-gray-400">Understanding Refrax's architecture and capabilities</p>
+                      </div>
+                    </div>
                     
                     <div className="space-y-8">
                       <div className="bg-gradient-to-r from-purple-600/20 to-blue-600/20 rounded-2xl p-8 border border-purple-500/30">
-                        <h3 className="text-2xl font-semibold text-white mb-4">What is Refrax?</h3>
+                        <div className="flex items-center gap-3 mb-4">
+                          <Lightbulb className="w-6 h-6 text-yellow-400" />
+                          <h3 className="text-2xl font-semibold text-white">What is Refrax?</h3>
+                        </div>
                         <p className="text-gray-300 text-lg leading-relaxed">
                           Refrax is a completely free educational platform that combines advanced data visualization, 
                           mathematical modeling, and interactive tools to help students learn data analytics, 

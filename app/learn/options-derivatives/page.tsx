@@ -4,6 +4,8 @@ import Navbar from "@/components/sections/navbar/default";
 import Footer from "@/components/sections/footer/default";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import 'katex/dist/katex.min.css';
+import { InlineMath, BlockMath } from 'react-katex';
 
 export default function OptionsDerivativesPage() {
   const derivativesTopics = [
@@ -15,6 +17,13 @@ export default function OptionsDerivativesPage() {
         howItWorks: "Uses stochastic calculus to derive a partial differential equation that describes the price evolution of options under certain assumptions.",
         keyComponents: ["Underlying Price", "Strike Price", "Time to Expiration", "Risk-free Rate", "Volatility"],
         useCases: ["Option pricing", "Risk management", "Hedging strategies", "Volatility trading"],
+        formulas: {
+          call_price: "C = S_0 N(d_1) - Ke^{-rT} N(d_2)",
+          put_price: "P = Ke^{-rT} N(-d_2) - S_0 N(-d_1)",
+          d1: "d_1 = \\frac{\\ln(S_0/K) + (r + \\sigma^2/2)T}{\\sigma\\sqrt{T}}",
+          d2: "d_2 = d_1 - \\sigma\\sqrt{T}",
+          black_scholes_pde: "\\frac{\\partial V}{\\partial t} + \\frac{1}{2}\\sigma^2 S^2 \\frac{\\partial^2 V}{\\partial S^2} + rS\\frac{\\partial V}{\\partial S} - rV = 0"
+        },
         codeExample: `import numpy as np
 from scipy.stats import norm
 
@@ -51,6 +60,13 @@ def black_scholes_put(S, K, T, r, sigma):
         howItWorks: "Partial derivatives of the option price function with respect to different variables, measuring price sensitivity.",
         keyComponents: ["Delta", "Gamma", "Theta", "Vega", "Rho"],
         useCases: ["Risk management", "Hedging strategies", "Portfolio optimization", "Market making"],
+        formulas: {
+          delta: "\\Delta = \\frac{\\partial C}{\\partial S} = N(d_1)",
+          gamma: "\\Gamma = \\frac{\\partial^2 C}{\\partial S^2} = \\frac{N'(d_1)}{S\\sigma\\sqrt{T}}",
+          theta: "\\Theta = \\frac{\\partial C}{\\partial t} = -\\frac{S N'(d_1) \\sigma}{2\\sqrt{T}} - rKe^{-rT}N(d_2)",
+          vega: "\\nu = \\frac{\\partial C}{\\partial \\sigma} = S\\sqrt{T} N'(d_1)",
+          rho: "\\rho = \\frac{\\partial C}{\\partial r} = KTe^{-rT}N(d_2)"
+        },
         codeExample: `def calculate_greeks(S, K, T, r, sigma):
     """
     Calculate all major Greeks for options
@@ -356,6 +372,24 @@ def portfolio_hedge(portfolio, hedge_instruments):
                             <li key={idx}>• {useCase}</li>
                           ))}
                         </ul>
+                        
+                        {topic.details.formulas && (
+                          <div className="mb-4">
+                            <h4 className="text-lg font-semibold text-orange-400 mb-3">Key Formulas</h4>
+                            <div className="space-y-3">
+                              {Object.entries(topic.details.formulas).map(([key, formula]) => (
+                                <div key={key} className="bg-gray-900/30 rounded-lg p-3 border border-gray-700">
+                                  <div className="text-gray-300 text-xs mb-1 capitalize">
+                                    {key.replace(/_/g, ' ')}:
+                                  </div>
+                                  <div className="text-center">
+                                    <BlockMath math={formula} />
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
                         
                         <h4 className="text-lg font-semibold text-yellow-400 mb-3">Code Example</h4>
                         <div className="bg-gray-900/50 rounded-lg p-4 border border-gray-700">

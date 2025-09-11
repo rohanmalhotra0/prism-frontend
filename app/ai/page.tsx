@@ -72,17 +72,25 @@ export default function AIPage() {
 
   // Check for messages from chatbot widget
   useEffect(() => {
-    const storedMessages = sessionStorage.getItem("chatbot-messages");
-    if (storedMessages) {
+    if (typeof window !== 'undefined') {
       try {
-        const messages = JSON.parse(storedMessages);
-        if (messages.length > 0) {
-          setCurrentSession(prev => ({
-            ...prev,
-            messages: messages,
-            title: "Chat from Widget"
-          }));
-          sessionStorage.removeItem("chatbot-messages");
+        const storedMessages = sessionStorage.getItem("chatbot-messages");
+        if (storedMessages) {
+          const messages = JSON.parse(storedMessages);
+          if (messages.length > 0) {
+            // Convert timestamp strings back to Date objects
+            const messagesWithDates = messages.map((msg: any) => ({
+              ...msg,
+              timestamp: new Date(msg.timestamp)
+            }));
+            
+            setCurrentSession(prev => ({
+              ...prev,
+              messages: messagesWithDates,
+              title: "Chat from Widget"
+            }));
+            sessionStorage.removeItem("chatbot-messages");
+          }
         }
       } catch (err) {
         console.error("Error parsing stored messages:", err);
@@ -93,9 +101,18 @@ export default function AIPage() {
   const loadSessions = async () => {
     try {
       const chatSessions = await loadChatSessions();
-      setSessions(chatSessions);
-      if (chatSessions.length > 0) {
-        setCurrentSession(chatSessions[0]);
+      // Convert timestamp strings back to Date objects for all sessions
+      const sessionsWithDates = chatSessions.map(session => ({
+        ...session,
+        messages: session.messages.map((msg: any) => ({
+          ...msg,
+          timestamp: new Date(msg.timestamp)
+        }))
+      }));
+      
+      setSessions(sessionsWithDates);
+      if (sessionsWithDates.length > 0) {
+        setCurrentSession(sessionsWithDates[0]);
       }
     } catch (err) {
       console.error("Error loading chat sessions:", err);
@@ -349,7 +366,11 @@ export default function AIPage() {
               </div>
             </div>
             <div className="flex items-center gap-2">
-              
+              {user && sessions.length >= 5 && (
+                <div className="text-xs text-yellow-400 bg-yellow-400/10 px-2 py-1 rounded">
+                  Max 5 chats reached
+                </div>
+              )}
               {saving && (
                 <div className="text-xs text-blue-400 bg-blue-400/10 px-2 py-1 rounded flex items-center gap-1">
                   <Loader2 className="w-3 h-3 animate-spin" />
@@ -401,7 +422,10 @@ export default function AIPage() {
                   <div className={`text-xs text-gray-500 mt-1 ${
                     msg.role === "user" ? "text-right" : "text-left"
                   }`}>
-                    {msg.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    {msg.timestamp instanceof Date 
+                      ? msg.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                      : new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                    }
                   </div>
                 </div>
                 

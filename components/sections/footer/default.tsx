@@ -1,7 +1,6 @@
 import { ReactNode } from "react";
 import { cn } from "@/lib/utils";
-import RefraxLogo from "@/components/logos/RefraxLogo.jpeg";
-import Image from "next/image";
+
 import {
   Footer,
   FooterBottom,
@@ -31,22 +30,23 @@ interface FooterProps {
 }
 
 export default function FooterSection({
-  logo = <Image src={RefraxLogo} alt="Refrax Logo" width={32} height={32} />,
+  logo = <></>,
   name = "Refrax",
   columns = [
     {
-      title: "Product",
+      title: "Documentation",
       links: [
-        { text: "Pricing", href: "/#pricing" }, // scrolls to pricing section
+    
         { text: "Documentation", href: "/docs" },
+        { text: "FAQ", href: "/#FAQ" },
+
       ],
     },
     {
-      title: "Company",
+      title: "About",
       links: [
-        { text: "About Us", href: "https://www.rohanm.org" },
-        { text: "Research", href: "/research" },
-        { text: "Careers", href: "/careers" },
+        { text: "About Us", href: "/about" },
+       
       ],
     },
     {
@@ -57,11 +57,8 @@ export default function FooterSection({
       ],
     },
   ],
-  copyright = "© 2025 Refrax. All rights reserved",
-  policies = [
-    { text: "Privacy Policy", href: "/privacy" },
-    { text: "Terms of Service", href: "/terms" },
-  ],
+  copyright = "",
+  policies = [],
   showModeToggle = true,
   className,
 }: FooterProps) {
