@@ -213,7 +213,8 @@ export default function MLToolkit({ sharedData, setSharedData }: MLToolkitProps)
                         <label key={feature} className="flex items-center space-x-2">
                           <input
                             type="checkbox"
-                            checked={true}
+                            defaultChecked={true}
+                            readOnly
                             className="rounded"
                           />
                           <span className="text-sm text-gray-300">{feature}</span>

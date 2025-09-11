@@ -69,7 +69,7 @@ export default function DocumentationPage() {
               Complete technical documentation for Refrax's free educational platform for data analytics and mathematical visualization
             </p>
             
-            {/* Quick Stats */}
+            {/* Quick Stats 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto mb-12">
               <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10">
                 <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center mx-auto mb-3">
@@ -78,13 +78,7 @@ export default function DocumentationPage() {
                 <div className="text-2xl font-bold text-white">15+</div>
                 <div className="text-sm text-gray-400">Technologies</div>
               </div>
-              <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10">
-                <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-500 rounded-xl flex items-center justify-center mx-auto mb-3">
-                  <Zap className="w-6 h-6 text-white" />
-                </div>
-                <div className="text-2xl font-bold text-white">100%</div>
-                <div className="text-sm text-gray-400">Free</div>
-              </div>
+              
               <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10">
                 <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl flex items-center justify-center mx-auto mb-3">
                   <BarChart3 className="w-6 h-6 text-white" />
@@ -99,28 +93,9 @@ export default function DocumentationPage() {
                 <div className="text-2xl font-bold text-white">AI</div>
                 <div className="text-sm text-gray-400">Powered</div>
               </div>
-            </div>
+            </div>*/}
 
-            <div className="flex justify-center gap-4">
-              <Button
-                asChild
-                className="rounded-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500"
-              >
-                <Link href="#overview">
-                  Start Reading
-                  <ArrowRight className="w-4 h-4 ml-2" />
-                </Link>
-              </Button>
-              <Button
-                asChild
-                variant="outline"
-                className="rounded-full border-gray-600 hover:bg-white/10"
-              >
-                <Link href="/learn">
-                  Explore Platform
-                </Link>
-              </Button>
-            </div>
+            
           </div>
         </div>
 
@@ -204,70 +179,122 @@ export default function DocumentationPage() {
                         </p>
                       </div>
 
-                      <div className="grid md:grid-cols-2 gap-6">
-                        <div className="bg-white/5 rounded-xl p-6 border border-white/10">
-                          <h3 className="text-xl font-semibold text-white mb-4">Core Features</h3>
-                          <ul className="text-gray-300 space-y-3">
-                            <li>• Interactive 2D and 3D mathematical visualizations</li>
-                            <li>• AI-powered learning assistant for complex topics</li>
-                            <li>• Dataset upload and analysis tools (Excel/CSV)</li>
-                            <li>• Financial data modeling and analysis</li>
-                            <li>• Real-time mathematical calculations</li>
-                            <li>• Free educational resources and tutorials</li>
-                          </ul>
-                        </div>
-                        
-                        <div className="bg-white/5 rounded-xl p-6 border border-white/10">
-                          <h3 className="text-xl font-semibold text-white mb-4">Key Benefits</h3>
-                          <ul className="text-gray-300 space-y-3">
-                            <li>• Completely free with no registration required</li>
-                            <li>• User-friendly interface for all skill levels</li>
-                            <li>• Interactive learning through hands-on tools</li>
-                            <li>• Mobile-responsive design for learning anywhere</li>
-                            <li>• Cloud-based infrastructure for reliability</li>
-                            <li>• Educational focus on data analytics and math</li>
-                          </ul>
-                        </div>
-                      </div>
+                      
+                       
 
                       <div className="bg-white/5 rounded-xl p-6 border border-white/10">
-                        <h3 className="text-xl font-semibold text-white mb-4">Technology Stack</h3>
+                        <div className="flex items-center gap-3 mb-6">
+                          <Layers className="w-6 h-6 text-purple-400" />
+                          <h3 className="text-xl font-semibold text-white">Technology Stack</h3>
+                        </div>
                         <div className="grid md:grid-cols-3 gap-6">
-                          <div>
-                            <h4 className="text-lg font-semibold text-white mb-3">Frontend</h4>
+                          <div className="bg-gradient-to-br from-blue-500/10 to-cyan-500/10 rounded-xl p-4 border border-blue-500/20">
+                            <div className="flex items-center gap-2 mb-4">
+                              <Code className="w-5 h-5 text-blue-400" />
+                              <h4 className="text-lg font-semibold text-white">Frontend</h4>
+                            </div>
                             <ul className="text-gray-300 space-y-2 text-sm">
-                              <li>• Next.js 15 (App Router)</li>
-                              <li>• TypeScript</li>
-                              <li>• Tailwind CSS</li>
-                              <li>• Plotly.js & react-plotly.js</li>
-                              <li>• Three.js & @react-three/fiber</li>
-                              <li>• Radix UI Components</li>
-                              <li>• MathJS</li>
-                              <li>• XLSX & PapaParse</li>
-                              <li>• Recharts</li>
+                              <li className="flex items-center gap-2">
+                                <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
+                                <span>Next.js 15 (App Router)</span>
+                              </li>
+                              <li className="flex items-center gap-2">
+                                <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
+                                <span>TypeScript</span>
+                              </li>
+                              <li className="flex items-center gap-2">
+                                <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
+                                <span>Tailwind CSS</span>
+                              </li>
+                              <li className="flex items-center gap-2">
+                                <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
+                                <span>Plotly.js & react-plotly.js</span>
+                              </li>
+                              <li className="flex items-center gap-2">
+                                <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
+                                <span>Three.js & @react-three/fiber</span>
+                              </li>
+                              <li className="flex items-center gap-2">
+                                <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
+                                <span>Radix UI Components</span>
+                              </li>
+                              <li className="flex items-center gap-2">
+                                <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
+                                <span>MathJS</span>
+                              </li>
+                              <li className="flex items-center gap-2">
+                                <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
+                                <span>XLSX & PapaParse</span>
+                              </li>
+                              <li className="flex items-center gap-2">
+                                <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
+                                <span>Recharts</span>
+                              </li>
                             </ul>
                           </div>
-                          <div>
-                            <h4 className="text-lg font-semibold text-white mb-3">Backend</h4>
+                          <div className="bg-gradient-to-br from-green-500/10 to-emerald-500/10 rounded-xl p-4 border border-green-500/20">
+                            <div className="flex items-center gap-2 mb-4">
+                              <Server className="w-5 h-5 text-green-400" />
+                              <h4 className="text-lg font-semibold text-white">Backend</h4>
+                            </div>
                             <ul className="text-gray-300 space-y-2 text-sm">
-                              <li>• Next.js API Routes</li>
-                              <li>• FastAPI (Python Backend)</li>
-                              <li>• Supabase (BaaS)</li>
-                              <li>• PostgreSQL Database</li>
-                              <li>• Finnhub WebSockets</li>
-                              <li>• Polygon API</li>
-                              <li>• OpenAI API</li>
-                              <li>• Stripe Integration</li>
+                              <li className="flex items-center gap-2">
+                                <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                                <span>Next.js API Routes</span>
+                              </li>
+                              <li className="flex items-center gap-2">
+                                <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                                <span>FastAPI (Python Backend)</span>
+                              </li>
+                              <li className="flex items-center gap-2">
+                                <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                                <span>Supabase (BaaS)</span>
+                              </li>
+                              <li className="flex items-center gap-2">
+                                <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                                <span>PostgreSQL Database</span>
+                              </li>
+                              <li className="flex items-center gap-2">
+                                <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                                <span>Finnhub WebSockets</span>
+                              </li>
+                              <li className="flex items-center gap-2">
+                                <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                                <span>Polygon API</span>
+                              </li>
+                              <li className="flex items-center gap-2">
+                                <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                                <span>OpenAI API</span>
+                              </li>
+                              
                             </ul>
                           </div>
-                          <div>
-                            <h4 className="text-lg font-semibold text-white mb-3">Infrastructure</h4>
+                          <div className="bg-gradient-to-br from-purple-500/10 to-pink-500/10 rounded-xl p-4 border border-purple-500/20">
+                            <div className="flex items-center gap-2 mb-4">
+                              <Globe className="w-5 h-5 text-purple-400" />
+                              <h4 className="text-lg font-semibold text-white">Infrastructure</h4>
+                            </div>
                             <ul className="text-gray-300 space-y-2 text-sm">
-                              <li>• Netlify (Frontend Hosting)</li>
-                              <li>• Fly.io (Backend Hosting)</li>
-                              <li>• Supabase (Database & Auth)</li>
-                              <li>• Cloudflare (CDN)</li>
-                              <li>• GitHub (Version Control)</li>
+                              <li className="flex items-center gap-2">
+                                <div className="w-2 h-2 bg-purple-400 rounded-full"></div>
+                                <span>Netlify (Frontend Hosting)</span>
+                              </li>
+                              <li className="flex items-center gap-2">
+                                <div className="w-2 h-2 bg-purple-400 rounded-full"></div>
+                                <span>Fly.io (Backend Hosting)</span>
+                              </li>
+                              <li className="flex items-center gap-2">
+                                <div className="w-2 h-2 bg-purple-400 rounded-full"></div>
+                                <span>Supabase (Database & Auth)</span>
+                              </li>
+                              <li className="flex items-center gap-2">
+                                <div className="w-2 h-2 bg-purple-400 rounded-full"></div>
+                                <span>Cloudflare (CDN)</span>
+                              </li>
+                              <li className="flex items-center gap-2">
+                                <div className="w-2 h-2 bg-purple-400 rounded-full"></div>
+                                <span>GitHub (Version Control)</span>
+                              </li>
                             </ul>
                           </div>
                         </div>
@@ -866,11 +893,237 @@ export default function DocumentationPage() {
                   </div>
                 )}
 
+                {activeSection === "deployment" && (
+                  <div>
+                    <div className="flex items-center gap-4 mb-8">
+                      <div className="w-12 h-12 bg-gradient-to-r from-orange-500 to-red-500 rounded-2xl flex items-center justify-center">
+                        <Rocket className="w-6 h-6 text-white" />
+                      </div>
+                      <div>
+                        <h2 className="text-3xl font-bold text-white">Deployment & Infrastructure</h2>
+                        <p className="text-gray-400">How Refrax is deployed and scaled</p>
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-8">
+                      <div className="grid md:grid-cols-2 gap-6">
+                        <div className="bg-gradient-to-br from-blue-500/10 to-cyan-500/10 rounded-xl p-6 border border-blue-500/20">
+                          <div className="flex items-center gap-3 mb-4">
+                            <Globe className="w-6 h-6 text-blue-400" />
+                            <h3 className="text-xl font-semibold text-white">Frontend Hosting</h3>
+                          </div>
+                          <p className="text-gray-300 mb-4">Netlify provides fast, reliable hosting with global CDN distribution.</p>
+                          <ul className="text-gray-300 space-y-2 text-sm">
+                            <li className="flex items-center gap-2">
+                              <CheckCircle className="w-4 h-4 text-green-400" />
+                              <span>Automatic deployments from GitHub</span>
+                            </li>
+                            <li className="flex items-center gap-2">
+                              <CheckCircle className="w-4 h-4 text-green-400" />
+                              <span>Global CDN with edge caching</span>
+                            </li>
+                            <li className="flex items-center gap-2">
+                              <CheckCircle className="w-4 h-4 text-green-400" />
+                              <span>HTTPS and custom domains</span>
+                            </li>
+                            <li className="flex items-center gap-2">
+                              <CheckCircle className="w-4 h-4 text-green-400" />
+                              <span>Form handling and serverless functions</span>
+                            </li>
+                          </ul>
+                        </div>
+                        
+                        <div className="bg-gradient-to-br from-green-500/10 to-emerald-500/10 rounded-xl p-6 border border-green-500/20">
+                          <div className="flex items-center gap-3 mb-4">
+                            <Server className="w-6 h-6 text-green-400" />
+                            <h3 className="text-xl font-semibold text-white">Backend Hosting</h3>
+                          </div>
+                          <p className="text-gray-300 mb-4">Fly.io provides scalable container hosting for our Python backend services.</p>
+                          <ul className="text-gray-300 space-y-2 text-sm">
+                            <li className="flex items-center gap-2">
+                              <CheckCircle className="w-4 h-4 text-green-400" />
+                              <span>Docker container deployment</span>
+                            </li>
+                            <li className="flex items-center gap-2">
+                              <CheckCircle className="w-4 h-4 text-green-400" />
+                              <span>Auto-scaling based on demand</span>
+                            </li>
+                            <li className="flex items-center gap-2">
+                              <CheckCircle className="w-4 h-4 text-green-400" />
+                              <span>Global edge deployment</span>
+                            </li>
+                            <li className="flex items-center gap-2">
+                              <CheckCircle className="w-4 h-4 text-green-400" />
+                              <span>Built-in load balancing</span>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                      
+                      <div className="bg-gradient-to-r from-purple-600/20 to-blue-600/20 rounded-2xl p-8 border border-purple-500/30">
+                        <div className="flex items-center gap-3 mb-6">
+                          <Shield className="w-6 h-6 text-purple-400" />
+                          <h3 className="text-2xl font-semibold text-white">Security & Performance</h3>
+                        </div>
+                        <div className="grid md:grid-cols-3 gap-6">
+                          <div className="text-center">
+                            <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-emerald-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                              <Shield className="w-8 h-8 text-white" />
+                            </div>
+                            <h4 className="text-lg font-semibold text-white mb-2">Security</h4>
+                            <p className="text-gray-300 text-sm">HTTPS encryption, secure API keys, and data protection</p>
+                          </div>
+                          <div className="text-center">
+                            <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                              <Zap className="w-8 h-8 text-white" />
+                            </div>
+                            <h4 className="text-lg font-semibold text-white mb-2">Performance</h4>
+                            <p className="text-gray-300 text-sm">Global CDN, optimized assets, and fast loading times</p>
+                          </div>
+                          <div className="text-center">
+                            <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                              <GitBranch className="w-8 h-8 text-white" />
+                            </div>
+                            <h4 className="text-lg font-semibold text-white mb-2">CI/CD</h4>
+                            <p className="text-gray-300 text-sm">Automated testing, deployment, and version control</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {activeSection === "features" && (
+                  <div>
+                    <div className="flex items-center gap-4 mb-8">
+                      <div className="w-12 h-12 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-2xl flex items-center justify-center">
+                        <Star className="w-6 h-6 text-white" />
+                      </div>
+                      <div>
+                        <h2 className="text-3xl font-bold text-white">Core Features Deep Dive</h2>
+                        <p className="text-gray-400">Detailed exploration of Refrax's key functionalities</p>
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-8">
+                      <div className="grid md:grid-cols-2 gap-6">
+                        <div className="bg-gradient-to-br from-blue-500/10 to-cyan-500/10 rounded-xl p-6 border border-blue-500/20">
+                          <div className="flex items-center gap-3 mb-4">
+                            <BarChart3 className="w-6 h-6 text-blue-400" />
+                            <h3 className="text-xl font-semibold text-white">2D/3D Visualization</h3>
+                          </div>
+                          <p className="text-gray-300 mb-4">Advanced mathematical and financial data visualization using Plotly.js and Three.js.</p>
+                          <ul className="text-gray-300 space-y-2 text-sm">
+                            <li className="flex items-center gap-2">
+                              <ArrowRight className="w-4 h-4 text-blue-400" />
+                              <span>Interactive financial charts (candlestick, OHLC)</span>
+                            </li>
+                            <li className="flex items-center gap-2">
+                              <ArrowRight className="w-4 h-4 text-blue-400" />
+                              <span>3D mathematical function plotting</span>
+                            </li>
+                            <li className="flex items-center gap-2">
+                              <ArrowRight className="w-4 h-4 text-blue-400" />
+                              <span>Real-time data streaming and updates</span>
+                            </li>
+                            <li className="flex items-center gap-2">
+                              <ArrowRight className="w-4 h-4 text-blue-400" />
+                              <span>Export capabilities (PNG, SVG, PDF)</span>
+                            </li>
+                          </ul>
+                        </div>
+                        
+                        <div className="bg-gradient-to-br from-green-500/10 to-emerald-500/10 rounded-xl p-6 border border-green-500/20">
+                          <div className="flex items-center gap-3 mb-4">
+                            <Brain className="w-6 h-6 text-green-400" />
+                            <h3 className="text-xl font-semibold text-white">AI Learning Assistant</h3>
+                          </div>
+                          <p className="text-gray-300 mb-4">Intelligent chatbot powered by OpenAI to help users understand complex topics.</p>
+                          <ul className="text-gray-300 space-y-2 text-sm">
+                            <li className="flex items-center gap-2">
+                              <ArrowRight className="w-4 h-4 text-green-400" />
+                              <span>Context-aware responses</span>
+                            </li>
+                            <li className="flex items-center gap-2">
+                              <ArrowRight className="w-4 h-4 text-green-400" />
+                              <span>Mathematical concept explanations</span>
+                            </li>
+                            <li className="flex items-center gap-2">
+                              <ArrowRight className="w-4 h-4 text-green-400" />
+                              <span>Code examples and tutorials</span>
+                            </li>
+                            <li className="flex items-center gap-2">
+                              <ArrowRight className="w-4 h-4 text-green-400" />
+                              <span>Session history and persistence</span>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                      
+                      <div className="grid md:grid-cols-2 gap-6">
+                        <div className="bg-gradient-to-br from-purple-500/10 to-pink-500/10 rounded-xl p-6 border border-purple-500/20">
+                          <div className="flex items-center gap-3 mb-4">
+                            <Database className="w-6 h-6 text-purple-400" />
+                            <h3 className="text-xl font-semibold text-white">Dataset Lab</h3>
+                          </div>
+                          <p className="text-gray-300 mb-4">Upload and analyze Excel/CSV files with powerful data processing tools.</p>
+                          <ul className="text-gray-300 space-y-2 text-sm">
+                            <li className="flex items-center gap-2">
+                              <ArrowRight className="w-4 h-4 text-purple-400" />
+                              <span>Excel and CSV file upload</span>
+                            </li>
+                            <li className="flex items-center gap-2">
+                              <ArrowRight className="w-4 h-4 text-purple-400" />
+                              <span>Data validation and cleaning</span>
+                            </li>
+                            <li className="flex items-center gap-2">
+                              <ArrowRight className="w-4 h-4 text-purple-400" />
+                              <span>Statistical analysis and summaries</span>
+                            </li>
+                            <li className="flex items-center gap-2">
+                              <ArrowRight className="w-4 h-4 text-purple-400" />
+                              <span>Interactive data visualization</span>
+                            </li>
+                          </ul>
+                        </div>
+                        
+                        <div className="bg-gradient-to-br from-orange-500/10 to-red-500/10 rounded-xl p-6 border border-orange-500/20">
+                          <div className="flex items-center gap-3 mb-4">
+                            <TrendingUp className="w-6 h-6 text-orange-400" />
+                            <h3 className="text-xl font-semibold text-white">Financial Modeling</h3>
+                          </div>
+                          <p className="text-gray-300 mb-4">Comprehensive tools for financial analysis and quantitative modeling.</p>
+                          <ul className="text-gray-300 space-y-2 text-sm">
+                            <li className="flex items-center gap-2">
+                              <ArrowRight className="w-4 h-4 text-orange-400" />
+                              <span>Real-time market data integration</span>
+                            </li>
+                            <li className="flex items-center gap-2">
+                              <ArrowRight className="w-4 h-4 text-orange-400" />
+                              <span>Portfolio optimization algorithms</span>
+                            </li>
+                            <li className="flex items-center gap-2">
+                              <ArrowRight className="w-4 h-4 text-orange-400" />
+                              <span>Risk analysis and metrics</span>
+                            </li>
+                            <li className="flex items-center gap-2">
+                              <ArrowRight className="w-4 h-4 text-orange-400" />
+                              <span>Backtesting and validation</span>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
         </div>
       </div>
+      
+      {/* Footer */}
+      <Footer />
     </div>
   );
 }
