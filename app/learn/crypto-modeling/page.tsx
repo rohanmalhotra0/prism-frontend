@@ -572,35 +572,11 @@ def volatility_modeling(price_data):
             <p className="text-xl lg:text-2xl text-gray-400 max-w-4xl mx-auto leading-relaxed mb-12">
               Master advanced modeling techniques for cryptocurrency markets, DeFi protocols, and blockchain analysis
             </p>
-            <div className="flex justify-center gap-4">
-              <Button
-                asChild
-                className="rounded-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500"
-              >
-                <Link href="#topics">
-                  Explore Topics
-                </Link>
-              </Button>
-              <Button
-                asChild
-                className="rounded-full bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-500 hover:to-gray-600"
-              >
-                <Link href="#applications">
-                  View Applications
-                </Link>
-              </Button>
-            </div>
           </div>
         </div>
 
         {/* Crypto Topics Section */}
         <div id="topics" className="max-w-7xl mx-auto px-6 lg:px-8 pb-20">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-white mb-4">₿ Core Crypto Modeling Concepts</h2>
-            <p className="text-gray-300 text-lg max-w-3xl mx-auto">
-              Learn advanced modeling techniques specifically designed for cryptocurrency markets and blockchain technology.
-            </p>
-          </div>
 
           <div className="space-y-8">
             {cryptoTopics.map((topic, index) => (

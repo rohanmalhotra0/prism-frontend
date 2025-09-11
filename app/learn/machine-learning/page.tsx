@@ -250,38 +250,11 @@ print(f"Mean CV Score: {scores.mean():.4f}")`
             <p className="text-xl lg:text-2xl text-gray-400 max-w-4xl mx-auto leading-relaxed mb-12">
               Master AI and machine learning techniques for financial data analysis, prediction, and automated decision-making
             </p>
-            <div className="flex justify-center gap-4">
-              <Button
-                asChild
-                className="rounded-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500"
-              >
-                <Link href="#algorithms">
-                  Explore Algorithms
-                </Link>
-              </Button>
-              <Button
-                asChild
-                className="rounded-full bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-500 hover:to-gray-600"
-              >
-                <Link href="#applications">
-                  View Applications
-                </Link>
-              </Button>
-            </div>
           </div>
         </div>
 
         {/* ML Algorithms Section */}
         <div id="algorithms" className="max-w-7xl mx-auto px-6 lg:px-8 pb-20">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-white mb-4 flex items-center justify-center gap-3">
-              <Brain className="w-10 h-10 text-purple-400" />
-              Core ML Algorithms
-            </h2>
-            <p className="text-gray-300 text-lg max-w-3xl mx-auto">
-              Learn the essential machine learning algorithms used in quantitative finance and their practical applications.
-            </p>
-          </div>
 
           <div className="space-y-8">
             {mlTopics.map((topic, index) => (

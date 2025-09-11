@@ -347,35 +347,11 @@ def pca_analysis(data, n_components=None):
             <p className="text-xl lg:text-2xl text-gray-400 max-w-4xl mx-auto leading-relaxed mb-12">
               Master statistical modeling techniques for data analysis, forecasting, and quantitative research
             </p>
-            <div className="flex justify-center gap-4">
-              <Button
-                asChild
-                className="rounded-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500"
-              >
-                <Link href="#models">
-                  Explore Models
-                </Link>
-              </Button>
-              <Button
-                asChild
-                className="rounded-full bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-500 hover:to-gray-600"
-              >
-                <Link href="#applications">
-                  View Applications
-                </Link>
-              </Button>
-            </div>
           </div>
         </div>
 
         {/* Modeling Techniques Section */}
         <div id="models" className="max-w-7xl mx-auto px-6 lg:px-8 pb-20">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-white mb-4">🔬 Core Modeling Techniques</h2>
-            <p className="text-gray-300 text-lg max-w-3xl mx-auto">
-              Learn essential statistical and mathematical modeling methods used in quantitative finance and data analysis.
-            </p>
-          </div>
 
           <div className="space-y-8">
             {modelingTopics.map((topic, index) => (
