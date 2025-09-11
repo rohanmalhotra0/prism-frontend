@@ -147,6 +147,25 @@ function NavigationComponent({
           </NavigationMenuContent>
         </NavigationMenuItem>
 
+        {/* Learn */}
+        <NavigationMenuItem>
+          <NavigationMenuTrigger 
+            className="hover:bg-transparent hover:text-current touch-manipulation flex items-center gap-2"
+          >
+            <BookOpen className="w-4 h-4" />
+            Learn
+          </NavigationMenuTrigger>
+          <NavigationMenuContent>
+            <ul className="grid gap-3 p-4 w-[400px]">
+              {community.map((item) => (
+                <ListItem key={item.title} href={item.href} title={item.title} icon={item.icon}>
+                  {item.description}
+                </ListItem>
+              ))}
+            </ul>
+          </NavigationMenuContent>
+        </NavigationMenuItem>
+
         {/* Resources */}
         <NavigationMenuItem>
           <NavigationMenuTrigger 
@@ -166,25 +185,6 @@ function NavigationComponent({
               <ListItem href="/docs" title="Documentation" icon={FileText}>
                 Guides and API documentation for Refrax features.
               </ListItem>
-            </ul>
-          </NavigationMenuContent>
-        </NavigationMenuItem>
-
-        {/* Learn */}
-        <NavigationMenuItem>
-          <NavigationMenuTrigger 
-            className="hover:bg-transparent hover:text-current touch-manipulation flex items-center gap-2"
-          >
-            <BookOpen className="w-4 h-4" />
-            Learn
-          </NavigationMenuTrigger>
-          <NavigationMenuContent>
-            <ul className="grid gap-3 p-4 w-[400px]">
-              {community.map((item) => (
-                <ListItem key={item.title} href={item.href} title={item.title} icon={item.icon}>
-                  {item.description}
-                </ListItem>
-              ))}
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
