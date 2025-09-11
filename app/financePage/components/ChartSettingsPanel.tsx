@@ -180,11 +180,8 @@ export default function ChartSettingsPanel({ onUpdate }: Props) {
               className="w-full rounded-xl border border-white/20 bg-black/40 p-4 text-white"
             >
               <option value="candlestick">Candlestick</option>
-              <option value="ohlc">OHLC</option>
               <option value="line">Line</option>
-              <option value="area">Area</option>
-              <option value="bar">Bar</option>
-              <option value="scatter">Scatter</option>
+              <option value="ohlc">OHLC</option>
             </select>
           </div>
         </div>
