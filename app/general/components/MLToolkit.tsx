@@ -24,6 +24,8 @@ export default function MLToolkit({ sharedData, setSharedData }: MLToolkitProps)
   const [modelResults, setModelResults] = useState<ModelResult | null>(null);
   const [isTraining, setIsTraining] = useState(false);
   const [trainingProgress, setTrainingProgress] = useState(0);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [isProcessingFile, setIsProcessingFile] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   // Load shared data from Dataset Lab
@@ -34,6 +36,13 @@ export default function MLToolkit({ sharedData, setSharedData }: MLToolkitProps)
       setTarget(sharedData.selectedColumns[1] || sharedData.columns[1]);
     }
   }, [sharedData]);
+
+  // Auto-train when dataset changes
+  useEffect(() => {
+    if (dataset.length > 0 && target && !isTraining) {
+      trainModel();
+    }
+  }, [dataset, target]);
 
   const generateSampleData = () => {
     const sampleData = [];
@@ -49,7 +58,42 @@ export default function MLToolkit({ sharedData, setSharedData }: MLToolkitProps)
     setTarget('y');
   };
 
-  const trainModel = async () => {
+  const processUploadedFile = async (file: File) => {
+    setIsProcessingFile(true);
+    setSelectedFile(file);
+
+    try {
+      const text = await file.text();
+      const lines = text.split('\n').filter(line => line.trim());
+      const headers = lines[0].split(',').map(h => h.trim());
+      
+      const data = lines.slice(1).map(line => {
+        const values = line.split(',').map(v => v.trim());
+        const row: any = {};
+        headers.forEach((header, index) => {
+          const value = values[index];
+          // Try to parse as number, fallback to string
+          row[header] = isNaN(Number(value)) ? value : Number(value);
+        });
+        return row;
+      }).filter(row => Object.values(row).some(val => val !== ''));
+
+      setDataset(data);
+      setFeatures(headers);
+      setTarget(headers[headers.length - 1] || headers[0]);
+      
+      // Clear any existing model results
+      setModelResults(null);
+    } catch (error) {
+      console.error('Error processing file:', error);
+      alert('Error processing file. Please make sure it\'s a valid CSV file.');
+    } finally {
+      setIsProcessingFile(false);
+    }
+  };
+
+  const trainModel = async (selectedModelType?: string) => {
+    const currentModelType = selectedModelType || modelType;
     if (dataset.length === 0 || !target) return;
 
     setIsTraining(true);
@@ -74,14 +118,14 @@ export default function MLToolkit({ sharedData, setSharedData }: MLToolkitProps)
     const predictions = actual.map(val => val + (Math.random() - 0.5) * 2);
 
     let result: ModelResult = {
-      type: modelType,
+      type: currentModelType,
       predictions,
       actual,
       accuracy: 0.85 + Math.random() * 0.1,
       r2: 0.8 + Math.random() * 0.15
     };
 
-    if (modelType === 'linear') {
+    if (currentModelType === 'linear') {
       result.coefficients = [2.1, 2.9, 0.5]; // Mock coefficients
     }
 
@@ -168,47 +212,94 @@ export default function MLToolkit({ sharedData, setSharedData }: MLToolkitProps)
     }
   }, [modelResults]);
 
-  const exportToMath = () => {
-    if (modelResults && modelResults.type === 'linear' && modelResults.coefficients) {
-      const [a, b, c] = modelResults.coefficients;
-      const equation = `y = ${a.toFixed(2)}x₁ + ${b.toFixed(2)}x₂ + ${c.toFixed(2)}`;
-      
-      setSharedData({
-        type: 'ml_equation',
-        equation,
-        coefficients: modelResults.coefficients,
-        modelType: modelResults.type
-      });
-    }
-  };
 
   return (
     <div className="h-full flex flex-col">
       {/* Header */}
       <div className="mb-6">
-        <h2 className="text-3xl font-bold text-white mb-2">ML Toolkit</h2>
+        <h2 className="text-3xl font-bold text-white mb-2">Machine Learning Lab</h2>
         <p className="text-gray-400">Train machine learning models and visualize their performance</p>
       </div>
 
       <div className="flex-1 grid grid-cols-1 lg:grid-cols-4 gap-6">
         {/* Controls Panel */}
         <div className="lg:col-span-1 space-y-6">
-          {/* Data Setup */}
+          {/* Data Lab */}
           <div className="bg-gray-800/50 rounded-lg p-4">
-            <h3 className="text-lg font-semibold text-white mb-3">Data Setup</h3>
-            <div className="space-y-3">
-              <button
-                onClick={generateSampleData}
-                className="w-full p-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
-              >
-                Generate Sample Data
-              </button>
-              
+            <h3 className="text-lg font-semibold text-white mb-3">Data Lab</h3>
+            <div className="space-y-4">
+              {/* File Upload Section */}
+              <div>
+                <h4 className="text-sm font-medium text-gray-300 mb-2">Import Data</h4>
+                <div className="border-2 border-dashed border-gray-600 rounded-lg p-4 text-center">
+                  <input
+                    type="file"
+                    accept=".csv,.xlsx,.xls"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) {
+                        processUploadedFile(file);
+                      }
+                    }}
+                    className="hidden"
+                    id="file-upload"
+                    disabled={isProcessingFile}
+                  />
+                  <label
+                    htmlFor="file-upload"
+                    className={`cursor-pointer inline-block px-4 py-2 rounded transition-colors ${
+                      isProcessingFile
+                        ? 'bg-gray-600 text-gray-400 cursor-not-allowed'
+                        : 'bg-purple-600 text-white hover:bg-purple-700'
+                    }`}
+                  >
+                    {isProcessingFile ? 'Processing...' : 'Choose File'}
+                  </label>
+                  <p className="text-gray-400 text-sm mt-2">
+                    {selectedFile ? selectedFile.name : 'No file chosen'}
+                  </p>
+                </div>
+                <p className="text-xs text-gray-400 text-center mt-1">
+                  Supported formats: CSV, XLSX, XLS
+                </p>
+              </div>
+
+              {/* Divider */}
+              <div className="flex items-center">
+                <div className="flex-1 border-t border-gray-600"></div>
+                <span className="px-2 text-xs text-gray-500">OR</span>
+                <div className="flex-1 border-t border-gray-600"></div>
+              </div>
+
+              {/* Sample Data Section */}
+              <div>
+                <h4 className="text-sm font-medium text-gray-300 mb-2">Generate Sample Data</h4>
+                <button
+                  onClick={generateSampleData}
+                  className="w-full p-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
+                >
+                  Generate Sample Data
+                </button>
+              </div>
+
+              {/* Data Summary */}
               {dataset.length > 0 && (
-                <div className="space-y-2">
+                <div className="bg-gray-900/30 rounded-lg p-3 border border-gray-700">
+                  <h4 className="text-sm font-medium text-gray-300 mb-2">Dataset Summary</h4>
+                  <div className="space-y-1 text-xs text-gray-400">
+                    <div>Rows: {dataset.length}</div>
+                    <div>Features: {features.length}</div>
+                    <div>Target: {target}</div>
+                  </div>
+                </div>
+              )}
+
+              {/* Feature Selection */}
+              {dataset.length > 0 && (
+                <div className="space-y-3">
                   <div>
-                    <label className="block text-sm text-gray-300 mb-1">Features</label>
-                    <div className="space-y-1">
+                    <label className="block text-sm font-medium text-gray-300 mb-2">Features</label>
+                    <div className="space-y-1 max-h-32 overflow-y-auto">
                       {features.map((feature) => (
                         <label key={feature} className="flex items-center space-x-2">
                           <input
@@ -224,11 +315,11 @@ export default function MLToolkit({ sharedData, setSharedData }: MLToolkitProps)
                   </div>
                   
                   <div>
-                    <label className="block text-sm text-gray-300 mb-1">Target Variable</label>
+                    <label className="block text-sm font-medium text-gray-300 mb-2">Target Variable</label>
                     <select
                       value={target}
                       onChange={(e) => setTarget(e.target.value)}
-                      className="w-full p-2 bg-gray-700 text-white rounded border border-gray-600"
+                      className="w-full p-2 bg-gray-700 text-white rounded border border-gray-600 text-sm"
                     >
                       {features.map((feature) => (
                         <option key={feature} value={feature}>{feature}</option>
@@ -252,10 +343,16 @@ export default function MLToolkit({ sharedData, setSharedData }: MLToolkitProps)
               ].map((model) => (
                 <button
                   key={model.value}
-                  onClick={() => setModelType(model.value as any)}
+                  onClick={() => {
+                    setModelType(model.value as any);
+                    trainModel(model.value as any);
+                  }}
+                  disabled={isTraining || dataset.length === 0}
                   className={`w-full p-2 rounded text-sm transition-colors ${
                     modelType === model.value
                       ? 'bg-purple-600 text-white'
+                      : isTraining || dataset.length === 0
+                      ? 'bg-gray-600 text-gray-400 cursor-not-allowed'
                       : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
                   }`}
                 >
@@ -268,52 +365,77 @@ export default function MLToolkit({ sharedData, setSharedData }: MLToolkitProps)
             </div>
           </div>
 
-          {/* Training Controls */}
-          <div className="bg-gray-800/50 rounded-lg p-4">
-            <h3 className="text-lg font-semibold text-white mb-3">Training</h3>
-            <div className="space-y-3">
-              <button
-                onClick={trainModel}
-                disabled={isTraining || dataset.length === 0}
-                className={`w-full p-2 rounded transition-colors ${
-                  isTraining || dataset.length === 0
-                    ? 'bg-gray-600 text-gray-400 cursor-not-allowed'
-                    : 'bg-green-600 text-white hover:bg-green-700'
-                }`}
-              >
-                {isTraining ? 'Training...' : 'Train Model'}
-              </button>
-
-              {isTraining && (
+          {/* Training Status */}
+          {isTraining && (
+            <div className="bg-gray-800/50 rounded-lg p-4">
+              <h3 className="text-lg font-semibold text-white mb-3">Training Status</h3>
+              <div className="space-y-3">
+                <div className="text-sm text-gray-300">
+                  Training {modelType.replace('_', ' ')} model...
+                </div>
                 <div className="w-full bg-gray-700 rounded-full h-2">
                   <div
                     className="bg-green-600 h-2 rounded-full transition-all duration-300"
                     style={{ width: `${trainingProgress}%` }}
                   ></div>
                 </div>
-              )}
-
-              {modelResults && (
-                <div className="space-y-2">
-                  <div className="text-sm text-gray-300">
-                    <div>Accuracy: {(modelResults.accuracy! * 100).toFixed(1)}%</div>
-                    <div>R² Score: {modelResults.r2!.toFixed(3)}</div>
-                  </div>
-                  
-                  <button
-                    onClick={exportToMath}
-                    className="w-full p-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors"
-                  >
-                    Export to Math Visualizer
-                  </button>
+                <div className="text-xs text-gray-400 text-center">
+                  {trainingProgress}% complete
                 </div>
-              )}
+              </div>
             </div>
-          </div>
+          )}
         </div>
 
         {/* Results and Visualization */}
         <div className="lg:col-span-3 space-y-6">
+          {/* Data Preview */}
+          {dataset.length > 0 && (
+            <div className="bg-gray-800/50 rounded-lg p-4">
+              <h3 className="text-lg font-semibold text-white mb-3">Data Preview</h3>
+              <div className="bg-gray-900/50 rounded-lg p-4 max-h-64 overflow-auto">
+                <div className="text-sm text-gray-400 mb-2">
+                  {dataset.length} rows × {features.length} columns
+                </div>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-xs">
+                    <thead>
+                      <tr className="border-b border-gray-700">
+                        {features.map((feature, index) => (
+                          <th key={index} className="text-left p-2 text-gray-300 font-medium">
+                            {feature}
+                            {feature === target && (
+                              <span className="ml-1 text-blue-400">(target)</span>
+                            )}
+                          </th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {dataset.slice(0, 10).map((row, rowIndex) => (
+                        <tr key={rowIndex} className="border-b border-gray-800">
+                          {features.map((feature, colIndex) => (
+                            <td key={colIndex} className="p-2 text-gray-400">
+                              {typeof row[feature] === 'number' 
+                                ? row[feature].toFixed(2) 
+                                : row[feature]
+                              }
+                            </td>
+                          ))}
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                  {dataset.length > 10 && (
+                    <div className="text-center text-gray-500 text-xs mt-2">
+                      ... and {dataset.length - 10} more rows
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Model Performance */}
           {modelResults && (
             <div className="bg-gray-800/50 rounded-lg p-4">
