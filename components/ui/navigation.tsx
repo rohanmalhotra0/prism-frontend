@@ -22,7 +22,8 @@ import {
   HelpCircle, 
   FileText,
   BarChart3,
-  FlaskConical
+  FlaskConical,
+  Bot
 } from "lucide-react";
 
 interface ComponentItem {
@@ -91,6 +92,12 @@ function NavigationComponent({
       description: "Explore research examples using Refrax models.",
       icon: Search,
     },
+    {
+      title: "AI Assistant",
+      href: "/ai",
+      description: "Chat with Tomas, our AI analytics expert.",
+      icon: Bot,
+    },
     
     /*{
       title: "💬 Forum",
@@ -146,7 +153,7 @@ function NavigationComponent({
             className="hover:bg-transparent hover:text-current touch-manipulation flex items-center gap-2"
           >
             <FileText className="w-4 h-4" />
-            Resources
+            Docs
           </NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid gap-3 p-4 w-[400px]">
@@ -163,13 +170,13 @@ function NavigationComponent({
           </NavigationMenuContent>
         </NavigationMenuItem>
 
-        {/* Community */}
+        {/* Learn */}
         <NavigationMenuItem>
           <NavigationMenuTrigger 
             className="hover:bg-transparent hover:text-current touch-manipulation flex items-center gap-2"
           >
             <BookOpen className="w-4 h-4" />
-            Community
+            Learn
           </NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid gap-3 p-4 w-[400px]">

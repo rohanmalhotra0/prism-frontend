@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from 'react';
 import Navbar from "@/components/sections/navbar/default";
 import Footer from "@/components/sections/footer/default";
 import Link from "next/link";
@@ -20,8 +21,15 @@ import {
 } from "lucide-react";
 
 export default function FinancialModelingPage() {
+  const [activeTabs, setActiveTabs] = useState<Record<string, string>>({});
+
+  const setActiveTab = (topicId: string, tab: string) => {
+    setActiveTabs(prev => ({ ...prev, [topicId]: tab }));
+  };
+
   const modelingTopics = [
     {
+      id: "dcf",
       title: "Discounted Cash Flow (DCF)",
       icon: DollarSign,
       description: "A fundamental valuation method that estimates the value of an investment based on its expected future cash flows.",
@@ -62,6 +70,7 @@ export default function FinancialModelingPage() {
       }
     },
     {
+      id: "comps",
       title: "Comparable Company Analysis",
       icon: BarChart3,
       description: "A relative valuation method that compares a company's metrics to similar companies in the same industry.",
@@ -103,6 +112,7 @@ def comparable_analysis(target_company, peer_companies):
       }
     },
     {
+      id: "lbo",
       title: "Leveraged Buyout (LBO) Model",
       icon: TrendingUp,
       description: "A financial model used to evaluate leveraged buyout transactions, focusing on debt capacity and returns.",
@@ -151,6 +161,7 @@ def comparable_analysis(target_company, peer_companies):
       }
     },
     {
+      id: "three-statement",
       title: "Three-Statement Model",
       icon: FileText,
       description: "An integrated financial model that links the income statement, balance sheet, and cash flow statement.",
@@ -196,6 +207,7 @@ def comparable_analysis(target_company, peer_companies):
       }
     },
     {
+      id: "monte-carlo",
       title: "Monte Carlo Simulation",
       icon: Target,
       description: "A statistical method that uses random sampling to model uncertainty and risk in financial projections.",
@@ -204,11 +216,12 @@ def comparable_analysis(target_company, peer_companies):
         keyComponents: ["Input Variables", "Probability Distributions", "Simulation Runs", "Risk Metrics"],
         useCases: ["Risk assessment", "Portfolio optimization", "Project evaluation", "Stress testing"],
         formulas: {
-          var: "\\text{VaR}_{\\alpha} = F^{-1}(\\alpha) \\text{ where } F \\text{ is the cumulative distribution}",
+          var: "\\text{VaR}_{\\alpha} = F^{-1}(\\alpha) ",
           expected_shortfall: "\\text{ES}_{\\alpha} = \\frac{1}{1-\\alpha} \\int_{\\alpha}^{1} \\text{VaR}_u \\, du",
           monte_carlo_estimate: "\\hat{E}[f(X)] = \\frac{1}{N} \\sum_{i=1}^{N} f(X_i)",
           confidence_interval: "\\text{CI} = \\hat{\\mu} \\pm z_{\\alpha/2} \\frac{\\sigma}{\\sqrt{N}}"
         },
+       // \\text{ where } F \\text{ is the cumulative distribution}
         codeExample: `import numpy as np
 import matplotlib.pyplot as plt
 
@@ -247,6 +260,7 @@ def monte_carlo_simulation(n_simulations=10000):
       }
     },
     {
+      id: "sensitivity",
       title: "Sensitivity Analysis",
       icon: PieChart,
       description: "A technique to understand how changes in input variables affect the output of a financial model.",
@@ -329,35 +343,13 @@ def monte_carlo_simulation(n_simulations=10000):
             <p className="text-xl lg:text-2xl text-gray-400 max-w-4xl mx-auto leading-relaxed mb-12">
               Master the art of building comprehensive financial models for valuation, forecasting, and investment analysis
             </p>
-            <div className="flex justify-center gap-4">
-              <Button
-                asChild
-                className="rounded-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500"
-              >
-                <Link href="#models">
-                  Explore Models
-                </Link>
-              </Button>
-              <Button
-                asChild
-                className="rounded-full bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-500 hover:to-gray-600"
-              >
-                <Link href="#applications">
-                  View Applications
-                </Link>
-              </Button>
-            </div>
+            
           </div>
         </div>
 
         {/* Financial Models Section */}
         <div id="models" className="max-w-7xl mx-auto px-6 lg:px-8 pb-20">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-white mb-4">• Core Financial Models</h2>
-            <p className="text-gray-300 text-lg max-w-3xl mx-auto">
-              Learn the essential financial modeling techniques used in investment banking, private equity, and corporate finance.
-            </p>
-          </div>
+          
 
           <div className="space-y-8">
             {modelingTopics.map((topic, index) => (
@@ -381,39 +373,86 @@ def monte_carlo_simulation(n_simulations=10000):
                             <li key={idx}>• {component}</li>
                           ))}
                         </ul>
-                      </div>
-                      
-                      <div>
+                        
                         <h4 className="text-lg font-semibold text-purple-400 mb-3">Financial Use Cases</h4>
-                        <ul className="text-gray-300 text-sm space-y-1 mb-4">
+                        <ul className="text-gray-300 text-sm space-y-1">
                           {topic.details.useCases.map((useCase, idx) => (
                             <li key={idx}>• {useCase}</li>
                           ))}
                         </ul>
-                        
-                        {topic.details.formulas && (
-                          <div className="mb-4">
-                            <h4 className="text-lg font-semibold text-orange-400 mb-3">Key Formulas</h4>
-                            <div className="space-y-3">
-                              {Object.entries(topic.details.formulas).map(([key, formula]) => (
-                                <div key={key} className="bg-gray-900/30 rounded-lg p-3 border border-gray-700">
-                                  <div className="text-gray-300 text-xs mb-1 capitalize">
-                                    {key.replace(/_/g, ' ')}:
+                      </div>
+                      
+                      <div>
+                        <div className="bg-gray-900/30 rounded-lg border border-gray-700 overflow-hidden">
+                          {/* Tab Headers */}
+                          <div className="flex border-b border-gray-700">
+                            {topic.details.formulas && (
+                              <button
+                                onClick={() => setActiveTab(topic.id, 'formulas')}
+                                className={`flex-1 px-4 py-3 text-sm font-medium transition-colors ${
+                                  activeTabs[topic.id] === 'formulas' || (!activeTabs[topic.id] && topic.details.formulas)
+                                    ? 'bg-orange-500/20 text-orange-400 border-b-2 border-orange-400'
+                                    : 'text-gray-400 hover:text-gray-300 hover:bg-gray-800/50'
+                                }`}
+                              >
+                                <div className="flex items-center justify-center gap-2">
+                                  <div className="w-2 h-2 bg-orange-400 rounded-full"></div>
+                                  Key Formulas
+                                </div>
+                              </button>
+                            )}
+                            <button
+                              onClick={() => setActiveTab(topic.id, 'code')}
+                              className={`flex-1 px-4 py-3 text-sm font-medium transition-colors ${
+                                activeTabs[topic.id] === 'code' || (!activeTabs[topic.id] && !topic.details.formulas)
+                                  ? 'bg-yellow-500/20 text-yellow-400 border-b-2 border-yellow-400'
+                                  : 'text-gray-400 hover:text-gray-300 hover:bg-gray-800/50'
+                              }`}
+                            >
+                              <div className="flex items-center justify-center gap-2">
+                                <div className="w-2 h-2 bg-yellow-400 rounded-full"></div>
+                                Code Example
+                              </div>
+                            </button>
+                          </div>
+
+                          {/* Tab Content */}
+                          <div className="p-6">
+                            {(activeTabs[topic.id] === 'formulas' || (!activeTabs[topic.id] && topic.details.formulas)) && topic.details.formulas && (
+                              <div className="space-y-6">
+                                {Object.entries(topic.details.formulas).map(([key, formula]) => (
+                                  <div key={key} className="bg-gray-800/50 rounded-lg p-6 border border-gray-600">
+                                    <div className="text-gray-300 text-lg mb-4 font-semibold capitalize">
+                                      {key.replace(/_/g, ' ')}:
+                                    </div>
+                                    <div className="bg-gray-900/50 rounded-md p-4 border border-gray-700">
+                                      <div className="text-center">
+                                        <BlockMath math={formula} />
+                                      </div>
+                                    </div>
                                   </div>
-                                  <div className="text-center">
-                                    <BlockMath math={formula} />
+                                ))}
+                              </div>
+                            )}
+
+                            {(activeTabs[topic.id] === 'code' || (!activeTabs[topic.id] && !topic.details.formulas)) && (
+                              <div className="bg-gray-800/50 rounded-lg border border-gray-600">
+                                <div className="bg-gray-700/50 px-4 py-3 border-b border-gray-600 rounded-t-lg">
+                                  <div className="flex items-center gap-2">
+                                    <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                                    <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                                    <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                                    <span className="text-gray-300 text-sm ml-2 font-medium">Python</span>
                                   </div>
                                 </div>
-                              ))}
-                            </div>
+                                <div className="p-6">
+                                  <pre className="text-green-400 text-sm overflow-x-auto leading-relaxed">
+                                    <code>{topic.details.codeExample}</code>
+                                  </pre>
+                                </div>
+                              </div>
+                            )}
                           </div>
-                        )}
-                        
-                        <h4 className="text-lg font-semibold text-yellow-400 mb-3">Code Example</h4>
-                        <div className="bg-gray-900/50 rounded-lg p-4 border border-gray-700">
-                          <pre className="text-green-400 text-xs overflow-x-auto">
-                            <code>{topic.details.codeExample}</code>
-                          </pre>
                         </div>
                       </div>
                     </div>

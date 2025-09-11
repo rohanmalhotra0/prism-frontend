@@ -65,7 +65,7 @@ export default function ModelingSandbox() {
                     : "bg-white/10 text-gray-300 hover:bg-white/20 border border-white/20"
                 }`}
               >
-                Machine Learning
+                Machine Learning Lab
               </button>
             </div>
           </div>

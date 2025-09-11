@@ -1,13 +1,23 @@
 "use client";
 
+import { useState } from 'react';
 import Navbar from "@/components/sections/navbar/default";
 import Footer from "@/components/sections/footer/default";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import 'katex/dist/katex.min.css';
+import { InlineMath, BlockMath } from 'react-katex';
 
 export default function GeneralModelingPage() {
+  const [activeTabs, setActiveTabs] = useState<Record<string, string>>({});
+
+  const setActiveTab = (topicId: string, tab: string) => {
+    setActiveTabs(prev => ({ ...prev, [topicId]: tab }));
+  };
+
   const modelingTopics = [
     {
+      id: "linear-regression",
       title: "Linear Regression",
       icon: "•",
       description: "A fundamental statistical method that models the relationship between a dependent variable and one or more independent variables.",
@@ -15,6 +25,12 @@ export default function GeneralModelingPage() {
         howItWorks: "Finds the best straight line through data points by minimizing the sum of squared residuals between predicted and actual values.",
         keyComponents: ["Dependent Variable", "Independent Variables", "Coefficients", "R-squared", "P-values"],
         useCases: ["Risk factor analysis", "Price prediction", "Performance attribution", "Beta calculation"],
+        formulas: {
+          linear_model: "y = \\beta_0 + \\beta_1 x_1 + \\beta_2 x_2 + \\cdots + \\beta_n x_n + \\epsilon",
+          least_squares: "\\hat{\\beta} = (X^T X)^{-1} X^T y",
+          r_squared: "R^2 = 1 - \\frac{\\sum_{i=1}^n (y_i - \\hat{y}_i)^2}{\\sum_{i=1}^n (y_i - \\bar{y})^2}",
+          standard_error: "SE(\\hat{\\beta}_j) = \\sqrt{\\sigma^2 (X^T X)^{-1}_{jj}}"
+        },
         codeExample: `import numpy as np
 from sklearn.linear_model import LinearRegression
 import pandas as pd
@@ -48,6 +64,7 @@ def linear_regression_analysis(data):
       }
     },
     {
+      id: "time-series",
       title: "Time Series Analysis",
       icon: "⏰",
       description: "Statistical methods for analyzing time-ordered data to identify patterns, trends, and make forecasts.",
@@ -55,6 +72,12 @@ def linear_regression_analysis(data):
         howItWorks: "Decomposes time series into trend, seasonal, and random components, then models each component separately for forecasting.",
         keyComponents: ["Trend Analysis", "Seasonality", "Autocorrelation", "Stationarity", "Forecasting"],
         useCases: ["Stock price forecasting", "Economic indicators", "Sales forecasting", "Risk modeling"],
+        formulas: {
+          arima_model: "\\phi(B)(1-B)^d X_t = \\theta(B) \\epsilon_t",
+          autocorrelation: "\\rho_k = \\frac{\\text{Cov}(X_t, X_{t-k})}{\\text{Var}(X_t)}",
+          stationarity: "E[X_t] = \\mu, \\quad \\text{Var}(X_t) = \\sigma^2, \\quad \\text{Cov}(X_t, X_{t-k}) = \\gamma_k",
+          seasonal_decomposition: "X_t = T_t + S_t + R_t"
+        },
         codeExample: `import pandas as pd
 from statsmodels.tsa.seasonal import seasonal_decompose
 from statsmodels.tsa.arima.model import ARIMA
@@ -87,6 +110,7 @@ def time_series_analysis(price_data):
       }
     },
     {
+      id: "monte-carlo",
       title: "Monte Carlo Simulation",
       icon: "•",
       description: "A computational method that uses random sampling to model uncertainty and assess risk in complex systems.",
@@ -94,6 +118,12 @@ def time_series_analysis(price_data):
         howItWorks: "Runs thousands of simulations with random inputs following specified probability distributions to generate outcome distributions.",
         keyComponents: ["Random Variables", "Probability Distributions", "Simulation Runs", "Risk Metrics", "Confidence Intervals"],
         useCases: ["Portfolio optimization", "Risk assessment", "Project evaluation", "Stress testing"],
+        formulas: {
+          monte_carlo_estimate: "\\hat{E}[f(X)] = \\frac{1}{N} \\sum_{i=1}^N f(X_i)",
+          confidence_interval: "CI = \\hat{\\mu} \\pm z_{\\alpha/2} \\frac{\\sigma}{\\sqrt{N}}",
+          value_at_risk: "\\text{VaR}_\\alpha = F^{-1}(\\alpha)",
+          expected_shortfall: "\\text{ES}_\\alpha = \\frac{1}{1-\\alpha} \\int_\\alpha^1 \\text{VaR}_u \\, du"
+        },
         codeExample: `import numpy as np
 import matplotlib.pyplot as plt
 
@@ -124,6 +154,7 @@ def monte_carlo_portfolio(returns, weights, n_simulations=10000):
       }
     },
     {
+      id: "logistic-regression",
       title: "Logistic Regression",
       icon: "•",
       description: "A statistical method for modeling binary outcomes using a logistic function to estimate probabilities.",
@@ -131,6 +162,12 @@ def monte_carlo_portfolio(returns, weights, n_simulations=10000):
         howItWorks: "Uses the logistic function to model the probability of a binary outcome, with coefficients representing log-odds ratios.",
         keyComponents: ["Binary Outcome", "Logistic Function", "Odds Ratios", "Maximum Likelihood", "Classification"],
         useCases: ["Credit scoring", "Default prediction", "Market classification", "Risk assessment"],
+        formulas: {
+          logistic_function: "p = \\frac{1}{1 + e^{-(\\beta_0 + \\beta_1 x_1 + \\cdots + \\beta_n x_n)}}",
+          log_odds: "\\log\\left(\\frac{p}{1-p}\\right) = \\beta_0 + \\beta_1 x_1 + \\cdots + \\beta_n x_n",
+          odds_ratio: "\\text{OR} = e^{\\beta_j}",
+          maximum_likelihood: "L(\\beta) = \\prod_{i=1}^n p_i^{y_i} (1-p_i)^{1-y_i}"
+        },
         codeExample: `from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import classification_report, roc_auc_score
 
@@ -163,6 +200,7 @@ def logistic_regression_model(X, y):
       }
     },
     {
+      id: "clustering",
       title: "Clustering Analysis",
       icon: "•",
       description: "An unsupervised learning technique that groups similar data points together based on their characteristics.",
@@ -170,6 +208,12 @@ def logistic_regression_model(X, y):
         howItWorks: "Groups data points into clusters by minimizing within-cluster variance and maximizing between-cluster separation.",
         keyComponents: ["Distance Metrics", "Cluster Centers", "K-means", "Hierarchical", "Silhouette Analysis"],
         useCases: ["Customer segmentation", "Portfolio clustering", "Market regime identification", "Risk grouping"],
+        formulas: {
+          kmeans_objective: "\\min \\sum_{i=1}^k \\sum_{x \\in C_i} ||x - \\mu_i||^2",
+          euclidean_distance: "d(x_i, x_j) = \\sqrt{\\sum_{l=1}^p (x_{il} - x_{jl})^2}",
+          silhouette_coefficient: "s_i = \\frac{b_i - a_i}{\\max(a_i, b_i)}",
+          within_cluster_sum_squares: "\\text{WCSS} = \\sum_{i=1}^k \\sum_{x \\in C_i} ||x - \\mu_i||^2"
+        },
         codeExample: `from sklearn.cluster import KMeans
 from sklearn.preprocessing import StandardScaler
 import matplotlib.pyplot as plt
@@ -209,6 +253,7 @@ def clustering_analysis(data, max_clusters=10):
       }
     },
     {
+      id: "pca",
       title: "Principal Component Analysis (PCA)",
       icon: "•",
       description: "A dimensionality reduction technique that transforms data into a lower-dimensional space while preserving maximum variance.",
@@ -216,6 +261,12 @@ def clustering_analysis(data, max_clusters=10):
         howItWorks: "Finds orthogonal directions of maximum variance in the data and projects the data onto these principal components.",
         keyComponents: ["Eigenvalues", "Eigenvectors", "Variance Explained", "Component Loadings", "Dimensionality Reduction"],
         useCases: ["Risk factor analysis", "Data compression", "Noise reduction", "Feature extraction"],
+        formulas: {
+          covariance_matrix: "C = \\frac{1}{n-1} X^T X",
+          eigenvalue_decomposition: "C = P \\Lambda P^T",
+          principal_components: "Y = XP",
+          variance_explained: "\\text{VE}_i = \\frac{\\lambda_i}{\\sum_{j=1}^p \\lambda_j}"
+        },
         codeExample: `from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
 import numpy as np
@@ -346,21 +397,86 @@ def pca_analysis(data, n_components=None):
                             <li key={idx}>• {component}</li>
                           ))}
                         </ul>
-                      </div>
-                      
-                      <div>
+
                         <h4 className="text-lg font-semibold text-purple-400 mb-3">Financial Use Cases</h4>
-                        <ul className="text-gray-300 text-sm space-y-1 mb-4">
+                        <ul className="text-gray-300 text-sm space-y-1">
                           {topic.details.useCases.map((useCase, idx) => (
                             <li key={idx}>• {useCase}</li>
                           ))}
                         </ul>
-                        
-                        <h4 className="text-lg font-semibold text-yellow-400 mb-3">Code Example</h4>
-                        <div className="bg-gray-900/50 rounded-lg p-4 border border-gray-700">
-                          <pre className="text-green-400 text-xs overflow-x-auto">
-                            <code>{topic.details.codeExample}</code>
-                          </pre>
+                      </div>
+                      
+                      <div>
+                        <div className="bg-gray-900/30 rounded-lg border border-gray-700 overflow-hidden">
+                          {/* Tab Headers */}
+                          <div className="flex border-b border-gray-700">
+                            {topic.details.formulas && (
+                              <button
+                                onClick={() => setActiveTab(topic.id, 'formulas')}
+                                className={`flex-1 px-4 py-3 text-sm font-medium transition-colors ${
+                                  activeTabs[topic.id] === 'formulas' || (!activeTabs[topic.id] && topic.details.formulas)
+                                    ? 'bg-orange-500/20 text-orange-400 border-b-2 border-orange-400'
+                                    : 'text-gray-400 hover:text-gray-300 hover:bg-gray-800/50'
+                                }`}
+                              >
+                                <div className="flex items-center justify-center gap-2">
+                                  <div className="w-2 h-2 bg-orange-400 rounded-full"></div>
+                                  Key Formulas
+                                </div>
+                              </button>
+                            )}
+                            <button
+                              onClick={() => setActiveTab(topic.id, 'code')}
+                              className={`flex-1 px-4 py-3 text-sm font-medium transition-colors ${
+                                activeTabs[topic.id] === 'code' || (!activeTabs[topic.id] && !topic.details.formulas)
+                                  ? 'bg-yellow-500/20 text-yellow-400 border-b-2 border-yellow-400'
+                                  : 'text-gray-400 hover:text-gray-300 hover:bg-gray-800/50'
+                              }`}
+                            >
+                              <div className="flex items-center justify-center gap-2">
+                                <div className="w-2 h-2 bg-yellow-400 rounded-full"></div>
+                                Code Example
+                              </div>
+                            </button>
+                          </div>
+
+                          {/* Tab Content */}
+                          <div className="p-6">
+                            {(activeTabs[topic.id] === 'formulas' || (!activeTabs[topic.id] && topic.details.formulas)) && topic.details.formulas && (
+                              <div className="space-y-6">
+                                {Object.entries(topic.details.formulas).map(([key, formula]) => (
+                                  <div key={key} className="bg-gray-800/50 rounded-lg p-6 border border-gray-600">
+                                    <div className="text-gray-300 text-lg mb-4 font-semibold capitalize">
+                                      {key.replace(/_/g, ' ')}:
+                                    </div>
+                                    <div className="bg-gray-900/50 rounded-md p-4 border border-gray-700">
+                                      <div className="text-center">
+                                        <BlockMath math={formula} />
+                                      </div>
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+
+                            {(activeTabs[topic.id] === 'code' || (!activeTabs[topic.id] && !topic.details.formulas)) && (
+                              <div className="bg-gray-800/50 rounded-lg border border-gray-600">
+                                <div className="bg-gray-700/50 px-4 py-3 border-b border-gray-600 rounded-t-lg">
+                                  <div className="flex items-center gap-2">
+                                    <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                                    <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                                    <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                                    <span className="text-gray-300 text-sm ml-2 font-medium">Python</span>
+                                  </div>
+                                </div>
+                                <div className="p-6">
+                                  <pre className="text-green-400 text-sm overflow-x-auto leading-relaxed">
+                                    <code>{topic.details.codeExample}</code>
+                                  </pre>
+                                </div>
+                              </div>
+                            )}
+                          </div>
                         </div>
                       </div>
                     </div>

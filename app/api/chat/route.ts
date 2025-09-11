@@ -31,9 +31,17 @@ export async function POST(req: Request) {
     if (!response.ok) {
       console.error("Backend API error:", response.status, response.statusText);
       
-      // Return a user-friendly error message
+      // Return a fallback response instead of error
+      const fallbackResponses = [
+        "I'm Tomas, the King of Analytics! I'm currently experiencing some technical difficulties with my backend connection, but I'm still here to help you with data analysis, financial modeling, and statistical insights! What specific analytical challenge can I assist you with?",
+        "Greetings! I'm Tomas, your analytics expert. While my main processing system is temporarily offline, I can still provide guidance on financial modeling, statistical analysis, and data interpretation. What would you like to explore?",
+        "Hello there! I'm Tomas, the King of Analytics. My backend connection is having issues right now, but I'm ready to help you with quantitative analysis, risk modeling, and statistical insights. What analytical problem are you working on?"
+      ];
+      
+      const randomResponse = fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)];
+      
       return NextResponse.json({ 
-        message: "I'm having trouble connecting to my analytics brain right now. Please try again in a moment!" 
+        message: randomResponse
       }, { status: 200 });
     }
 
@@ -43,8 +51,18 @@ export async function POST(req: Request) {
     return NextResponse.json({ message: aiMessage });
   } catch (err) {
     console.error("API error:", err);
+    
+    // Return a helpful fallback response
+    const fallbackResponses = [
+      "I'm Tomas, the King of Analytics! I'm experiencing some technical difficulties right now, but I'm still here to help you with data analysis, financial modeling, and statistical insights! What specific analytical challenge can I assist you with?",
+      "Greetings! I'm Tomas, your analytics expert. While my main processing system is temporarily offline, I can still provide guidance on financial modeling, statistical analysis, and data interpretation. What would you like to explore?",
+      "Hello there! I'm Tomas, the King of Analytics. My backend connection is having issues right now, but I'm ready to help you with quantitative analysis, risk modeling, and statistical insights. What analytical problem are you working on?"
+    ];
+    
+    const randomResponse = fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)];
+    
     return NextResponse.json({ 
-      message: "Something went wrong on my end. Please try again or contact support if this continues!" 
+      message: randomResponse
     }, { status: 200 });
   }
 }

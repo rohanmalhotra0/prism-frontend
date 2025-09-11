@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import SignUpModal from "@/components/sections/signUpModal";
+
 import Glow from "../../ui/glow";
 import { Mockup, MockupFrame } from "../../ui/mockup";
 import Screenshot from "../../ui/screenshot";
@@ -62,7 +62,7 @@ export default function Hero({
               <div className="absolute inset-0 rounded-full border border-white/20 group-hover:border-white/40 transition-colors duration-300"></div>
               
               {/* Text */}
-              <span className="relative z-10">Start Learning Free</span>
+              <span className="relative z-10">Get Started</span>
             </a>
           </div>
         </div>

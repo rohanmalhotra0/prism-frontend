@@ -1,13 +1,23 @@
 "use client";
 
+import { useState } from 'react';
 import Navbar from "@/components/sections/navbar/default";
 import Footer from "@/components/sections/footer/default";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import 'katex/dist/katex.min.css';
+import { InlineMath, BlockMath } from 'react-katex';
 
 export default function InsuranceRiskAnalysisPage() {
+  const [activeTabs, setActiveTabs] = useState<Record<string, string>>({});
+
+  const setActiveTab = (topicId: string, tab: string) => {
+    setActiveTabs(prev => ({ ...prev, [topicId]: tab }));
+  };
+
   const riskTopics = [
     {
+      id: "actuarial-science",
       title: "Actuarial Science",
       icon: "🧮",
       description: "The discipline that applies mathematical and statistical methods to assess risk in insurance and finance.",
@@ -15,6 +25,12 @@ export default function InsuranceRiskAnalysisPage() {
         howItWorks: "Uses probability theory, statistics, and financial mathematics to evaluate uncertain future events and their financial impact.",
         keyComponents: ["Mortality Tables", "Life Contingencies", "Premium Calculation", "Reserve Setting", "Risk Assessment"],
         useCases: ["Life insurance pricing", "Pension fund management", "Health insurance", "Annuity products"],
+        formulas: {
+          actuarial_present_value: "\\text{APV} = \\sum_{t=1}^{\\infty} v^t \\cdot {}_t p_x \\cdot b_t",
+          net_premium: "P = \\frac{\\sum_{t=1}^{n} v^t \\cdot {}_t p_x \\cdot b_t}{\\sum_{t=0}^{n-1} v^t \\cdot {}_t p_x}",
+          reserve: "V_t = \\sum_{s=t+1}^{n} v^{s-t} \\cdot {}_{s-t} p_{x+t} \\cdot b_s - P \\sum_{s=t}^{n-1} v^{s-t} \\cdot {}_{s-t} p_{x+t}",
+          force_of_mortality: "\\mu_x = -\\frac{d}{dx} \\ln S(x) = \\frac{f(x)}{S(x)}"
+        },
         codeExample: `import numpy as np
 import pandas as pd
 
@@ -57,6 +73,7 @@ def premium_calculation(sum_assured, age, term, interest_rate, mortality_table):
       }
     },
     {
+      id: "risk-assessment",
       title: "Risk Assessment",
       icon: "•",
       description: "The process of identifying, analyzing, and evaluating risks to determine appropriate risk management strategies.",
@@ -64,6 +81,12 @@ def premium_calculation(sum_assured, age, term, interest_rate, mortality_table):
         howItWorks: "Systematically identifies potential risks, quantifies their probability and impact, and prioritizes them for management action.",
         keyComponents: ["Risk Identification", "Risk Measurement", "Risk Evaluation", "Risk Monitoring", "Risk Reporting"],
         useCases: ["Underwriting decisions", "Portfolio management", "Regulatory compliance", "Capital allocation"],
+        formulas: {
+          risk_score: "R = P \\times I",
+          value_at_risk: "\\text{VaR}_\\alpha = F^{-1}(\\alpha)",
+          expected_shortfall: "\\text{ES}_\\alpha = \\frac{1}{1-\\alpha} \\int_\\alpha^1 \\text{VaR}_u \\, du",
+          risk_adjusted_return: "\\text{RAR} = \\frac{\\text{Return} - \\text{Risk-free Rate}}{\\text{Risk Measure}}"
+        },
         codeExample: `def risk_assessment_framework(risks_data):
     """
     Comprehensive risk assessment framework
@@ -102,6 +125,7 @@ def premium_calculation(sum_assured, age, term, interest_rate, mortality_table):
       }
     },
     {
+      id: "pricing-models",
       title: "Pricing Models",
       icon: "•",
       description: "Mathematical models used to determine appropriate premiums and pricing for insurance products.",
@@ -109,6 +133,12 @@ def premium_calculation(sum_assured, age, term, interest_rate, mortality_table):
         howItWorks: "Combines actuarial principles with statistical modeling to estimate expected claims and set competitive premiums.",
         keyComponents: ["Expected Claims", "Loading Factors", "Profit Margins", "Competition Analysis", "Regulatory Requirements"],
         useCases: ["Product pricing", "Rate setting", "Profitability analysis", "Market positioning"],
+        formulas: {
+          pure_premium: "\\text{Pure Premium} = \\frac{\\text{Expected Claims}}{\\text{Exposure Units}}",
+          gross_premium: "\\text{Gross Premium} = \\text{Pure Premium} \\times (1 + \\text{Loading Factor})",
+          loading_factor: "L = L_E + L_C + L_P",
+          credibility_premium: "P = Z \\cdot \\bar{X} + (1-Z) \\cdot M"
+        },
         codeExample: `def insurance_pricing_model(historical_claims, exposure_units, target_profit_margin):
     """
     Insurance pricing model with multiple factors
@@ -147,6 +177,7 @@ def premium_calculation(sum_assured, age, term, interest_rate, mortality_table):
       }
     },
     {
+      id: "reserve-setting",
       title: "Reserve Setting",
       icon: "•",
       description: "The process of setting aside funds to cover future claims and obligations in insurance and pension funds.",
@@ -154,6 +185,12 @@ def premium_calculation(sum_assured, age, term, interest_rate, mortality_table):
         howItWorks: "Uses actuarial methods to estimate future liabilities and determine appropriate reserve levels to ensure solvency.",
         keyComponents: ["Liability Estimation", "Discount Rates", "Mortality Assumptions", "Reserve Methods", "Regulatory Requirements"],
         useCases: ["Solvency management", "Regulatory compliance", "Financial planning", "Risk management"],
+        formulas: {
+          net_premium_reserve: "V_t = \\sum_{s=t+1}^{n} v^{s-t} \\cdot {}_{s-t} p_{x+t} \\cdot b_s - P \\sum_{s=t}^{n-1} v^{s-t} \\cdot {}_{s-t} p_{x+t}",
+          gross_premium_reserve: "V_t^G = \\sum_{s=t+1}^{n} v^{s-t} \\cdot {}_{s-t} p_{x+t} \\cdot b_s - G \\sum_{s=t}^{n-1} v^{s-t} \\cdot {}_{s-t} p_{x+t}",
+          terminal_reserve: "V_n = 0",
+          initial_reserve: "V_0 = 0"
+        },
         codeExample: `def reserve_calculation(policy_data, interest_rate, mortality_assumptions):
     """
     Calculate insurance reserves using various methods
@@ -212,6 +249,7 @@ def premium_calculation(sum_assured, age, term, interest_rate, mortality_table):
       }
     },
     {
+      id: "solvency-analysis",
       title: "Solvency Analysis",
       icon: "•",
       description: "The assessment of an insurer's ability to meet its financial obligations and regulatory capital requirements.",
@@ -219,6 +257,12 @@ def premium_calculation(sum_assured, age, term, interest_rate, mortality_table):
         howItWorks: "Compares available capital against required capital using various stress scenarios and regulatory frameworks.",
         keyComponents: ["Available Capital", "Required Capital", "Solvency Ratio", "Stress Testing", "Risk-Based Capital"],
         useCases: ["Regulatory compliance", "Financial stability", "Risk management", "Strategic planning"],
+        formulas: {
+          solvency_ratio: "\\text{Solvency Ratio} = \\frac{\\text{Available Capital}}{\\text{Required Capital}}",
+          available_capital: "\\text{AC} = \\text{Assets} - \\text{Liabilities}",
+          risk_based_capital: "\\text{RBC} = \\sqrt{\\sum_{i} \\text{RBC}_i^2 + \\sum_{i \\neq j} \\rho_{ij} \\text{RBC}_i \\text{RBC}_j}",
+          capital_adequacy_ratio: "\\text{CAR} = \\frac{\\text{Tier 1 Capital} + \\text{Tier 2 Capital}}{\\text{Risk-Weighted Assets}}"
+        },
         codeExample: `def solvency_analysis(assets, liabilities, regulatory_requirements):
     """
     Comprehensive solvency analysis
@@ -284,6 +328,7 @@ def premium_calculation(sum_assured, age, term, interest_rate, mortality_table):
       }
     },
     {
+      id: "catastrophe-modeling",
       title: "Catastrophe Modeling",
       icon: "•",
       description: "Advanced modeling techniques for assessing and pricing catastrophic risks such as natural disasters.",
@@ -291,6 +336,12 @@ def premium_calculation(sum_assured, age, term, interest_rate, mortality_table):
         howItWorks: "Uses historical data, scientific models, and Monte Carlo simulation to estimate the frequency and severity of catastrophic events.",
         keyComponents: ["Event Frequency", "Loss Severity", "Geographic Exposure", "Monte Carlo Simulation", "Reinsurance"],
         useCases: ["Natural disaster insurance", "Reinsurance pricing", "Capital planning", "Risk management"],
+        formulas: {
+          poisson_frequency: "P(N = k) = \\frac{\\lambda^k e^{-\\lambda}}{k!}",
+          pareto_severity: "f(x) = \\frac{\\alpha \\beta^\\alpha}{x^{\\alpha+1}} \\text{ for } x \\geq \\beta",
+          probable_maximum_loss: "\\text{PML}_T = F^{-1}(1 - \\frac{1}{T})",
+          expected_annual_loss: "\\text{EAL} = \\int_0^{\\infty} x \\cdot f(x) \\, dx"
+        },
         codeExample: `import numpy as np
 import pandas as pd
 
@@ -454,21 +505,86 @@ def catastrophe_modeling(exposure_data, historical_events, simulation_years=1000
                             <li key={idx}>• {component}</li>
                           ))}
                         </ul>
-                      </div>
-                      
-                      <div>
+
                         <h4 className="text-lg font-semibold text-purple-400 mb-3">Financial Use Cases</h4>
-                        <ul className="text-gray-300 text-sm space-y-1 mb-4">
+                        <ul className="text-gray-300 text-sm space-y-1">
                           {topic.details.useCases.map((useCase, idx) => (
                             <li key={idx}>• {useCase}</li>
                           ))}
                         </ul>
-                        
-                        <h4 className="text-lg font-semibold text-yellow-400 mb-3">Code Example</h4>
-                        <div className="bg-gray-900/50 rounded-lg p-4 border border-gray-700">
-                          <pre className="text-green-400 text-xs overflow-x-auto">
-                            <code>{topic.details.codeExample}</code>
-                          </pre>
+                      </div>
+                      
+                      <div>
+                        <div className="bg-gray-900/30 rounded-lg border border-gray-700 overflow-hidden">
+                          {/* Tab Headers */}
+                          <div className="flex border-b border-gray-700">
+                            {topic.details.formulas && (
+                              <button
+                                onClick={() => setActiveTab(topic.id, 'formulas')}
+                                className={`flex-1 px-4 py-3 text-sm font-medium transition-colors ${
+                                  activeTabs[topic.id] === 'formulas' || (!activeTabs[topic.id] && topic.details.formulas)
+                                    ? 'bg-orange-500/20 text-orange-400 border-b-2 border-orange-400'
+                                    : 'text-gray-400 hover:text-gray-300 hover:bg-gray-800/50'
+                                }`}
+                              >
+                                <div className="flex items-center justify-center gap-2">
+                                  <div className="w-2 h-2 bg-orange-400 rounded-full"></div>
+                                  Key Formulas
+                                </div>
+                              </button>
+                            )}
+                            <button
+                              onClick={() => setActiveTab(topic.id, 'code')}
+                              className={`flex-1 px-4 py-3 text-sm font-medium transition-colors ${
+                                activeTabs[topic.id] === 'code' || (!activeTabs[topic.id] && !topic.details.formulas)
+                                  ? 'bg-yellow-500/20 text-yellow-400 border-b-2 border-yellow-400'
+                                  : 'text-gray-400 hover:text-gray-300 hover:bg-gray-800/50'
+                              }`}
+                            >
+                              <div className="flex items-center justify-center gap-2">
+                                <div className="w-2 h-2 bg-yellow-400 rounded-full"></div>
+                                Code Example
+                              </div>
+                            </button>
+                          </div>
+
+                          {/* Tab Content */}
+                          <div className="p-6">
+                            {(activeTabs[topic.id] === 'formulas' || (!activeTabs[topic.id] && topic.details.formulas)) && topic.details.formulas && (
+                              <div className="space-y-6">
+                                {Object.entries(topic.details.formulas).map(([key, formula]) => (
+                                  <div key={key} className="bg-gray-800/50 rounded-lg p-6 border border-gray-600">
+                                    <div className="text-gray-300 text-lg mb-4 font-semibold capitalize">
+                                      {key.replace(/_/g, ' ')}:
+                                    </div>
+                                    <div className="bg-gray-900/50 rounded-md p-4 border border-gray-700">
+                                      <div className="text-center">
+                                        <BlockMath math={formula} />
+                                      </div>
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+
+                            {(activeTabs[topic.id] === 'code' || (!activeTabs[topic.id] && !topic.details.formulas)) && (
+                              <div className="bg-gray-800/50 rounded-lg border border-gray-600">
+                                <div className="bg-gray-700/50 px-4 py-3 border-b border-gray-600 rounded-t-lg">
+                                  <div className="flex items-center gap-2">
+                                    <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                                    <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                                    <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                                    <span className="text-gray-300 text-sm ml-2 font-medium">Python</span>
+                                  </div>
+                                </div>
+                                <div className="p-6">
+                                  <pre className="text-green-400 text-sm overflow-x-auto leading-relaxed">
+                                    <code>{topic.details.codeExample}</code>
+                                  </pre>
+                                </div>
+                              </div>
+                            )}
+                          </div>
                         </div>
                       </div>
                     </div>

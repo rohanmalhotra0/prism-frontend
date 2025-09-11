@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from 'react';
 import Navbar from "@/components/sections/navbar/default";
 import Footer from "@/components/sections/footer/default";
 import Link from "next/link";
@@ -8,8 +9,15 @@ import 'katex/dist/katex.min.css';
 import { InlineMath, BlockMath } from 'react-katex';
 
 export default function StatisticsProbabilityPage() {
+  const [activeTabs, setActiveTabs] = useState<Record<string, string>>({});
+
+  const setActiveTab = (topicId: string, tab: string) => {
+    setActiveTabs(prev => ({ ...prev, [topicId]: tab }));
+  };
+
   const statsTopics = [
     {
+      id: "probability-distributions",
       title: "Probability Distributions",
       icon: "•",
       description: "Mathematical functions that describe the likelihood of different outcomes in random experiments.",
@@ -56,6 +64,7 @@ def analyze_distributions(data):
       }
     },
     {
+      id: "hypothesis-testing",
       title: "Hypothesis Testing",
       icon: "•",
       description: "Statistical methods for making decisions about population parameters based on sample data.",
@@ -104,6 +113,7 @@ def hypothesis_tests(sample1, sample2, alpha=0.05):
       }
     },
     {
+      id: "bayesian",
       title: "Bayesian Statistics",
       icon: "•",
       description: "A statistical approach that updates probability estimates as new evidence becomes available.",
@@ -157,6 +167,7 @@ def bayesian_analysis(prior_mean, prior_std, data, likelihood_std):
       }
     },
     {
+      id: "correlation",
       title: "Correlation Analysis",
       icon: "🔗",
       description: "Statistical methods for measuring the strength and direction of relationships between variables.",
@@ -212,6 +223,7 @@ def correlation_analysis(data):
       }
     },
     {
+      id: "confidence-intervals",
       title: "Confidence Intervals",
       icon: "📏",
       description: "Range estimates that provide uncertainty bounds around point estimates with specified confidence levels.",
@@ -264,6 +276,7 @@ def confidence_intervals(data, confidence_level=0.95):
       }
     },
     {
+      id: "regression",
       title: "Regression Analysis",
       icon: "•",
       description: "Statistical methods for modeling relationships between dependent and independent variables.",
@@ -424,39 +437,86 @@ def regression_analysis(X, y):
                             <li key={idx}>• {component}</li>
                           ))}
                         </ul>
-                      </div>
-                      
-                      <div>
+                        
                         <h4 className="text-lg font-semibold text-purple-400 mb-3">Financial Use Cases</h4>
-                        <ul className="text-gray-300 text-sm space-y-1 mb-4">
+                        <ul className="text-gray-300 text-sm space-y-1">
                           {topic.details.useCases.map((useCase, idx) => (
                             <li key={idx}>• {useCase}</li>
                           ))}
                         </ul>
-                        
-                        {topic.details.formulas && (
-                          <div className="mb-4">
-                            <h4 className="text-lg font-semibold text-orange-400 mb-3">Key Formulas</h4>
-                            <div className="space-y-3">
-                              {Object.entries(topic.details.formulas).map(([key, formula]) => (
-                                <div key={key} className="bg-gray-900/30 rounded-lg p-3 border border-gray-700">
-                                  <div className="text-gray-300 text-xs mb-1 capitalize">
-                                    {key.replace(/_/g, ' ')}:
+                      </div>
+                      
+                      <div>
+                        <div className="bg-gray-900/30 rounded-lg border border-gray-700 overflow-hidden">
+                          {/* Tab Headers */}
+                          <div className="flex border-b border-gray-700">
+                            {topic.details.formulas && (
+                              <button
+                                onClick={() => setActiveTab(topic.id, 'formulas')}
+                                className={`flex-1 px-4 py-3 text-sm font-medium transition-colors ${
+                                  activeTabs[topic.id] === 'formulas' || (!activeTabs[topic.id] && topic.details.formulas)
+                                    ? 'bg-orange-500/20 text-orange-400 border-b-2 border-orange-400'
+                                    : 'text-gray-400 hover:text-gray-300 hover:bg-gray-800/50'
+                                }`}
+                              >
+                                <div className="flex items-center justify-center gap-2">
+                                  <div className="w-2 h-2 bg-orange-400 rounded-full"></div>
+                                  Key Formulas
+                                </div>
+                              </button>
+                            )}
+                            <button
+                              onClick={() => setActiveTab(topic.id, 'code')}
+                              className={`flex-1 px-4 py-3 text-sm font-medium transition-colors ${
+                                activeTabs[topic.id] === 'code' || (!activeTabs[topic.id] && !topic.details.formulas)
+                                  ? 'bg-yellow-500/20 text-yellow-400 border-b-2 border-yellow-400'
+                                  : 'text-gray-400 hover:text-gray-300 hover:bg-gray-800/50'
+                              }`}
+                            >
+                              <div className="flex items-center justify-center gap-2">
+                                <div className="w-2 h-2 bg-yellow-400 rounded-full"></div>
+                                Code Example
+                              </div>
+                            </button>
+                          </div>
+
+                          {/* Tab Content */}
+                          <div className="p-6">
+                            {(activeTabs[topic.id] === 'formulas' || (!activeTabs[topic.id] && topic.details.formulas)) && topic.details.formulas && (
+                              <div className="space-y-6">
+                                {Object.entries(topic.details.formulas).map(([key, formula]) => (
+                                  <div key={key} className="bg-gray-800/50 rounded-lg p-6 border border-gray-600">
+                                    <div className="text-gray-300 text-lg mb-4 font-semibold capitalize">
+                                      {key.replace(/_/g, ' ')}:
+                                    </div>
+                                    <div className="bg-gray-900/50 rounded-md p-4 border border-gray-700">
+                                      <div className="text-center">
+                                        <BlockMath math={formula} />
+                                      </div>
+                                    </div>
                                   </div>
-                                  <div className="text-center">
-                                    <BlockMath math={formula} />
+                                ))}
+                              </div>
+                            )}
+
+                            {(activeTabs[topic.id] === 'code' || (!activeTabs[topic.id] && !topic.details.formulas)) && (
+                              <div className="bg-gray-800/50 rounded-lg border border-gray-600">
+                                <div className="bg-gray-700/50 px-4 py-3 border-b border-gray-600 rounded-t-lg">
+                                  <div className="flex items-center gap-2">
+                                    <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                                    <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                                    <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                                    <span className="text-gray-300 text-sm ml-2 font-medium">Python</span>
                                   </div>
                                 </div>
-                              ))}
-                            </div>
+                                <div className="p-6">
+                                  <pre className="text-green-400 text-sm overflow-x-auto leading-relaxed">
+                                    <code>{topic.details.codeExample}</code>
+                                  </pre>
+                                </div>
+                              </div>
+                            )}
                           </div>
-                        )}
-                        
-                        <h4 className="text-lg font-semibold text-yellow-400 mb-3">Code Example</h4>
-                        <div className="bg-gray-900/50 rounded-lg p-4 border border-gray-700">
-                          <pre className="text-green-400 text-xs overflow-x-auto">
-                            <code>{topic.details.codeExample}</code>
-                          </pre>
                         </div>
                       </div>
                     </div>

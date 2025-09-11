@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from 'react';
 import Navbar from "@/components/sections/navbar/default";
 import Footer from "@/components/sections/footer/default";
 import Link from "next/link";
@@ -8,8 +9,15 @@ import 'katex/dist/katex.min.css';
 import { InlineMath, BlockMath } from 'react-katex';
 
 export default function OptionsDerivativesPage() {
+  const [activeTabs, setActiveTabs] = useState<Record<string, string>>({});
+
+  const setActiveTab = (topicId: string, tab: string) => {
+    setActiveTabs(prev => ({ ...prev, [topicId]: tab }));
+  };
+
   const derivativesTopics = [
     {
+      id: "black-scholes",
       title: "Black-Scholes Model",
       icon: "📐",
       description: "The fundamental model for pricing European options, providing a theoretical framework for option valuation.",
@@ -53,6 +61,7 @@ def black_scholes_put(S, K, T, r, sigma):
       }
     },
     {
+      id: "greeks",
       title: "Greeks",
       icon: "•",
       description: "Sensitivity measures that quantify how option prices change with respect to various underlying factors.",
@@ -105,6 +114,7 @@ def black_scholes_put(S, K, T, r, sigma):
       }
     },
     {
+      id: "binomial",
       title: "Binomial Model",
       icon: "🌳",
       description: "A discrete-time model that values options by creating a binomial tree of possible future stock prices.",
@@ -146,6 +156,7 @@ def black_scholes_put(S, K, T, r, sigma):
       }
     },
     {
+      id: "implied-volatility",
       title: "Implied Volatility",
       icon: "•",
       description: "The volatility level that makes the theoretical option price equal to the market price, derived from market data.",
@@ -185,6 +196,7 @@ def volatility_smile(strikes, market_prices, S, T, r):
       }
     },
     {
+      id: "hedging",
       title: "Hedging Strategies",
       icon: "•",
       description: "Techniques to reduce or eliminate risk exposure using derivatives and other financial instruments.",
@@ -223,6 +235,7 @@ def portfolio_hedge(portfolio, hedge_instruments):
       }
     },
     {
+      id: "exotic",
       title: "Exotic Options",
       icon: "•",
       description: "Complex options with non-standard features that go beyond simple call and put options.",
@@ -363,39 +376,86 @@ def portfolio_hedge(portfolio, hedge_instruments):
                             <li key={idx}>• {component}</li>
                           ))}
                         </ul>
-                      </div>
-                      
-                      <div>
+                        
                         <h4 className="text-lg font-semibold text-purple-400 mb-3">Financial Use Cases</h4>
-                        <ul className="text-gray-300 text-sm space-y-1 mb-4">
+                        <ul className="text-gray-300 text-sm space-y-1">
                           {topic.details.useCases.map((useCase, idx) => (
                             <li key={idx}>• {useCase}</li>
                           ))}
                         </ul>
-                        
-                        {topic.details.formulas && (
-                          <div className="mb-4">
-                            <h4 className="text-lg font-semibold text-orange-400 mb-3">Key Formulas</h4>
-                            <div className="space-y-3">
-                              {Object.entries(topic.details.formulas).map(([key, formula]) => (
-                                <div key={key} className="bg-gray-900/30 rounded-lg p-3 border border-gray-700">
-                                  <div className="text-gray-300 text-xs mb-1 capitalize">
-                                    {key.replace(/_/g, ' ')}:
+                      </div>
+                      
+                      <div>
+                        <div className="bg-gray-900/30 rounded-lg border border-gray-700 overflow-hidden">
+                          {/* Tab Headers */}
+                          <div className="flex border-b border-gray-700">
+                            {topic.details.formulas && (
+                              <button
+                                onClick={() => setActiveTab(topic.id, 'formulas')}
+                                className={`flex-1 px-4 py-3 text-sm font-medium transition-colors ${
+                                  activeTabs[topic.id] === 'formulas' || (!activeTabs[topic.id] && topic.details.formulas)
+                                    ? 'bg-orange-500/20 text-orange-400 border-b-2 border-orange-400'
+                                    : 'text-gray-400 hover:text-gray-300 hover:bg-gray-800/50'
+                                }`}
+                              >
+                                <div className="flex items-center justify-center gap-2">
+                                  <div className="w-2 h-2 bg-orange-400 rounded-full"></div>
+                                  Key Formulas
+                                </div>
+                              </button>
+                            )}
+                            <button
+                              onClick={() => setActiveTab(topic.id, 'code')}
+                              className={`flex-1 px-4 py-3 text-sm font-medium transition-colors ${
+                                activeTabs[topic.id] === 'code' || (!activeTabs[topic.id] && !topic.details.formulas)
+                                  ? 'bg-yellow-500/20 text-yellow-400 border-b-2 border-yellow-400'
+                                  : 'text-gray-400 hover:text-gray-300 hover:bg-gray-800/50'
+                              }`}
+                            >
+                              <div className="flex items-center justify-center gap-2">
+                                <div className="w-2 h-2 bg-yellow-400 rounded-full"></div>
+                                Code Example
+                              </div>
+                            </button>
+                          </div>
+
+                          {/* Tab Content */}
+                          <div className="p-6">
+                            {(activeTabs[topic.id] === 'formulas' || (!activeTabs[topic.id] && topic.details.formulas)) && topic.details.formulas && (
+                              <div className="space-y-6">
+                                {Object.entries(topic.details.formulas).map(([key, formula]) => (
+                                  <div key={key} className="bg-gray-800/50 rounded-lg p-6 border border-gray-600">
+                                    <div className="text-gray-300 text-lg mb-4 font-semibold capitalize">
+                                      {key.replace(/_/g, ' ')}:
+                                    </div>
+                                    <div className="bg-gray-900/50 rounded-md p-4 border border-gray-700">
+                                      <div className="text-center">
+                                        <BlockMath math={formula} />
+                                      </div>
+                                    </div>
                                   </div>
-                                  <div className="text-center">
-                                    <BlockMath math={formula} />
+                                ))}
+                              </div>
+                            )}
+
+                            {(activeTabs[topic.id] === 'code' || (!activeTabs[topic.id] && !topic.details.formulas)) && (
+                              <div className="bg-gray-800/50 rounded-lg border border-gray-600">
+                                <div className="bg-gray-700/50 px-4 py-3 border-b border-gray-600 rounded-t-lg">
+                                  <div className="flex items-center gap-2">
+                                    <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                                    <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                                    <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                                    <span className="text-gray-300 text-sm ml-2 font-medium">Python</span>
                                   </div>
                                 </div>
-                              ))}
-                            </div>
+                                <div className="p-6">
+                                  <pre className="text-green-400 text-sm overflow-x-auto leading-relaxed">
+                                    <code>{topic.details.codeExample}</code>
+                                  </pre>
+                                </div>
+                              </div>
+                            )}
                           </div>
-                        )}
-                        
-                        <h4 className="text-lg font-semibold text-yellow-400 mb-3">Code Example</h4>
-                        <div className="bg-gray-900/50 rounded-lg p-4 border border-gray-700">
-                          <pre className="text-green-400 text-xs overflow-x-auto">
-                            <code>{topic.details.codeExample}</code>
-                          </pre>
                         </div>
                       </div>
                     </div>
