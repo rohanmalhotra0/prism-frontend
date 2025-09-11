@@ -167,8 +167,6 @@ export default function ChartSettingsPanel({ onUpdate }: Props) {
               <option value="3mo">3 Months</option>
               <option value="6mo">6 Months</option>
               <option value="1y">1 Year</option>
-              <option value="2y">2 Years</option>
-              <option value="5y">5 Years</option>
               <option value="ytd">Year-to-Date</option>
             </select>
           </div>
