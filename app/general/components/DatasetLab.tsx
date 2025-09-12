@@ -21,7 +21,6 @@ export default function DatasetLab({ sharedData, setSharedData }: DatasetLabProp
   const [visualizationType, setVisualizationType] = useState<'scatter' | 'line' | '3d'>('scatter');
   const [is3D, setIs3D] = useState(false);
   const [filters, setFilters] = useState<{[key: string]: any}>({});
-  const [transformations, setTransformations] = useState<{[key: string]: string}>({});
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isAnimating, setIsAnimating] = useState(false);
@@ -208,40 +207,6 @@ export default function DatasetLab({ sharedData, setSharedData }: DatasetLabProp
     setSelectedColumns(['x', 'y']);
   };
 
-  const applyTransformation = (column: string, transformation: string) => {
-    if (!transformation) return;
-
-    const newDataset = dataset.map(row => {
-      const value = row[column];
-      let newValue = value;
-
-      switch (transformation) {
-        case 'normalize':
-          const min = Math.min(...dataset.map(d => d[column]));
-          const max = Math.max(...dataset.map(d => d[column]));
-          newValue = (value - min) / (max - min);
-          break;
-        case 'log':
-          newValue = Math.log(Math.abs(value) + 1);
-          break;
-        case 'sqrt':
-          newValue = Math.sqrt(Math.abs(value));
-          break;
-        case 'square':
-          newValue = value * value;
-          break;
-        case 'moving_average':
-          // Simple moving average (would need more complex implementation)
-          newValue = value;
-          break;
-      }
-
-      return { ...row, [`${column}_${transformation}`]: newValue };
-    });
-
-    setDataset(newDataset);
-    setColumns(prev => [...prev, `${column}_${transformation}`]);
-  };
 
   const initThreeJS = () => {
     const canvas = canvasRef.current;
@@ -1044,14 +1009,6 @@ export default function DatasetLab({ sharedData, setSharedData }: DatasetLabProp
 
   // Animation state is now handled within the animate function
 
-  const exportToML = () => {
-    setSharedData({
-      type: 'dataset',
-      data: dataset,
-      columns,
-      selectedColumns
-    });
-  };
 
   return (
     <div className="h-full flex flex-col">
@@ -1218,47 +1175,6 @@ export default function DatasetLab({ sharedData, setSharedData }: DatasetLabProp
             </div>
           </div>
 
-          {/* Transformations */}
-          {columns.length > 0 && (
-            <div className="bg-gray-800/50 rounded-lg p-4">
-              <h3 className="text-lg font-semibold text-white mb-3">Transformations</h3>
-              <div className="space-y-3">
-                {columns.map((col) => (
-                  <div key={col}>
-                    <label className="block text-sm text-gray-300 mb-1">{col}</label>
-                    <select
-                      value={transformations[col] || ''}
-                      onChange={(e) => {
-                        setTransformations(prev => ({ ...prev, [col]: e.target.value }));
-                        if (e.target.value) {
-                          applyTransformation(col, e.target.value);
-                        }
-                      }}
-                      className="w-full p-2 bg-gray-700 text-white rounded border border-gray-600"
-                    >
-                      <option value="">None</option>
-                      <option value="normalize">Normalize</option>
-                      <option value="log">Log</option>
-                      <option value="sqrt">Square Root</option>
-                      <option value="square">Square</option>
-                      <option value="moving_average">Moving Average</option>
-                    </select>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Export */}
-          <div className="bg-gray-800/50 rounded-lg p-4">
-            <h3 className="text-lg font-semibold text-white mb-3">Export</h3>
-            <button
-              onClick={exportToML}
-              className="w-full p-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors"
-            >
-              Send to ML Toolkit
-            </button>
-          </div>
         </div>
 
         {/* Data Table and Visualization */}

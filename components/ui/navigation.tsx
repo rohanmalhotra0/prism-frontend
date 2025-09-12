@@ -108,31 +108,51 @@ function NavigationComponent({
   ],
 }: NavigationProps) {
   const [mounted, setMounted] = React.useState(false);
+  const [openDropdown, setOpenDropdown] = React.useState<string | null>(null);
 
   React.useEffect(() => {
     setMounted(true);
+  }, []);
+
+  const handleDropdownToggle = (dropdownName: string) => {
+    setOpenDropdown(openDropdown === dropdownName ? null : dropdownName);
+  };
+
+  const handleClickOutside = (event: MouseEvent) => {
+    const target = event.target as Element;
+    if (!target.closest('[data-navigation-menu]')) {
+      setOpenDropdown(null);
+    }
+  };
+
+  React.useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+    const handleCloseDropdown = () => setOpenDropdown(null);
+    document.addEventListener('closeDropdown', handleCloseDropdown);
+    
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('closeDropdown', handleCloseDropdown);
+    };
   }, []);
 
   if (!mounted) {
     return <div className="hidden md:flex h-9 w-32 bg-transparent" />;
   }
   return (
-    <NavigationMenu 
-      className="hidden md:flex [&_[data-radix-navigation-menu-trigger]]:hover:bg-transparent [&_[data-radix-navigation-menu-trigger]]:hover:text-current [&_[data-radix-navigation-menu-trigger]]:hover:opacity-100"
-      delayDuration={0}
-      skipDelayDuration={0}
-    >
-      <NavigationMenuList>
-        {/* Modeling Tools */}
-        <NavigationMenuItem>
-          <NavigationMenuTrigger 
-            className="hover:bg-transparent hover:text-current touch-manipulation flex items-center gap-2"
-          >
-            <Calculator className="w-4 h-4" />
-            Modeling Tools
-          </NavigationMenuTrigger>
-          <NavigationMenuContent>
-            <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+    <div className="hidden md:flex items-center space-x-1" data-navigation-menu>
+      {/* Modeling Tools */}
+      <div className="relative">
+        <button
+          onClick={() => handleDropdownToggle('modeling')}
+          className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-300 hover:text-white transition-colors"
+        >
+          <Calculator className="w-4 h-4" />
+          Modeling Tools
+        </button>
+        {openDropdown === 'modeling' && (
+          <div className="absolute top-full left-0 mt-1 w-[500px] bg-gray-900 border border-gray-700 rounded-lg shadow-lg z-50">
+            <ul className="grid gap-3 p-4 md:grid-cols-2">
               {components.map((component) => (
                 <ListItem
                   key={component.title}
@@ -144,38 +164,44 @@ function NavigationComponent({
                 </ListItem>
               ))}
             </ul>
-          </NavigationMenuContent>
-        </NavigationMenuItem>
+          </div>
+        )}
+      </div>
 
-        {/* Learn */}
-        <NavigationMenuItem>
-          <NavigationMenuTrigger 
-            className="hover:bg-transparent hover:text-current touch-manipulation flex items-center gap-2"
-          >
-            <BookOpen className="w-4 h-4" />
-            Learn
-          </NavigationMenuTrigger>
-          <NavigationMenuContent>
-            <ul className="grid gap-3 p-4 w-[400px]">
+      {/* Learn */}
+      <div className="relative">
+        <button
+          onClick={() => handleDropdownToggle('learn')}
+          className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-300 hover:text-white transition-colors"
+        >
+          <BookOpen className="w-4 h-4" />
+          Learn
+        </button>
+        {openDropdown === 'learn' && (
+          <div className="absolute top-full left-0 mt-1 w-[400px] bg-gray-900 border border-gray-700 rounded-lg shadow-lg z-50">
+            <ul className="grid gap-3 p-4">
               {community.map((item) => (
                 <ListItem key={item.title} href={item.href} title={item.title} icon={item.icon}>
                   {item.description}
                 </ListItem>
               ))}
             </ul>
-          </NavigationMenuContent>
-        </NavigationMenuItem>
+          </div>
+        )}
+      </div>
 
-        {/* Resources */}
-        <NavigationMenuItem>
-          <NavigationMenuTrigger 
-            className="hover:bg-transparent hover:text-current touch-manipulation flex items-center gap-2"
-          >
-            <FileText className="w-4 h-4" />
-            Docs
-          </NavigationMenuTrigger>
-          <NavigationMenuContent>
-            <ul className="grid gap-3 p-4 w-[400px]">
+      {/* Docs */}
+      <div className="relative">
+        <button
+          onClick={() => handleDropdownToggle('docs')}
+          className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-300 hover:text-white transition-colors"
+        >
+          <FileText className="w-4 h-4" />
+          Docs
+        </button>
+        {openDropdown === 'docs' && (
+          <div className="absolute top-full left-0 mt-1 w-[400px] bg-gray-900 border border-gray-700 rounded-lg shadow-lg z-50">
+            <ul className="grid gap-3 p-4">
               <ListItem href="/about" title="About Us" icon={User}>
                 Learn about the Refrax team.
               </ListItem>
@@ -186,10 +212,10 @@ function NavigationComponent({
                 Guides and API documentation for Refrax features.
               </ListItem>
             </ul>
-          </NavigationMenuContent>
-        </NavigationMenuItem>
-      </NavigationMenuList>
-    </NavigationMenu>
+          </div>
+        )}
+      </div>
+    </div>
   );
 }
 
@@ -205,27 +231,30 @@ function ListItem({
 }) {
   return (
     <li>
-      <NavigationMenuLink asChild>
-        <a
-          className={cn(
-            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors focus:bg-accent focus:text-accent-foreground hover:bg-accent/50",
-            className
+      <Link
+        href={props.href || '#'}
+        className={cn(
+          "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors focus:bg-gray-800 focus:text-white hover:bg-gray-800/50",
+          className
+        )}
+        onClick={() => {
+          // Close dropdown when item is clicked
+          const event = new CustomEvent('closeDropdown');
+          document.dispatchEvent(event);
+        }}
+      >
+        <div className="flex items-center gap-2">
+          {Icon && (
+            <div className="w-5 h-5 bg-gradient-to-r from-blue-500 to-purple-500 rounded-md flex items-center justify-center flex-shrink-0">
+              <Icon className="w-3 h-3 text-white" />
+            </div>
           )}
-          {...props}
-        >
-          <div className="flex items-center gap-2">
-            {Icon && (
-              <div className="w-5 h-5 bg-gradient-to-r from-blue-500 to-purple-500 rounded-md flex items-center justify-center flex-shrink-0">
-                <Icon className="w-3 h-3 text-white" />
-              </div>
-            )}
-            <div className="text-sm font-medium leading-none">{title}</div>
-          </div>
-          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground ml-7">
-            {children}
-          </p>
-        </a>
-      </NavigationMenuLink>
+          <div className="text-sm font-medium leading-none text-white">{title}</div>
+        </div>
+        <p className="line-clamp-2 text-sm leading-snug text-gray-400 ml-7">
+          {children}
+        </p>
+      </Link>
     </li>
   );
 }
