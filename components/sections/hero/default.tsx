@@ -25,11 +25,8 @@ export default function Hero({
 
   useEffect(() => {
     const checkMobile = () => {
-      const isMobileDevice =
-        window.innerWidth < 60 ||
-        /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-          navigator.userAgent,
-        );
+      // Only use screen width, ignore user agent to allow iframe on all devices
+      const isMobileDevice = window.innerWidth < 480;
       setIsMobile(isMobileDevice);
     };
 
