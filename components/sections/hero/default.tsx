@@ -21,20 +21,6 @@ export default function Hero({
   mockup = false,
   className,
 }: HeroProps) {
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const checkMobile = () => {
-      // Only use screen width, ignore user agent to allow iframe on all devices
-      const isMobileDevice = window.innerWidth < 480;
-      setIsMobile(isMobileDevice);
-    };
-
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
-
   return (
     <Section
       className={cn(
@@ -79,7 +65,7 @@ export default function Hero({
           </div>
         </div>
 
-        {/* YouTube Video Section */}
+        {/* Always show YouTube iframe */}
         <div className="relative w-full pt-12">
           <MockupFrame
             className="animate-appear opacity-0 delay-700"
@@ -91,69 +77,14 @@ export default function Hero({
             >
               <div className="w-full">
                 <div className="relative w-full rounded-xl overflow-hidden shadow-2xl border border-white/10" style={{ aspectRatio: '16/9' }}>
-                  {!isMobile ? (
-                    // ✅ Desktop iframe (Safari-optimized)
-                    <iframe
-                      src="https://www.youtube-nocookie.com/embed/uU2eMfCStBs?controls=1&rel=0&modestbranding=1&playsinline=1"
-                      title="Refrax Platform Demo"
-                      className="w-full h-full"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
-                      allowFullScreen
-                      frameBorder="0"
-                    />
-                  ) : (
-                    // ✅ Mobile thumbnail with play button
-                    <div className="w-full h-full relative bg-gradient-to-br from-gray-900 to-black">
-                      <a
-                        href="https://www.youtube.com/watch?v=uU2eMfCStBs&t=1s"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="w-full h-full flex items-center justify-center group cursor-pointer relative"
-                      >
-                        {/* YouTube thumbnail */}
-                        <div
-                          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-                          style={{
-                            backgroundImage:
-                              "url('https://img.youtube.com/vi/uU2eMfCStBs/maxresdefault.jpg')",
-                          }}
-                        />
-
-                        {/* Gradient fallback */}
-                        <div className="absolute inset-0 bg-gradient-to-br from-red-900 to-gray-900" />
-
-                        {/* Dark overlay */}
-                        <div className="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition-colors" />
-
-                        {/* Play button */}
-                        <div className="relative z-10 flex items-center justify-center w-20 h-20 bg-red-600 rounded-full group-hover:bg-red-700 transition-colors shadow-2xl">
-                          <svg
-                            className="w-8 h-8 text-white ml-1"
-                            fill="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path d="M8 5v14l11-7z" />
-                          </svg>
-                        </div>
-
-                        {/* YouTube branding */}
-                        <div className="absolute bottom-4 right-4 z-10">
-                          <div className="flex items-center space-x-2 bg-black/80 px-3 py-1 rounded-full">
-                            <svg
-                              className="w-5 h-5 text-white"
-                              viewBox="0 0 24 24"
-                              fill="currentColor"
-                            >
-                              <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
-                            </svg>
-                            <span className="text-white text-sm font-medium">
-                              Watch on YouTube
-                            </span>
-                          </div>
-                        </div>
-                      </a>
-                    </div>
-                  )}
+                  <iframe
+                    src="https://www.youtube-nocookie.com/embed/uU2eMfCStBs?controls=1&rel=0&modestbranding=1&playsinline=1"
+                    title="Refrax Platform Demo"
+                    className="w-full h-full"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+                    allowFullScreen
+                    frameBorder="0"
+                  />
                 </div>
               </div>
             </Mockup>
