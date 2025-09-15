@@ -80,11 +80,13 @@ export default function Hero({
               <div className="w-full">
                 <div className="relative w-full aspect-video rounded-xl overflow-hidden shadow-2xl border border-white/10">
                   <iframe
-                    src="https://www.youtube.com/embed/uU2eMfCStBs?start=1&autoplay=0&mute=0&controls=1&modestbranding=1&rel=0"
+                    src="https://www.youtube.com/embed/uU2eMfCStBs?start=1&autoplay=0&mute=0&controls=1&modestbranding=1&rel=0&playsinline=1&enablejsapi=1&origin=https://refrax.vercel.app"
                     title="Refrax Platform Demo"
                     className="w-full h-full"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     allowFullScreen
+                    loading="lazy"
+                    referrerPolicy="strict-origin-when-cross-origin"
                   />
                 </div>
               </div>
