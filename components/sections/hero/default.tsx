@@ -26,7 +26,7 @@ export default function Hero({
   useEffect(() => {
     const checkMobile = () => {
       const isMobileDevice =
-        window.innerWidth < 768 ||
+        window.innerWidth < 480 ||
         /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
           navigator.userAgent,
         );
