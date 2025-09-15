@@ -20,7 +20,7 @@ interface HeroProps {
 export default function Hero({
   title = "Refrax",
   description = "Free education platform for data analytics, financial modeling, and 2D/3D math visualization. Learn by doing with interactive tools.",
-  mockup = <ChartAreaInteractive />,
+  mockup = false,
   className,
 }: HeroProps) {
   return (
@@ -67,28 +67,34 @@ export default function Hero({
           </div>
         </div>
 
-        {/* Mockup */}
-        {mockup !== false && (
-          <div className="relative w-full pt-12">
-            <MockupFrame
-              className="animate-appear opacity-0 delay-700"
-              size="small"
+        {/* YouTube Video Section */}
+        <div className="relative w-full pt-12">
+          <MockupFrame
+            className="animate-appear opacity-0 delay-700"
+            size="small"
+          >
+            <Mockup
+              type="responsive"
+              className="bg-background/90 w-full rounded-xl border-0"
             >
-              <Mockup
-                type="responsive"
-                className="bg-background/90 w-full rounded-xl border-0"
-              >
-                <div className="w-full">
-                  {mockup}
+              <div className="w-full">
+                <div className="relative w-full aspect-video rounded-xl overflow-hidden shadow-2xl border border-white/10">
+                  <iframe
+                    src="https://www.youtube.com/embed/uU2eMfCStBs?start=1&autoplay=0&mute=0&controls=1&modestbranding=1&rel=0"
+                    title="Refrax Platform Demo"
+                    className="w-full h-full"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  />
                 </div>
-              </Mockup>
-            </MockupFrame>
-            <Glow
-              variant="top"
-              className="animate-appear-zoom opacity-0 delay-1000"
-            />
-          </div>
-        )}
+              </div>
+            </Mockup>
+          </MockupFrame>
+          <Glow
+            variant="top"
+            className="animate-appear-zoom opacity-0 delay-1000"
+          />
+        </div>
       </div>
     </Section>
   );
