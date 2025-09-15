@@ -160,14 +160,8 @@ export default function AboutPage() {
                   <p className="text-sm">BS Business and Computer Science</p>
                   <p className="text-sm text-gray-400">NYU Stern</p>
                 </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-white mb-2">Expertise</h3>
-                  <p className="text-sm">Full-Stack Development • Data Structures • Algorithms</p>
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-white mb-2">Goals</h3>
-                  <p className="text-sm">Software Engineering • Tech Innovation • Startup Development</p>
-                </div>
+              
+               
               </div>
 
               <div className="flex flex-wrap gap-2 mb-6">
