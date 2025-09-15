@@ -95,14 +95,17 @@ export default function Hero({
               <div className="w-full">
                 <div className="relative w-full aspect-video rounded-xl overflow-hidden shadow-2xl border border-white/10">
                   {!isMobile ? (
-                    // ✅ Desktop iframe (Safari-friendly, minimal fix)
-                    <iframe
-                      src="https://www.youtube.com/embed/uU2eMfCStBs?version=3&start=1&controls=1&rel=0&modestbranding=1&playsinline=1"
-                      title="Refrax Platform Demo"
-                      className="w-full h-full min-h-[315px] bg-black"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
-                      allowFullScreen
-                    />
+                    // ✅ Desktop iframe (Safari-optimized)
+                    <div className="relative w-full h-[400px]">
+                      <iframe
+                        src="https://www.youtube-nocookie.com/embed/uU2eMfCStBs?controls=1&rel=0&modestbranding=1&playsinline=1"
+                        title="Refrax Platform Demo"
+                        className="w-full h-full"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+                        allowFullScreen
+                        frameBorder="0"
+                      />
+                    </div>
                   ) : (
                     // ✅ Mobile thumbnail with play button
                     <div className="w-full h-full relative bg-gradient-to-br from-gray-900 to-black">
