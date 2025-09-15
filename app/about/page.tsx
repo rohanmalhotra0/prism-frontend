@@ -160,16 +160,14 @@ export default function AboutPage() {
                   <p className="text-sm">BS Business and Computer Science</p>
                   <p className="text-sm text-gray-400">NYU Stern</p>
                 </div>
-              
+                <div>
+                  <h3 className="text-lg font-semibold text-white mb-2">Expertise</h3>
+                  <p className="text-sm">Business • Finance • Product Management</p>
+                </div>
                
               </div>
 
-              <div className="flex flex-wrap gap-2 mb-6">
-                <span className="px-3 py-1 bg-blue-500/20 text-blue-300 text-xs rounded-full">JavaScript</span>
-                <span className="px-3 py-1 bg-green-500/20 text-green-300 text-xs rounded-full">Python</span>
-                <span className="px-3 py-1 bg-purple-500/20 text-purple-300 text-xs rounded-full">React</span>
-                <span className="px-3 py-1 bg-orange-500/20 text-orange-300 text-xs rounded-full">Node.js</span>
-              </div>
+              
 
               <div className="flex gap-3">
                 <Button
