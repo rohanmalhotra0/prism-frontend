@@ -5,10 +5,7 @@ import { useState, useEffect } from "react";
 
 import Glow from "../../ui/glow";
 import { Mockup, MockupFrame } from "../../ui/mockup";
-import Screenshot from "../../ui/screenshot";
 import { Section } from "../../ui/section";
-
-import { ChartAreaInteractive } from "@/components/ui/ChartAreaInteractive"
 
 interface HeroProps {
   title?: string;
@@ -28,19 +25,19 @@ export default function Hero({
 
   useEffect(() => {
     const checkMobile = () => {
-      const isMobileDevice = window.innerWidth < 768 || /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-      console.log('Mobile detection:', { 
-        width: window.innerWidth, 
-        userAgent: navigator.userAgent, 
-        isMobile: isMobileDevice 
-      });
+      const isMobileDevice =
+        window.innerWidth < 768 ||
+        /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+          navigator.userAgent,
+        );
       setIsMobile(isMobileDevice);
     };
-    
+
     checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
+
   return (
     <Section
       className={cn(
@@ -61,24 +58,24 @@ export default function Hero({
             {description}
           </p>
 
-          {/* Start Learning Free Button */}
+          {/* Get Started Button */}
           <div className="animate-appear relative z-10 opacity-0 delay-300">
-            <a 
+            <a
               href="/general"
               className="relative group px-6 py-3 rounded-full font-semibold text-white transition-all duration-300 hover:scale-105 active:scale-95 overflow-hidden inline-block"
             >
               {/* Background gradient */}
               <div className="absolute inset-0 bg-gradient-to-r from-purple-600 via-purple-500 to-blue-600 rounded-full"></div>
-              
-              {/* Hover effect overlay */}
+
+              {/* Hover overlay */}
               <div className="absolute inset-0 bg-gradient-to-r from-purple-500 via-purple-400 to-blue-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              
+
               {/* Shine effect */}
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
-              
+
               {/* Border glow */}
               <div className="absolute inset-0 rounded-full border border-white/20 group-hover:border-white/40 transition-colors duration-300"></div>
-              
+
               {/* Text */}
               <span className="relative z-10">Get Started</span>
             </a>
@@ -98,18 +95,17 @@ export default function Hero({
               <div className="w-full">
                 <div className="relative w-full aspect-video rounded-xl overflow-hidden shadow-2xl border border-white/10">
                   {!isMobile ? (
-                    // Desktop iframe
+                    // ✅ Desktop iframe (Safari-friendly)
                     <iframe
-                      src="https://www.youtube.com/embed/uU2eMfCStBs?start=1&autoplay=0&mute=0&controls=1&modestbranding=1&rel=0&playsinline=1&enablejsapi=1"
+                      src="https://www.youtube.com/embed/uU2eMfCStBs?start=1&controls=1&rel=0&modestbranding=1&playsinline=1"
                       title="Refrax Platform Demo"
-                      className="w-full h-full"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      className="w-full h-full min-h-[315px]"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
                       allowFullScreen
                       loading="lazy"
-                      referrerPolicy="strict-origin-when-cross-origin"
                     />
                   ) : (
-                    // Mobile thumbnail with play button
+                    // ✅ Mobile thumbnail with play button
                     <div className="w-full h-full relative bg-gradient-to-br from-gray-900 to-black">
                       <a
                         href="https://www.youtube.com/watch?v=uU2eMfCStBs&t=1s"
@@ -117,44 +113,46 @@ export default function Hero({
                         rel="noopener noreferrer"
                         className="w-full h-full flex items-center justify-center group cursor-pointer relative"
                       >
-                        {/* YouTube thumbnail background with fallback */}
-                        <div 
+                        {/* YouTube thumbnail */}
+                        <div
                           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
                           style={{
-                            backgroundImage: "url('https://img.youtube.com/vi/uU2eMfCStBs/maxresdefault.jpg')"
+                            backgroundImage:
+                              "url('https://img.youtube.com/vi/uU2eMfCStBs/maxresdefault.jpg')",
                           }}
                         />
-                        
-                        {/* Fallback gradient if image fails to load */}
+
+                        {/* Gradient fallback */}
                         <div className="absolute inset-0 bg-gradient-to-br from-red-900 to-gray-900" />
-                        
+
                         {/* Dark overlay */}
                         <div className="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition-colors" />
-                        
+
                         {/* Play button */}
                         <div className="relative z-10 flex items-center justify-center w-20 h-20 bg-red-600 rounded-full group-hover:bg-red-700 transition-colors shadow-2xl">
-                          <svg 
-                            className="w-8 h-8 text-white ml-1" 
-                            fill="currentColor" 
+                          <svg
+                            className="w-8 h-8 text-white ml-1"
+                            fill="currentColor"
                             viewBox="0 0 24 24"
                           >
-                            <path d="M8 5v14l11-7z"/>
+                            <path d="M8 5v14l11-7z" />
                           </svg>
                         </div>
-                        
+
                         {/* YouTube branding */}
                         <div className="absolute bottom-4 right-4 z-10">
                           <div className="flex items-center space-x-2 bg-black/80 px-3 py-1 rounded-full">
-                            <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="currentColor">
-                              <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                            <svg
+                              className="w-5 h-5 text-white"
+                              viewBox="0 0 24 24"
+                              fill="currentColor"
+                            >
+                              <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
                             </svg>
-                            <span className="text-white text-sm font-medium">Watch on YouTube</span>
+                            <span className="text-white text-sm font-medium">
+                              Watch on YouTube
+                            </span>
                           </div>
-                        </div>
-                        
-                        {/* Debug info - remove this later */}
-                        <div className="absolute top-2 left-2 z-10 text-white text-xs bg-black/50 px-2 py-1 rounded">
-                          Mobile: {isMobile ? 'Yes' : 'No'}
                         </div>
                       </a>
                     </div>
