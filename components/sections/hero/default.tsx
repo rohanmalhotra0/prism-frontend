@@ -1,6 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import { useState, useEffect } from "react";
 
 import Glow from "../../ui/glow";
 import { Mockup, MockupFrame } from "../../ui/mockup";
@@ -23,6 +24,17 @@ export default function Hero({
   mockup = false,
   className,
 }: HeroProps) {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768 || /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
   return (
     <Section
       className={cn(
@@ -79,15 +91,58 @@ export default function Hero({
             >
               <div className="w-full">
                 <div className="relative w-full aspect-video rounded-xl overflow-hidden shadow-2xl border border-white/10">
-                  <iframe
-                    src="https://www.youtube.com/embed/uU2eMfCStBs?start=1&autoplay=0&mute=0&controls=1&modestbranding=1&rel=0&playsinline=1&enablejsapi=1&origin=https://refrax.vercel.app"
-                    title="Refrax Platform Demo"
-                    className="w-full h-full"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowFullScreen
-                    loading="lazy"
-                    referrerPolicy="strict-origin-when-cross-origin"
-                  />
+                  {!isMobile ? (
+                    // Desktop iframe
+                    <iframe
+                      src="https://www.youtube.com/embed/uU2eMfCStBs?start=1&autoplay=0&mute=0&controls=1&modestbranding=1&rel=0&playsinline=1&enablejsapi=1"
+                      title="Refrax Platform Demo"
+                      className="w-full h-full"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      allowFullScreen
+                      loading="lazy"
+                      referrerPolicy="strict-origin-when-cross-origin"
+                    />
+                  ) : (
+                    // Mobile thumbnail with play button
+                    <a
+                      href="https://www.youtube.com/watch?v=uU2eMfCStBs&t=1s"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full h-full flex items-center justify-center group cursor-pointer relative bg-black"
+                    >
+                      {/* YouTube thumbnail background */}
+                      <div 
+                        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+                        style={{
+                          backgroundImage: "url('https://img.youtube.com/vi/uU2eMfCStBs/maxresdefault.jpg')"
+                        }}
+                      />
+                      
+                      {/* Dark overlay */}
+                      <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors" />
+                      
+                      {/* Play button */}
+                      <div className="relative z-10 flex items-center justify-center w-20 h-20 bg-red-600 rounded-full group-hover:bg-red-700 transition-colors shadow-2xl">
+                        <svg 
+                          className="w-8 h-8 text-white ml-1" 
+                          fill="currentColor" 
+                          viewBox="0 0 24 24"
+                        >
+                          <path d="M8 5v14l11-7z"/>
+                        </svg>
+                      </div>
+                      
+                      {/* YouTube branding */}
+                      <div className="absolute bottom-4 right-4 z-10">
+                        <div className="flex items-center space-x-2 bg-black/70 px-3 py-1 rounded-full">
+                          <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                          </svg>
+                          <span className="text-white text-sm font-medium">Watch on YouTube</span>
+                        </div>
+                      </div>
+                    </a>
+                  )}
                 </div>
               </div>
             </Mockup>
