@@ -1,6 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import { useEffect, useRef } from "react";
 
 import Glow from "../../ui/glow";
 import { Mockup, MockupFrame } from "../../ui/mockup";
@@ -23,6 +24,95 @@ export default function Hero({
   mockup = <ChartAreaInteractive />,
   className,
 }: HeroProps) {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const dotRef = useRef<HTMLDivElement | null>(null);
+  const buttonRef = useRef<HTMLAnchorElement | null>(null);
+  const iframeRef = useRef<HTMLIFrameElement | null>(null);
+  const dotPositionRef = useRef<{ x: number; y: number } | null>(null);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    const dot = dotRef.current;
+    if (!dot) return;
+
+    // Disable on mobile devices (iOS/Android)
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || 
+                     ('ontouchstart' in window) || 
+                     (navigator.maxTouchPoints > 0);
+    
+    if (isMobile) {
+      // Hide the dot on mobile
+      dot.style.display = 'none';
+      return;
+    }
+
+    let animationFrameId = 0;
+
+    // Use saved position or start at center
+    let posX = dotPositionRef.current?.x ?? window.innerWidth / 2;
+    let posY = dotPositionRef.current?.y ?? window.innerHeight / 2;
+    let velX = 0;
+    let velY = 0;
+    let targetX = posX;
+    let targetY = posY;
+    let hasInitializedToCursor = dotPositionRef.current !== null;
+
+    const stiffness = 0.08; // lower stiffness to reduce oscillation
+    const damping = 0.9;    // higher damping for less bounce
+
+    const setTransform = (x: number, y: number) => {
+      dot.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+    };
+
+    // No nav gating; always follow cursor
+
+    const onMove = (e: MouseEvent) => {
+      const nextX = e.clientX;
+      const nextY = e.clientY;
+      if (!hasInitializedToCursor) {
+        // Snap to cursor on first move
+        posX = nextX;
+        posY = nextY;
+        targetX = nextX;
+        targetY = nextY;
+        hasInitializedToCursor = true;
+        dotPositionRef.current = { x: nextX, y: nextY };
+        setTransform(posX, posY);
+        return;
+      }
+      // Always follow cursor with smooth interpolation
+      targetX = nextX;
+      targetY = nextY;
+    };
+
+    const animate = () => {
+      const forceX = (targetX - posX) * stiffness;
+      const forceY = (targetY - posY) * stiffness;
+
+      velX = (velX + forceX) * damping;
+      velY = (velY + forceY) * damping;
+
+      
+
+      posX += velX;
+      posY += velY;
+
+      // Save position to ref to persist across re-renders
+      dotPositionRef.current = { x: posX, y: posY };
+      setTransform(posX, posY);
+      animationFrameId = requestAnimationFrame(animate);
+    };
+
+    setTransform(posX, posY);
+    animate();
+
+    window.addEventListener("mousemove", onMove);
+
+    return () => {
+      window.removeEventListener("mousemove", onMove);
+      cancelAnimationFrame(animationFrameId);
+    };
+  }, []);
   return (
     <Section
       className={cn(
@@ -31,10 +121,25 @@ export default function Hero({
       )}
     >
       {/* Purple Glow Background */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(147,51,234,0.25)_0%,rgba(0,0,0,1)_85%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(147,51,234,0.35)_0%,rgba(0,0,0,1)_85%)]" />
 
-      <div className="relative max-w-container mx-auto flex flex-col gap-12 pt-16 sm:gap-24">
-        <div className="flex flex-col items-center gap-6 text-center sm:gap-12">
+      <div ref={containerRef} className="relative max-w-container mx-auto flex flex-col gap-12 pt-16 sm:gap-24">
+        {/* Interactive glowing dot (physics-based) */}
+        <div
+          ref={dotRef}
+          className="pointer-events-none fixed z-[9999] -translate-x-1/2 -translate-y-1/2"
+          style={{ left: 0, top: 0 }}
+        >
+          <div className="relative">
+            <div className="absolute -inset-16 rounded-full bg-gradient-to-r from-purple-500/45 via-purple-600/35 to-purple-500/45 blur-[72px] animate-pulse" />
+            <div className="absolute -inset-10 rounded-full bg-gradient-to-r from-purple-500/60 via-purple-500/40 to-purple-500/60 blur-3xl" />
+            <div className="absolute -inset-6 rounded-full bg-gradient-to-r from-purple-400/70 via-purple-500/50 to-purple-400/70 blur-2xl" />
+            <div className="relative h-3 w-3 rounded-full bg-white shadow-[0_0_55px_20px_rgba(147,51,234,0.7)]" />
+          </div>
+        </div>
+        <div className="flex flex-col items-center gap-6 text-center sm:gap-12 relative">
+          {/* Stronger purple glow behind title */}
+          <div className="pointer-events-none absolute z-0 left-1/2 top-6 -translate-x-1/2 h-56 w-[70%] bg-[radial-gradient(ellipse_at_center,rgba(147,51,234,0.35)_0%,rgba(59,7,100,0.1)_55%,transparent_80%)] blur-2xl opacity-90" />
           <h1 className="animate-appear bg-gradient-to-r from-purple-400 to-purple-600 bg-clip-text text-transparent relative z-10 text-4xl font-bold drop-shadow-2xl sm:text-6xl md:text-8xl">
             {title}
           </h1>
@@ -45,7 +150,8 @@ export default function Hero({
 
           {/* Start Learning Free Button */}
           <div className="animate-appear relative z-10 opacity-0 delay-300">
-            <a 
+            <a
+              ref={buttonRef}
               href="/general"
               className="relative group px-6 py-3 rounded-full font-semibold text-white transition-all duration-300 hover:scale-105 active:scale-95 overflow-hidden inline-block"
             >
@@ -82,8 +188,22 @@ export default function Hero({
                   className="relative w-full rounded-2xl overflow-hidden shadow-2xl border border-white/10"
                   style={{ aspectRatio: '16/9' }}
                 >
+                  {/* Transparent overlay to ensure cursor tracking above iframe */}
+                  <div
+                    className="absolute inset-0 z-[70] bg-transparent"
+                    onClick={() => {
+                      const win = iframeRef.current?.contentWindow;
+                      if (win) {
+                        win.postMessage(
+                          JSON.stringify({ event: "command", func: "playVideo", args: [] }),
+                          "*",
+                        );
+                      }
+                    }}
+                  />
                   <iframe
-                    src="https://www.youtube-nocookie.com/embed/uU2eMfCStBs?controls=1&rel=0&modestbranding=1&playsinline=1"
+                    ref={iframeRef}
+                    src="https://www.youtube-nocookie.com/embed/uU2eMfCStBs?controls=1&rel=0&modestbranding=1&playsinline=1&enablejsapi=1"
                     title="Refrax Platform Demo"
                     className="w-full h-full rounded-2xl"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"

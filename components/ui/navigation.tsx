@@ -148,7 +148,7 @@ function NavigationComponent({
           className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-300 hover:text-white transition-colors"
         >
           <Calculator className="w-4 h-4" />
-          Modeling Tools
+          Math Tools
         </button>
         {openDropdown === 'modeling' && (
           <div className="absolute top-full left-0 mt-1 w-[500px] bg-gray-900 border border-gray-700 rounded-lg shadow-lg z-50">
