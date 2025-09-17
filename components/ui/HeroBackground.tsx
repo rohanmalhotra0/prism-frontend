@@ -43,7 +43,8 @@ export const HeroBackground: React.FC<HeroBackgroundProps> = ({
     },
     particles: {
       number: {
-        value: 80,
+        value: 240,
+        density: { enable: true }, // maintain visual density across screen sizes
       },
       color: {
         value: "#ffffff",
@@ -51,22 +52,22 @@ export const HeroBackground: React.FC<HeroBackgroundProps> = ({
       links: {
         enable: true,
         color: "#ffffff",
-        distance: 150,
-        opacity: 0.4,
-        width: 1,
+        distance: 160,
+        opacity: 0.55,
+        width: 1.2,
       },
       move: {
         enable: true,
-        speed: 0.5,
+        speed: 0.8,
       },
       opacity: {
-        value: 0.8,
+        value: 0.9,
       },
       shape: {
         type: "circle",
       },
       size: {
-        value: { min: 1, max: 3 },
+        value: { min: 1.5, max: 3.5 },
       },
     },
     interactivity: {
@@ -78,7 +79,8 @@ export const HeroBackground: React.FC<HeroBackgroundProps> = ({
       },
       modes: {
         repulse: {
-          distance: 100,
+          distance: 140,
+          duration: 0.3,
         },
       },
     },
