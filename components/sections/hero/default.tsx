@@ -193,7 +193,7 @@ export default function Hero({
                 >
                   <iframe
                     ref={iframeRef}
-                    src="https://www.youtube.com/watch?v=J7e7Fx0Nu2A"
+                    src="https://www.youtube.com/embed/J7e7Fx0Nu2A"
                     title="Refrax Platform Demo"
                     className="w-full h-full rounded-2xl"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
