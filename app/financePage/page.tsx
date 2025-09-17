@@ -7,16 +7,20 @@ import ThreeDChartSettingsPanel from "./components/ThreeDChartSettingsPanel";
 import FinancePlot from "./components/plot";
 import InfoChart from "./components/infoChart";
 import ThreeStockChart from "./components/threeD";
+import HeroBackground from "@/components/ui/HeroBackground";
 
 export default function FinanceModelsPage() {
   const [settings, setSettings] = useState<any>(null);
   const [is3DView, setIs3DView] = useState(false);
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-gray-950 via-gray-900 to-black text-white">
+    <main className="min-h-screen bg-gradient-to-b from-gray-950 via-gray-900 to-black text-white relative">
+      {/* Particle background */}
+      <HeroBackground position="fixed" backgroundColor="transparent" className="z-0" blendModeClassName="mix-blend-screen" />
+      
       <Navbar />
 
-      <div className="container mx-auto py-12 space-y-12">
+      <div className="container mx-auto py-12 space-y-12 relative z-10">
         <h1 className="text-4xl font-extrabold tracking-tight mb-6">
           Stock Modeling Dashboard
         </h1>

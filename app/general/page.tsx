@@ -5,6 +5,7 @@ import Navbar from "@/components/sections/navbar/default";
 import MathVisualizer from "./components/MathVisualizer";
 import DatasetLab from "./components/DatasetLab";
 import MLToolkit from "./components/MLToolkit";
+import HeroBackground from "@/components/ui/HeroBackground";
 
 export default function ModelingSandbox() {
   const [activeMode, setActiveMode] = useState<"equations" | "datasets" | "ml">("equations");
@@ -12,12 +13,12 @@ export default function ModelingSandbox() {
 
   return (
     <div className="relative min-h-screen bg-black overflow-hidden">
-      {/* Animated background elements */}
-      <div className="fixed inset-0">
-        <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-black to-slate-900"></div>
-        <div className="absolute top-0 -left-4 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse"></div>
-        <div className="absolute top-0 -right-4 w-72 h-72 bg-blue-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse animation-delay-2000"></div>
-        <div className="absolute -bottom-8 left-20 w-72 h-72 bg-green-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse animation-delay-4000"></div>
+      {/* Particle background */}
+      <HeroBackground position="fixed" backgroundColor="transparent" className="z-0" blendModeClassName="mix-blend-screen" />
+      
+      {/* Background gradient */}
+      <div className="fixed inset-0 z-5">
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-900/30 via-black/20 to-slate-900/30"></div>
       </div>
 
       {/* Main content */}

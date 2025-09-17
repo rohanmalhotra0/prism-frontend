@@ -4,6 +4,7 @@ import Navbar from "@/components/sections/navbar/default";
 import Footer from "@/components/sections/footer/default";
 import { Button } from "@/components/ui/button";
 import HeroBackground from "@/components/ui/HeroBackground";
+import { FileText } from "lucide-react";
 
 interface ResearchPaper {
   id: number;
@@ -81,7 +82,7 @@ export default function ResearchPage() {
                   style={{ animationDelay: `${index * 0.2}s` }}
                 >
                   {/* Card container */}
-                  <div className="relative bg-gradient-to-br from-gray-900/50 via-gray-800/30 to-gray-900/50 backdrop-blur-xl rounded-3xl border border-white/10 overflow-hidden transition-all duration-700 hover:scale-[1.02] hover:border-white/20 hover:shadow-2xl hover:shadow-purple-500/20">
+                  <div className="relative bg-white/2 backdrop-blur-xl rounded-3xl border border-white/5 overflow-hidden transition-all duration-700 hover:scale-[1.02] hover:border-white/10 hover:shadow-2xl hover:shadow-purple-500/20">
                     {/* Top accent line */}
                     <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500"></div>
                     
@@ -91,7 +92,7 @@ export default function ResearchPage() {
                       <div className="lg:w-2/5 relative overflow-hidden">
                         <div className="aspect-[4/3] relative group-hover:shadow-2xl transition-all duration-700">
                           {/* PDF Preview */}
-                          <div className="w-full h-full bg-gradient-to-br from-gray-800 via-gray-700 to-gray-800 flex items-center justify-center relative overflow-hidden">
+                          <div className="w-full h-full bg-white/2 flex items-center justify-center relative overflow-hidden">
                             <iframe
                               src={`${paper.pdfUrl}#toolbar=0&navpanes=0&scrollbar=0&view=FitH`}
                               className="w-full h-full border-0"
@@ -107,11 +108,13 @@ export default function ResearchPage() {
                             
                             {/* Fallback placeholder */}
                             <div 
-                              className="pdf-fallback absolute inset-0 bg-gradient-to-br from-gray-800 via-gray-700 to-gray-800 flex items-center justify-center hidden"
+                              className="pdf-fallback absolute inset-0 bg-white/2 flex items-center justify-center hidden"
                               data-paper-id={paper.id}
                             >
                               <div className="text-center">
-                                <div className="text-6xl mb-4 animate-pulse">📄</div>
+                                <div className="mb-4 animate-pulse">
+                                  <FileText className="w-16 h-16 text-gray-400 mx-auto" />
+                                </div>
                                 <div className="text-gray-400">PDF Preview</div>
                                 <div className="text-gray-500 text-sm mt-2">Click to view full paper</div>
                               </div>
@@ -179,7 +182,7 @@ export default function ResearchPage() {
                             className="group/btn relative overflow-hidden rounded-full bg-gradient-to-r from-blue-600 to-purple-600 px-8 py-4 text-white font-semibold shadow-lg transition-all duration-300 hover:from-blue-500 hover:to-purple-500 hover:shadow-xl hover:shadow-blue-500/25 hover:scale-105 focus:ring-4 focus:ring-blue-400/30 focus:outline-none active:scale-95"
                           >
                             <a href={paper.pdfUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
-                              <span className="text-lg">📄</span>
+                              <FileText className="w-5 h-5" />
                               View Full Paper
                             </a>
                           </Button>
