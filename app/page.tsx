@@ -9,15 +9,19 @@ import { ChartAreaInteractive } from "@/components/ui/ChartAreaInteractive";
 import { Mockup, MockupFrame } from "../components/ui/mockup";
 import Glow from "../components/ui/glow";
 import { Section } from "../components/ui/section";
+import HeroBackground from "@/components/ui/HeroBackground";
 
 export default function Home() {
   return (
-    <main>
-      <Navbar />
-      <Hero />
+    <main className="relative bg-transparent">
+      {/* Full-page particles ABOVE section backgrounds, but below content */}
+      <HeroBackground position="fixed" backgroundColor="rgba(10,10,10,1)" className="z-10" blendModeClassName="mix-blend-screen" />
+      <div className="relative z-20">
+        <Navbar />
+        <Hero />
       
       {/* Interactive Chart Section */}
-      <Section className="relative overflow-hidden pb-0 sm:pb-0 md:pb-0 bg-black">
+      <Section className="relative overflow-hidden pb-0 sm:pb-0 md:pb-0 bg-transparent">
         <div className="relative max-w-container mx-auto flex flex-col gap-12 pt-16 sm:gap-24">
           <div className="relative w-full pt-12">
             <MockupFrame
@@ -41,11 +45,28 @@ export default function Home() {
         </div>
       </Section>
       
-      <Items />
-      {/* <Stats /> */}
-      <FAQ />
-      <CTA />
-      <Footer />
+      <section className="relative">
+        <div className="relative z-10">
+          <Items />
+        </div>
+      </section>
+        {/* <Stats /> */}
+      <section className="relative">
+        <div className="relative z-10">
+          <FAQ />
+        </div>
+      </section>
+      <section className="relative">
+        <div className="relative z-10">
+          <CTA />
+        </div>
+      </section>
+      <section className="relative">
+        <div className="relative z-10">
+          <Footer />
+        </div>
+      </section>
+      </div>
     </main>
   );
 }

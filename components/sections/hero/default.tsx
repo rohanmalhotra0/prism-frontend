@@ -7,6 +7,7 @@ import Glow from "../../ui/glow";
 import { Mockup, MockupFrame } from "../../ui/mockup";
 import Screenshot from "../../ui/screenshot";
 import { Section } from "../../ui/section";
+import HeroBackground from "@/components/ui/HeroBackground";
 
 import { ChartAreaInteractive } from "@/components/ui/ChartAreaInteractive"
 
@@ -116,12 +117,12 @@ export default function Hero({
   return (
     <Section
       className={cn(
-        "relative overflow-hidden pb-0 sm:pb-0 md:pb-0 bg-black",
+        "relative overflow-hidden pb-0 sm:pb-0 md:pb-0 bg-transparent",
         className,
       )}
     >
       {/* Purple Glow Background */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(147,51,234,0.35)_0%,rgba(0,0,0,1)_85%)]" />
+      <div className="absolute inset-0 z-0 bg-[radial-gradient(ellipse_at_center,rgba(147,51,234,0.15)_0%,rgba(0,0,0,0.3)_85%)]" />
 
       <div ref={containerRef} className="relative max-w-container mx-auto flex flex-col gap-12 pt-16 sm:gap-24">
         {/* Interactive glowing dot (physics-based) */}
@@ -188,19 +189,6 @@ export default function Hero({
                   className="relative w-full rounded-2xl overflow-hidden shadow-2xl border border-white/10"
                   style={{ aspectRatio: '16/9' }}
                 >
-                  {/* Transparent overlay to ensure cursor tracking above iframe */}
-                  <div
-                    className="absolute inset-0 z-[70] bg-transparent"
-                    onClick={() => {
-                      const win = iframeRef.current?.contentWindow;
-                      if (win) {
-                        win.postMessage(
-                          JSON.stringify({ event: "command", func: "playVideo", args: [] }),
-                          "*",
-                        );
-                      }
-                    }}
-                  />
                   <iframe
                     ref={iframeRef}
                     src="https://www.youtube-nocookie.com/embed/uU2eMfCStBs?controls=1&rel=0&modestbranding=1&playsinline=1&enablejsapi=1"
