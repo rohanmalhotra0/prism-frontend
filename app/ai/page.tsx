@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import Navbar from "@/components/sections/navbar/default";
 import { SendHorizonal, Bot, User, Loader2 } from "lucide-react";
+import HeroBackground from "@/components/ui/HeroBackground";
 
 interface Message {
   role: "user" | "assistant";
@@ -129,8 +130,11 @@ export default function AIPage() {
 
   return (
     <div className="min-h-screen bg-black text-white flex flex-col">
+      {/* Particle background */}
+      <HeroBackground position="fixed" backgroundColor="rgba(0,0,0,1)" className="z-0" blendModeClassName="mix-blend-screen" />
+      
       {/* Background gradient */}
-      <div className="fixed inset-0 bg-gradient-to-br from-purple-900/20 via-blue-900/20 to-indigo-900/20 pointer-events-none"></div>
+      <div className="fixed inset-0 bg-gradient-to-br from-purple-900/20 via-blue-900/20 to-indigo-900/20 pointer-events-none z-5"></div>
       
       {/* Navbar */}
       <Navbar />

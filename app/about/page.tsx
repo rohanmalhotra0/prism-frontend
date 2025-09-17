@@ -3,6 +3,7 @@
 import Navbar from "@/components/sections/navbar/default";
 import Footer from "@/components/sections/footer/default";
 import { Button } from "@/components/ui/button";
+import HeroBackground from "@/components/ui/HeroBackground";
 
 // GitHub Icon Component
 const GitHubIcon = ({ className = "w-5 h-5" }: { className?: string }) => (
@@ -28,8 +29,11 @@ const GlobeIcon = ({ className = "w-5 h-5" }: { className?: string }) => (
 export default function AboutPage() {
   return (
     <div className="min-h-screen bg-black">
+      {/* Particle background */}
+      <HeroBackground position="fixed" backgroundColor="rgba(0,0,0,1)" className="z-0" blendModeClassName="mix-blend-screen" />
+      
       {/* Background gradient */}
-      <div className="fixed inset-0 bg-gradient-to-br from-purple-900/20 via-blue-900/20 to-indigo-900/20 pointer-events-none"></div>
+      <div className="fixed inset-0 bg-gradient-to-br from-purple-900/20 via-blue-900/20 to-indigo-900/20 pointer-events-none z-5"></div>
       
       {/* Navbar */}
       <Navbar />

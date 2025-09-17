@@ -3,6 +3,7 @@
 import Navbar from "@/components/sections/navbar/default";
 import Footer from "@/components/sections/footer/default";
 import { Button } from "@/components/ui/button";
+import HeroBackground from "@/components/ui/HeroBackground";
 
 interface ResearchPaper {
   id: number;
@@ -43,12 +44,12 @@ export default function ResearchPage() {
 
   return (
     <div className="relative min-h-screen bg-black overflow-hidden">
-      {/* Animated background elements */}
-      <div className="fixed inset-0">
-        <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-black to-slate-900"></div>
-        <div className="absolute top-0 -left-4 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob"></div>
-        <div className="absolute top-0 -right-4 w-72 h-72 bg-yellow-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-2000"></div>
-        <div className="absolute -bottom-8 left-20 w-72 h-72 bg-pink-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-4000"></div>
+      {/* Particle background */}
+      <HeroBackground position="fixed" backgroundColor="transparent" className="z-0" blendModeClassName="mix-blend-screen" />
+      
+      {/* Background gradient */}
+      <div className="fixed inset-0 z-5">
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-900/30 via-black/20 to-slate-900/30"></div>
       </div>
 
       {/* Main content */}
@@ -219,32 +220,6 @@ export default function ResearchPage() {
       {/* Footer */}
       <Footer />
 
-      {/* Custom CSS for animations */}
-      <style jsx>{`
-        @keyframes blob {
-          0% {
-            transform: translate(0px, 0px) scale(1);
-          }
-          33% {
-            transform: translate(30px, -50px) scale(1.1);
-          }
-          66% {
-            transform: translate(-20px, 20px) scale(0.9);
-          }
-          100% {
-            transform: translate(0px, 0px) scale(1);
-          }
-        }
-        .animate-blob {
-          animation: blob 7s infinite;
-        }
-        .animation-delay-2000 {
-          animation-delay: 2s;
-        }
-        .animation-delay-4000 {
-          animation-delay: 4s;
-        }
-      `}</style>
     </div>
   );
 }
