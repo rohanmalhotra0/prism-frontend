@@ -7,6 +7,7 @@ function Footer({ className, ...props }: React.ComponentProps<"div">) {
     <div
       data-slot="footer"
       className={cn("bg-transparent text-foreground pt-12 pb-4", className)}
+      style={{ backgroundColor: 'transparent' }}
       {...props}
     />
   );

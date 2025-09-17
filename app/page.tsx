@@ -7,7 +7,6 @@ import Navbar from "../components/sections/navbar/default";
 import Stats from "../components/sections/stats/default";
 import { ChartAreaInteractive } from "@/components/ui/ChartAreaInteractive";
 import { Mockup, MockupFrame } from "../components/ui/mockup";
-import Glow from "../components/ui/glow";
 import { Section } from "../components/ui/section";
 import HeroBackground from "@/components/ui/HeroBackground";
 
@@ -42,11 +41,6 @@ export default function Home() {
                 </div>
               </Mockup>
             </MockupFrame>
-            <Glow
-              variant="top"
-            color="purple"
-              className="animate-appear-zoom opacity-0 delay-1000"
-            />
           </div>
         </div>
       </Section>
@@ -68,7 +62,7 @@ export default function Home() {
         </div>
       </section>
       <section className="relative bg-transparent">
-        <div className="relative z-10">
+        <div className="relative z-10 bg-transparent">
           <Footer />
         </div>
       </section>

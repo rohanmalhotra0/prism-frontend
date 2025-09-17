@@ -63,8 +63,8 @@ export default function FooterSection({
   className,
 }: FooterProps) {
   return (
-    <footer className={cn("bg-transparent w-full px-4", className)}>
-      <div className="max-w-container mx-auto">
+    <footer className={cn("bg-transparent w-full px-4", className)} style={{ backgroundColor: 'transparent' }}>
+      <div className="max-w-container mx-auto bg-transparent">
         <Footer>
           <FooterContent>
             <FooterColumn className="col-span-2 sm:col-span-3 md:col-span-1">
