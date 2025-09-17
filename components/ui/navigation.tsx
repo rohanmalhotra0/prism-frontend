@@ -151,7 +151,7 @@ function NavigationComponent({
           Math Tools
         </button>
         {openDropdown === 'modeling' && (
-          <div className="absolute top-full left-0 mt-1 w-[500px] bg-gray-900 border border-gray-700 rounded-lg shadow-lg z-50">
+          <div className="absolute top-full left-0 mt-1 w-[500px] bg-transparent backdrop-blur-sm border border-white/10 rounded-lg shadow-lg z-50">
             <ul className="grid gap-3 p-4 md:grid-cols-2">
               {components.map((component) => (
                 <ListItem
@@ -178,7 +178,7 @@ function NavigationComponent({
           Learn
         </button>
         {openDropdown === 'learn' && (
-          <div className="absolute top-full left-0 mt-1 w-[400px] bg-gray-900 border border-gray-700 rounded-lg shadow-lg z-50">
+          <div className="absolute top-full left-0 mt-1 w-[400px] bg-transparent backdrop-blur-sm border border-white/10 rounded-lg shadow-lg z-50">
             <ul className="grid gap-3 p-4">
               {community.map((item) => (
                 <ListItem key={item.title} href={item.href} title={item.title} icon={item.icon}>
@@ -200,7 +200,7 @@ function NavigationComponent({
           Docs
         </button>
         {openDropdown === 'docs' && (
-          <div className="absolute top-full left-0 mt-1 w-[400px] bg-gray-900 border border-gray-700 rounded-lg shadow-lg z-50">
+          <div className="absolute top-full left-0 mt-1 w-[400px] bg-transparent backdrop-blur-sm border border-white/10 rounded-lg shadow-lg z-50">
             <ul className="grid gap-3 p-4">
               <ListItem href="/about" title="About Us" icon={User}>
                 Learn about the Refrax team.
@@ -234,7 +234,7 @@ function ListItem({
       <Link
         href={props.href || '#'}
         className={cn(
-          "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors focus:bg-gray-800 focus:text-white hover:bg-gray-800/50",
+          "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors focus:bg-white/5 focus:text-white hover:bg-white/5",
           className
         )}
         onClick={() => {
