@@ -10,7 +10,6 @@ import {
   BookOpen, 
   Code, 
   Server, 
-  Layers,
   ArrowRight,
   CheckCircle,
   FileText,
@@ -25,7 +24,6 @@ export default function DocumentationPage() {
     { id: "overview", title: "Overview", icon: BookOpen, description: "Platform introduction and features" },
     { id: "frontend", title: "Frontend", icon: Code, description: "React, Next.js, and UI components" },
     { id: "backend", title: "Backend", icon: Server, description: "API routes and Python services" },
-    { id: "particles", title: "Particles (HeroBackground)", icon: Layers, description: "Full-page particle background" },
   ];
 
   return (
@@ -167,7 +165,7 @@ export default function DocumentationPage() {
 
                       <div className="bg-white/5 rounded-xl p-6 border border-white/10">
                         <div className="flex items-center gap-3 mb-6">
-                          <Layers className="w-6 h-6 text-purple-400" />
+                          <Code className="w-6 h-6 text-purple-400" />
                           <h3 className="text-xl font-semibold text-white">Technology Stack</h3>
                         </div>
                         <div className="grid md:grid-cols-3 gap-6">
@@ -258,7 +256,7 @@ export default function DocumentationPage() {
                           </div>
                           <div className="bg-gradient-to-br from-purple-500/10 to-pink-500/10 rounded-xl p-4 border border-purple-500/20">
                             <div className="flex items-center gap-2 mb-4">
-                              <Layers className="w-5 h-5 text-purple-400" />
+                              <Server className="w-5 h-5 text-purple-400" />
                               <h4 className="text-lg font-semibold text-white">Infrastructure</h4>
                             </div>
                             <ul className="text-gray-300 space-y-2 text-sm">
@@ -476,49 +474,6 @@ export default function DocumentationPage() {
                   </div>
                 )}
 
-                {activeSection === "particles" && (
-                  <div>
-                    <h2 className="text-3xl font-bold text-white mb-8">Particle Background (HeroBackground)</h2>
-                    <div className="space-y-6">
-                      <div className="bg-white/5 rounded-xl p-6 border border-white/10">
-                        <h3 className="text-2xl font-semibold text-white mb-4">Install</h3>
-                        <pre className="bg-black/50 text-gray-200 p-4 rounded-xl overflow-x-auto"><code>npm install @tsparticles/react @tsparticles/slim</code></pre>
-                      </div>
-
-                      <div className="bg-white/5 rounded-xl p-6 border border-white/10">
-                        <h3 className="text-2xl font-semibold text-white mb-4">Usage (Global)</h3>
-                        <pre className="bg-black/50 text-gray-200 p-4 rounded-xl overflow-x-auto"><code>{`import HeroBackground from "@/components/ui/HeroBackground";
-
-export default function Home() {
-  return (
-    <main className="relative bg-transparent">
-      <HeroBackground position="fixed" backgroundColor="#0a0a0a" className="z-0 mix-blend-screen" />
-      <div className="relative z-20">{/* content */}</div>
-    </main>
-  );
-}`}</code></pre>
-                      </div>
-
-                      <div className="bg-white/5 rounded-xl p-6 border border-white/10">
-                        <h3 className="text-2xl font-semibold text-white mb-4">Usage (Section)</h3>
-                        <pre className="bg-black/50 text-gray-200 p-4 rounded-xl overflow-x-auto"><code>{`import HeroBackground from "@/components/ui/HeroBackground";
-
-<div className="absolute inset-0 z-[1] pointer-events-none">
-  <HeroBackground position="absolute" backgroundColor="transparent" />
-</div>`}</code></pre>
-                      </div>
-
-                      <div className="bg-white/5 rounded-xl p-6 border border-white/10">
-                        <h3 className="text-2xl font-semibold text-white mb-4">Notes</h3>
-                        <ul className="text-gray-300 space-y-2 text-sm list-disc pl-5">
-                          <li>Uses <code>@tsparticles/react</code> with <code>@tsparticles/slim</code> for performance.</li>
-                          <li>Keep particles behind content but above decorative glows via z-index.</li>
-                          <li>If you see <code>engine.checkVersion</code> errors, ensure packages are updated and not using <code>react-tsparticles</code>.</li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                )}
 
                 {activeSection === "backend" && (
                   <div>
