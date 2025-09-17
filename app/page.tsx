@@ -13,10 +13,15 @@ import HeroBackground from "@/components/ui/HeroBackground";
 
 export default function Home() {
   return (
-    <main className="relative bg-transparent">
-      {/* Full-page particles ABOVE section backgrounds, but below content */}
-      <HeroBackground position="fixed" backgroundColor="rgba(10,10,10,1)" className="z-10" blendModeClassName="mix-blend-screen" />
-      <div className="relative z-20">
+    <main className="relative bg-black">
+      {/* Particle background */}
+      <HeroBackground position="fixed" backgroundColor="transparent" className="z-0" blendModeClassName="mix-blend-screen" />
+      
+      {/* Background gradient */}
+      <div className="fixed inset-0 bg-gradient-to-br from-purple-900/20 via-blue-900/20 to-indigo-900/20 pointer-events-none z-5"></div>
+      
+      {/* Main content */}
+      <div className="relative z-10">
         <Navbar />
         <Hero />
       
@@ -46,23 +51,23 @@ export default function Home() {
         </div>
       </Section>
       
-      <section className="relative">
+      <section className="relative bg-transparent">
         <div className="relative z-10">
           <Items />
         </div>
       </section>
         {/* <Stats /> */}
-      <section className="relative">
+      <section className="relative bg-transparent">
         <div className="relative z-10">
           <FAQ />
         </div>
       </section>
-      <section className="relative">
+      <section className="relative bg-transparent">
         <div className="relative z-10">
           <CTA />
         </div>
       </section>
-      <section className="relative">
+      <section className="relative bg-transparent">
         <div className="relative z-10">
           <Footer />
         </div>
