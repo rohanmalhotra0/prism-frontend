@@ -327,7 +327,7 @@ def portfolio_hedge(portfolio, hedge_instruments):
             <h1 className="text-6xl lg:text-7xl font-black mb-8 bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text text-transparent">
               Options & Derivatives
             </h1>
-            <p className="text-xl lg:text-2xl text-gray-400 max-w-4xl mx-auto leading-relaxed mb-12">
+            <p className="text-xl lg:text-2xl text-gray-200 max-w-4xl mx-auto leading-relaxed mb-12">
               Master the mathematics and strategies behind options pricing, risk management, and derivatives trading
             </p>
           </div>
@@ -343,22 +343,22 @@ def portfolio_hedge(portfolio, hedge_instruments):
                   <div className="text-4xl">{topic.icon}</div>
                   <div className="flex-1">
                     <h3 className="text-2xl font-bold text-white mb-3">{topic.title}</h3>
-                    <p className="text-gray-300 mb-6 text-lg">{topic.description}</p>
+                    <p className="text-gray-200 mb-6 text-lg">{topic.description}</p>
                     
                     <div className="grid md:grid-cols-2 gap-6">
                       <div>
                         <h4 className="text-lg font-semibold text-blue-400 mb-3">How It Works</h4>
-                        <p className="text-gray-300 text-sm mb-4">{topic.details.howItWorks}</p>
+                        <p className="text-gray-200 text-sm mb-4">{topic.details.howItWorks}</p>
                         
                         <h4 className="text-lg font-semibold text-green-400 mb-3">Key Components</h4>
-                        <ul className="text-gray-300 text-sm space-y-1">
+                        <ul className="text-gray-200 text-sm space-y-1">
                           {topic.details.keyComponents.map((component, idx) => (
                             <li key={idx}>• {component}</li>
                           ))}
                         </ul>
                         
                         <h4 className="text-lg font-semibold text-purple-400 mb-3">Financial Use Cases</h4>
-                        <ul className="text-gray-300 text-sm space-y-1">
+                        <ul className="text-gray-200 text-sm space-y-1">
                           {topic.details.useCases.map((useCase, idx) => (
                             <li key={idx}>• {useCase}</li>
                           ))}
@@ -375,7 +375,7 @@ def portfolio_hedge(portfolio, hedge_instruments):
                                 className={`flex-1 px-4 py-3 text-sm font-medium transition-colors ${
                                   activeTabs[topic.id] === 'formulas' || (!activeTabs[topic.id] && topic.details.formulas)
                                     ? 'bg-orange-500/20 text-orange-400 border-b-2 border-orange-400'
-                                    : 'text-gray-400 hover:text-gray-300 hover:bg-gray-800/50'
+                                    : 'text-gray-200 hover:text-gray-200 hover:bg-gray-800/50'
                                 }`}
                               >
                                 <div className="flex items-center justify-center gap-2">
@@ -389,7 +389,7 @@ def portfolio_hedge(portfolio, hedge_instruments):
                               className={`flex-1 px-4 py-3 text-sm font-medium transition-colors ${
                                 activeTabs[topic.id] === 'code' || (!activeTabs[topic.id] && !topic.details.formulas)
                                   ? 'bg-yellow-500/20 text-yellow-400 border-b-2 border-yellow-400'
-                                  : 'text-gray-400 hover:text-gray-300 hover:bg-gray-800/50'
+                                  : 'text-gray-200 hover:text-gray-200 hover:bg-gray-800/50'
                               }`}
                             >
                               <div className="flex items-center justify-center gap-2">
@@ -405,7 +405,7 @@ def portfolio_hedge(portfolio, hedge_instruments):
                               <div className="space-y-6">
                                 {Object.entries(topic.details.formulas).map(([key, formula]) => (
                                   <div key={key} className="bg-gray-800/50 rounded-lg p-6 border border-gray-600">
-                                    <div className="text-gray-300 text-lg mb-4 font-semibold capitalize">
+                                    <div className="text-gray-200 text-lg mb-4 font-semibold capitalize">
                                       {key.replace(/_/g, ' ')}:
                                     </div>
                                     <div className="bg-gray-900/50 rounded-md p-4 border border-gray-700">
@@ -425,7 +425,7 @@ def portfolio_hedge(portfolio, hedge_instruments):
                                     <div className="w-3 h-3 bg-red-500 rounded-full"></div>
                                     <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
                                     <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                                    <span className="text-gray-300 text-sm ml-2 font-medium">Python</span>
+                                    <span className="text-gray-200 text-sm ml-2 font-medium">Python</span>
                                   </div>
                                 </div>
                                 <div className="p-6">
@@ -450,7 +450,7 @@ def portfolio_hedge(portfolio, hedge_instruments):
         <div id="applications" className="max-w-7xl mx-auto px-6 lg:px-8 pb-20">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold text-white mb-4">💼 Professional Applications</h2>
-            <p className="text-gray-300 text-lg max-w-3xl mx-auto">
+            <p className="text-gray-200 text-lg max-w-3xl mx-auto">
               Discover how options and derivatives are used across different areas of finance and trading.
             </p>
           </div>
@@ -459,7 +459,7 @@ def portfolio_hedge(portfolio, hedge_instruments):
             {applications.map((app, index) => (
               <div key={index} className="bg-white/2 backdrop-blur-sm rounded-2xl p-6 border border-white/5 hover:bg-white/10 transition-colors">
                 <h3 className="text-xl font-bold text-white mb-3">{app.title}</h3>
-                <p className="text-gray-300 mb-4">{app.description}</p>
+                <p className="text-gray-200 mb-4">{app.description}</p>
                 
                 <div className="mb-4">
                   <h4 className="text-sm font-semibold text-blue-400 mb-2">Common Tools</h4>
@@ -474,7 +474,7 @@ def portfolio_hedge(portfolio, hedge_instruments):
                 
                 <div className="bg-gray-900/30 rounded-lg p-3 border border-gray-700">
                   <h4 className="text-sm font-semibold text-green-400 mb-1">Example</h4>
-                  <p className="text-gray-300 text-sm">{app.example}</p>
+                  <p className="text-gray-200 text-sm">{app.example}</p>
                 </div>
               </div>
             ))}
@@ -489,22 +489,22 @@ def portfolio_hedge(portfolio, hedge_instruments):
               <div className="bg-white/2 rounded-xl p-4 border border-white/5 text-center">
                 <div className="text-2xl mb-2">1</div>
                 <h4 className="text-white font-semibold mb-2">Basics</h4>
-                <p className="text-gray-300 text-sm">Options terminology, payoffs</p>
+                <p className="text-gray-200 text-sm">Options terminology, payoffs</p>
               </div>
               <div className="bg-white/2 rounded-xl p-4 border border-white/5 text-center">
                 <div className="text-2xl mb-2">2</div>
                 <h4 className="text-white font-semibold mb-2">Pricing Models</h4>
-                <p className="text-gray-300 text-sm">Black-Scholes, Binomial</p>
+                <p className="text-gray-200 text-sm">Black-Scholes, Binomial</p>
               </div>
               <div className="bg-white/2 rounded-xl p-4 border border-white/5 text-center">
                 <div className="text-2xl mb-2">3</div>
                 <h4 className="text-white font-semibold mb-2">Greeks & Risk</h4>
-                <p className="text-gray-300 text-sm">Sensitivity analysis, hedging</p>
+                <p className="text-gray-200 text-sm">Sensitivity analysis, hedging</p>
               </div>
               <div className="bg-white/2 rounded-xl p-4 border border-white/5 text-center">
                 <div className="text-2xl mb-2">4</div>
                 <h4 className="text-white font-semibold mb-2">Advanced</h4>
-                <p className="text-gray-300 text-sm">Exotic options, strategies</p>
+                <p className="text-gray-200 text-sm">Exotic options, strategies</p>
               </div>
             </div>
           </div>
@@ -518,42 +518,42 @@ def portfolio_hedge(portfolio, hedge_instruments):
               <div className="bg-white/2 rounded-xl p-4 border border-white/5 text-center">
                 <div className="text-2xl mb-2">🐍</div>
                 <h4 className="text-white font-semibold mb-1">Python</h4>
-                <p className="text-gray-400 text-xs">Programming language</p>
+                <p className="text-gray-200 text-xs">Programming language</p>
               </div>
               <div className="bg-white/2 rounded-xl p-4 border border-white/5 text-center">
                 <div className="text-2xl mb-2">•</div>
                 <h4 className="text-white font-semibold mb-1">QuantLib</h4>
-                <p className="text-gray-400 text-xs">Quantitative finance library</p>
+                <p className="text-gray-200 text-xs">Quantitative finance library</p>
               </div>
               <div className="bg-white/2 rounded-xl p-4 border border-white/5 text-center">
                 <div className="text-2xl mb-2">🔢</div>
                 <h4 className="text-white font-semibold mb-1">SciPy</h4>
-                <p className="text-gray-400 text-xs">Scientific computing</p>
+                <p className="text-gray-200 text-xs">Scientific computing</p>
               </div>
               <div className="bg-white/2 rounded-xl p-4 border border-white/5 text-center">
                 <div className="text-2xl mb-2">•</div>
                 <h4 className="text-white font-semibold mb-1">Bloomberg</h4>
-                <p className="text-gray-400 text-xs">Market data & analytics</p>
+                <p className="text-gray-200 text-xs">Market data & analytics</p>
               </div>
               <div className="bg-white/2 rounded-xl p-4 border border-white/5 text-center">
                 <div className="text-2xl mb-2">💼</div>
                 <h4 className="text-white font-semibold mb-1">Refinitiv</h4>
-                <p className="text-gray-400 text-xs">Financial data platform</p>
+                <p className="text-gray-200 text-xs">Financial data platform</p>
               </div>
               <div className="bg-white/2 rounded-xl p-4 border border-white/5 text-center">
                 <div className="text-2xl mb-2">•</div>
                 <h4 className="text-white font-semibold mb-1">Derivatives Pro</h4>
-                <p className="text-gray-400 text-xs">Options pricing software</p>
+                <p className="text-gray-200 text-xs">Options pricing software</p>
               </div>
               <div className="bg-white/2 rounded-xl p-4 border border-white/5 text-center">
                 <div className="text-2xl mb-2">•</div>
                 <h4 className="text-white font-semibold mb-1">Excel</h4>
-                <p className="text-gray-400 text-xs">Spreadsheet modeling</p>
+                <p className="text-gray-200 text-xs">Spreadsheet modeling</p>
               </div>
               <div className="bg-white/2 rounded-xl p-4 border border-white/5 text-center">
                 <div className="text-2xl mb-2">⚡</div>
                 <h4 className="text-white font-semibold mb-1">C++</h4>
-                <p className="text-gray-400 text-xs">High-performance computing</p>
+                <p className="text-gray-200 text-xs">High-performance computing</p>
               </div>
             </div>
           </div>
@@ -562,7 +562,7 @@ def portfolio_hedge(portfolio, hedge_instruments):
         {/* Call to Action */}
         <div className="max-w-7xl mx-auto px-6 lg:px-8 pb-20 text-center">
           <h3 className="text-2xl font-bold text-white mb-4">Ready to Master Options & Derivatives?</h3>
-          <p className="text-gray-300 mb-6 max-w-2xl mx-auto">
+          <p className="text-gray-200 mb-6 max-w-2xl mx-auto">
             Build expertise in options pricing, risk management, and derivatives trading strategies used by professional traders and risk managers.
           </p>
           <div className="flex justify-center gap-4">
