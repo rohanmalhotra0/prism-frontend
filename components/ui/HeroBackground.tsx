@@ -43,7 +43,7 @@ export const HeroBackground: React.FC<HeroBackgroundProps> = ({
     },
     particles: {
       number: {
-        value: 240,
+        value: 360,
         density: { enable: true }, // maintain visual density across screen sizes
       },
       color: {
