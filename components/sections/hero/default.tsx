@@ -143,11 +143,11 @@ export default function Hero({
           <div className="absolute inset-0 -z-10">
             <div className="pointer-events-none absolute left-1/2 top-6 -translate-x-1/2 h-56 w-[70%] bg-[radial-gradient(ellipse_at_center,rgba(147,51,234,0.35)_0%,rgba(59,7,100,0.1)_55%,transparent_80%)] blur-2xl" />
           </div>
-          <h1 className="animate-appear bg-gradient-to-r from-purple-400 to-purple-600 bg-clip-text text-transparent relative z-10 text-4xl font-bold drop-shadow-2xl sm:text-6xl md:text-8xl">
+          <h1 className="animate-appear text-white relative z-10 text-4xl font-bold drop-shadow-2xl sm:text-6xl md:text-8xl">
             {title}
           </h1>
 
-          <p className="text-md animate-appear text-gray-400 relative z-10 max-w-[740px] font-medium opacity-0 delay-100 sm:text-xl">
+          <p className="text-md animate-appear text-white relative z-10 max-w-[740px] font-medium opacity-0 delay-100 sm:text-xl">
             {description}
           </p>
 
@@ -171,7 +171,7 @@ export default function Hero({
               <div className="absolute inset-0 rounded-full border border-white/20 group-hover:border-white/40 transition-colors duration-300"></div>
               
               {/* Text */}
-              <span className="relative z-10">Get Started</span>
+              <span className="relative z-10 text-white">Get Started</span>
             </a>
           </div>
         </div>
