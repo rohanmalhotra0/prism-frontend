@@ -64,7 +64,7 @@ export default function CTA({
         )}
       </div>
       <div className="absolute top-0 left-0 h-full w-full translate-y-[1rem] opacity-80 transition-all duration-500 ease-in-out group-hover:translate-y-[-2rem] group-hover:opacity-100">
-        <Glow variant="bottom" />
+        <Glow variant="bottom" color="purple" className="animate-appear-zoom opacity-0 delay-1000" />
       </div>
     </Section>
   );

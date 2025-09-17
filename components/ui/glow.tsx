@@ -18,12 +18,12 @@ const glowVariants = cva("absolute w-full", {
   },
 });
 
-type GlowColor = "white" | "purple";
+type GlowColor =  "purple" | "blue";
 
 function Glow({
   className,
   variant,
-  color = "white",
+  color = "blue",
   ...props
 }: React.ComponentProps<"div"> & VariantProps<typeof glowVariants> & { color?: GlowColor }) {
   return (

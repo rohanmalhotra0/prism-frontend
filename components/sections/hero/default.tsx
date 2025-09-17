@@ -204,6 +204,7 @@ export default function Hero({
           </MockupFrame>
           <Glow
             variant="top"
+            color="purple"
             className="animate-appear-zoom opacity-0 delay-1000"
           />
         </div>

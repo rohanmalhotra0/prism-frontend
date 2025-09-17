@@ -35,3 +35,57 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 # Refrax-frontend
+
+## Particle Background (HeroBackground)
+
+The project includes a reusable full-screen particle network background component built with `@tsparticles/react` and `@tsparticles/slim`.
+
+### Install
+
+```bash
+npm install @tsparticles/react @tsparticles/slim
+```
+
+### Component
+
+File: `components/ui/HeroBackground.tsx`
+
+Props:
+- `position`: "fixed" | "absolute" (default: "fixed")
+- `backgroundColor`: CSS color string (default: "#0a0a0a")
+- `className`: Tailwind classes for the wrapper
+
+### Usage (Global on Homepage)
+
+```tsx
+// app/page.tsx
+import HeroBackground from "@/components/ui/HeroBackground";
+
+export default function Home() {
+  return (
+    <main className="relative bg-transparent">
+      <HeroBackground position="fixed" backgroundColor="#0a0a0a" className="z-0 mix-blend-screen" />
+      <div className="relative z-20">
+        {/* content above particles */}
+      </div>
+    </main>
+  );
+}
+```
+
+### Usage (Inside a Section)
+
+```tsx
+// components/sections/hero/default.tsx
+import HeroBackground from "@/components/ui/HeroBackground";
+
+// ... inside JSX
+<div className="absolute inset-0 z-[1] pointer-events-none">
+  <HeroBackground position="absolute" backgroundColor="transparent" />
+<\/div>
+```
+
+### Troubleshooting
+- If you see `engine.checkVersion is not a function`, ensure you're using `@tsparticles/react` and `@tsparticles/slim` and not the deprecated `react-tsparticles`.
+- Particles hidden behind backgrounds: verify z-index stacking. Keep particles below content but above decorative glows.
+- Safari perf: keep particle count ~80–120, reduce link distance/width if needed.
