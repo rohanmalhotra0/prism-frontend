@@ -5,6 +5,7 @@ import Navbar from "@/components/sections/navbar/default";
 import Footer from "@/components/sections/footer/default";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import HeroBackground from "@/components/ui/HeroBackground";
 import 'katex/dist/katex.min.css';
 import { InlineMath, BlockMath } from 'react-katex';
 import { 
@@ -233,8 +234,11 @@ print(f"Mean CV Score: {scores.mean():.4f}")`
 
   return (
     <div className="min-h-screen bg-black">
+      {/* Particle background */}
+      <HeroBackground position="fixed" backgroundColor="transparent" className="z-0" blendModeClassName="mix-blend-screen" />
+      
       {/* Background gradient */}
-      <div className="fixed inset-0 bg-gradient-to-br from-purple-900/20 via-blue-900/20 to-indigo-900/20 pointer-events-none"></div>
+      <div className="fixed inset-0 bg-gradient-to-br from-purple-900/10 via-blue-900/10 to-indigo-900/10 pointer-events-none z-5"></div>
       
       {/* Main content */}
       <div className="relative z-10 min-h-screen">
@@ -258,29 +262,29 @@ print(f"Mean CV Score: {scores.mean():.4f}")`
 
           <div className="space-y-8">
             {mlTopics.map((topic, index) => (
-              <div key={index} className="bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10 hover:bg-white/10 transition-colors">
+              <div key={index} className="bg-white/2 backdrop-blur-sm rounded-2xl p-8 border border-white/5 hover:bg-white/10 transition-colors">
                 <div className="flex items-start gap-6">
                   <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl flex items-center justify-center flex-shrink-0">
                     <topic.icon className="w-8 h-8 text-white" />
                   </div>
                   <div className="flex-1">
                     <h3 className="text-2xl font-bold text-white mb-3">{topic.title}</h3>
-                    <p className="text-gray-300 mb-6 text-lg">{topic.description}</p>
+                    <p className="text-gray-400 mb-6 text-lg">{topic.description}</p>
                     
                     <div className="grid md:grid-cols-2 gap-6">
                       <div>
                         <h4 className="text-lg font-semibold text-blue-400 mb-3">How It Works</h4>
-                        <p className="text-gray-300 text-sm mb-4">{topic.details.howItWorks}</p>
+                        <p className="text-gray-400 text-sm mb-4">{topic.details.howItWorks}</p>
                         
                         <h4 className="text-lg font-semibold text-green-400 mb-3">Advantages</h4>
-                        <ul className="text-gray-300 text-sm space-y-1">
+                        <ul className="text-gray-400 text-sm space-y-1">
                           {topic.details.advantages.map((advantage, idx) => (
                             <li key={idx}>• {advantage}</li>
                           ))}
                         </ul>
                         
                         <h4 className="text-lg font-semibold text-purple-400 mb-3">Financial Use Cases</h4>
-                        <ul className="text-gray-300 text-sm space-y-1">
+                        <ul className="text-gray-400 text-sm space-y-1">
                           {topic.details.useCases.map((useCase, idx) => (
                             <li key={idx}>• {useCase}</li>
                           ))}
@@ -297,7 +301,7 @@ print(f"Mean CV Score: {scores.mean():.4f}")`
                                 className={`flex-1 px-4 py-3 text-sm font-medium transition-colors ${
                                   activeTabs[topic.id] === 'formulas' || (!activeTabs[topic.id] && topic.details.formulas)
                                     ? 'bg-orange-500/20 text-orange-400 border-b-2 border-orange-400'
-                                    : 'text-gray-400 hover:text-gray-300 hover:bg-gray-800/50'
+                                    : 'text-gray-400 hover:text-gray-400 hover:bg-gray-800/50'
                                 }`}
                               >
                                 <div className="flex items-center justify-center gap-2">
@@ -311,7 +315,7 @@ print(f"Mean CV Score: {scores.mean():.4f}")`
                               className={`flex-1 px-4 py-3 text-sm font-medium transition-colors ${
                                 activeTabs[topic.id] === 'code' || (!activeTabs[topic.id] && !topic.details.formulas)
                                   ? 'bg-yellow-500/20 text-yellow-400 border-b-2 border-yellow-400'
-                                  : 'text-gray-400 hover:text-gray-300 hover:bg-gray-800/50'
+                                  : 'text-gray-400 hover:text-gray-400 hover:bg-gray-800/50'
                               }`}
                             >
                               <div className="flex items-center justify-center gap-2">
@@ -327,7 +331,7 @@ print(f"Mean CV Score: {scores.mean():.4f}")`
                               <div className="space-y-6">
                                 {Object.entries(topic.details.formulas).map(([key, formula]) => (
                                   <div key={key} className="bg-gray-800/50 rounded-lg p-6 border border-gray-600">
-                                    <div className="text-gray-300 text-lg mb-4 font-semibold capitalize">
+                                    <div className="text-gray-400 text-lg mb-4 font-semibold capitalize">
                                       {key.replace(/_/g, ' ')}:
                                     </div>
                                     <div className="bg-gray-900/50 rounded-md p-4 border border-gray-700">
@@ -347,7 +351,7 @@ print(f"Mean CV Score: {scores.mean():.4f}")`
                                     <div className="w-3 h-3 bg-red-500 rounded-full"></div>
                                     <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
                                     <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                                    <span className="text-gray-300 text-sm ml-2 font-medium">Python</span>
+                                    <span className="text-gray-400 text-sm ml-2 font-medium">Python</span>
                                   </div>
                                 </div>
                                 <div className="p-6">
@@ -375,16 +379,16 @@ print(f"Mean CV Score: {scores.mean():.4f}")`
               <TrendingUp className="w-10 h-10 text-blue-400" />
               Financial Applications
             </h2>
-            <p className="text-gray-300 text-lg max-w-3xl mx-auto">
+            <p className="text-gray-400 text-lg max-w-3xl mx-auto">
               Discover how machine learning is transforming the financial industry across various domains.
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 gap-8">
             {applications.map((app, index) => (
-              <div key={index} className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 hover:bg-white/10 transition-colors">
+              <div key={index} className="bg-white/2 backdrop-blur-sm rounded-2xl p-6 border border-white/5 hover:bg-white/10 transition-colors">
                 <h3 className="text-xl font-bold text-white mb-3">{app.title}</h3>
-                <p className="text-gray-300 mb-4">{app.description}</p>
+                <p className="text-gray-400 mb-4">{app.description}</p>
                 
                 <div className="mb-4">
                   <h4 className="text-sm font-semibold text-blue-400 mb-2">Common Tools</h4>
@@ -399,7 +403,7 @@ print(f"Mean CV Score: {scores.mean():.4f}")`
                 
                 <div className="bg-gray-900/30 rounded-lg p-3 border border-gray-700">
                   <h4 className="text-sm font-semibold text-green-400 mb-1">Example</h4>
-                  <p className="text-gray-300 text-sm">{app.example}</p>
+                  <p className="text-gray-400 text-sm">{app.example}</p>
                 </div>
               </div>
             ))}
@@ -414,33 +418,33 @@ print(f"Mean CV Score: {scores.mean():.4f}")`
               Learning Path
             </h3>
             <div className="grid md:grid-cols-4 gap-6">
-              <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
+              <div className="bg-white/2 rounded-xl p-4 border border-white/5 text-center">
                 <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-teal-500 rounded-xl flex items-center justify-center mx-auto mb-3">
                   <BarChart3 className="w-6 h-6 text-white" />
                 </div>
                 <h4 className="text-white font-semibold mb-2">Foundation</h4>
-                <p className="text-gray-300 text-sm">Linear Regression, Basic Statistics</p>
+                <p className="text-gray-400 text-sm">Linear Regression, Basic Statistics</p>
               </div>
-              <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
+              <div className="bg-white/2 rounded-xl p-4 border border-white/5 text-center">
                 <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl flex items-center justify-center mx-auto mb-3">
                   <Brain className="w-6 h-6 text-white" />
                 </div>
                 <h4 className="text-white font-semibold mb-2">Supervised Learning</h4>
-                <p className="text-gray-300 text-sm">Random Forest, SVM, Neural Networks</p>
+                <p className="text-gray-400 text-sm">Random Forest, SVM, Neural Networks</p>
               </div>
-              <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
+              <div className="bg-white/2 rounded-xl p-4 border border-white/5 text-center">
                 <div className="w-12 h-12 bg-gradient-to-r from-orange-500 to-red-500 rounded-xl flex items-center justify-center mx-auto mb-3">
                   <PieChart className="w-6 h-6 text-white" />
                 </div>
                 <h4 className="text-white font-semibold mb-2">Unsupervised Learning</h4>
-                <p className="text-gray-300 text-sm">Clustering, Dimensionality Reduction</p>
+                <p className="text-gray-400 text-sm">Clustering, Dimensionality Reduction</p>
               </div>
-              <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
+              <div className="bg-white/2 rounded-xl p-4 border border-white/5 text-center">
                 <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl flex items-center justify-center mx-auto mb-3">
                   <Layers className="w-6 h-6 text-white" />
                 </div>
                 <h4 className="text-white font-semibold mb-2">Advanced Topics</h4>
-                <p className="text-gray-300 text-sm">Deep Learning, Reinforcement Learning</p>
+                <p className="text-gray-400 text-sm">Deep Learning, Reinforcement Learning</p>
               </div>
             </div>
           </div>
@@ -448,62 +452,62 @@ print(f"Mean CV Score: {scores.mean():.4f}")`
 
         {/* Tools & Libraries Section */}
         <div className="max-w-7xl mx-auto px-6 lg:px-8 pb-20">
-          <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10">
+          <div className="bg-white/2 backdrop-blur-sm rounded-2xl p-8 border border-white/5">
             <h3 className="text-2xl font-bold text-white mb-6 text-center flex items-center justify-center gap-3">
               <Settings className="w-8 h-8 text-orange-400" />
               Essential Tools & Libraries
             </h3>
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-              <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
+              <div className="bg-white/2 rounded-xl p-4 border border-white/5 text-center">
                 <div className="w-12 h-12 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-xl flex items-center justify-center mx-auto mb-2">
                   <Code className="w-6 h-6 text-white" />
                 </div>
                 <h4 className="text-white font-semibold mb-1">Python</h4>
                 <p className="text-gray-400 text-xs">Primary programming language</p>
               </div>
-              <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
+              <div className="bg-white/2 rounded-xl p-4 border border-white/5 text-center">
                 <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center mx-auto mb-2">
                   <BarChart3 className="w-6 h-6 text-white" />
                 </div>
                 <h4 className="text-white font-semibold mb-1">Scikit-learn</h4>
                 <p className="text-gray-400 text-xs">Classical ML algorithms</p>
               </div>
-              <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
+              <div className="bg-white/2 rounded-xl p-4 border border-white/5 text-center">
                 <div className="w-12 h-12 bg-gradient-to-r from-orange-500 to-red-500 rounded-xl flex items-center justify-center mx-auto mb-2">
                   <Brain className="w-6 h-6 text-white" />
                 </div>
                 <h4 className="text-white font-semibold mb-1">TensorFlow</h4>
                 <p className="text-gray-400 text-xs">Deep learning framework</p>
               </div>
-              <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
+              <div className="bg-white/2 rounded-xl p-4 border border-white/5 text-center">
                 <div className="w-12 h-12 bg-gradient-to-r from-red-500 to-pink-500 rounded-xl flex items-center justify-center mx-auto mb-2">
                   <Zap className="w-6 h-6 text-white" />
                 </div>
                 <h4 className="text-white font-semibold mb-1">PyTorch</h4>
                 <p className="text-gray-400 text-xs">Dynamic neural networks</p>
               </div>
-              <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
+              <div className="bg-white/2 rounded-xl p-4 border border-white/5 text-center">
                 <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-500 rounded-xl flex items-center justify-center mx-auto mb-2">
                   <TrendingUp className="w-6 h-6 text-white" />
                 </div>
                 <h4 className="text-white font-semibold mb-1">XGBoost</h4>
                 <p className="text-gray-400 text-xs">Gradient boosting</p>
               </div>
-              <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
+              <div className="bg-white/2 rounded-xl p-4 border border-white/5 text-center">
                 <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-xl flex items-center justify-center mx-auto mb-2">
                   <Search className="w-6 h-6 text-white" />
                 </div>
                 <h4 className="text-white font-semibold mb-1">Feature Tools</h4>
                 <p className="text-gray-400 text-xs">Automated feature engineering</p>
               </div>
-              <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
+              <div className="bg-white/2 rounded-xl p-4 border border-white/5 text-center">
                 <div className="w-12 h-12 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-xl flex items-center justify-center mx-auto mb-2">
                   <Database className="w-6 h-6 text-white" />
                 </div>
                 <h4 className="text-white font-semibold mb-1">MLflow</h4>
                 <p className="text-gray-400 text-xs">ML lifecycle management</p>
               </div>
-              <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
+              <div className="bg-white/2 rounded-xl p-4 border border-white/5 text-center">
                 <div className="w-12 h-12 bg-gradient-to-r from-pink-500 to-rose-500 rounded-xl flex items-center justify-center mx-auto mb-2">
                   <Target className="w-6 h-6 text-white" />
                 </div>
@@ -521,20 +525,20 @@ print(f"Mean CV Score: {scores.mean():.4f}")`
               <Code className="w-10 h-10 text-green-400" />
               Practical Examples
             </h2>
-            <p className="text-gray-300 text-lg max-w-3xl mx-auto">
+            <p className="text-gray-400 text-lg max-w-3xl mx-auto">
               Real-world machine learning projects and case studies in quantitative finance.
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 gap-8">
-            <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 hover:bg-white/10 transition-colors">
+            <div className="bg-white/2 backdrop-blur-sm rounded-2xl p-6 border border-white/5 hover:bg-white/10 transition-colors">
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-500 rounded-xl flex items-center justify-center">
                   <TrendingUp className="w-6 h-6 text-white" />
                 </div>
                 <h3 className="text-xl font-bold text-white">Stock Price Prediction</h3>
               </div>
-              <p className="text-gray-300 mb-4">
+              <p className="text-gray-400 mb-4">
                 Build a machine learning model to predict stock prices using historical data, technical indicators, and market sentiment.
               </p>
               <div className="space-y-2">
@@ -553,14 +557,14 @@ print(f"Mean CV Score: {scores.mean():.4f}")`
               </div>
             </div>
 
-            <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 hover:bg-white/10 transition-colors">
+            <div className="bg-white/2 backdrop-blur-sm rounded-2xl p-6 border border-white/5 hover:bg-white/10 transition-colors">
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center">
                   <Target className="w-6 h-6 text-white" />
                 </div>
                 <h3 className="text-xl font-bold text-white">Credit Risk Assessment</h3>
               </div>
-              <p className="text-gray-300 mb-4">
+              <p className="text-gray-400 mb-4">
                 Develop a credit scoring model using machine learning to assess the risk of loan defaults and optimize lending decisions.
               </p>
               <div className="space-y-2">
@@ -579,14 +583,14 @@ print(f"Mean CV Score: {scores.mean():.4f}")`
               </div>
             </div>
 
-            <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 hover:bg-white/10 transition-colors">
+            <div className="bg-white/2 backdrop-blur-sm rounded-2xl p-6 border border-white/5 hover:bg-white/10 transition-colors">
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl flex items-center justify-center">
                   <PieChart className="w-6 h-6 text-white" />
                 </div>
                 <h3 className="text-xl font-bold text-white">Portfolio Optimization</h3>
               </div>
-              <p className="text-gray-300 mb-4">
+              <p className="text-gray-400 mb-4">
                 Use clustering algorithms and reinforcement learning to optimize portfolio allocation and maximize risk-adjusted returns.
               </p>
               <div className="space-y-2">
@@ -605,14 +609,14 @@ print(f"Mean CV Score: {scores.mean():.4f}")`
               </div>
             </div>
 
-            <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 hover:bg-white/10 transition-colors">
+            <div className="bg-white/2 backdrop-blur-sm rounded-2xl p-6 border border-white/5 hover:bg-white/10 transition-colors">
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-12 h-12 bg-gradient-to-r from-orange-500 to-red-500 rounded-xl flex items-center justify-center">
                   <Search className="w-6 h-6 text-white" />
                 </div>
                 <h3 className="text-xl font-bold text-white">Fraud Detection</h3>
               </div>
-              <p className="text-gray-300 mb-4">
+              <p className="text-gray-400 mb-4">
                 Implement anomaly detection algorithms to identify fraudulent transactions and suspicious trading activities in real-time.
               </p>
               <div className="space-y-2">
@@ -641,12 +645,12 @@ print(f"Mean CV Score: {scores.mean():.4f}")`
               Career Paths in ML Finance
             </h3>
             <div className="grid md:grid-cols-3 gap-6">
-              <div className="bg-white/5 rounded-xl p-6 border border-white/10 text-center">
+              <div className="bg-white/2 rounded-xl p-6 border border-white/5 text-center">
                 <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
                   <Brain className="w-8 h-8 text-white" />
                 </div>
                 <h4 className="text-white font-semibold mb-2 text-lg">Quantitative Researcher</h4>
-                <p className="text-gray-300 text-sm mb-4">
+                <p className="text-gray-400 text-sm mb-4">
                   Develop and test machine learning models for trading strategies, risk management, and market analysis.
                 </p>
                 <div className="text-xs text-blue-400">
@@ -655,12 +659,12 @@ print(f"Mean CV Score: {scores.mean():.4f}")`
                   <div>• $150k - $300k+</div>
                 </div>
               </div>
-              <div className="bg-white/5 rounded-xl p-6 border border-white/10 text-center">
+              <div className="bg-white/2 rounded-xl p-6 border border-white/5 text-center">
                 <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-emerald-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
                   <Cpu className="w-8 h-8 text-white" />
                 </div>
                 <h4 className="text-white font-semibold mb-2 text-lg">ML Engineer</h4>
-                <p className="text-gray-300 text-sm mb-4">
+                <p className="text-gray-400 text-sm mb-4">
                   Build and deploy machine learning systems for financial applications, focusing on scalability and reliability.
                 </p>
                 <div className="text-xs text-green-400">
@@ -669,12 +673,12 @@ print(f"Mean CV Score: {scores.mean():.4f}")`
                   <div>• $120k - $250k+</div>
                 </div>
               </div>
-              <div className="bg-white/5 rounded-xl p-6 border border-white/10 text-center">
+              <div className="bg-white/2 rounded-xl p-6 border border-white/5 text-center">
                 <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
                   <BarChart3 className="w-8 h-8 text-white" />
                 </div>
                 <h4 className="text-white font-semibold mb-2 text-lg">Data Scientist</h4>
-                <p className="text-gray-300 text-sm mb-4">
+                <p className="text-gray-400 text-sm mb-4">
                   Analyze financial data, build predictive models, and provide insights to support business decisions.
                 </p>
                 <div className="text-xs text-purple-400">
@@ -690,7 +694,7 @@ print(f"Mean CV Score: {scores.mean():.4f}")`
         {/* Call to Action */}
         <div className="max-w-7xl mx-auto px-6 lg:px-8 pb-20 text-center">
           <h3 className="text-2xl font-bold text-white mb-4">Ready to Start Your ML Journey?</h3>
-          <p className="text-gray-300 mb-6 max-w-2xl mx-auto">
+          <p className="text-gray-400 mb-6 max-w-2xl mx-auto">
             Begin with the fundamentals and work your way up to advanced machine learning techniques for financial applications.
           </p>
           <div className="flex justify-center gap-4">

@@ -4,6 +4,7 @@ import Navbar from "@/components/sections/navbar/default";
 import Footer from "@/components/sections/footer/default";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import HeroBackground from "@/components/ui/HeroBackground";
 
 export default function CryptoModelingPage() {
   const cryptoTopics = [
@@ -555,8 +556,11 @@ def volatility_modeling(price_data):
 
   return (
     <div className="min-h-screen bg-black">
+      {/* Particle background */}
+      <HeroBackground position="fixed" backgroundColor="transparent" className="z-0" blendModeClassName="mix-blend-screen" />
+      
       {/* Background gradient */}
-      <div className="fixed inset-0 bg-gradient-to-br from-purple-900/20 via-blue-900/20 to-indigo-900/20 pointer-events-none"></div>
+      <div className="fixed inset-0 bg-gradient-to-br from-purple-900/10 via-blue-900/10 to-indigo-900/10 pointer-events-none z-5"></div>
       
       {/* Main content */}
       <div className="relative z-10 min-h-screen">
@@ -580,7 +584,7 @@ def volatility_modeling(price_data):
 
           <div className="space-y-8">
             {cryptoTopics.map((topic, index) => (
-              <div key={index} className="bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10 hover:bg-white/10 transition-colors">
+              <div key={index} className="bg-white/2 backdrop-blur-sm rounded-2xl p-8 border border-white/5 hover:bg-white/10 transition-colors">
                 <div className="flex items-start gap-6">
                   <div className="text-4xl">{topic.icon}</div>
                   <div className="flex-1">
@@ -634,7 +638,7 @@ def volatility_modeling(price_data):
 
           <div className="grid md:grid-cols-2 gap-8">
             {applications.map((app, index) => (
-              <div key={index} className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 hover:bg-white/10 transition-colors">
+              <div key={index} className="bg-white/2 backdrop-blur-sm rounded-2xl p-6 border border-white/5 hover:bg-white/10 transition-colors">
                 <h3 className="text-xl font-bold text-white mb-3">{app.title}</h3>
                 <p className="text-gray-300 mb-4">{app.description}</p>
                 
@@ -663,22 +667,22 @@ def volatility_modeling(price_data):
           <div className="bg-gradient-to-r from-purple-600/20 to-blue-600/20 rounded-2xl p-8 border border-purple-500/30">
             <h3 className="text-2xl font-bold text-white mb-6 text-center">Learning Path</h3>
             <div className="grid md:grid-cols-4 gap-6">
-              <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
+              <div className="bg-white/2 rounded-xl p-4 border border-white/5 text-center">
                 <div className="text-2xl mb-2">1</div>
                 <h4 className="text-white font-semibold mb-2">Blockchain Basics</h4>
                 <p className="text-gray-300 text-sm">Understanding blockchain technology</p>
               </div>
-              <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
+              <div className="bg-white/2 rounded-xl p-4 border border-white/5 text-center">
                 <div className="text-2xl mb-2">2</div>
                 <h4 className="text-white font-semibold mb-2">Market Analysis</h4>
                 <p className="text-gray-300 text-sm">Price analysis, volatility modeling</p>
               </div>
-              <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
+              <div className="bg-white/2 rounded-xl p-4 border border-white/5 text-center">
                 <div className="text-2xl mb-2">3</div>
                 <h4 className="text-white font-semibold mb-2">DeFi Protocols</h4>
                 <p className="text-gray-300 text-sm">Protocol analysis, tokenomics</p>
               </div>
-              <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
+              <div className="bg-white/2 rounded-xl p-4 border border-white/5 text-center">
                 <div className="text-2xl mb-2">4</div>
                 <h4 className="text-white font-semibold mb-2">Advanced Topics</h4>
                 <p className="text-gray-300 text-sm">Sentiment analysis, trading strategies</p>
@@ -689,45 +693,45 @@ def volatility_modeling(price_data):
 
         {/* Tools & Software Section */}
         <div className="max-w-7xl mx-auto px-6 lg:px-8 pb-20">
-          <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10">
+          <div className="bg-white/2 backdrop-blur-sm rounded-2xl p-8 border border-white/5">
             <h3 className="text-2xl font-bold text-white mb-6 text-center">Essential Tools & Software</h3>
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-              <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
+              <div className="bg-white/2 rounded-xl p-4 border border-white/5 text-center">
                 <div className="text-2xl mb-2">🐍</div>
                 <h4 className="text-white font-semibold mb-1">Python</h4>
                 <p className="text-gray-400 text-xs">Primary language</p>
               </div>
-              <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
+              <div className="bg-white/2 rounded-xl p-4 border border-white/5 text-center">
                 <div className="text-2xl mb-2">•</div>
                 <h4 className="text-white font-semibold mb-1">Web3.py</h4>
                 <p className="text-gray-400 text-xs">Blockchain interaction</p>
               </div>
-              <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
+              <div className="bg-white/2 rounded-xl p-4 border border-white/5 text-center">
                 <div className="text-2xl mb-2">•</div>
                 <h4 className="text-white font-semibold mb-1">Pandas</h4>
                 <p className="text-gray-400 text-xs">Data manipulation</p>
               </div>
-              <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
+              <div className="bg-white/2 rounded-xl p-4 border border-white/5 text-center">
                 <div className="text-2xl mb-2">•</div>
                 <h4 className="text-white font-semibold mb-1">NetworkX</h4>
                 <p className="text-gray-400 text-xs">Graph analysis</p>
               </div>
-              <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
+              <div className="bg-white/2 rounded-xl p-4 border border-white/5 text-center">
                 <div className="text-2xl mb-2">•</div>
                 <h4 className="text-white font-semibold mb-1">CCXT</h4>
                 <p className="text-gray-400 text-xs">Exchange APIs</p>
               </div>
-              <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
+              <div className="bg-white/2 rounded-xl p-4 border border-white/5 text-center">
                 <div className="text-2xl mb-2">•</div>
                 <h4 className="text-white font-semibold mb-1">TextBlob</h4>
                 <p className="text-gray-400 text-xs">Sentiment analysis</p>
               </div>
-              <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
+              <div className="bg-white/2 rounded-xl p-4 border border-white/5 text-center">
                 <div className="text-2xl mb-2">•</div>
                 <h4 className="text-white font-semibold mb-1">ARCH</h4>
                 <p className="text-gray-400 text-xs">Volatility modeling</p>
               </div>
-              <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
+              <div className="bg-white/2 rounded-xl p-4 border border-white/5 text-center">
                 <div className="text-2xl mb-2">⚡</div>
                 <h4 className="text-white font-semibold mb-1">FastAPI</h4>
                 <p className="text-gray-400 text-xs">API development</p>

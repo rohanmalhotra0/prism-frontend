@@ -5,6 +5,7 @@ import Navbar from "@/components/sections/navbar/default";
 import Footer from "@/components/sections/footer/default";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import HeroBackground from "@/components/ui/HeroBackground";
 import 'katex/dist/katex.min.css';
 import { InlineMath, BlockMath } from 'react-katex';
 
@@ -309,8 +310,11 @@ def portfolio_hedge(portfolio, hedge_instruments):
 
   return (
     <div className="min-h-screen bg-black">
+      {/* Particle background */}
+      <HeroBackground position="fixed" backgroundColor="transparent" className="z-0" blendModeClassName="mix-blend-screen" />
+      
       {/* Background gradient */}
-      <div className="fixed inset-0 bg-gradient-to-br from-purple-900/20 via-blue-900/20 to-indigo-900/20 pointer-events-none"></div>
+      <div className="fixed inset-0 bg-gradient-to-br from-purple-900/10 via-blue-900/10 to-indigo-900/10 pointer-events-none z-5"></div>
       
       {/* Main content */}
       <div className="relative z-10 min-h-screen">
@@ -334,7 +338,7 @@ def portfolio_hedge(portfolio, hedge_instruments):
 
           <div className="space-y-8">
             {derivativesTopics.map((topic, index) => (
-              <div key={index} className="bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10 hover:bg-white/10 transition-colors">
+              <div key={index} className="bg-white/2 backdrop-blur-sm rounded-2xl p-8 border border-white/5 hover:bg-white/10 transition-colors">
                 <div className="flex items-start gap-6">
                   <div className="text-4xl">{topic.icon}</div>
                   <div className="flex-1">
@@ -453,7 +457,7 @@ def portfolio_hedge(portfolio, hedge_instruments):
 
           <div className="grid md:grid-cols-2 gap-8">
             {applications.map((app, index) => (
-              <div key={index} className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 hover:bg-white/10 transition-colors">
+              <div key={index} className="bg-white/2 backdrop-blur-sm rounded-2xl p-6 border border-white/5 hover:bg-white/10 transition-colors">
                 <h3 className="text-xl font-bold text-white mb-3">{app.title}</h3>
                 <p className="text-gray-300 mb-4">{app.description}</p>
                 
@@ -482,22 +486,22 @@ def portfolio_hedge(portfolio, hedge_instruments):
           <div className="bg-gradient-to-r from-purple-600/20 to-blue-600/20 rounded-2xl p-8 border border-purple-500/30">
             <h3 className="text-2xl font-bold text-white mb-6 text-center">• Learning Path</h3>
             <div className="grid md:grid-cols-4 gap-6">
-              <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
+              <div className="bg-white/2 rounded-xl p-4 border border-white/5 text-center">
                 <div className="text-2xl mb-2">1</div>
                 <h4 className="text-white font-semibold mb-2">Basics</h4>
                 <p className="text-gray-300 text-sm">Options terminology, payoffs</p>
               </div>
-              <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
+              <div className="bg-white/2 rounded-xl p-4 border border-white/5 text-center">
                 <div className="text-2xl mb-2">2</div>
                 <h4 className="text-white font-semibold mb-2">Pricing Models</h4>
                 <p className="text-gray-300 text-sm">Black-Scholes, Binomial</p>
               </div>
-              <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
+              <div className="bg-white/2 rounded-xl p-4 border border-white/5 text-center">
                 <div className="text-2xl mb-2">3</div>
                 <h4 className="text-white font-semibold mb-2">Greeks & Risk</h4>
                 <p className="text-gray-300 text-sm">Sensitivity analysis, hedging</p>
               </div>
-              <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
+              <div className="bg-white/2 rounded-xl p-4 border border-white/5 text-center">
                 <div className="text-2xl mb-2">4</div>
                 <h4 className="text-white font-semibold mb-2">Advanced</h4>
                 <p className="text-gray-300 text-sm">Exotic options, strategies</p>
@@ -508,45 +512,45 @@ def portfolio_hedge(portfolio, hedge_instruments):
 
         {/* Tools & Software Section */}
         <div className="max-w-7xl mx-auto px-6 lg:px-8 pb-20">
-          <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10">
+          <div className="bg-white/2 backdrop-blur-sm rounded-2xl p-8 border border-white/5">
             <h3 className="text-2xl font-bold text-white mb-6 text-center">🛠️ Essential Tools & Software</h3>
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-              <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
+              <div className="bg-white/2 rounded-xl p-4 border border-white/5 text-center">
                 <div className="text-2xl mb-2">🐍</div>
                 <h4 className="text-white font-semibold mb-1">Python</h4>
                 <p className="text-gray-400 text-xs">Programming language</p>
               </div>
-              <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
+              <div className="bg-white/2 rounded-xl p-4 border border-white/5 text-center">
                 <div className="text-2xl mb-2">•</div>
                 <h4 className="text-white font-semibold mb-1">QuantLib</h4>
                 <p className="text-gray-400 text-xs">Quantitative finance library</p>
               </div>
-              <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
+              <div className="bg-white/2 rounded-xl p-4 border border-white/5 text-center">
                 <div className="text-2xl mb-2">🔢</div>
                 <h4 className="text-white font-semibold mb-1">SciPy</h4>
                 <p className="text-gray-400 text-xs">Scientific computing</p>
               </div>
-              <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
+              <div className="bg-white/2 rounded-xl p-4 border border-white/5 text-center">
                 <div className="text-2xl mb-2">•</div>
                 <h4 className="text-white font-semibold mb-1">Bloomberg</h4>
                 <p className="text-gray-400 text-xs">Market data & analytics</p>
               </div>
-              <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
+              <div className="bg-white/2 rounded-xl p-4 border border-white/5 text-center">
                 <div className="text-2xl mb-2">💼</div>
                 <h4 className="text-white font-semibold mb-1">Refinitiv</h4>
                 <p className="text-gray-400 text-xs">Financial data platform</p>
               </div>
-              <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
+              <div className="bg-white/2 rounded-xl p-4 border border-white/5 text-center">
                 <div className="text-2xl mb-2">•</div>
                 <h4 className="text-white font-semibold mb-1">Derivatives Pro</h4>
                 <p className="text-gray-400 text-xs">Options pricing software</p>
               </div>
-              <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
+              <div className="bg-white/2 rounded-xl p-4 border border-white/5 text-center">
                 <div className="text-2xl mb-2">•</div>
                 <h4 className="text-white font-semibold mb-1">Excel</h4>
                 <p className="text-gray-400 text-xs">Spreadsheet modeling</p>
               </div>
-              <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
+              <div className="bg-white/2 rounded-xl p-4 border border-white/5 text-center">
                 <div className="text-2xl mb-2">⚡</div>
                 <h4 className="text-white font-semibold mb-1">C++</h4>
                 <p className="text-gray-400 text-xs">High-performance computing</p>

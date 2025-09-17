@@ -5,6 +5,7 @@ import Navbar from "@/components/sections/navbar/default";
 import Footer from "@/components/sections/footer/default";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import HeroBackground from "@/components/ui/HeroBackground";
 import 'katex/dist/katex.min.css';
 import { InlineMath, BlockMath } from 'react-katex';
 import { 
@@ -326,8 +327,11 @@ def monte_carlo_simulation(n_simulations=10000):
 
   return (
     <div className="min-h-screen bg-black">
+      {/* Particle background */}
+      <HeroBackground position="fixed" backgroundColor="transparent" className="z-0" blendModeClassName="mix-blend-screen" />
+      
       {/* Background gradient */}
-      <div className="fixed inset-0 bg-gradient-to-br from-purple-900/20 via-blue-900/20 to-indigo-900/20 pointer-events-none"></div>
+      <div className="fixed inset-0 bg-gradient-to-br from-purple-900/10 via-blue-900/10 to-indigo-900/10 pointer-events-none z-5"></div>
       
       {/* Main content */}
       <div className="relative z-10 min-h-screen">
@@ -340,7 +344,7 @@ def monte_carlo_simulation(n_simulations=10000):
             <h1 className="text-6xl lg:text-7xl font-black mb-8 bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text text-transparent">
               Financial Modeling
             </h1>
-            <p className="text-xl lg:text-2xl text-gray-400 max-w-4xl mx-auto leading-relaxed mb-12">
+            <p className="text-xl lg:text-2xl text-gray-500 max-w-4xl mx-auto leading-relaxed mb-12">
               Master the art of building comprehensive financial models for valuation, forecasting, and investment analysis
             </p>
             
@@ -353,29 +357,29 @@ def monte_carlo_simulation(n_simulations=10000):
 
           <div className="space-y-8">
             {modelingTopics.map((topic, index) => (
-              <div key={index} className="bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10 hover:bg-white/10 transition-colors">
+              <div key={index} className="bg-white/3 backdrop-blur-sm rounded-2xl p-8 border border-white/5 hover:bg-white/5 transition-colors">
                 <div className="flex items-start gap-6">
                   <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl flex items-center justify-center flex-shrink-0">
-                    <topic.icon className="w-8 h-8 text-white" />
+                    <topic.icon className="w-8 h-8 text-gray-200" />
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-2xl font-bold text-white mb-3">{topic.title}</h3>
-                    <p className="text-gray-300 mb-6 text-lg">{topic.description}</p>
+                    <h3 className="text-2xl font-bold text-gray-200 mb-3">{topic.title}</h3>
+                    <p className="text-gray-500 mb-6 text-lg">{topic.description}</p>
                     
                     <div className="grid md:grid-cols-2 gap-6">
                       <div>
                         <h4 className="text-lg font-semibold text-blue-400 mb-3">How It Works</h4>
-                        <p className="text-gray-300 text-sm mb-4">{topic.details.howItWorks}</p>
+                        <p className="text-gray-500 text-sm mb-4">{topic.details.howItWorks}</p>
                         
                         <h4 className="text-lg font-semibold text-green-400 mb-3">Key Components</h4>
-                        <ul className="text-gray-300 text-sm space-y-1">
+                        <ul className="text-gray-500 text-sm space-y-1">
                           {topic.details.keyComponents.map((component, idx) => (
                             <li key={idx}>• {component}</li>
                           ))}
                         </ul>
                         
                         <h4 className="text-lg font-semibold text-purple-400 mb-3">Financial Use Cases</h4>
-                        <ul className="text-gray-300 text-sm space-y-1">
+                        <ul className="text-gray-500 text-sm space-y-1">
                           {topic.details.useCases.map((useCase, idx) => (
                             <li key={idx}>• {useCase}</li>
                           ))}
@@ -392,7 +396,7 @@ def monte_carlo_simulation(n_simulations=10000):
                                 className={`flex-1 px-4 py-3 text-sm font-medium transition-colors ${
                                   activeTabs[topic.id] === 'formulas' || (!activeTabs[topic.id] && topic.details.formulas)
                                     ? 'bg-orange-500/20 text-orange-400 border-b-2 border-orange-400'
-                                    : 'text-gray-400 hover:text-gray-300 hover:bg-gray-800/50'
+                                    : 'text-gray-500 hover:text-gray-500 hover:bg-gray-800/50'
                                 }`}
                               >
                                 <div className="flex items-center justify-center gap-2">
@@ -406,7 +410,7 @@ def monte_carlo_simulation(n_simulations=10000):
                               className={`flex-1 px-4 py-3 text-sm font-medium transition-colors ${
                                 activeTabs[topic.id] === 'code' || (!activeTabs[topic.id] && !topic.details.formulas)
                                   ? 'bg-yellow-500/20 text-yellow-400 border-b-2 border-yellow-400'
-                                  : 'text-gray-400 hover:text-gray-300 hover:bg-gray-800/50'
+                                  : 'text-gray-500 hover:text-gray-500 hover:bg-gray-800/50'
                               }`}
                             >
                               <div className="flex items-center justify-center gap-2">
@@ -422,7 +426,7 @@ def monte_carlo_simulation(n_simulations=10000):
                               <div className="space-y-6">
                                 {Object.entries(topic.details.formulas).map(([key, formula]) => (
                                   <div key={key} className="bg-gray-800/50 rounded-lg p-6 border border-gray-600">
-                                    <div className="text-gray-300 text-lg mb-4 font-semibold capitalize">
+                                    <div className="text-gray-500 text-lg mb-4 font-semibold capitalize">
                                       {key.replace(/_/g, ' ')}:
                                     </div>
                                     <div className="bg-gray-900/50 rounded-md p-4 border border-gray-700">
@@ -442,7 +446,7 @@ def monte_carlo_simulation(n_simulations=10000):
                                     <div className="w-3 h-3 bg-red-500 rounded-full"></div>
                                     <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
                                     <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                                    <span className="text-gray-300 text-sm ml-2 font-medium">Python</span>
+                                    <span className="text-gray-500 text-sm ml-2 font-medium">Python</span>
                                   </div>
                                 </div>
                                 <div className="p-6">
@@ -466,17 +470,17 @@ def monte_carlo_simulation(n_simulations=10000):
         {/* Applications Section */}
         <div id="applications" className="max-w-7xl mx-auto px-6 lg:px-8 pb-20">
           <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-white mb-4">💼 Professional Applications</h2>
-            <p className="text-gray-300 text-lg max-w-3xl mx-auto">
+            <h2 className="text-4xl font-bold text-gray-200 mb-4">💼 Professional Applications</h2>
+            <p className="text-gray-500 text-lg max-w-3xl mx-auto">
               Discover how financial modeling is applied across different areas of finance and investment.
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 gap-8">
             {applications.map((app, index) => (
-              <div key={index} className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 hover:bg-white/10 transition-colors">
-                <h3 className="text-xl font-bold text-white mb-3">{app.title}</h3>
-                <p className="text-gray-300 mb-4">{app.description}</p>
+              <div key={index} className="bg-white/3 backdrop-blur-sm rounded-2xl p-6 border border-white/5 hover:bg-white/5 transition-colors">
+                <h3 className="text-xl font-bold text-gray-200 mb-3">{app.title}</h3>
+                <p className="text-gray-500 mb-4">{app.description}</p>
                 
                 <div className="mb-4">
                   <h4 className="text-sm font-semibold text-blue-400 mb-2">Common Tools</h4>
@@ -491,7 +495,7 @@ def monte_carlo_simulation(n_simulations=10000):
                 
                 <div className="bg-gray-900/30 rounded-lg p-3 border border-gray-700">
                   <h4 className="text-sm font-semibold text-green-400 mb-1">Example</h4>
-                  <p className="text-gray-300 text-sm">{app.example}</p>
+                  <p className="text-gray-500 text-sm">{app.example}</p>
                 </div>
               </div>
             ))}
@@ -541,52 +545,52 @@ def monte_carlo_simulation(n_simulations=10000):
               </div>
               <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
                 <div className="w-12 h-12 bg-yellow-500 rounded-xl flex items-center justify-center mx-auto mb-2">
-                  <Database className="w-6 h-6 text-white" />
+                  <Database className="w-6 h-6 text-gray-200" />
                 </div>
-                <h4 className="text-white font-semibold mb-1">Python</h4>
-                <p className="text-gray-400 text-xs">Advanced modeling & analysis</p>
+                <h4 className="text-gray-200 font-semibold mb-1">Python</h4>
+                <p className="text-gray-500 text-xs">Advanced modeling & analysis</p>
               </div>
               <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
                 <div className="w-12 h-12 bg-orange-500 rounded-xl flex items-center justify-center mx-auto mb-2">
-                  <BarChart3 className="w-6 h-6 text-white" />
+                  <BarChart3 className="w-6 h-6 text-gray-200" />
                 </div>
-                <h4 className="text-white font-semibold mb-1">Bloomberg Terminal</h4>
-                <p className="text-gray-400 text-xs">Market data & analytics</p>
+                <h4 className="text-gray-200 font-semibold mb-1">Bloomberg Terminal</h4>
+                <p className="text-gray-500 text-xs">Market data & analytics</p>
               </div>
               <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
                 <div className="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center mx-auto mb-2">
-                  <TrendingUp className="w-6 h-6 text-white" />
+                  <TrendingUp className="w-6 h-6 text-gray-200" />
                 </div>
-                <h4 className="text-white font-semibold mb-1">FactSet</h4>
-                <p className="text-gray-400 text-xs">Financial data platform</p>
+                <h4 className="text-gray-200 font-semibold mb-1">FactSet</h4>
+                <p className="text-gray-500 text-xs">Financial data platform</p>
               </div>
               <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
                 <div className="w-12 h-12 bg-red-500 rounded-xl flex items-center justify-center mx-auto mb-2">
-                  <Target className="w-6 h-6 text-white" />
+                  <Target className="w-6 h-6 text-gray-200" />
                 </div>
-                <h4 className="text-white font-semibold mb-1">@RISK</h4>
-                <p className="text-gray-400 text-xs">Risk analysis add-in</p>
+                <h4 className="text-gray-200 font-semibold mb-1">@RISK</h4>
+                <p className="text-gray-500 text-xs">Risk analysis add-in</p>
               </div>
               <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
                 <div className="w-12 h-12 bg-purple-500 rounded-xl flex items-center justify-center mx-auto mb-2">
-                  <PieChart className="w-6 h-6 text-white" />
+                  <PieChart className="w-6 h-6 text-gray-200" />
                 </div>
-                <h4 className="text-white font-semibold mb-1">Tableau</h4>
-                <p className="text-gray-400 text-xs">Data visualization</p>
+                <h4 className="text-gray-200 font-semibold mb-1">Tableau</h4>
+                <p className="text-gray-500 text-xs">Data visualization</p>
               </div>
               <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
                 <div className="w-12 h-12 bg-indigo-500 rounded-xl flex items-center justify-center mx-auto mb-2">
-                  <Zap className="w-6 h-6 text-white" />
+                  <Zap className="w-6 h-6 text-gray-200" />
                 </div>
-                <h4 className="text-white font-semibold mb-1">Power BI</h4>
-                <p className="text-gray-400 text-xs">Business intelligence</p>
+                <h4 className="text-gray-200 font-semibold mb-1">Power BI</h4>
+                <p className="text-gray-500 text-xs">Business intelligence</p>
               </div>
               <div className="bg-white/5 rounded-xl p-4 border border-white/10 text-center">
                 <div className="w-12 h-12 bg-gray-500 rounded-xl flex items-center justify-center mx-auto mb-2">
-                  <Calculator className="w-6 h-6 text-white" />
+                  <Calculator className="w-6 h-6 text-gray-200" />
                 </div>
-                <h4 className="text-white font-semibold mb-1">VBA</h4>
-                <p className="text-gray-400 text-xs">Excel automation</p>
+                <h4 className="text-gray-200 font-semibold mb-1">VBA</h4>
+                <p className="text-gray-500 text-xs">Excel automation</p>
               </div>
             </div>
           </div>
@@ -594,8 +598,8 @@ def monte_carlo_simulation(n_simulations=10000):
 
         {/* Call to Action */}
         <div className="max-w-7xl mx-auto px-6 lg:px-8 pb-20 text-center">
-          <h3 className="text-2xl font-bold text-white mb-4">Ready to Master Financial Modeling?</h3>
-          <p className="text-gray-300 mb-6 max-w-2xl mx-auto">
+          <h3 className="text-2xl font-bold text-gray-200 mb-4">Ready to Master Financial Modeling?</h3>
+          <p className="text-gray-500 mb-6 max-w-2xl mx-auto">
             Start building professional-grade financial models that will set you apart in investment banking, private equity, and corporate finance.
           </p>
           <div className="flex justify-center gap-4">
