@@ -46,8 +46,8 @@ export default function Hero({
 
   // Typewriter animation effect
   useEffect(() => {
-    const typeSpeed = isDeleting ? 20 : 60;
-    const pauseTime = 2000;
+    const typeSpeed = isDeleting ? 40 : 120;
+    const pauseTime = 4000;
 
     const timeout = setTimeout(() => {
       const currentText = texts[textIndex];
@@ -72,6 +72,16 @@ export default function Hero({
 
     return () => clearTimeout(timeout);
   }, [currentIndex, isDeleting, textIndex, texts]);
+
+  // Start the animation after a 3 second delay
+  useEffect(() => {
+    const startDelay = setTimeout(() => {
+      // Trigger the first character
+      setCurrentIndex(1);
+    }, 3000);
+
+    return () => clearTimeout(startDelay);
+  }, []);
 
   useEffect(() => {
     const container = containerRef.current;
