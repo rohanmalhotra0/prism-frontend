@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo, useCallback } from "react";
 import Navbar from "@/components/sections/navbar/default";
 import { SendHorizonal, Bot, User, Loader2 } from "lucide-react";
 import HeroBackground from "@/components/ui/HeroBackground";
@@ -26,21 +26,24 @@ export default function AIPage() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-  const scrollToBottom = () => messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  useEffect(() => scrollToBottom(), [messages]);
+  const scrollToBottom = useCallback(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, []);
+  
+  useEffect(() => scrollToBottom(), [messages, scrollToBottom]);
 
   // Auto-resize textarea
-  const adjustTextareaHeight = () => {
+  const adjustTextareaHeight = useCallback(() => {
     const textarea = textareaRef.current;
     if (textarea) {
       textarea.style.height = 'auto';
       textarea.style.height = Math.min(textarea.scrollHeight, 128) + 'px';
     }
-  };
+  }, []);
 
   useEffect(() => {
     adjustTextareaHeight();
-  }, [input]);
+  }, [input, adjustTextareaHeight]);
 
   // Check for messages from chatbot widget
   useEffect(() => {
@@ -66,7 +69,7 @@ export default function AIPage() {
     }
   }, []);
 
-  const clearChat = () => {
+  const clearChat = useCallback(() => {
     setMessages([
       {
         role: "assistant",
@@ -75,9 +78,9 @@ export default function AIPage() {
       },
     ]);
     setError(null);
-  };
+  }, []);
 
-  const handleSend = async () => {
+  const handleSend = useCallback(async () => {
     if (!input.trim() || isLoading) return;
     const userMessage: Message = { role: "user", content: input.trim(), timestamp: new Date() };
 
@@ -125,13 +128,17 @@ export default function AIPage() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [input, isLoading, messages]);
 
+  // Memoize the HeroBackground to prevent re-renders
+  const memoizedHeroBackground = useMemo(() => (
+    <HeroBackground position="fixed" backgroundColor="rgba(0,0,0,1)" className="z-0" blendModeClassName="mix-blend-screen" />
+  ), []);
 
   return (
     <div className="min-h-screen bg-black text-white flex flex-col">
       {/* Particle background */}
-      <HeroBackground position="fixed" backgroundColor="rgba(0,0,0,1)" className="z-0" blendModeClassName="mix-blend-screen" />
+      {memoizedHeroBackground}
       
       {/* Background gradient */}
       <div className="fixed inset-0 bg-gradient-to-br from-purple-900/20 via-blue-900/20 to-indigo-900/20 pointer-events-none z-5"></div>
