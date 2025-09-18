@@ -76,11 +76,11 @@ export default function Hero({
     return () => clearTimeout(timeout);
   }, [currentIndex, isDeleting, textIndex, texts, hasStarted]);
 
-  // Start the animation after a 3 second delay
+  // Start the animation after a 1.5 second delay
   useEffect(() => {
     const startDelay = setTimeout(() => {
       setHasStarted(true);
-    }, 3000);
+    }, 1500);
 
     return () => clearTimeout(startDelay);
   }, []);
