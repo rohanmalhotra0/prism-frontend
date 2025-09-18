@@ -38,7 +38,7 @@ export default function MathVisualizer({
   setSharedData,
 }: MathVisualizerProps) {
   const [equations, setEquations] = useState<Equation[]>([
-    { id: "1", expression: "sin(x+5t)", color: "#ff6b6b", visible: true },
+    { id: "1", expression: "sin(x+5t)", color: "#000000", visible: true },
     { id: "2", expression: "cos(x+5t)", color: "#4ecdc4", visible: true },
     { id: "3", expression: "x^2", color: "#45b7d1", visible: true },
   ]);

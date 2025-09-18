@@ -141,77 +141,89 @@ function NavigationComponent({
   }
   return (
     <div className="hidden md:flex items-center space-x-1" data-navigation-menu>
-      {/* Modeling Tools */}
-      <div className="relative">
-        <button
-          onClick={() => handleDropdownToggle('modeling')}
-          className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-300 hover:text-white transition-colors"
-        >
-          <Calculator className="w-4 h-4" />
-          Math Tools
-        </button>
-        {openDropdown === 'modeling' && (
-          <div className="absolute top-full left-0 mt-1 w-[500px] bg-transparent backdrop-blur-sm border border-white/10 rounded-lg shadow-lg z-50">
-            <ul className="grid gap-3 p-4 md:grid-cols-2">
-              {components.map((component) => (
-                <ListItem
-                  key={component.title}
-                  title={component.title}
-                  href={component.href}
-                  icon={component.icon}
-                >
-                  {component.description}
-                </ListItem>
-              ))}
-            </ul>
-          </div>
-        )}
-      </div>
-
       {/* Learn */}
       <div className="relative">
         <button
           onClick={() => handleDropdownToggle('learn')}
-          className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-300 hover:text-white transition-colors"
+          className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-300 hover:text-white transition-all duration-200 rounded-lg hover:bg-white/5"
         >
           <BookOpen className="w-4 h-4" />
           Learn
         </button>
         {openDropdown === 'learn' && (
-          <div className="absolute top-full left-0 mt-1 w-[400px] bg-transparent backdrop-blur-sm border border-white/10 rounded-lg shadow-lg z-50">
-            <ul className="grid gap-3 p-4">
-              {community.map((item) => (
-                <ListItem key={item.title} href={item.href} title={item.title} icon={item.icon}>
-                  {item.description}
-                </ListItem>
-              ))}
-            </ul>
+          <div className="absolute top-full left-0 mt-2 w-[450px] bg-white/5 backdrop-blur-md border border-white/10 rounded-xl shadow-2xl z-50">
+            <div className="p-6">
+              <div className="flex items-center gap-2 mb-4">
+                <h3 className="text-sm font-semibold text-white uppercase tracking-wider">Learn</h3>
+              </div>
+              <ul className="grid gap-3">
+                {community.map((item) => (
+                  <ListItem key={item.title} href={item.href} title={item.title} icon={item.icon}>
+                    {item.description}
+                  </ListItem>
+                ))}
+              </ul>
+            </div>
           </div>
         )}
       </div>
 
-      {/* Docs */}
+      {/* Resources */}
       <div className="relative">
         <button
-          onClick={() => handleDropdownToggle('docs')}
-          className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-300 hover:text-white transition-colors"
+          onClick={() => handleDropdownToggle('resources')}
+          className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-300 hover:text-white transition-all duration-200 rounded-lg hover:bg-white/5"
         >
           <FileText className="w-4 h-4" />
-          Docs
+          Resources
         </button>
-        {openDropdown === 'docs' && (
-          <div className="absolute top-full left-0 mt-1 w-[400px] bg-transparent backdrop-blur-sm border border-white/10 rounded-lg shadow-lg z-50">
-            <ul className="grid gap-3 p-4">
-              <ListItem href="/about" title="About Us" icon={User}>
-                Learn about the Refrax team.
-              </ListItem>
-              <ListItem href="/#FAQ" title="FAQ" icon={HelpCircle}>
-                Find answers to common questions about Refrax.
-              </ListItem>
-              <ListItem href="/docs" title="Documentation" icon={FileText}>
-                Guides and API documentation for Refrax features.
-              </ListItem>
-            </ul>
+        {openDropdown === 'resources' && (
+          <div className="absolute top-full left-0 mt-2 w-[400px] bg-white/5 backdrop-blur-md border border-white/10 rounded-xl shadow-2xl z-50">
+            <div className="p-6">
+              <div className="flex items-center gap-2 mb-4">
+                <h3 className="text-sm font-semibold text-white uppercase tracking-wider">Resources</h3>
+              </div>
+              <ul className="grid gap-3">
+                <ListItem href="/about" title="About Us" icon={User}>
+                  Learn about the Refrax team and our mission.
+                </ListItem>
+                <ListItem href="/docs" title="Documentation" icon={FileText}>
+                  Comprehensive guides and API documentation.
+                </ListItem>
+              </ul>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Math Tools */}
+      <div className="relative">
+        <button
+          onClick={() => handleDropdownToggle('modeling')}
+          className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-300 hover:text-white transition-all duration-200 rounded-lg hover:bg-white/5"
+        >
+          <Calculator className="w-4 h-4" />
+          Math Tools
+        </button>
+        {openDropdown === 'modeling' && (
+          <div className="absolute top-full left-0 mt-2 w-[550px] bg-white/5 backdrop-blur-md border border-white/10 rounded-xl shadow-2xl z-50">
+            <div className="p-6">
+              <div className="flex items-center gap-2 mb-4">
+                <h3 className="text-sm font-semibold text-white uppercase tracking-wider">Math Tools</h3>
+              </div>
+              <ul className="grid gap-3">
+                {components.map((component) => (
+                  <ListItem
+                    key={component.title}
+                    title={component.title}
+                    href={component.href}
+                    icon={component.icon}
+                  >
+                    {component.description}
+                  </ListItem>
+                ))}
+              </ul>
+            </div>
           </div>
         )}
       </div>
@@ -234,7 +246,7 @@ function ListItem({
       <Link
         href={props.href || '#'}
         className={cn(
-          "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors focus:bg-white/5 focus:text-white hover:bg-white/5",
+          "group block select-none space-y-2 rounded-lg p-4 leading-none no-underline outline-none transition-all duration-200 hover:bg-white/10 hover:backdrop-blur-sm border border-transparent hover:border-white/10",
           className
         )}
         onClick={() => {
@@ -243,15 +255,15 @@ function ListItem({
           document.dispatchEvent(event);
         }}
       >
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
           {Icon && (
-            <div className="w-5 h-5 bg-gradient-to-r from-blue-500 to-purple-500 rounded-md flex items-center justify-center flex-shrink-0">
+            <div className="w-6 h-6 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform duration-200">
               <Icon className="w-3 h-3 text-white" />
             </div>
           )}
-          <div className="text-sm font-medium leading-none text-white">{title}</div>
+          <div className="text-sm font-semibold leading-none text-white group-hover:text-blue-200 transition-colors duration-200">{title}</div>
         </div>
-        <p className="line-clamp-2 text-sm leading-snug text-gray-400 ml-7">
+        <p className="line-clamp-2 text-sm leading-snug text-gray-300 ml-9 group-hover:text-gray-200 transition-colors duration-200">
           {children}
         </p>
       </Link>
