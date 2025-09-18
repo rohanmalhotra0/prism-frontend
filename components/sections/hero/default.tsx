@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import Glow from "../../ui/glow";
 import { Mockup, MockupFrame } from "../../ui/mockup";
@@ -30,6 +30,48 @@ export default function Hero({
   const buttonRef = useRef<HTMLAnchorElement | null>(null);
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
   const dotPositionRef = useRef<{ x: number; y: number } | null>(null);
+
+  // Typewriter animation state
+  const [displayedText, setDisplayedText] = useState("");
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [textIndex, setTextIndex] = useState(0);
+
+  const texts = [
+    "Refrax",
+    "Financial Modeling",
+    "Risk Analysis",
+    "General Modeling"
+  ];
+
+  // Typewriter animation effect
+  useEffect(() => {
+    const typeSpeed = isDeleting ? 20 : 60;
+    const pauseTime = 2000;
+
+    const timeout = setTimeout(() => {
+      const currentText = texts[textIndex];
+      
+      if (isDeleting) {
+        setDisplayedText(currentText.substring(0, currentIndex - 1));
+        setCurrentIndex(currentIndex - 1);
+        
+        if (currentIndex === 0) {
+          setIsDeleting(false);
+          setTextIndex((textIndex + 1) % texts.length);
+        }
+      } else {
+        setDisplayedText(currentText.substring(0, currentIndex + 1));
+        setCurrentIndex(currentIndex + 1);
+        
+        if (currentIndex === currentText.length) {
+          setTimeout(() => setIsDeleting(true), pauseTime);
+        }
+      }
+    }, typeSpeed);
+
+    return () => clearTimeout(timeout);
+  }, [currentIndex, isDeleting, textIndex, texts]);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -121,8 +163,6 @@ export default function Hero({
         className,
       )}
     >
-      {/* Purple Glow Background */}
-      <div className="absolute inset-0 z-0 bg-[radial-gradient(ellipse_at_center,rgba(147,51,234,0.15)_0%,rgba(0,0,0,0.3)_85%)]" />
 
       <div ref={containerRef} className="relative max-w-container mx-auto flex flex-col gap-12 pt-16 sm:gap-24">
         {/* Interactive glowing dot (physics-based) */}
@@ -139,12 +179,9 @@ export default function Hero({
           </div>
         </div>
         <div className="flex flex-col items-center gap-6 text-center sm:gap-12 relative">
-          {/* Background glows - behind everything */}
-          <div className="absolute inset-0 -z-10">
-            <div className="pointer-events-none absolute left-1/2 top-6 -translate-x-1/2 h-56 w-[70%] bg-[radial-gradient(ellipse_at_center,rgba(147,51,234,0.35)_0%,rgba(59,7,100,0.1)_55%,transparent_80%)] blur-2xl" />
-          </div>
-          <h1 className="animate-appear text-white relative z-10 text-4xl font-bold drop-shadow-2xl sm:text-6xl md:text-8xl">
-            {title}
+          <h1 className="animate-appear text-white relative z-10 text-4xl font-bold drop-shadow-2xl sm:text-6xl md:text-8xl min-h-[1.2em]">
+            {displayedText}
+            <span className="animate-pulse text-white">|</span>
           </h1>
 
           <p className="text-md animate-appear text-white relative z-10 max-w-[740px] font-medium opacity-0 delay-100 sm:text-xl">
