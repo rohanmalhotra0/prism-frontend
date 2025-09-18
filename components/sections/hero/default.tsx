@@ -80,7 +80,7 @@ export default function Hero({
   useEffect(() => {
     const startDelay = setTimeout(() => {
       setHasStarted(true);
-    }, 1500);
+    }, 500);
 
     return () => clearTimeout(startDelay);
   }, []);
