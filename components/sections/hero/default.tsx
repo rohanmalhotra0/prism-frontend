@@ -39,7 +39,7 @@ export default function Hero({
   const [hasStarted, setHasStarted] = useState(false);
 
   const texts = [
-    "Refrax",
+    "Refrax.io",
     "Financial Modeling",
     "Risk Analysis",
     "General Modeling"
