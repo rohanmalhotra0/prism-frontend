@@ -114,7 +114,7 @@ export default function ChatBot() {
           <div className="absolute -top-2 -right-2 w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
         </button>
       ) : (
-        <div className="w-96 h-[520px] bg-black/95 backdrop-blur-xl border border-white/20 rounded-3xl shadow-2xl flex flex-col overflow-hidden">
+        <div className="w-96 h-[520px] bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl shadow-2xl flex flex-col overflow-hidden">
           {/* Header */}
           <div className="flex justify-between items-center bg-gradient-to-r from-purple-600/20 to-blue-600/20 px-6 py-4 border-b border-white/10">
             <div className="flex items-center gap-3">
@@ -174,7 +174,7 @@ export default function ChatBot() {
           </div>
 
           {/* Input */}
-          <div className="p-4 border-t border-white/10 bg-black/70 backdrop-blur">
+          <div className="p-4 border-t border-white/10 bg-white/5 backdrop-blur-md">
             
             <div className="flex gap-3">
               <input

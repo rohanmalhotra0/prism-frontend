@@ -36,6 +36,7 @@ export default function Hero({
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
   const [textIndex, setTextIndex] = useState(0);
+  const [hasStarted, setHasStarted] = useState(false);
 
   const texts = [
     "Refrax",
@@ -46,6 +47,8 @@ export default function Hero({
 
   // Typewriter animation effect
   useEffect(() => {
+    if (!hasStarted) return;
+    
     const typeSpeed = isDeleting ? 40 : 120;
     const pauseTime = 4000;
 
@@ -71,13 +74,12 @@ export default function Hero({
     }, typeSpeed);
 
     return () => clearTimeout(timeout);
-  }, [currentIndex, isDeleting, textIndex, texts]);
+  }, [currentIndex, isDeleting, textIndex, texts, hasStarted]);
 
   // Start the animation after a 3 second delay
   useEffect(() => {
     const startDelay = setTimeout(() => {
-      // Trigger the first character
-      setCurrentIndex(1);
+      setHasStarted(true);
     }, 3000);
 
     return () => clearTimeout(startDelay);
