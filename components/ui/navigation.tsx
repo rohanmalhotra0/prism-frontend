@@ -184,7 +184,7 @@ function NavigationComponent({
                 <h3 className="text-sm font-semibold text-white uppercase tracking-wider">Resources</h3>
               </div>
               <ul className="grid gap-3">
-                <ListItem href="/about" title="About Us" icon={User}>
+                <ListItem href="/about" title="About Me" icon={User}>
                   Learn about the Refrax team and our mission.
                 </ListItem>
                 <ListItem href="/docs" title="Documentation" icon={FileText}>

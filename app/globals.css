@@ -106,6 +106,14 @@
       transform: scale(1);
     }
   }
+  @keyframes scroll {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
 }
 
 :root {
@@ -187,6 +195,20 @@ a:hover, a:hover * {
 
 /* Disable hover behavior for navigation menus - click only */
 @layer components {
+  /* Marquee helpers */
+  .marquee-mask {
+    mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+  }
+  .marquee-track {
+    display: flex;
+    gap: 24px;
+    width: max-content;
+    animation: scroll 50s linear infinite;
+    will-change: transform;
+    touch-action: pan-y;
+    cursor: grab;
+  }
   /* Disable hover entirely */
   [data-radix-navigation-menu-trigger]:hover {
     all: unset !important;

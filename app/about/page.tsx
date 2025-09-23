@@ -40,152 +40,209 @@ export default function AboutPage() {
       
       {/* Main content */}
       <div className="relative z-10 pt-20">
-        <div className="max-w-6xl mx-auto px-6 py-16">
-          {/* Mission Statement */}
-          <div className="text-center mb-16">
-            <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
-              About Refrax
-            </h1>
-            <div className="bg-gradient-to-r from-purple-600/20 to-blue-600/20 rounded-2xl p-8 border border-purple-500/30 max-w-4xl mx-auto">
-              <h2 className="text-2xl font-semibold text-white mb-4">Our Mission</h2>
-              <p className="text-gray-300 text-lg leading-relaxed">
-                Refrax is a completely free educational platform designed to democratize access to data analytics, 
-                financial modeling, and mathematical visualization. We believe that learning complex concepts 
-                should be interactive, engaging, and accessible to everyone. Our platform provides hands-on 
-                tools for 2D and 3D mathematical visualization, financial data analysis, and comprehensive 
-                learning resources - all completely free with no registration required.
+        <div className="max-w-3xl mx-auto px-6 py-16 flex items-center justify-center">
+          {/* Centered Profile Card */}
+          <div className="w-full bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-10 text-center hover:bg-white/15 transition-colors shadow-lg">
+            <div className="flex flex-col items-center">
+              <img
+                src="/rohanphoto.jpg"
+                alt="Rohan Malhotra"
+                className="w-40 h-40 rounded-full object-cover border-4 border-purple-500/50 shadow-lg mb-6"
+              />
+              <h1 className="text-4xl md:text-5xl font-bold text-white">About Me</h1>
+              <h2 className="mt-3 text-2xl font-semibold text-white">Rohan Malhotra</h2>
+              <p className="text-purple-400">Founder & Developer</p>
+              <p className="mt-4 text-gray-300 leading-relaxed">
+                Pursuing a degree in Computer Science and Economics with a Mathematics minor at New York University,
+                with an educational path designed around interdisciplinary problem‑solving. Past experiences include
+                contributing to a NASA CubeSat imaging systems proposal, building data‑driven stock market prediction
+                models, and developing Refrax — a platform that applies advanced analytics and interactive
+                visualization to complex financial and technical challenges. Committed to leveraging technology to
+                drive impactful, resource‑conscious solutions in finance and beyond.
               </p>
+
+              <div className="mt-6 grid sm:grid-cols-3 gap-4 w-full text-left">
+                <div className="bg-white/10 backdrop-blur-md rounded-xl border border-white/20 p-4 shadow">
+                  <h3 className="text-sm font-semibold text-white mb-2">Education</h3>
+                  <p className="text-sm text-gray-300">B.A. Computer Science & Economics; Math Minor</p>
+                  <p className="text-xs text-gray-400">New York University</p>
+                </div>
+                <div className="bg-white/10 backdrop-blur-md rounded-xl border border-white/20 p-4 shadow">
+                  <h3 className="text-sm font-semibold text-white mb-2">Research</h3>
+                  <p className="text-sm text-gray-300">Virginia Tech Hume Center — CubeSat imaging systems, signal processing, autonomy</p>
+                  <p className="text-xs text-gray-400">Supported NASA‑focused proposal work</p>
+                </div>
+                <div className="bg-white/10 backdrop-blur-md rounded-xl border border-white/20 p-4 shadow">
+                  <h3 className="text-sm font-semibold text-white mb-2">Work Experience</h3>
+                  <ul className="text-sm text-gray-300 list-disc pl-4 space-y-1">
+                    <li>ML Intern — ARESS Software (Summer 2025)</li>
+                    <li>Business Analyst Intern — Y‑Axis Overseas (Summer 2024)</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-6 flex flex-wrap items-center justify-center gap-2">
+              <span className="px-3 py-1 bg-purple-500/20 text-purple-300 text-xs rounded-full">Python</span>
+              <span className="px-3 py-1 bg-blue-500/20 text-blue-300 text-xs rounded-full">React</span>
+              <span className="px-3 py-1 bg-green-500/20 text-green-300 text-xs rounded-full">Finance</span>
+              <span className="px-3 py-1 bg-orange-500/20 text-orange-300 text-xs rounded-full">ML</span>
+            </div>
+
+            <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <Button
+                asChild
+                className="rounded-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500"
+              >
+                <a href="/rohanmalhotra_.pdf" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2">
+                  <span>📄</span>
+                  Resume
+                </a>
+              </Button>
+              <Button
+                asChild
+                className="rounded-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600"
+              >
+                <a href="https://www.linkedin.com/in/rohanamal/" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2">
+                  <LinkedInIcon className="w-5 h-5" />
+                  <span>LinkedIn</span>
+                </a>
+              </Button>
+              <Button
+                asChild
+                className="rounded-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500"
+              >
+                <a
+                  href="https://github.com/rohanmalhotra0"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2"
+                >
+                  <GitHubIcon className="w-5 h-5" />
+                  GitHub
+                </a>
+              </Button>
+              <Button
+                asChild
+                className="rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500"
+              >
+                <a href="https://rohanm.org/" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2">
+                  <GlobeIcon className="w-5 h-5" />
+                  <span>Website</span>
+                </a>
+              </Button>
             </div>
           </div>
-
-          {/* Team Members Section */}
-          <div className="grid lg:grid-cols-2 gap-12">
-            {/* Rohan Malhotra */}
-            <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-8 hover:bg-white/10 transition-colors">
-              <div className="flex flex-col items-center text-center mb-6">
-                <div className="relative mb-6">
-                  <img
-                    src="/rohanphoto.jpg"
-                    alt="Rohan Malhotra"
-                    className="w-32 h-32 rounded-full object-cover border-4 border-purple-500/50 shadow-lg"
-                  />
+        </div>
+        {/* Resume-style sections */}
+        <div className="max-w-5xl mx-auto px-6 pb-20 space-y-10">
+          {/* Education */}
+          <section className="space-y-4">
+            <h3 className="text-xl font-semibold text-white">Education</h3>
+            <div className="grid gap-4">
+              <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-5 shadow">
+                <div className="flex items-center justify-between gap-4 flex-wrap">
+                  <h4 className="text-white font-semibold">New York University, Courant Institute</h4>
+                  <span className="text-xs text-gray-400">Aug 2025 – May 2027</span>
                 </div>
-                <h2 className="text-2xl font-bold text-white mb-2">Rohan Malhotra</h2>
-                <p className="text-purple-400 font-medium">Founder & Developer</p>
-                <p className="text-gray-400 text-sm">Computer Science & Economics, NYU</p>
+                <p className="text-sm text-gray-300 mt-1">B.A. Computer Science & Economics; Mathematics Minor · Combined GPA: 3.75</p>
               </div>
-
-              <div className="space-y-4 text-gray-300 mb-6">
-                <div>
-                  <h3 className="text-lg font-semibold text-white mb-2">Education</h3>
-                  <p className="text-sm">BS Computer Science & Economics, Mathematics Minor</p>
-                  <p className="text-sm text-gray-400">New York University</p>
+              <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-5 shadow">
+                <div className="flex items-center justify-between gap-4 flex-wrap">
+                  <h4 className="text-white font-semibold">Virginia Tech College of Engineering</h4>
+                  <span className="text-xs text-gray-400">Aug 2024 – May 2025</span>
                 </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-white mb-2">🔬 Research</h3>
-                  <p className="text-sm">Virginia Tech Hume Center - CubeSats & Signal Processing</p>
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-white mb-2">Goals</h3>
-                  <p className="text-sm">FCAS Actuary • Quantitative Finance • Full-Stack Development</p>
-                </div>
-              </div>
-
-              <div className="flex flex-wrap gap-2 mb-6">
-                <span className="px-3 py-1 bg-purple-500/20 text-purple-300 text-xs rounded-full">Python</span>
-                <span className="px-3 py-1 bg-blue-500/20 text-blue-300 text-xs rounded-full">React</span>
-                <span className="px-3 py-1 bg-green-500/20 text-green-300 text-xs rounded-full">Finance</span>
-                <span className="px-3 py-1 bg-orange-500/20 text-orange-300 text-xs rounded-full">ML</span>
-              </div>
-
-              <div className="flex gap-3">
-                <Button
-                  asChild
-                  className="flex-1 rounded-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500"
-                >
-                  <a href="/rohanmalhotra_.pdf" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2">
-                    <span>📄</span>
-                    Resume
-                  </a>
-                </Button>
-                <Button
-                  asChild
-                  className="rounded-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600"
-                >
-                  <a href="https://www.linkedin.com/in/rohanamal/" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2">
-                    <LinkedInIcon className="w-5 h-5" />
-                    <span>LinkedIn</span>
-                  </a>
-                </Button>
-                <Button
-  asChild
-  className="rounded-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500"
->
-  <a
-    href="https://github.com/rohanmalhotra0"
-    target="_blank"
-    rel="noopener noreferrer"
-    className="flex items-center justify-center gap-2"
-  >
-    <GitHubIcon className="w-5 h-5" />
-    GitHub
-  </a>
-</Button>
-                <Button
-                  asChild
-                  className="rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500"
-                >
-                  <a href="https://rohanm.org/" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2">
-                    <GlobeIcon className="w-5 h-5" />
-                    <span>Website</span>
-                  </a>
-                </Button>
+                <p className="text-sm text-gray-300 mt-1">B.S. Computer Science · Transferred</p>
               </div>
             </div>
+          </section>
 
-            {/* Mihir Ganesan */}
-            <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-8 hover:bg-white/10 transition-colors">
-              <div className="flex flex-col items-center text-center mb-6">
-                <div className="relative mb-6">
-                  <img
-                    src="/mihir-ganesan.jpeg"
-                    alt="Mihir Ganesan"
-                    className="w-32 h-32 rounded-full object-cover border-4 border-blue-500/50 shadow-lg"
-                  />
-                </div>
-                <h2 className="text-2xl font-bold text-white mb-2">Mihir Ganesan</h2>
-                <p className="text-blue-400 font-medium">Business Lead</p>
-                <p className="text-gray-400 text-sm">Business and Computer Science, NYU</p>
+          {/* Technical Skills & Certifications */}
+          <section className="space-y-4">
+            <h3 className="text-xl font-semibold text-white">Technical Skills & Certifications</h3>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-4 shadow">
+                <h4 className="text-sm font-semibold text-white mb-2">Actuarial Exams</h4>
+                <p className="text-sm text-gray-300">Taken: Exam P, Exam FM · Scheduled: MAS‑I (Mar), MAS‑II (Jun)</p>
               </div>
-
-              <div className="space-y-4 text-gray-300 mb-6">
-                <div>
-                  <h3 className="text-lg font-semibold text-white mb-2">Education</h3>
-                  <p className="text-sm">BS Business and Computer Science</p>
-                  <p className="text-sm text-gray-400">NYU Stern</p>
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-white mb-2">Expertise</h3>
-                  <p className="text-sm">Business • Finance • Product Management</p>
-                </div>
-               
+              <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-4 shadow">
+                <h4 className="text-sm font-semibold text-white mb-2">Languages</h4>
+                <p className="text-sm text-gray-300">Python, Java, C/C++, SQL, R, JavaScript, HTML/CSS, MATLAB</p>
               </div>
-
-              
-
-              <div className="flex gap-3">
-                <Button
-                  asChild
-                  className="rounded-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600"
-                >
-                  <a href="https://www.linkedin.com/in/mihir-ganesan/" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2">
-                    <LinkedInIcon className="w-5 h-5" />
-                    <span>LinkedIn</span>
-                  </a>
-                </Button>
+              <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-4 shadow">
+                <h4 className="text-sm font-semibold text-white mb-2">Technologies</h4>
+                <p className="text-sm text-gray-300">TensorFlow, Flask, React, Three.js, Node/Next.js, WebSockets, Git, Linux, Excel/VBA</p>
               </div>
             </div>
-          </div>
+          </section>
+
+          {/* Experience (Research) */}
+          <section className="space-y-4">
+            <h3 className="text-xl font-semibold text-white">Experience</h3>
+            <div className="grid gap-4">
+              <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-5 shadow">
+                <div className="flex items-center justify-between gap-4 flex-wrap">
+                  <h4 className="text-white font-semibold">Aerospace Research Assistant — Hume Center (VT)</h4>
+                  <span className="text-xs text-gray-400">Aug 2024 – May 2025 · Blacksburg, VA</span>
+                </div>
+                <ul className="mt-2 text-sm text-gray-300 list-disc pl-5 space-y-1">
+                  <li>Researched imaging & signal‑processing techniques for environmental monitoring.</li>
+                  <li>Co‑authored a NASA CubeSat Launch Initiative proposal; autonomous imaging integration.</li>
+                </ul>
+              </div>
+            </div>
+          </section>
+
+          {/* Work Experience */}
+          <section className="space-y-4">
+            <h3 className="text-xl font-semibold text-white">Work Experience</h3>
+            <div className="grid gap-4">
+              <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-5 shadow">
+                <div className="flex items-center justify-between gap-4 flex-wrap">
+                  <h4 className="text-white font-semibold">Machine Learning Intern — ARESS Software</h4>
+                  <span className="text-xs text-gray-400">Jun 2025 – Aug 2025 · Chatham, NJ</span>
+                </div>
+                <ul className="mt-2 text-sm text-gray-300 list-disc pl-5 space-y-1">
+                  <li>Built LASSO/Ridge prototypes in Python (scikit‑learn) for IT‑ticket ETA forecasting; projected 15% SLA improvement.</li>
+                  <li>Created interactive Excel dashboards for real‑time reporting and prioritization.</li>
+                </ul>
+              </div>
+              <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-5 shadow">
+                <div className="flex items-center justify-between gap-4 flex-wrap">
+                  <h4 className="text-white font-semibold">Business Analyst Intern — Y‑Axis Overseas Careers</h4>
+                  <span className="text-xs text-gray-400">Jun 2024 – Aug 2024 · Blacksburg, VA</span>
+                </div>
+                <ul className="mt-2 text-sm text-gray-300 list-disc pl-5 space-y-1">
+                  <li>Cleaned/normalized SQL data for predictive models of approval rates and timelines; cut prep time by 15%.</li>
+                  <li>Built Excel dashboards and translated forecasts into actionable recommendations.</li>
+                </ul>
+              </div>
+            </div>
+          </section>
+
+          {/* Leadership */}
+          <section className="space-y-4">
+            <h3 className="text-xl font-semibold text-white">Leadership</h3>
+            <div className="grid gap-4">
+              <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-5 shadow">
+                <div className="flex items-center justify-between gap-4 flex-wrap">
+                  <h4 className="text-white font-semibold">Pivot at VT — Co‑President & Lead Software Engineer</h4>
+                  <span className="text-xs text-gray-400">Sep 2024 – Present</span>
+                </div>
+                <ul className="mt-2 text-sm text-gray-300 list-disc pl-5 space-y-1">
+                  <li>Led 40‑member org, coordinated teams, managed GitHub workflows and algorithm integration.</li>
+                  <li>Built a Raspberry Pi automated trading bot (live data, Python, Alpaca API), up to 68% predictive accuracy.</li>
+                </ul>
+              </div>
+              <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-5 shadow">
+                <div className="flex items-center justify-between gap-4 flex-wrap">
+                  <h4 className="text-white font-semibold">Special Olympics — Intern & Volunteer</h4>
+                  <span className="text-xs text-gray-400">Sep 2019 – Present</span>
+                </div>
+                <p className="mt-2 text-sm text-gray-300">Interned at a school for students with disabilities (math) and served as a 5‑year volunteer.</p>
+              </div>
+            </div>
+          </section>
         </div>
       </div>
       

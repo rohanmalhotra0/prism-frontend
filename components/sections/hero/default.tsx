@@ -30,6 +30,11 @@ export default function Hero({
   const buttonRef = useRef<HTMLAnchorElement | null>(null);
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
   const dotPositionRef = useRef<{ x: number; y: number } | null>(null);
+  const marqueeRef = useRef<HTMLDivElement | null>(null);
+  const isDraggingRef = useRef<boolean>(false);
+  const lastXRef = useRef<number>(0);
+  const lastTimeRef = useRef<number>(0);
+  const BASE_DURATION_SECONDS = 50;
 
   // Typewriter animation state
   const [displayedText, setDisplayedText] = useState("");
@@ -39,10 +44,26 @@ export default function Hero({
   const [hasStarted, setHasStarted] = useState(false);
 
   const texts = [
-    "Refrax.io",
+    "Refrax",
     "Financial Modeling",
     "Risk Analysis",
     "General Modeling"
+  ];
+
+  // Slideshow images (reflect current files in 'Refrax Photos' with titles and links)
+  const slideshowItems = [
+    { src: "/Refrax Photos/learn.png", title: "Learn", href: "/learn" },
+    { src: "/Refrax Photos/math.png", title: "Math Tools", href: "/general" },
+    { src: "/Refrax Photos/machineLearning.png", title: "Machine Learning", href: "/learn/machine-learning" },
+    { src: "/Refrax Photos/2DDatasets.png", title: "2D Datasets", href: "/dashboard/datasets" },
+    { src: "/Refrax Photos/2DstockModel.png", title: "2D Stock Modeling", href: "/learn/financial-modeling" },
+    { src: "/Refrax Photos/3DLineCharts.png", title: "3D Financial Charts", href: "/financePage" },
+    { src: "/Refrax Photos/spiral.png", title: "3D Datasets", href: "/general" },
+    { src: "/Refrax Photos/stockChart3D.png", title: "3D Financial Charts", href: "/financePage" },
+    { src: "/Refrax Photos/Research.png", title: "Research", href: "/research" },
+    { src: "/Refrax Photos/documentation.png", title: "Documentation", href: "/docs" },
+    { src: "/Refrax Photos/aboutMe.png", title: "About Me", href: "/about" },
+    
   ];
 
   // Typewriter animation effect
@@ -84,6 +105,44 @@ export default function Hero({
 
     return () => clearTimeout(startDelay);
   }, []);
+
+  // Marquee interaction helpers
+  const pauseMarquee = () => {
+    if (marqueeRef.current) {
+      marqueeRef.current.style.animationPlayState = "paused";
+    }
+  };
+  const resumeMarquee = (durationSeconds: number = BASE_DURATION_SECONDS, direction: "normal" | "reverse" = "normal") => {
+    const node = marqueeRef.current;
+    if (!node) return;
+    node.style.animationDuration = `${durationSeconds}s`;
+    node.style.animationDirection = direction;
+    node.style.animationPlayState = "running";
+  };
+  const handlePointerDown = (clientX: number) => {
+    isDraggingRef.current = true;
+    lastXRef.current = clientX;
+    lastTimeRef.current = performance.now();
+    pauseMarquee();
+  };
+  const handlePointerMove = (clientX: number) => {
+    if (!isDraggingRef.current) return;
+    const now = performance.now();
+    const dx = clientX - lastXRef.current; // right positive
+    const dt = Math.max(1, now - lastTimeRef.current);
+    const velocityPxPerMs = Math.abs(dx) / dt;
+    const direction: "normal" | "reverse" = dx < 0 ? "normal" : "reverse";
+    // Map velocity to a speed factor [1, 6]
+    const speedFactor = Math.min(6, Math.max(1, velocityPxPerMs * 12));
+    const duration = BASE_DURATION_SECONDS / speedFactor;
+    resumeMarquee(duration, direction);
+    lastXRef.current = clientX;
+    lastTimeRef.current = now;
+  };
+  const handlePointerUp = () => {
+    isDraggingRef.current = false;
+    resumeMarquee(BASE_DURATION_SECONDS, "normal");
+  };
 
   useEffect(() => {
     const container = containerRef.current;
@@ -225,6 +284,60 @@ export default function Hero({
           </div>
         </div>
 
+        {/* Image Slideshow Section - moved above YouTube and full-bleed */}
+        <div className="relative w-screen left-1/2 -translate-x-1/2 pt-16">
+          <div className="px-4">
+            <h3 className="text-2xl font-bold text-center text-white mb-8 animate-appear opacity-0 delay-1200">
+           
+            </h3>
+
+            {/* Modern marquee-style carousel */}
+            <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm animate-appear opacity-0 delay-1400 marquee-mask">
+              <div
+                ref={marqueeRef}
+                className="marquee-track"
+                onMouseDown={(e) => handlePointerDown(e.clientX)}
+                onMouseMove={(e) => handlePointerMove(e.clientX)}
+                onMouseUp={handlePointerUp}
+                onMouseLeave={handlePointerUp}
+                onTouchStart={(e) => handlePointerDown(e.touches[0].clientX)}
+                onTouchMove={(e) => handlePointerMove(e.touches[0].clientX)}
+                onTouchEnd={handlePointerUp}
+              >
+                {/* Dynamic set A */}
+                {slideshowItems.map((item, idx) => (
+                  <a key={`a-${idx}`} href={item.href || '#'} className="flex-shrink-0 w-[320px] sm:w-[420px] md:w-[520px] group">
+                    <div className="relative" style={{ aspectRatio: '16/9' }}>
+                      <img src={item.src.replaceAll(' ', '%20')} alt={item.title || 'Refrax'} className="w-full h-full object-cover" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                      {item.title && (
+                        <div className="absolute bottom-4 left-4 text-white">
+                          <h4 className="text-lg font-semibold group-hover:text-blue-200 transition-colors">{item.title}</h4>
+                        </div>
+                      )}
+                    </div>
+                  </a>
+                ))}
+
+                {/* Dynamic set B (duplicate for seamless loop) */}
+                {slideshowItems.map((item, idx) => (
+                  <a key={`b-${idx}`} href={item.href || '#'} className="flex-shrink-0 w-[320px] sm:w-[420px] md:w-[520px] group">
+                    <div className="relative" style={{ aspectRatio: '16/9' }}>
+                      <img src={item.src.replaceAll(' ', '%20')} alt={item.title || 'Refrax'} className="w-full h-full object-cover" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                      {item.title && (
+                        <div className="absolute bottom-4 left-4 text-white">
+                          <h4 className="text-lg font-semibold group-hover:text-blue-200 transition-colors">{item.title}</h4>
+                        </div>
+                      )}
+                    </div>
+                  </a>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* YouTube Video Section */}
         <div className="relative w-full pt-12">
           <MockupFrame
@@ -259,6 +372,8 @@ export default function Hero({
             className="animate-appear-zoom opacity-0 delay-1000"
           />
         </div>
+
+        
       </div>
     </Section>
   );

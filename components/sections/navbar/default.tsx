@@ -255,7 +255,7 @@ export default function Navbar({
                         <div className="w-6 h-6 bg-gradient-to-br from-green-500 to-blue-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
                           <User className="w-3 h-3 text-white" />
                         </div>
-                        <span className="font-semibold text-white group-hover:text-green-200 transition-colors text-xs">About Us</span>
+                        <span className="font-semibold text-white group-hover:text-green-200 transition-colors text-xs">About Me</span>
                       </a>
                       <a 
                         href="/docs" 
