@@ -60,9 +60,13 @@ export default function Hero({
     { src: "/Refrax Photos/3DLineCharts.png", title: "3D Financial Charts", href: "/financePage" },
     { src: "/Refrax Photos/spiral.png", title: "3D Datasets", href: "/general" },
     { src: "/Refrax Photos/stockChart3D.png", title: "3D Financial Charts", href: "/financePage" },
-    { src: "/Refrax Photos/Research.png", title: "Research", href: "/research" },
     { src: "/Refrax Photos/documentation.png", title: "Documentation", href: "/docs" },
     { src: "/Refrax Photos/aboutMe.png", title: "About Me", href: "/about" },
+    { src: "/Refrax Photos/machineLearning.png", title: "Machine Learning", href: "/learn/machine-learning" },
+    { src: "/Refrax Photos/2DDatasets.png", title: "2D Datasets", href: "/dashboard/datasets" },
+    { src: "/Refrax Photos/2DstockModel.png", title: "2D Stock Modeling", href: "/learn/financial-modeling" },
+    { src: "/Refrax Photos/3DLineCharts.png", title: "3D Financial Charts", href: "/financePage" },
+    { src: "/Refrax Photos/spiral.png", title: "3D Datasets", href: "/general" },
     
   ];
 
