@@ -26,10 +26,8 @@ export default function Hero({
   className,
 }: HeroProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const dotRef = useRef<HTMLDivElement | null>(null);
   const buttonRef = useRef<HTMLAnchorElement | null>(null);
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
-  const dotPositionRef = useRef<{ x: number; y: number } | null>(null);
   const marqueeRef = useRef<HTMLDivElement | null>(null);
   const isDraggingRef = useRef<boolean>(false);
   const lastXRef = useRef<number>(0);
@@ -149,87 +147,7 @@ export default function Hero({
   };
 
   useEffect(() => {
-    const container = containerRef.current;
-    const dot = dotRef.current;
-    if (!dot) return;
-
-    // Disable on mobile devices (iOS/Android)
-    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || 
-                     ('ontouchstart' in window) || 
-                     (navigator.maxTouchPoints > 0);
-    
-    if (isMobile) {
-      // Hide the dot on mobile
-      dot.style.display = 'none';
-      return;
-    }
-
-    let animationFrameId = 0;
-
-    // Use saved position or start at center
-    let posX = dotPositionRef.current?.x ?? window.innerWidth / 2;
-    let posY = dotPositionRef.current?.y ?? window.innerHeight / 2;
-    let velX = 0;
-    let velY = 0;
-    let targetX = posX;
-    let targetY = posY;
-    let hasInitializedToCursor = dotPositionRef.current !== null;
-
-    const stiffness = 0.08; // lower stiffness to reduce oscillation
-    const damping = 0.9;    // higher damping for less bounce
-
-    const setTransform = (x: number, y: number) => {
-      dot.style.transform = `translate3d(${x}px, ${y}px, 0)`;
-    };
-
-    // No nav gating; always follow cursor
-
-    const onMove = (e: MouseEvent) => {
-      const nextX = e.clientX;
-      const nextY = e.clientY;
-      if (!hasInitializedToCursor) {
-        // Snap to cursor on first move
-        posX = nextX;
-        posY = nextY;
-        targetX = nextX;
-        targetY = nextY;
-        hasInitializedToCursor = true;
-        dotPositionRef.current = { x: nextX, y: nextY };
-        setTransform(posX, posY);
-        return;
-      }
-      // Always follow cursor with smooth interpolation
-      targetX = nextX;
-      targetY = nextY;
-    };
-
-    const animate = () => {
-      const forceX = (targetX - posX) * stiffness;
-      const forceY = (targetY - posY) * stiffness;
-
-      velX = (velX + forceX) * damping;
-      velY = (velY + forceY) * damping;
-
-      
-
-      posX += velX;
-      posY += velY;
-
-      // Save position to ref to persist across re-renders
-      dotPositionRef.current = { x: posX, y: posY };
-      setTransform(posX, posY);
-      animationFrameId = requestAnimationFrame(animate);
-    };
-
-    setTransform(posX, posY);
-    animate();
-
-    window.addEventListener("mousemove", onMove);
-
-    return () => {
-      window.removeEventListener("mousemove", onMove);
-      cancelAnimationFrame(animationFrameId);
-    };
+    // Cursor-following dot removed
   }, []);
   return (
     <Section
@@ -240,19 +158,7 @@ export default function Hero({
     >
 
       <div ref={containerRef} className="relative max-w-container mx-auto flex flex-col gap-12 pt-16 sm:gap-24">
-        {/* Interactive glowing dot (physics-based) */}
-        <div
-          ref={dotRef}
-          className="pointer-events-none fixed z-[9999] -translate-x-1/2 -translate-y-1/2"
-          style={{ left: 0, top: 0 }}
-        >
-          <div className="relative">
-            <div className="absolute -inset-16 rounded-full bg-gradient-to-r from-purple-500/45 via-purple-600/35 to-purple-500/45 blur-[72px] animate-pulse" />
-            <div className="absolute -inset-10 rounded-full bg-gradient-to-r from-purple-500/60 via-purple-500/40 to-purple-500/60 blur-3xl" />
-            <div className="absolute -inset-6 rounded-full bg-gradient-to-r from-purple-400/70 via-purple-500/50 to-purple-400/70 blur-2xl" />
-            <div className="relative h-3 w-3 rounded-full bg-white shadow-[0_0_55px_20px_rgba(147,51,234,0.7)]" />
-          </div>
-        </div>
+        {/* Removed interactive glowing cursor dot */}
         <div className="flex flex-col items-center gap-6 text-center sm:gap-12 relative">
           <h1 className="animate-appear text-white relative z-10 text-4xl font-bold drop-shadow-2xl sm:text-6xl md:text-8xl min-h-[1.2em]">
             {displayedText}
