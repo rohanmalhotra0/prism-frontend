@@ -33,7 +33,7 @@ export default function AboutPage() {
       <HeroBackground position="fixed" backgroundColor="rgba(0,0,0,1)" className="z-0" blendModeClassName="mix-blend-screen" />
       
       {/* Background gradient */}
-      <div className="fixed inset-0 bg-gradient-to-br from-purple-900/20 via-blue-900/20 to-indigo-900/20 pointer-events-none z-5"></div>
+      <div className="fixed inset-0 bg-gradient-to-br from-blue-900/20 via-blue-900/20 to-blue-900/20 pointer-events-none z-5"></div>
       
       {/* Navbar */}
       <Navbar />
@@ -47,11 +47,11 @@ export default function AboutPage() {
               <img
                 src="/rohanphoto.jpg"
                 alt="Rohan Malhotra"
-                className="w-40 h-40 rounded-full object-cover border-4 border-purple-500/50 shadow-lg mb-6"
+                className="w-40 h-40 rounded-full object-cover border-4 border-[#1877F2]/50 shadow-lg mb-6"
               />
               <h1 className="text-4xl md:text-5xl font-bold text-white">About Me</h1>
               <h2 className="mt-3 text-2xl font-semibold text-white">Rohan Malhotra</h2>
-              <p className="text-purple-400">Founder & Developer</p>
+              <p className="text-[#1877F2]">Founder & Developer</p>
               <p className="mt-4 text-gray-300 leading-relaxed">
                 Pursuing a degree in Computer Science and Economics with a Mathematics minor at New York University,
                 with an educational path designed around interdisciplinary problem‑solving. Past experiences include
@@ -83,16 +83,16 @@ export default function AboutPage() {
             </div>
 
             <div className="mt-6 flex flex-wrap items-center justify-center gap-2">
-              <span className="px-3 py-1 bg-purple-500/20 text-purple-300 text-xs rounded-full">Python</span>
-              <span className="px-3 py-1 bg-blue-500/20 text-blue-300 text-xs rounded-full">React</span>
-              <span className="px-3 py-1 bg-green-500/20 text-green-300 text-xs rounded-full">Finance</span>
-              <span className="px-3 py-1 bg-orange-500/20 text-orange-300 text-xs rounded-full">ML</span>
+              <span className="px-3 py-1 bg-[#1877F2]/20 text-[#1877F2] text-xs rounded-full">Python</span>
+              <span className="px-3 py-1 bg-[#1877F2]/20 text-[#1877F2] text-xs rounded-full">React</span>
+              <span className="px-3 py-1 bg-[#1877F2]/20 text-[#1877F2] text-xs rounded-full">Finance</span>
+              <span className="px-3 py-1 bg-[#1877F2]/20 text-[#1877F2] text-xs rounded-full">ML</span>
             </div>
 
             <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-3">
               <Button
                 asChild
-                className="rounded-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500"
+                className="rounded-full bg-[#1877F2] hover:bg-[#1877F2]"
               >
                 <a href="/rohanmalhotra_.pdf" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2">
                   <span>📄</span>
@@ -101,7 +101,7 @@ export default function AboutPage() {
               </Button>
               <Button
                 asChild
-                className="rounded-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600"
+                className="rounded-full bg-[#1877F2] hover:bg-[#1877F2]"
               >
                 <a href="https://www.linkedin.com/in/rohanamal/" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2">
                   <LinkedInIcon className="w-5 h-5" />
@@ -110,7 +110,7 @@ export default function AboutPage() {
               </Button>
               <Button
                 asChild
-                className="rounded-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500"
+                className="rounded-full bg-[#1877F2] hover:bg-[#1877F2]"
               >
                 <a
                   href="https://github.com/rohanmalhotra0"
@@ -124,7 +124,7 @@ export default function AboutPage() {
               </Button>
               <Button
                 asChild
-                className="rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500"
+                className="rounded-full bg-[#1877F2] hover:bg-[#1877F2]"
               >
                 <a href="https://rohanm.org/" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2">
                   <GlobeIcon className="w-5 h-5" />

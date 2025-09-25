@@ -94,7 +94,7 @@ export default function ChatBot() {
       {!open ? (
         <button
           onClick={() => setOpen(true)}
-          className="group relative rounded-full bg-gradient-to-r from-purple-600 to-blue-600 text-white px-6 py-4 shadow-xl hover:scale-105 transition-all duration-300 hover:shadow-2xl"
+          className="group relative rounded-full bg-[#1877F2] text-white px-6 py-4 shadow-xl hover:scale-105 transition-all duration-300 hover:shadow-2xl"
         >
           <div className="flex items-center gap-2">
             <BarChart3 className="w-5 h-5" />
@@ -105,9 +105,9 @@ export default function ChatBot() {
       ) : (
         <div className="w-96 h-[520px] bg-black/95 backdrop-blur-xl border border-white/20 rounded-3xl shadow-2xl flex flex-col overflow-hidden">
           {/* Header */}
-          <div className="flex justify-between items-center bg-gradient-to-r from-purple-600/20 to-blue-600/20 px-6 py-4 border-b border-white/10">
+          <div className="flex justify-between items-center bg-[#1877F2]/20 px-6 py-4 border-b border-white/10">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center">
+              <div className="w-8 h-8 bg-[#1877F2] rounded-full flex items-center justify-center">
                 <Bot className="w-4 h-4 text-white" />
               </div>
               <div>
@@ -170,13 +170,13 @@ export default function ChatBot() {
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && handleSend()}
                 placeholder="Message Tomas, King of Analytics..."
-                className="flex-1 rounded-2xl bg-white/10 text-white px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 border border-white/20 placeholder-gray-400"
+                className="flex-1 rounded-2xl bg-white/10 text-white px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#1877F2] border border-white/20 placeholder-gray-400"
                 disabled={isLoading}
               />
               <button
                 onClick={handleSend}
                 disabled={isLoading || !input.trim()}
-                className="rounded-2xl bg-gradient-to-r from-purple-600 to-blue-600 px-6 py-3 text-white font-medium hover:opacity-90 disabled:opacity-50 transition-all"
+                className="rounded-2xl bg-[#1877F2] px-6 py-3 text-white font-medium hover:opacity-90 disabled:opacity-50 transition-all"
               >
                 {isLoading ? (
                   <Loader2 className="w-5 h-5 animate-spin" />

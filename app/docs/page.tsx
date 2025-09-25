@@ -32,7 +32,7 @@ export default function DocumentationPage() {
       <HeroBackground position="fixed" backgroundColor="rgba(0,0,0,1)" className="z-0" blendModeClassName="mix-blend-screen" />
       
       {/* Background gradient */}
-      <div className="fixed inset-0 bg-gradient-to-br from-purple-900/20 via-blue-900/20 to-indigo-900/20 pointer-events-none z-5"></div>
+      <div className="fixed inset-0 bg-gradient-to-br from-blue-900/20 via-blue-900/20 to-blue-900/20 pointer-events-none z-5"></div>
       
       {/* Main content */}
       <div className="relative z-10 min-h-screen">
@@ -44,7 +44,7 @@ export default function DocumentationPage() {
           <div className="max-w-7xl mx-auto text-center">
             
             <h1 className="text-6xl lg:text-7xl font-black mb-8 bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text text-transparent">
-              Developer Guide
+              Documentation
             </h1>
             <p className="text-xl lg:text-2xl text-gray-400 max-w-4xl mx-auto leading-relaxed mb-12">
               Complete technical documentation for Refrax's free educational platform for data analytics and mathematical visualization
@@ -88,7 +88,7 @@ export default function DocumentationPage() {
               <div className="sticky top-32">
                 <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
                   <div className="flex items-center gap-3 mb-6">
-                    <FileText className="w-6 h-6 text-purple-400" />
+                    <FileText className="w-6 h-6 text-[#1877F2]" />
                     <h3 className="text-xl font-bold text-white">Table of Contents</h3>
                   </div>
                   <nav className="space-y-2">
@@ -100,7 +100,7 @@ export default function DocumentationPage() {
                           onClick={() => setActiveSection(section.id)}
                           className={`w-full text-left px-4 py-4 rounded-xl transition-all duration-300 group ${
                             activeSection === section.id
-                              ? "bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg transform scale-105"
+                              ? "bg-[#1877F2] text-white shadow-lg transform scale-105"
                               : "text-gray-400 hover:text-white hover:bg-white/10 hover:transform hover:scale-105"
                           }`}
                         >
@@ -138,7 +138,7 @@ export default function DocumentationPage() {
                 {activeSection === "overview" && (
                   <div>
                     <div className="flex items-center gap-4 mb-8">
-                      <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-blue-500 rounded-2xl flex items-center justify-center">
+                      <div className="w-12 h-12 bg-[#1877F2] rounded-2xl flex items-center justify-center">
                         <BookOpen className="w-6 h-6 text-white" />
                       </div>
                       <div>
@@ -148,7 +148,7 @@ export default function DocumentationPage() {
                     </div>
                     
                     <div className="space-y-8">
-                      <div className="bg-gradient-to-r from-purple-600/20 to-blue-600/20 rounded-2xl p-8 border border-purple-500/30">
+                      <div className="bg-[#1877F2]/20 rounded-2xl p-8 border border-[#1877F2]/30">
                         <div className="flex items-center gap-3 mb-4">
                           <Lightbulb className="w-6 h-6 text-yellow-400" />
                           <h3 className="text-2xl font-semibold text-white">What is Refrax?</h3>
@@ -165,7 +165,7 @@ export default function DocumentationPage() {
 
                       <div className="bg-white/5 rounded-xl p-6 border border-white/10">
                         <div className="flex items-center gap-3 mb-6">
-                          <Code className="w-6 h-6 text-purple-400" />
+                          <Code className="w-6 h-6 text-[#1877F2]" />
                           <h3 className="text-xl font-semibold text-white">Technology Stack</h3>
                         </div>
                         <div className="grid md:grid-cols-3 gap-6">

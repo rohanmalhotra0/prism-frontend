@@ -39,7 +39,7 @@ import { Data as PlotlyData } from "plotly.js";
 // ---- Types ----
 type ViewMode = "actuals" | "forecast" | "scenarios";
 type DataSource = "generated" | "uploaded";
-type DatasetId = "finance" | "customers" | "product" | "uploaded";
+type DatasetId = "unified" | "uploaded";
 
 interface KPICard {
   title: string;
@@ -61,7 +61,7 @@ interface Dataset {
 export default function BusinessMetricsPage() {
   // ---- UI State ----
   const [dateRange, setDateRange] = useState("quarter");
-  const [selectedDataset, setSelectedDataset] = useState<DatasetId>("finance");
+  const [selectedDataset, setSelectedDataset] = useState<DatasetId>("unified");
   const [viewMode, setViewMode] = useState<ViewMode>("actuals");
 
   // Upload state
@@ -82,14 +82,13 @@ export default function BusinessMetricsPage() {
   const [pricing, setPricing] = useState(100);
   const [growthRate, setGrowthRate] = useState(20);
 
-  // ---- Datasets (generated vs uploaded) ----
+  // ---- Unified Dataset ----
   const [datasets, setDatasets] = useState<Dataset[]>([]);
   
   useEffect(() => {
+    const unifiedData = generateUnifiedData();
     setDatasets([
-      { id: "finance", name: "Financial Data", type: "finance", data: generateFinancialData() },
-      { id: "customers", name: "Customer Data", type: "customers", data: generateCustomerData() },
-      { id: "product", name: "Product Data", type: "product", data: generateProductData() },
+      { id: "unified", name: "Business Data", type: "finance", data: unifiedData },
       { id: "uploaded", name: "Uploaded Data", type: "uploaded", data: uploadedData },
     ]);
   }, [uploadedData]);
@@ -238,7 +237,7 @@ export default function BusinessMetricsPage() {
     setUploadedData([]);
     setSelectedFile(null);
     setDataSource("generated");
-    setSelectedDataset("finance");
+    setSelectedDataset("unified");
     setHasGeneratedData(true);
   }
 
@@ -764,16 +763,6 @@ export default function BusinessMetricsPage() {
                   <option value="year">Year</option>
                 </select>
 
-                <select
-                  value={selectedDataset}
-                  onChange={(e) => setSelectedDataset(e.target.value as DatasetId)}
-                  className="px-4 py-2 bg-gray-800 text-white rounded-lg border border-gray-600 focus:border-blue-500 focus:outline-none"
-                >
-                  <option value="finance">Finance</option>
-                  <option value="customers">Customers</option>
-                  <option value="product">Product</option>
-                  {uploadedData.length > 0 && <option value="uploaded">Uploaded Data</option>}
-                </select>
 
                 <div className="flex bg-gray-800 rounded-lg border border-gray-600">
                   <button
@@ -826,7 +815,7 @@ export default function BusinessMetricsPage() {
                       <label
                         htmlFor="business-file-upload"
                         className={`cursor-pointer inline-block px-6 py-3 rounded-lg font-medium transition-colors ${
-                          isProcessingFile ? "bg-gray-600 text-gray-400 cursor-not-allowed" : "bg-gray-600 text-gray-300 hover:bg-gray-500"
+                          isProcessingFile ? "bg-gray-600 text-gray-400 cursor-not-allowed" : "bg-purple-600 text-white hover:bg-purple-700"
                         }`}
                       >
                         {isProcessingFile ? "Processing..." : "Choose File"}
@@ -1077,6 +1066,77 @@ function CardStat({ title, value }: { title: string; value: string }) {
 }
 
 /* ---------- Sample data generators ---------- */
+
+function generateUnifiedData() {
+  const data = [];
+  const baseRevenue = 150000;
+  const baseArr = 1800000;
+  const baseMrr = 150000;
+  let baseChurn = 6.0;
+  let baseCac = 200;
+  let baseLtv = 500;
+  let active = 800;
+  let dau = 3000;
+  let wau = 12000;
+  let mau = 35000;
+  let adoption = 25;
+
+  for (let i = 0; i < 24; i++) {
+    const month = new Date(2025, i).toISOString().slice(0, 7);
+    
+    // Financial metrics
+    const growthFactor = 1 + i * 0.02 + (Math.random() - 0.5) * 0.08;
+    const revenue = Math.round(baseRevenue * growthFactor);
+    const arr = Math.round(baseArr * growthFactor);
+    const mrr = Math.round(baseMrr * growthFactor);
+    
+    // Customer metrics
+    const newCustomers = Math.round(40 + i * 2 + (Math.random() - 0.5) * 15);
+    const churned = Math.round(Math.max(10, 25 - i * 0.8 + (Math.random() - 0.5) * 6));
+    active = Math.max(0, active + newCustomers - churned);
+    const nrr = Math.round((110 + i * 0.8 + (Math.random() - 0.5) * 5) * 10) / 10;
+    
+    // Product metrics
+    dau = Math.round(dau + 180 + (Math.random() - 0.5) * 400);
+    wau = Math.round(wau + 700 + (Math.random() - 0.5) * 1200);
+    mau = Math.round(mau + 1800 + (Math.random() - 0.5) * 2800);
+    adoption = Math.min(100, Math.max(0, adoption + (Math.random() - 0.5) * 2));
+    
+    // Churn and CAC trends
+    baseChurn = Math.max(1, baseChurn - 0.1 + (Math.random() - 0.5) * 0.5);
+    baseCac = Math.max(50, baseCac - 2 + (Math.random() - 0.5) * 10);
+    baseLtv = Math.max(100, baseLtv + 5 + (Math.random() - 0.5) * 20);
+    
+    const arpu = 120 + Math.random() * 20;
+    const grossMargin = Math.round((75 + (Math.random() - 0.5) * 10) * 10) / 10;
+    const ebitda = Math.round((revenue * grossMargin / 100) * 0.8);
+    
+    data.push({
+      month,
+      revenue,
+      arr,
+      mrr,
+      churn: Math.round(baseChurn * 10) / 10,
+      nrr,
+      ltv: Math.round(baseLtv),
+      cac: Math.round(baseCac),
+      grossMargin,
+      ebitda,
+      active,
+      new: newCustomers,
+      churned,
+      dau,
+      wau,
+      mau,
+      adoption: Math.round(adoption * 10) / 10,
+      arpu: Math.round(arpu * 10) / 10,
+      actual: i < 12 ? revenue : null,
+      forecast: i >= 12 ? revenue : null,
+    });
+  }
+  
+  return data;
+}
 
 function generateFinancialData() {
   const data = [];

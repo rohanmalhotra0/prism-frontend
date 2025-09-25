@@ -141,7 +141,7 @@ export default function AIPage() {
       {memoizedHeroBackground}
       
       {/* Background gradient */}
-      <div className="fixed inset-0 bg-gradient-to-br from-purple-900/20 via-blue-900/20 to-indigo-900/20 pointer-events-none z-5"></div>
+      <div className="fixed inset-0 bg-gradient-to-br from-blue-900/20 via-blue-900/20 to-blue-900/20 pointer-events-none z-5"></div>
       
       {/* Navbar */}
       <Navbar />
@@ -151,7 +151,7 @@ export default function AIPage() {
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 bg-white/5 backdrop-blur-sm border-b border-white/10">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center">
+            <div className="w-8 h-8 bg-[#1877F2] rounded-full flex items-center justify-center">
               <Bot className="w-4 h-4 text-white" />
             </div>
             <div>
@@ -188,7 +188,7 @@ export default function AIPage() {
             <div key={i} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"} items-start gap-3`}>
               {/* Avatar for assistant messages */}
               {msg.role === "assistant" && (
-                <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                <div className="w-8 h-8 bg-[#1877F2] rounded-full flex items-center justify-center flex-shrink-0 mt-1">
                   <Bot className="w-4 h-4 text-white" />
                 </div>
               )}
@@ -220,7 +220,7 @@ export default function AIPage() {
               
               {/* Avatar for user messages */}
               {msg.role === "user" && (
-                <div className="w-8 h-8 bg-gradient-to-r from-green-500 to-blue-500 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                <div className="w-8 h-8 bg-[#1877F2] rounded-full flex items-center justify-center flex-shrink-0 mt-1">
                   <User className="w-4 h-4 text-white" />
                 </div>
               )}
@@ -228,7 +228,7 @@ export default function AIPage() {
           ))}
           {isLoading && (
             <div className="flex justify-start items-start gap-3">
-              <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+              <div className="w-8 h-8 bg-[#1877F2] rounded-full flex items-center justify-center flex-shrink-0 mt-1">
                 <Bot className="w-4 h-4 text-white" />
               </div>
               <div className="px-4 py-3 bg-gray-800/50 border border-gray-700/50 text-gray-400 flex items-center gap-2 text-sm rounded-2xl rounded-bl-md">
@@ -263,7 +263,7 @@ export default function AIPage() {
               <button
                 onClick={handleSend}
                 disabled={isLoading || !input.trim()}
-                className="rounded-full bg-gradient-to-r from-purple-600 to-blue-600 p-2 text-white hover:opacity-90 disabled:opacity-50 transition-all duration-200 flex-shrink-0"
+                className="rounded-full bg-[#1877F2] p-2 text-white hover:opacity-90 disabled:opacity-50 transition-all duration-200 flex-shrink-0"
               >
                 {isLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : <SendHorizonal className="w-5 h-5" />}
               </button>
