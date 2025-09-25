@@ -141,6 +141,38 @@ function NavigationComponent({
   }
   return (
     <div className="hidden md:flex items-center space-x-1" data-navigation-menu>
+      {/* Math Tools */}
+      <div className="relative">
+        <button
+          onClick={() => handleDropdownToggle('modeling')}
+          className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-300 hover:text-white transition-all duration-200 rounded-lg hover:bg-white/5"
+        >
+          <Calculator className="w-4 h-4" />
+          Math Tools
+        </button>
+        {openDropdown === 'modeling' && (
+          <div className="absolute top-full left-0 mt-2 w-[550px] bg-white/5 backdrop-blur-md border border-white/10 rounded-xl shadow-2xl z-50">
+            <div className="p-6">
+              <div className="flex items-center gap-2 mb-4">
+                <h3 className="text-sm font-semibold text-white uppercase tracking-wider">Math Tools</h3>
+              </div>
+              <ul className="grid gap-3">
+                {components.map((component) => (
+                  <ListItem
+                    key={component.title}
+                    title={component.title}
+                    href={component.href}
+                    icon={component.icon}
+                  >
+                    {component.description}
+                  </ListItem>
+                ))}
+              </ul>
+            </div>
+          </div>
+        )}
+      </div>
+
       {/* Learn */}
       <div className="relative">
         <button
@@ -190,38 +222,6 @@ function NavigationComponent({
                 <ListItem href="/docs" title="Documentation" icon={FileText}>
                   Comprehensive guides and API documentation.
                 </ListItem>
-              </ul>
-            </div>
-          </div>
-        )}
-      </div>
-
-      {/* Math Tools */}
-      <div className="relative">
-        <button
-          onClick={() => handleDropdownToggle('modeling')}
-          className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-300 hover:text-white transition-all duration-200 rounded-lg hover:bg-white/5"
-        >
-          <Calculator className="w-4 h-4" />
-          Math Tools
-        </button>
-        {openDropdown === 'modeling' && (
-          <div className="absolute top-full left-0 mt-2 w-[550px] bg-white/5 backdrop-blur-md border border-white/10 rounded-xl shadow-2xl z-50">
-            <div className="p-6">
-              <div className="flex items-center gap-2 mb-4">
-                <h3 className="text-sm font-semibold text-white uppercase tracking-wider">Math Tools</h3>
-              </div>
-              <ul className="grid gap-3">
-                {components.map((component) => (
-                  <ListItem
-                    key={component.title}
-                    title={component.title}
-                    href={component.href}
-                    icon={component.icon}
-                  >
-                    {component.description}
-                  </ListItem>
-                ))}
               </ul>
             </div>
           </div>

@@ -53,19 +53,19 @@ export default function Hero({
 
     { src: "/Refrax Photos/math.png", title: "Math Tools", href: "/general" },
     { src: "/Refrax Photos/machineLearning.png", title: "Machine Learning", href: "/learn/machine-learning" },
-    { src: "/Refrax Photos/2DDatasets.png", title: "2D Datasets", href: "/dashboard/datasets" },
-    { src: "/Refrax Photos/2DstockModel.png", title: "2D Stock Modeling", href: "/learn/financial-modeling" },
     { src: "/Refrax Photos/3DLineCharts.png", title: "3D Financial Charts", href: "/financePage" },
     { src: "/Refrax Photos/spiral.png", title: "3D Datasets", href: "/general" },
     { src: "/Refrax Photos/stockChart3D.png", title: "3D Financial Charts", href: "/financePage" },
-   
+    { src: "/Refrax Photos/2DDatasets.png", title: "2D Datasets", href: "/dashboard/datasets" },
+    { src: "/Refrax Photos/2DstockModel.png", title: "2D Stock Modeling", href: "/learn/financial-modeling" },
     { src: "/Refrax Photos/math.png", title: "Math Tools", href: "/general" },
     { src: "/Refrax Photos/machineLearning.png", title: "Machine Learning", href: "/learn/machine-learning" },
-    { src: "/Refrax Photos/2DDatasets.png", title: "2D Datasets", href: "/dashboard/datasets" },
-    { src: "/Refrax Photos/2DstockModel.png", title: "2D Stock Modeling", href: "/learn/financial-modeling" },
     { src: "/Refrax Photos/3DLineCharts.png", title: "3D Financial Charts", href: "/financePage" },
     { src: "/Refrax Photos/spiral.png", title: "3D Datasets", href: "/general" },
     { src: "/Refrax Photos/stockChart3D.png", title: "3D Financial Charts", href: "/financePage" },
+    { src: "/Refrax Photos/2DDatasets.png", title: "2D Datasets", href: "/dashboard/datasets" },
+    { src: "/Refrax Photos/2DstockModel.png", title: "2D Stock Modeling", href: "/learn/financial-modeling" },
+    
    
     
   ];
@@ -278,11 +278,7 @@ export default function Hero({
               </div>
             </Mockup>
           </MockupFrame>
-          <Glow
-            variant="top"
-            color="purple"
-            className="animate-appear-zoom opacity-0 delay-1000"
-          />
+          
         </div>
 
         

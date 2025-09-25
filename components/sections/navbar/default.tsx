@@ -94,29 +94,30 @@ export default function Navbar({
 
                 <nav className="space-y-3">
 
-                  {/* Learn Section */}
+                  {/* Math Tools Section */}
                   <div className="space-y-1">
                     <div className="flex items-center gap-2 mb-2">
-                      <h3 className="text-xs font-semibold text-white uppercase tracking-wider">Learn</h3>
+                      <h3 className="text-xs font-semibold text-white uppercase tracking-wider">Math Tools</h3>
                     </div>
                     <div className="space-y-0.5">
                       <a 
-                        href="/learn" 
+                        href="/financePage" 
                         className="group flex items-center gap-2 p-2 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-200 touch-manipulation"
                       >
-                        <div className="w-6 h-6 bg-gradient-to-br from-blue-500 to-purple-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
-                          <BookOpen className="w-3 h-3 text-white" />
+                        <div className="w-6 h-6 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
+                          <BarChart3 className="w-3 h-3 text-white" />
                         </div>
-                        <span className="font-semibold text-white group-hover:text-blue-200 transition-colors text-xs">Learn</span>
+                        <span className="font-semibold text-white group-hover:text-purple-200 transition-colors text-xs">Stocks & Indices</span>
                       </a>
+                      
                       <a 
-                        href="/research" 
+                        href="/general" 
                         className="group flex items-center gap-2 p-2 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-200 touch-manipulation"
                       >
-                        <div className="w-6 h-6 bg-gradient-to-br from-blue-500 to-purple-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
-                          <Search className="w-3 h-3 text-white" />
+                        <div className="w-6 h-6 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
+                          <Calculator className="w-3 h-3 text-white" />
                         </div>
-                        <span className="font-semibold text-white group-hover:text-blue-200 transition-colors text-xs">Research</span>
+                        <span className="font-semibold text-white group-hover:text-purple-200 transition-colors text-xs">General Modeling</span>
                       </a>
                     </div>
                   </div>
@@ -148,30 +149,29 @@ export default function Navbar({
                     </div>
                   </div>
 
-                  {/* Math Tools Section */}
+                  {/* Learn Section */}
                   <div className="space-y-1">
                     <div className="flex items-center gap-2 mb-2">
-                      <h3 className="text-xs font-semibold text-white uppercase tracking-wider">Math Tools</h3>
+                      <h3 className="text-xs font-semibold text-white uppercase tracking-wider">Learn</h3>
                     </div>
                     <div className="space-y-0.5">
                       <a 
-                        href="/financePage" 
+                        href="/learn" 
                         className="group flex items-center gap-2 p-2 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-200 touch-manipulation"
                       >
-                        <div className="w-6 h-6 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
-                          <BarChart3 className="w-3 h-3 text-white" />
+                        <div className="w-6 h-6 bg-gradient-to-br from-blue-500 to-purple-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
+                          <BookOpen className="w-3 h-3 text-white" />
                         </div>
-                        <span className="font-semibold text-white group-hover:text-purple-200 transition-colors text-xs">Stocks & Indices</span>
+                        <span className="font-semibold text-white group-hover:text-blue-200 transition-colors text-xs">Learn</span>
                       </a>
-                      
                       <a 
-                        href="/general" 
+                        href="/research" 
                         className="group flex items-center gap-2 p-2 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-200 touch-manipulation"
                       >
-                        <div className="w-6 h-6 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
-                          <Calculator className="w-3 h-3 text-white" />
+                        <div className="w-6 h-6 bg-gradient-to-br from-blue-500 to-purple-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
+                          <Search className="w-3 h-3 text-white" />
                         </div>
-                        <span className="font-semibold text-white group-hover:text-purple-200 transition-colors text-xs">General Modeling</span>
+                        <span className="font-semibold text-white group-hover:text-blue-200 transition-colors text-xs">Research</span>
                       </a>
                     </div>
                   </div>
