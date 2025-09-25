@@ -55,15 +55,15 @@ function NavigationComponent({
       icon: TrendingUp,
     },
     {
-      title: "Backtesting Sandbox",
+      title: "Backtest",
       href: "/backtesting",
       description: "Upload datasets, define strategies, and simulate historical performance.",
       icon: TestTube,
     },
     {
-      title: "Demo Datasets",
-      href: "/demo",
-      description: "Curated datasets for machine learning experimentation and analysis.",
+      title: "ML Playground",
+      href: "/learn/ml-playground",
+      description: "Research insights and curated datasets for machine learning experimentation.",
       icon: Database,
     },
     /* 

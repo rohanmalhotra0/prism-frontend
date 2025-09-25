@@ -27,7 +27,7 @@ export default function BacktestingPage() {
         <div className="pt-32 pb-16 px-6 lg:px-8">
           <div className="max-w-7xl mx-auto text-center">
             <h1 className="text-6xl lg:text-7xl font-black mb-8 bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text text-transparent">
-              Backtesting Sandbox
+              Backtest
             </h1>
             <p className="text-xl lg:text-2xl text-gray-400 max-w-4xl mx-auto leading-relaxed mb-12">
               Upload datasets, define strategies, and simulate historical performance across any domain

@@ -121,13 +121,13 @@ export default function Navbar({
                       </a>
                       
                       <a 
-                        href="/demo" 
+                        href="/learn/ml-playground" 
                         className="group flex items-center gap-2 p-2 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-200 touch-manipulation"
                       >
                         <div className="w-6 h-6 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
                           <Database className="w-3 h-3 text-white" />
                         </div>
-                        <span className="font-semibold text-white group-hover:text-cyan-200 transition-colors text-xs">Demo Datasets</span>
+                        <span className="font-semibold text-white group-hover:text-cyan-200 transition-colors text-xs">ML Playground</span>
                       </a>
                       
                       <a 
