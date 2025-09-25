@@ -14,10 +14,7 @@ export default function Home() {
   return (
     <main className="relative bg-black">
       {/* Particle background */}
-      <HeroBackground position="fixed" backgroundColor="transparent" className="z-0" blendModeClassName="mix-blend-screen" />
-      
-      {/* Background gradient */}
-      <div className="fixed inset-0 bg-gradient-to-br from-purple-900/20 via-blue-900/20 to-indigo-900/20 pointer-events-none z-5"></div>
+      <HeroBackground position="fixed" backgroundColor="#000000" className="z-0" blendModeClassName="mix-blend-screen" />
       
       {/* Main content */}
       <div className="relative z-10">

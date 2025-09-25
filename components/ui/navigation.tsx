@@ -23,7 +23,9 @@ import {
   FileText,
   BarChart3,
   FlaskConical,
-  Bot
+  Bot,
+  TestTube,
+  Database
 } from "lucide-react";
 
 interface ComponentItem {
@@ -51,6 +53,18 @@ function NavigationComponent({
       href: "/financePage",
       description: "Quantitative 2D/3D models for corporate finance and forecasting.",
       icon: TrendingUp,
+    },
+    {
+      title: "Backtesting Sandbox",
+      href: "/backtesting",
+      description: "Upload datasets, define strategies, and simulate historical performance.",
+      icon: TestTube,
+    },
+    {
+      title: "Demo Datasets",
+      href: "/demo",
+      description: "Curated datasets for machine learning experimentation and analysis.",
+      icon: Database,
     },
     /* 
     {

@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Image from "next/image";
-import { Menu, BarChart3, Calculator, BookOpen, HelpCircle, FileText, GraduationCap, Search, User, X } from "lucide-react";
+import { Menu, BarChart3, Calculator, BookOpen, HelpCircle, FileText, GraduationCap, Search, User, X, TestTube, Database } from "lucide-react";
 import RefraxLogo from "@/components/logos/RefraxLogo.jpeg";
 import { cn } from "@/lib/utils";
 
@@ -107,7 +107,27 @@ export default function Navbar({
                         <div className="w-6 h-6 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
                           <BarChart3 className="w-3 h-3 text-white" />
                         </div>
-                        <span className="font-semibold text-white group-hover:text-purple-200 transition-colors text-xs">Stocks & Indices</span>
+                        <span className="font-semibold text-white group-hover:text-purple-200 transition-colors text-xs">Financial Modeling</span>
+                      </a>
+                      
+                      <a 
+                        href="/backtesting" 
+                        className="group flex items-center gap-2 p-2 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-200 touch-manipulation"
+                      >
+                        <div className="w-6 h-6 bg-gradient-to-br from-orange-500 to-red-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
+                          <TestTube className="w-3 h-3 text-white" />
+                        </div>
+                        <span className="font-semibold text-white group-hover:text-orange-200 transition-colors text-xs">Backtesting Sandbox</span>
+                      </a>
+                      
+                      <a 
+                        href="/demo" 
+                        className="group flex items-center gap-2 p-2 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-200 touch-manipulation"
+                      >
+                        <div className="w-6 h-6 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
+                          <Database className="w-3 h-3 text-white" />
+                        </div>
+                        <span className="font-semibold text-white group-hover:text-cyan-200 transition-colors text-xs">Demo Datasets</span>
                       </a>
                       
                       <a 

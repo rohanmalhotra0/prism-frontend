@@ -1,6 +1,17 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
+import dynamic from "next/dynamic";
+
+// -------- Plotly (client-only) --------
+const Plot = dynamic(() => import("react-plotly.js"), {
+  ssr: false,
+  loading: () => (
+    <div className="w-full h-full flex items-center justify-center text-white/70">
+      Loading 3D visualization...
+    </div>
+  ),
+});
 
 interface MLToolkitProps {
   sharedData: any;
@@ -16,6 +27,20 @@ interface ModelResult {
   coefficients?: number[];
 }
 
+interface ClusterData {
+  x: number[];
+  y: number[];
+  z: number[];
+  labels: number[];
+  colors: string[];
+}
+
+interface VisualizationMode {
+  type: '2d' | '3d' | 'clustering';
+  showClusters: boolean;
+  showPredictions: boolean;
+}
+
 export default function MLToolkit({ sharedData, setSharedData }: MLToolkitProps) {
   const [dataset, setDataset] = useState<any[]>([]);
   const [features, setFeatures] = useState<string[]>([]);
@@ -26,6 +51,13 @@ export default function MLToolkit({ sharedData, setSharedData }: MLToolkitProps)
   const [trainingProgress, setTrainingProgress] = useState(0);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isProcessingFile, setIsProcessingFile] = useState(false);
+  const [visualizationMode, setVisualizationMode] = useState<VisualizationMode>({
+    type: '2d',
+    showClusters: true,
+    showPredictions: true
+  });
+  const [clusterData, setClusterData] = useState<ClusterData | null>(null);
+  const [selectedFeatures, setSelectedFeatures] = useState<string[]>([]);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   // Load shared data from Dataset Lab
@@ -44,18 +76,129 @@ export default function MLToolkit({ sharedData, setSharedData }: MLToolkitProps)
     }
   }, [dataset, target]);
 
+  // Generate 3D cluster data when dataset changes
+  useEffect(() => {
+    if (dataset.length > 0 && features.length >= 2) {
+      generateClusterData();
+    }
+  }, [dataset, features, selectedFeatures]);
+
+  // Initialize selected features when features change
+  useEffect(() => {
+    if (features.length > 0) {
+      const maxFeatures = visualizationMode.type === '3d' ? 3 : 2;
+      setSelectedFeatures(features.slice(0, maxFeatures));
+    }
+  }, [features, visualizationMode.type]);
+
   const generateSampleData = () => {
     const sampleData = [];
     for (let i = 0; i < 200; i++) {
       const x1 = (Math.random() - 0.5) * 10;
       const x2 = (Math.random() - 0.5) * 10;
+      const x3 = (Math.random() - 0.5) * 10;
       const noise = (Math.random() - 0.5) * 2;
-      const y = 2 * x1 + 3 * x2 + noise;
-      sampleData.push({ x1, x2, y });
+      const y = 2 * x1 + 3 * x2 + 1.5 * x3 + noise;
+      sampleData.push({ x1, x2, x3, y });
     }
     setDataset(sampleData);
-    setFeatures(['x1', 'x2']);
+    setFeatures(['x1', 'x2', 'x3']);
     setTarget('y');
+  };
+
+  // Simple K-means clustering implementation
+  const kMeansClustering = (data: number[][], k: number = 3): number[] => {
+    const n = data.length;
+    const d = data[0].length;
+    
+    // Initialize centroids randomly
+    let centroids: number[][] = [];
+    for (let i = 0; i < k; i++) {
+      const randomIndex = Math.floor(Math.random() * n);
+      centroids.push([...data[randomIndex]]);
+    }
+    
+    let labels = new Array(n).fill(0);
+    let changed = true;
+    let iterations = 0;
+    const maxIterations = 100;
+    
+    while (changed && iterations < maxIterations) {
+      changed = false;
+      const newLabels = [...labels];
+      
+      // Assign points to nearest centroid
+      for (let i = 0; i < n; i++) {
+        let minDistance = Infinity;
+        let bestCluster = 0;
+        
+        for (let j = 0; j < k; j++) {
+          let distance = 0;
+          for (let dim = 0; dim < d; dim++) {
+            distance += Math.pow(data[i][dim] - centroids[j][dim], 2);
+          }
+          distance = Math.sqrt(distance);
+          
+          if (distance < minDistance) {
+            minDistance = distance;
+            bestCluster = j;
+          }
+        }
+        
+        if (newLabels[i] !== bestCluster) {
+          newLabels[i] = bestCluster;
+          changed = true;
+        }
+      }
+      
+      labels = newLabels;
+      
+      // Update centroids
+      for (let j = 0; j < k; j++) {
+        const clusterPoints = data.filter((_, i) => labels[i] === j);
+        if (clusterPoints.length > 0) {
+          for (let dim = 0; dim < d; dim++) {
+            centroids[j][dim] = clusterPoints.reduce((sum, point) => sum + point[dim], 0) / clusterPoints.length;
+          }
+        }
+      }
+      
+      iterations++;
+    }
+    
+    return labels;
+  };
+
+  const generateClusterData = () => {
+    if (dataset.length === 0 || selectedFeatures.length < 2) return;
+
+    // Prepare data for clustering
+    const numericData = dataset.map(row => 
+      selectedFeatures.map(feature => {
+        const value = row[feature];
+        return typeof value === 'number' ? value : 0;
+      })
+    );
+
+    // Perform clustering
+    const labels = kMeansClustering(numericData, Math.min(5, Math.max(2, Math.floor(dataset.length / 20))));
+    
+    // Generate colors for clusters
+    const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#feca57', '#ff9ff3', '#54a0ff'];
+    
+    // Prepare data based on visualization mode
+    const x = numericData.map(point => point[0] || 0);
+    const y = numericData.map(point => point[1] || 0);
+    const z = visualizationMode.type === '3d' ? numericData.map(point => point[2] || 0) : [];
+    const clusterColors = labels.map(label => colors[label % colors.length]);
+
+    setClusterData({
+      x,
+      y,
+      z,
+      labels,
+      colors: clusterColors
+    });
   };
 
   const processUploadedFile = async (file: File) => {
@@ -212,6 +355,181 @@ export default function MLToolkit({ sharedData, setSharedData }: MLToolkitProps)
     }
   }, [modelResults]);
 
+  // Generate visualization data (2D or 3D)
+  const plotData = useMemo(() => {
+    if (!clusterData || dataset.length === 0) return [];
+
+    const traces: any[] = [];
+    const is3D = visualizationMode.type === '3d';
+
+    if (visualizationMode.showClusters) {
+      // Group data by clusters
+      const clusterGroups: { [key: number]: { x: number[], y: number[], z: number[], colors: string[] } } = {};
+      
+      clusterData.labels.forEach((label, index) => {
+        if (!clusterGroups[label]) {
+          clusterGroups[label] = { x: [], y: [], z: [], colors: [] };
+        }
+        clusterGroups[label].x.push(clusterData.x[index]);
+        clusterGroups[label].y.push(clusterData.y[index]);
+        if (is3D) {
+          clusterGroups[label].z.push(clusterData.z[index]);
+        }
+        clusterGroups[label].colors.push(clusterData.colors[index]);
+      });
+
+      // Create traces for each cluster
+      Object.entries(clusterGroups).forEach(([label, data]) => {
+        if (is3D) {
+          traces.push({
+            type: 'scatter3d',
+            mode: 'markers',
+            x: data.x,
+            y: data.y,
+            z: data.z,
+            marker: {
+              size: 4,
+              color: data.colors[0],
+              opacity: 0.8
+            },
+            name: `Cluster ${parseInt(label) + 1}`,
+            hovertemplate: `${selectedFeatures[0] || 'X'}: %{x:.2f}<br>${selectedFeatures[1] || 'Y'}: %{y:.2f}<br>${selectedFeatures[2] || 'Z'}: %{z:.2f}<extra></extra>`
+          });
+        } else {
+          traces.push({
+            type: 'scatter',
+            mode: 'markers',
+            x: data.x,
+            y: data.y,
+            marker: {
+              size: 6,
+              color: data.colors[0],
+              opacity: 0.8
+            },
+            name: `Cluster ${parseInt(label) + 1}`,
+            hovertemplate: `${selectedFeatures[0] || 'X'}: %{x:.2f}<br>${selectedFeatures[1] || 'Y'}: %{y:.2f}<extra></extra>`
+          });
+        }
+      });
+    }
+
+    if (visualizationMode.showPredictions && modelResults) {
+      const predictions = modelResults.predictions;
+      
+      if (is3D && selectedFeatures.length >= 3) {
+        // 3D prediction surface
+        traces.push({
+          type: 'scatter3d',
+          mode: 'markers',
+          x: clusterData.x,
+          y: clusterData.y,
+          z: predictions,
+          marker: {
+            size: 3,
+            color: '#ff6b6b',
+            opacity: 0.6,
+            symbol: 'diamond'
+          },
+          name: 'Predictions',
+          hovertemplate: `${selectedFeatures[0] || 'X'}: %{x:.2f}<br>${selectedFeatures[1] || 'Y'}: %{y:.2f}<br>Prediction: %{z:.2f}<extra></extra>`
+        });
+      } else if (!is3D && selectedFeatures.length >= 2) {
+        // 2D prediction line
+        traces.push({
+          type: 'scatter',
+          mode: 'markers',
+          x: clusterData.x,
+          y: predictions,
+          marker: {
+            size: 4,
+            color: '#ff6b6b',
+            opacity: 0.6,
+            symbol: 'diamond'
+          },
+          name: 'Predictions',
+          hovertemplate: `${selectedFeatures[0] || 'X'}: %{x:.2f}<br>Prediction: %{y:.2f}<extra></extra>`
+        });
+      }
+    }
+
+    return traces;
+  }, [clusterData, visualizationMode, modelResults, selectedFeatures, dataset]);
+
+  // Layout for plot (2D or 3D)
+  const plotLayout = useMemo(() => {
+    if (!clusterData) return {};
+
+    const is3D = visualizationMode.type === '3d';
+    const title = is3D ? '3D Data Clustering & Predictions' : '2D Data Clustering & Predictions';
+
+    if (is3D) {
+      return {
+        title: {
+          text: title,
+          font: { color: 'white', size: 16 }
+        },
+        scene: {
+          xaxis: { 
+            title: selectedFeatures[0] || 'Feature 1',
+            color: 'white',
+            gridcolor: '#2e3440',
+            zerolinecolor: '#475569'
+          },
+          yaxis: { 
+            title: selectedFeatures[1] || 'Feature 2',
+            color: 'white',
+            gridcolor: '#2e3440',
+            zerolinecolor: '#475569'
+          },
+          zaxis: { 
+            title: selectedFeatures[2] || 'Feature 3',
+            color: 'white',
+            gridcolor: '#2e3440',
+            zerolinecolor: '#475569'
+          },
+          bgcolor: 'rgba(0,0,0,0)',
+          camera: { eye: { x: 1.5, y: 1.5, z: 1.5 } }
+        },
+        paper_bgcolor: 'rgba(0,0,0,0)',
+        plot_bgcolor: 'rgba(0,0,0,0)',
+        font: { color: 'white' },
+        legend: { font: { color: 'white' } },
+        margin: { l: 0, r: 0, t: 40, b: 0 }
+      };
+    } else {
+      return {
+        title: {
+          text: title,
+          font: { color: 'white', size: 16 }
+        },
+        xaxis: { 
+          title: selectedFeatures[0] || 'Feature 1',
+          color: 'white',
+          gridcolor: '#2e3440',
+          zerolinecolor: '#475569'
+        },
+        yaxis: { 
+          title: selectedFeatures[1] || 'Feature 2',
+          color: 'white',
+          gridcolor: '#2e3440',
+          zerolinecolor: '#475569'
+        },
+        paper_bgcolor: 'rgba(0,0,0,0)',
+        plot_bgcolor: 'rgba(0,0,0,0)',
+        font: { color: 'white' },
+        legend: { font: { color: 'white' } },
+        margin: { l: 60, r: 20, t: 40, b: 50 }
+      };
+    }
+  }, [clusterData, selectedFeatures, visualizationMode.type]);
+
+  const plotConfig = useMemo(() => ({
+    displayModeBar: true,
+    displaylogo: false,
+    responsive: true,
+    scrollZoom: true
+  }), []);
+
 
   return (
     <div className="h-full flex flex-col">
@@ -294,40 +612,126 @@ export default function MLToolkit({ sharedData, setSharedData }: MLToolkitProps)
                 </div>
               )}
 
-              {/* Feature Selection */}
-              {dataset.length > 0 && (
-                <div className="space-y-3">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-2">Features</label>
-                    <div className="space-y-1 max-h-32 overflow-y-auto">
-                      {features.map((feature) => (
-                        <label key={feature} className="flex items-center space-x-2">
-                          <input
-                            type="checkbox"
-                            defaultChecked={true}
-                            readOnly
-                            className="rounded"
-                          />
-                          <span className="text-sm text-gray-300">{feature}</span>
-                        </label>
-                      ))}
-                    </div>
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-2">Target Variable</label>
-                    <select
-                      value={target}
-                      onChange={(e) => setTarget(e.target.value)}
-                      className="w-full p-2 bg-gray-700 text-white rounded border border-gray-600 text-sm"
-                    >
-                      {features.map((feature) => (
-                        <option key={feature} value={feature}>{feature}</option>
-                      ))}
-                    </select>
+          {/* Feature Selection */}
+          {dataset.length > 0 && (
+            <div className="space-y-3">
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">Visualization Features</label>
+                <div className="space-y-1 max-h-32 overflow-y-auto">
+                  {features.map((feature) => (
+                    <label key={feature} className="flex items-center space-x-2">
+                      <input
+                        type="checkbox"
+                        checked={selectedFeatures.includes(feature)}
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            const maxFeatures = visualizationMode.type === '3d' ? 3 : 2;
+                            if (selectedFeatures.length < maxFeatures) {
+                              setSelectedFeatures([...selectedFeatures, feature]);
+                            }
+                          } else {
+                            setSelectedFeatures(selectedFeatures.filter(f => f !== feature));
+                          }
+                        }}
+                        disabled={!selectedFeatures.includes(feature) && selectedFeatures.length >= (visualizationMode.type === '3d' ? 3 : 2)}
+                        className="rounded"
+                      />
+                      <span className="text-sm text-gray-300">{feature}</span>
+                      {selectedFeatures.includes(feature) && (
+                        <span className="text-xs text-blue-400">
+                          {selectedFeatures.indexOf(feature) === 0 ? '(X)' : 
+                           selectedFeatures.indexOf(feature) === 1 ? '(Y)' : '(Z)'}
+                        </span>
+                      )}
+                    </label>
+                  ))}
+                </div>
+                <p className="text-xs text-gray-400 mt-1">
+                  Select up to {visualizationMode.type === '3d' ? '3' : '2'} features for {visualizationMode.type} visualization
+                </p>
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">Target Variable</label>
+                <select
+                  value={target}
+                  onChange={(e) => setTarget(e.target.value)}
+                  className="w-full p-2 bg-gray-700 text-white rounded border border-gray-600 text-sm"
+                >
+                  {features.map((feature) => (
+                    <option key={feature} value={feature}>{feature}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+          )}
+
+          {/* Visualization Controls */}
+          {dataset.length > 0 && (
+            <div className="bg-gray-800/50 rounded-lg p-4">
+              <h3 className="text-lg font-semibold text-white mb-3">Visualization</h3>
+              <div className="space-y-3">
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">Visualization Mode</label>
+                  <div className="space-y-2">
+                    {[
+                      { value: '2d', label: '2D Scatter Plot' },
+                      { value: '3d', label: '3D Scatter Plot' },
+                      { value: 'clustering', label: 'Clustering View' }
+                    ].map((mode) => (
+                      <button
+                        key={mode.value}
+                        onClick={() => {
+                          setVisualizationMode(prev => ({ ...prev, type: mode.value as any }));
+                          // Update selected features when switching modes
+                          const maxFeatures = mode.value === '3d' ? 3 : 2;
+                          if (selectedFeatures.length > maxFeatures) {
+                            setSelectedFeatures(selectedFeatures.slice(0, maxFeatures));
+                          }
+                        }}
+                        className={`w-full p-2 rounded text-sm transition-colors ${
+                          visualizationMode.type === mode.value
+                            ? 'bg-purple-600 text-white'
+                            : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                        }`}
+                      >
+                        {mode.label}
+                      </button>
+                    ))}
                   </div>
                 </div>
-              )}
+
+                <div className="space-y-2">
+                  <label className="flex items-center space-x-2">
+                    <input
+                      type="checkbox"
+                      checked={visualizationMode.showClusters}
+                      onChange={(e) => setVisualizationMode(prev => ({ ...prev, showClusters: e.target.checked }))}
+                      className="rounded"
+                    />
+                    <span className="text-sm text-gray-300">Show Clusters</span>
+                  </label>
+                  
+                  <label className="flex items-center space-x-2">
+                    <input
+                      type="checkbox"
+                      checked={visualizationMode.showPredictions}
+                      onChange={(e) => setVisualizationMode(prev => ({ ...prev, showPredictions: e.target.checked }))}
+                      className="rounded"
+                    />
+                    <span className="text-sm text-gray-300">Show Predictions</span>
+                  </label>
+                </div>
+
+                <button
+                  onClick={generateClusterData}
+                  className="w-full p-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors text-sm"
+                >
+                  Regenerate Clusters
+                </button>
+              </div>
+            </div>
+          )}
             </div>
           </div>
 
@@ -463,26 +867,80 @@ export default function MLToolkit({ sharedData, setSharedData }: MLToolkitProps)
             </div>
           )}
 
-          {/* Visualization Canvas */}
-          <div className="bg-gray-900/50 rounded-lg p-4">
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg font-semibold text-white">Predicted vs Actual</h3>
-              {modelResults && (
+          {/* Clustering Performance */}
+          {clusterData && (
+            <div className="bg-gray-800/50 rounded-lg p-4">
+              <h3 className="text-lg font-semibold text-white mb-3">Clustering Analysis</h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="bg-gray-700/50 rounded-lg p-3">
+                  <div className="text-2xl font-bold text-orange-400">
+                    {new Set(clusterData.labels).size}
+                  </div>
+                  <div className="text-sm text-gray-400">Clusters Found</div>
+                </div>
+                <div className="bg-gray-700/50 rounded-lg p-3">
+                  <div className="text-2xl font-bold text-cyan-400">
+                    {clusterData.x.length}
+                  </div>
+                  <div className="text-sm text-gray-400">Data Points</div>
+                </div>
+                <div className="bg-gray-700/50 rounded-lg p-3">
+                  <div className="text-2xl font-bold text-pink-400">
+                    {visualizationMode.type === '3d' ? selectedFeatures.length : 2}D
+                  </div>
+                  <div className="text-sm text-gray-400">Dimensions</div>
+                </div>
+              </div>
+              <div className="mt-3 text-sm text-gray-400">
+                <div>Features: {selectedFeatures.join(', ')}</div>
+                <div>Clustering: K-means algorithm</div>
+              </div>
+            </div>
+          )}
+
+          {/* Data Visualization */}
+          {clusterData && (
+            <div className="bg-gray-900/50 rounded-lg p-4">
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-lg font-semibold text-white">
+                  {visualizationMode.type === '3d' ? '3D' : '2D'} Data Visualization
+                </h3>
+                <div className="text-sm text-gray-400">
+                  {clusterData.x.length} data points, {new Set(clusterData.labels).size} clusters
+                </div>
+              </div>
+              
+              <div className="bg-black rounded-lg overflow-hidden" style={{ height: '500px' }}>
+                <Plot
+                  data={plotData}
+                  layout={plotLayout}
+                  config={plotConfig}
+                  style={{ width: '100%', height: '100%' }}
+                />
+              </div>
+            </div>
+          )}
+
+          {/* 2D Visualization Canvas (fallback) */}
+          {!clusterData && modelResults && (
+            <div className="bg-gray-900/50 rounded-lg p-4">
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-lg font-semibold text-white">Predicted vs Actual</h3>
                 <div className="text-sm text-gray-400">
                   {modelResults.predictions.length} predictions
                 </div>
-              )}
+              </div>
+              
+              <div className="bg-black rounded-lg overflow-hidden">
+                <canvas
+                  ref={canvasRef}
+                  width={800}
+                  height={400}
+                  className="w-full h-full"
+                />
+              </div>
             </div>
-            
-            <div className="bg-black rounded-lg overflow-hidden">
-              <canvas
-                ref={canvasRef}
-                width={800}
-                height={400}
-                className="w-full h-full"
-              />
-            </div>
-          </div>
+          )}
 
           {/* Model Equation */}
           {modelResults && modelResults.coefficients && (
