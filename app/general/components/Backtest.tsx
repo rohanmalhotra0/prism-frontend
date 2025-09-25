@@ -660,7 +660,7 @@ export default function Backtest({ sharedData, setSharedData }: BacktestProps) {
                   className={`cursor-pointer inline-block px-4 py-2 rounded transition-colors ${
                     isProcessingFile
                       ? 'bg-gray-600 text-gray-400 cursor-not-allowed'
-                      : 'bg-purple-600 text-white hover:bg-purple-700'
+                      : 'bg-[#1877F2] text-white hover:bg-[#1877F2]'
                   }`}
                 >
                   {isProcessingFile ? 'Processing...' : 'Upload Dataset'}
@@ -678,7 +678,7 @@ export default function Backtest({ sharedData, setSharedData }: BacktestProps) {
               
               <button
                 onClick={generateSampleData}
-                className="w-full p-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
+                className="w-full p-2 bg-[#1877F2] text-white rounded hover:bg-[#1877F2] transition-colors"
               >
                 Generate Sample Data
               </button>
@@ -705,7 +705,7 @@ export default function Backtest({ sharedData, setSharedData }: BacktestProps) {
                 <button
                   onClick={() => setRuleBuilderMode('code')}
                   className={`px-2 py-1 rounded text-xs ${
-                    ruleBuilderMode === 'code' ? 'bg-purple-600' : 'bg-gray-600'
+                    ruleBuilderMode === 'code' ? 'bg-[#1877F2]' : 'bg-gray-600'
                   }`}
                 >
                   Code
@@ -713,7 +713,7 @@ export default function Backtest({ sharedData, setSharedData }: BacktestProps) {
                 <button
                   onClick={() => setRuleBuilderMode('visual')}
                   className={`px-2 py-1 rounded text-xs ${
-                    ruleBuilderMode === 'visual' ? 'bg-purple-600' : 'bg-gray-600'
+                    ruleBuilderMode === 'visual' ? 'bg-[#1877F2]' : 'bg-gray-600'
                   }`}
                 >
                   Visual
@@ -784,7 +784,7 @@ export default function Backtest({ sharedData, setSharedData }: BacktestProps) {
               
               <button
                 onClick={addRule}
-                className="w-full p-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors"
+                className="w-full p-2 bg-[#1877F2] text-white rounded hover:bg-[#1877F2] transition-colors"
               >
                 + Add Rule
               </button>
@@ -801,7 +801,7 @@ export default function Backtest({ sharedData, setSharedData }: BacktestProps) {
               className={`w-full p-3 rounded-lg font-semibold transition-colors ${
                 isSimulating || dataset.length === 0 || rules.length === 0
                   ? 'bg-gray-600 text-gray-400 cursor-not-allowed'
-                  : 'bg-blue-600 text-white hover:bg-blue-700'
+                  : 'bg-[#1877F2] text-white hover:bg-[#1877F2]'
               }`}
             >
               {isSimulating ? `Running... ${simulationProgress}%` : 'Run Simulation'}
@@ -811,7 +811,7 @@ export default function Backtest({ sharedData, setSharedData }: BacktestProps) {
               <div className="mt-3">
                 <div className="w-full bg-gray-700 rounded-full h-2">
                   <div
-                    className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                    className="bg-[#1877F2] h-2 rounded-full transition-all duration-300"
                     style={{ width: `${simulationProgress}%` }}
                   ></div>
                 </div>
@@ -834,7 +834,7 @@ export default function Backtest({ sharedData, setSharedData }: BacktestProps) {
                 onClick={() => setActiveTab(tab.id as any)}
                 className={`px-4 py-2 rounded-lg font-semibold transition-colors ${
                   activeTab === tab.id
-                    ? 'bg-purple-600 text-white'
+                    ? 'bg-[#1877F2] text-white'
                     : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
                 }`}
               >
@@ -885,7 +885,7 @@ export default function Backtest({ sharedData, setSharedData }: BacktestProps) {
                   <p className="text-gray-400 mb-4">Upload a CSV file or generate sample data to get started</p>
                   <button
                     onClick={generateSampleData}
-                    className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
+                    className="px-4 py-2 bg-[#1877F2] text-white rounded hover:bg-[#1877F2] transition-colors"
                   >
                     Generate Sample Data
                   </button>

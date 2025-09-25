@@ -45,7 +45,7 @@ export default function CTA({
                 key={index}
                 variant={button.variant || "default"}
                 size="lg"
-                className="rounded-full bg-gradient-to-r from-purple-600 via-purple-500 to-blue-600 hover:from-purple-500 hover:via-purple-400 hover:to-blue-500 text-white font-semibold shadow-lg transition-all duration-300 hover:shadow-xl hover:shadow-purple-500/25 hover:scale-105 focus:ring-4 focus:ring-purple-400/30 focus:outline-none active:scale-95"
+                className="rounded-full bg-[#1877F2] hover:bg-[#1877F2] text-white font-semibold shadow-lg transition-all duration-300 hover:shadow-xl hover:shadow-[#1877F2]/25 hover:scale-105 focus:ring-4 focus:ring-[#1877F2]/30 focus:outline-none active:scale-95"
                 onClick={() => {
                   if (button.href === "#") {
                     window.dispatchEvent(new CustomEvent('openAuthModal'));

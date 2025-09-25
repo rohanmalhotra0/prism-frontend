@@ -68,6 +68,7 @@ export default function BusinessMetricsPage() {
   const [uploadedData, setUploadedData] = useState<any[]>([]);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isProcessingFile, setIsProcessingFile] = useState(false);
+  const [hasGeneratedData, setHasGeneratedData] = useState(false);
 
   // Scenario state
   const [scenarioData, setScenarioData] = useState<any[]>([]);
@@ -224,6 +225,7 @@ export default function BusinessMetricsPage() {
       setUploadedData(data);
       setDataSource("uploaded");
       setSelectedDataset("uploaded");
+      setHasGeneratedData(true);
     } catch (e: any) {
       console.error(e);
       alert(e?.message || "Failed to process file. Use CSV or JSON with rows of metrics by month.");
@@ -237,6 +239,7 @@ export default function BusinessMetricsPage() {
     setSelectedFile(null);
     setDataSource("generated");
     setSelectedDataset("finance");
+    setHasGeneratedData(true);
   }
 
   // ---- Current dataset ----
@@ -424,7 +427,7 @@ export default function BusinessMetricsPage() {
         trend: (calculateKPIs as any).arr.trend,
         forecast: (calculateKPIs as any).arr.forecast,
         icon: DollarSign,
-        color: "from-green-500 to-emerald-500",
+        color: "from-[#1877F2] to-[#1877F2]",
       },
       {
         title: "MRR",
@@ -433,7 +436,7 @@ export default function BusinessMetricsPage() {
         trend: (calculateKPIs as any).mrr.trend,
         forecast: (calculateKPIs as any).mrr.forecast,
         icon: TrendingUp,
-        color: "from-blue-500 to-cyan-500",
+        color: "from-[#1877F2] to-[#1877F2]",
       },
       {
         title: "NRR",
@@ -441,7 +444,7 @@ export default function BusinessMetricsPage() {
         change: (calculateKPIs as any).nrr.change,
         trend: (calculateKPIs as any).nrr.trend,
         icon: Target,
-        color: "from-purple-500 to-violet-500",
+        color: "from-[#1877F2] to-[#1877F2]",
       },
       {
         title: "Churn Rate",
@@ -450,7 +453,7 @@ export default function BusinessMetricsPage() {
         trend: (calculateKPIs as any).churn.trend,
         forecast: (calculateKPIs as any).churn.forecast,
         icon: Users,
-        color: "from-red-500 to-pink-500",
+        color: "from-[#1877F2] to-[#1877F2]",
       },
       {
         title: "LTV/CAC",
@@ -458,7 +461,7 @@ export default function BusinessMetricsPage() {
         change: (calculateKPIs as any).ltvCac.change,
         trend: (calculateKPIs as any).ltvCac.trend,
         icon: BarChart3,
-        color: "from-orange-500 to-yellow-500",
+        color: "from-[#1877F2] to-[#1877F2]",
       },
       {
         title: "Gross Margin",
@@ -466,7 +469,7 @@ export default function BusinessMetricsPage() {
         change: (calculateKPIs as any).grossMargin.change,
         trend: (calculateKPIs as any).grossMargin.trend,
         icon: PieChart,
-        color: "from-teal-500 to-cyan-500",
+        color: "from-[#1877F2] to-[#1877F2]",
       },
       {
         title: "EBITDA",
@@ -474,7 +477,7 @@ export default function BusinessMetricsPage() {
         change: (calculateKPIs as any).ebitda.change,
         trend: (calculateKPIs as any).ebitda.trend,
         icon: Activity,
-        color: "from-indigo-500 to-purple-500",
+        color: "from-[#1877F2] to-[#1877F2]",
       },
       {
         title: "Runway",
@@ -482,7 +485,7 @@ export default function BusinessMetricsPage() {
         change: (calculateKPIs as any).runway.change,
         trend: (calculateKPIs as any).runway.trend,
         icon: Calendar,
-        color: "from-pink-500 to-rose-500",
+        color: "from-[#1877F2] to-[#1877F2]",
       },
     ];
 
@@ -496,7 +499,7 @@ export default function BusinessMetricsPage() {
         change: stickiness - prevStickiness,
         trend: stickiness >= prevStickiness ? "up" : "down",
         icon: Activity,
-        color: "from-green-500 to-emerald-500",
+        color: "from-[#1877F2] to-[#1877F2]",
       };
       // Hide finance-only metrics visually by keeping “—”
     }
@@ -776,7 +779,7 @@ export default function BusinessMetricsPage() {
                   <button
                     onClick={() => setViewMode("actuals")}
                     className={`px-4 py-2 rounded-l-lg text-sm font-medium transition-colors ${
-                      viewMode === "actuals" ? "bg-blue-600 text-white" : "text-gray-400 hover:text-white"
+                      viewMode === "actuals" ? "bg-[#1877F2] text-white" : "text-gray-400 hover:text-white"
                     }`}
                   >
                     Actuals
@@ -784,7 +787,7 @@ export default function BusinessMetricsPage() {
                   <button
                     onClick={() => setViewMode("forecast")}
                     className={`px-4 py-2 text-sm font-medium transition-colors ${
-                      viewMode === "forecast" ? "bg-blue-600 text-white" : "text-gray-400 hover:text-white"
+                      viewMode === "forecast" ? "bg-[#1877F2] text-white" : "text-gray-400 hover:text-white"
                     }`}
                   >
                     Forecast
@@ -792,7 +795,7 @@ export default function BusinessMetricsPage() {
                   <button
                     onClick={() => setViewMode("scenarios")}
                     className={`px-4 py-2 rounded-r-lg text-sm font-medium transition-colors ${
-                      viewMode === "scenarios" ? "bg-blue-600 text-white" : "text-gray-400 hover:text-white"
+                      viewMode === "scenarios" ? "bg-[#1877F2] text-white" : "text-gray-400 hover:text-white"
                     }`}
                   >
                     Scenarios
@@ -823,14 +826,14 @@ export default function BusinessMetricsPage() {
                       <label
                         htmlFor="business-file-upload"
                         className={`cursor-pointer inline-block px-6 py-3 rounded-lg font-medium transition-colors ${
-                          isProcessingFile ? "bg-gray-600 text-gray-400 cursor-not-allowed" : "bg-blue-600 text-white hover:bg-blue-700"
+                          isProcessingFile ? "bg-gray-600 text-gray-400 cursor-not-allowed" : "bg-gray-600 text-gray-300 hover:bg-gray-500"
                         }`}
                       >
                         {isProcessingFile ? "Processing..." : "Choose File"}
                       </label>
                       <button
                         onClick={generateSampleData}
-                        className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium"
+                        className="px-6 py-3 bg-[#1877F2] text-white rounded-lg hover:bg-[#1877F2] transition-colors font-medium"
                       >
                         Generate Sample Data
                       </button>
@@ -857,7 +860,7 @@ export default function BusinessMetricsPage() {
                       <button
                         onClick={() => setDataSource("generated")}
                         className={`flex-1 px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                          dataSource === "generated" ? "bg-blue-600 text-white" : "text-gray-400 hover:text-white"
+                          dataSource === "generated" ? "bg-[#1877F2] text-white" : "text-gray-400 hover:text-white"
                         }`}
                       >
                         Generated Data
@@ -865,7 +868,7 @@ export default function BusinessMetricsPage() {
                       <button
                         onClick={() => setDataSource("uploaded")}
                         className={`flex-1 px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                          dataSource === "uploaded" ? "bg-blue-600 text-white" : "text-gray-400 hover:text-white"
+                          dataSource === "uploaded" ? "bg-[#1877F2] text-white" : "text-gray-400 hover:text-white"
                         }`}
                         disabled={uploadedData.length === 0}
                       >
@@ -883,86 +886,123 @@ export default function BusinessMetricsPage() {
           </div>
         </div>
 
-        {/* KPI Cards */}
-        <div className="px-6 lg:px-8 pb-8">
-          <div className="max-w-7xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {kpiCards.map((kpi, i) => {
-                const Icon = kpi.icon;
-                const trendIcon =
-                  kpi.trend === "up" ? (
-                    <ArrowUp className="w-4 h-4 text-green-400" />
-                  ) : kpi.trend === "down" ? (
-                    <ArrowDown className="w-4 h-4 text-red-400" />
-                  ) : (
-                    <Minus className="w-4 h-4 text-gray-400" />
-                  );
-                return (
-                  <div
-                    key={i}
-                    className="bg-gray-800/50 rounded-xl p-6 border border-white/10 hover:border-white/20 transition-all duration-300"
+        {/* No Data Message */}
+        {!hasGeneratedData && (
+          <div className="px-6 lg:px-8 pb-8">
+            <div className="max-w-7xl mx-auto">
+              <div className="bg-gray-800/50 rounded-xl p-12 border border-white/10 text-center">
+                <div className="w-16 h-16 bg-[#1877F2] rounded-full flex items-center justify-center mx-auto mb-6">
+                  <BarChart3 className="w-8 h-8 text-white" />
+                </div>
+                <h3 className="text-2xl font-semibold text-white mb-4">Generate Sample Data to Get Started</h3>
+                <p className="text-gray-400 text-lg mb-6 max-w-2xl mx-auto">
+                  Click "Generate Sample Data" above to see your business metrics, charts, and analytics. 
+                  You can also upload your own CSV or JSON data files.
+                </p>
+                <div className="flex justify-center gap-4">
+                  <button
+                    onClick={generateSampleData}
+                    className="px-8 py-3 bg-[#1877F2] text-white rounded-lg hover:bg-[#1877F2] transition-colors font-medium"
                   >
-                    <div className="flex items-center justify-between mb-4">
-                      <div className={`w-12 h-12 bg-gradient-to-r ${kpi.color} rounded-lg flex items-center justify-center`}>
-                        <Icon className="w-6 h-6 text-white" />
-                      </div>
-                      <div className="flex items-center gap-1">
-                        {trendIcon}
-                        <span
-                          className={`text-sm font-medium ${
-                            kpi.trend === "up"
-                              ? "text-green-400"
-                              : kpi.trend === "down"
-                              ? "text-red-400"
-                              : "text-gray-400"
-                          }`}
-                        >
-                          {kpi.change > 0 ? "+" : ""}
-                          {Number.isFinite(kpi.change) ? kpi.change.toFixed(2) : "0.00"}%
-                        </span>
-                      </div>
-                    </div>
-                    <h3 className="text-2xl font-bold text-white mb-1">{kpi.value}</h3>
-                    <p className="text-gray-400 text-sm mb-2">{kpi.title}</p>
-                    {kpi.forecast && <p className="text-blue-300 text-xs">Forecast: {kpi.forecast}</p>}
-                  </div>
-                );
-              })}
+                    Generate Sample Data
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
+        )}
+
+        {/* KPI Cards */}
+        {hasGeneratedData && (
+          <div className="px-6 lg:px-8 pb-8">
+            <div className="max-w-7xl mx-auto">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {kpiCards.map((kpi, i) => {
+                  const Icon = kpi.icon;
+                  const trendIcon =
+                    kpi.trend === "up" ? (
+                      <ArrowUp className="w-4 h-4 text-green-400" />
+                    ) : kpi.trend === "down" ? (
+                      <ArrowDown className="w-4 h-4 text-red-400" />
+                    ) : (
+                      <Minus className="w-4 h-4 text-gray-400" />
+                    );
+                  return (
+                    <div
+                      key={i}
+                      className="bg-gray-800/50 rounded-xl p-6 border border-white/10 hover:border-white/20 transition-all duration-300"
+                    >
+                      <div className="flex items-center justify-between mb-4">
+                        <div className={`w-12 h-12 bg-gradient-to-r ${kpi.color} rounded-lg flex items-center justify-center`}>
+                          <Icon className="w-6 h-6 text-white" />
+                        </div>
+                        <div className="flex items-center gap-1">
+                          {trendIcon}
+                          <span
+                            className={`text-sm font-medium ${
+                              kpi.trend === "up"
+                                ? "text-green-400"
+                                : kpi.trend === "down"
+                                ? "text-red-400"
+                                : "text-gray-400"
+                            }`}
+                          >
+                            {kpi.change > 0 ? "+" : ""}
+                            {Number.isFinite(kpi.change) ? kpi.change.toFixed(2) : "0.00"}%
+                          </span>
+                        </div>
+                      </div>
+                      <h3 className="text-2xl font-bold text-white mb-1">{kpi.value}</h3>
+                      <p className="text-gray-400 text-sm mb-2">{kpi.title}</p>
+                      {kpi.forecast && <p className="text-blue-300 text-xs">Forecast: {kpi.forecast}</p>}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Charts */}
-        <div className="px-6 lg:px-8 pb-8">
-          <div className="max-w-7xl mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              <div className="bg-gray-800/50 rounded-xl p-6 border border-white/10">
-                <h3 className="text-xl font-semibold text-white mb-4">Revenue Forecast</h3>
-                <div className="h-96">
-                  <Plot data={revenueChartData} layout={revenueChartLayout} config={plotConfig} style={{ width: "100%", height: "100%" }} />
+        {hasGeneratedData && (
+          <div className="px-6 lg:px-8 pb-8">
+            <div className="max-w-7xl mx-auto">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                {/* Revenue Forecast - Show for all modes */}
+                <div className="bg-gray-800/50 rounded-xl p-6 border border-white/10">
+                  <h3 className="text-xl font-semibold text-white mb-4">Revenue Forecast</h3>
+                  <div className="h-96">
+                    <Plot data={revenueChartData} layout={revenueChartLayout} config={plotConfig} style={{ width: "100%", height: "100%" }} />
+                  </div>
                 </div>
-              </div>
-              <div className="bg-gray-800/50 rounded-xl p-6 border border-white/10">
-                <h3 className="text-xl font-semibold text-white mb-4">Customer Retention by Cohort</h3>
-                <div className="h-96">
-                  <Plot data={cohortChartData} layout={cohortChartLayout} config={plotConfig} style={{ width: "100%", height: "100%" }} />
-                </div>
+                
+                {/* Customer Retention by Cohort - Show for Actuals and Forecast only */}
+                {(viewMode === "actuals" || viewMode === "forecast") && (
+                  <div className="bg-gray-800/50 rounded-xl p-6 border border-white/10">
+                    <h3 className="text-xl font-semibold text-white mb-4">Customer Retention by Cohort</h3>
+                    <div className="h-96">
+                      <Plot data={cohortChartData} layout={cohortChartLayout} config={plotConfig} style={{ width: "100%", height: "100%" }} />
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
-        </div>
+        )}
 
-        {/* Monte Carlo */}
-        <div className="px-6 lg:px-8 pb-8">
-          <div className="max-w-7xl mx-auto">
-            <div className="bg-gray-800/50 rounded-xl p-6 border border-white/10">
-              <h3 className="text-xl font-semibold text-white mb-4">Monte Carlo Revenue Simulation</h3>
-              <div className="h-96">
-                <Plot data={monteCarloChartData} layout={monteCarloChartLayout} config={plotConfig} style={{ width: "100%", height: "100%" }} />
+        {/* Monte Carlo - Show only for Scenarios mode */}
+        {hasGeneratedData && viewMode === "scenarios" && (
+          <div className="px-6 lg:px-8 pb-8">
+            <div className="max-w-7xl mx-auto">
+              <div className="bg-gray-800/50 rounded-xl p-6 border border-white/10">
+                <h3 className="text-xl font-semibold text-white mb-4">Monte Carlo Revenue Simulation</h3>
+                <div className="h-96">
+                  <Plot data={monteCarloChartData} layout={monteCarloChartLayout} config={plotConfig} style={{ width: "100%", height: "100%" }} />
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        )}
 
 
         {/* Export & Sharing */}
@@ -975,7 +1015,7 @@ export default function BusinessMetricsPage() {
                   const csv = convertToCSV(data);
                   downloadCSV(csv, `${viewMode}-data-${new Date().toISOString().split('T')[0]}.csv`);
                 }}
-                className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                className="flex items-center gap-2 px-6 py-3 bg-[#1877F2] text-white rounded-lg hover:bg-[#1877F2] transition-colors"
               >
                 <Download className="w-4 h-4" />
                 Export {viewMode === "actuals" ? "Actuals" : viewMode === "forecast" ? "Forecast" : "Scenario"} Data

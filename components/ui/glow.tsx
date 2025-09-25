@@ -35,7 +35,7 @@ function Glow({
       <div
         className={cn(
           color === "purple"
-            ? "from-purple-500/50 to-transparent"
+            ? "from-[#1877F2]/50 to-transparent"
             : "from-brand-foreground/50 to-brand-foreground/0",
           "absolute left-1/2 h-[256px] w-[60%] -translate-x-1/2 scale-[2.5] rounded-[50%] bg-radial from-10% to-60% opacity-20 sm:h-[512px] dark:opacity-100",
           variant === "center" && "-translate-y-1/2",
@@ -44,7 +44,7 @@ function Glow({
       <div
         className={cn(
           color === "purple"
-            ? "from-purple-500/30 to-transparent"
+            ? "from-[#1877F2]/30 to-transparent"
             : "from-brand/30 to-brand-foreground/0",
           "absolute left-1/2 h-[128px] w-[40%] -translate-x-1/2 scale-200 rounded-[50%] bg-radial from-10% to-60% opacity-20 sm:h-[256px] dark:opacity-100",
           variant === "center" && "-translate-y-1/2",

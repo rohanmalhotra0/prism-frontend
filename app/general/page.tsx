@@ -42,7 +42,7 @@ export default function ModelingSandbox() {
                 onClick={() => setActiveMode("equations")}
                 className={`px-8 py-3 rounded-xl font-semibold transition-all duration-300 ${
                   activeMode === "equations"
-                    ? "bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg shadow-purple-500/25"
+                    ? "bg-[#1877F2] text-white shadow-lg shadow-[#1877F2]/25"
                     : "bg-white/10 text-gray-300 hover:bg-white/20 border border-white/20"
                 }`}
               >
@@ -52,7 +52,7 @@ export default function ModelingSandbox() {
                 onClick={() => setActiveMode("datasets")}
                 className={`px-8 py-3 rounded-xl font-semibold transition-all duration-300 ${
                   activeMode === "datasets"
-                    ? "bg-gradient-to-r from-blue-600 to-green-600 text-white shadow-lg shadow-blue-500/25"
+                    ? "bg-[#1877F2] text-white shadow-lg shadow-[#1877F2]/25"
                     : "bg-white/10 text-gray-300 hover:bg-white/20 border border-white/20"
                 }`}
               >
@@ -62,7 +62,7 @@ export default function ModelingSandbox() {
                 onClick={() => setActiveMode("ml")}
                 className={`px-8 py-3 rounded-xl font-semibold transition-all duration-300 ${
                   activeMode === "ml"
-                    ? "bg-gradient-to-r from-green-600 to-purple-600 text-white shadow-lg shadow-green-500/25"
+                    ? "bg-[#1877F2] text-white shadow-lg shadow-[#1877F2]/25"
                     : "bg-white/10 text-gray-300 hover:bg-white/20 border border-white/20"
                 }`}
               >
@@ -76,7 +76,7 @@ export default function ModelingSandbox() {
         <div className="px-6 lg:px-8 pb-20">
           <div className="max-w-7xl mx-auto">
             <div className="bg-gradient-to-br from-gray-900/50 via-gray-800/30 to-gray-900/50 backdrop-blur-xl rounded-3xl border border-white/10 overflow-hidden shadow-2xl">
-              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-500 via-blue-500 to-green-500"></div>
+              <div className="absolute top-0 left-0 right-0 h-1 bg-[#1877F2]"></div>
               
               <div className="p-8">
                 {activeMode === "equations" && <MathVisualizer sharedData={sharedData} setSharedData={setSharedData} />}

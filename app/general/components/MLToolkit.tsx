@@ -568,7 +568,7 @@ export default function MLToolkit({ sharedData, setSharedData }: MLToolkitProps)
                     className={`cursor-pointer inline-block px-4 py-2 rounded transition-colors ${
                       isProcessingFile
                         ? 'bg-gray-600 text-gray-400 cursor-not-allowed'
-                        : 'bg-purple-600 text-white hover:bg-purple-700'
+                        : 'bg-[#1877F2] text-white hover:bg-[#1877F2]'
                     }`}
                   >
                     {isProcessingFile ? 'Processing...' : 'Choose File'}
@@ -594,7 +594,7 @@ export default function MLToolkit({ sharedData, setSharedData }: MLToolkitProps)
                 <h4 className="text-sm font-medium text-gray-300 mb-2">Generate Sample Data</h4>
                 <button
                   onClick={generateSampleData}
-                  className="w-full p-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
+                  className="w-full p-2 bg-[#1877F2] text-white rounded hover:bg-[#1877F2] transition-colors"
                 >
                   Generate Sample Data
                 </button>
@@ -691,7 +691,7 @@ export default function MLToolkit({ sharedData, setSharedData }: MLToolkitProps)
                         }}
                         className={`w-full p-2 rounded text-sm transition-colors ${
                           visualizationMode.type === mode.value
-                            ? 'bg-purple-600 text-white'
+                            ? 'bg-[#1877F2] text-white'
                             : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
                         }`}
                       >
@@ -725,7 +725,7 @@ export default function MLToolkit({ sharedData, setSharedData }: MLToolkitProps)
 
                 <button
                   onClick={generateClusterData}
-                  className="w-full p-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors text-sm"
+                  className="w-full p-2 bg-[#1877F2] text-white rounded hover:bg-[#1877F2] transition-colors text-sm"
                 >
                   Regenerate Clusters
                 </button>
@@ -754,7 +754,7 @@ export default function MLToolkit({ sharedData, setSharedData }: MLToolkitProps)
                   disabled={isTraining || dataset.length === 0}
                   className={`w-full p-2 rounded text-sm transition-colors ${
                     modelType === model.value
-                      ? 'bg-purple-600 text-white'
+                      ? 'bg-[#1877F2] text-white'
                       : isTraining || dataset.length === 0
                       ? 'bg-gray-600 text-gray-400 cursor-not-allowed'
                       : 'bg-gray-700 text-gray-300 hover:bg-gray-600'

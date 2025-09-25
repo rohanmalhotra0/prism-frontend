@@ -140,18 +140,18 @@
   --muted: oklch(18% 0.02 280);
   --muted-foreground: oklch(60% 0.05 280);
 
-  --accent: oklch(30% 0.05 280);          /* darker purple highlight */
-  --accent-foreground: oklch(95% 0.02 280);
+  --accent: #1877F2;          /* Meta Facebook blue */
+  --accent-foreground: #ffffff;
 
   /* Borders / inputs */
   --border: oklch(25% 0.03 280);
   --input: oklch(20% 0.03 280);
-  --ring: oklch(60% 0.15 280); /* glowing purple outline */ --sidebar: hsl(0 0% 98%); --sidebar-foreground: hsl(240 5.3% 26.1%); --sidebar-primary: hsl(240 5.9% 10%); --sidebar-primary-foreground: hsl(0 0% 98%); --sidebar-accent: hsl(240 4.8% 95.9%); --sidebar-accent-foreground: hsl(240 5.9% 10%); --sidebar-border: hsl(220 13% 91%); --sidebar-ring: hsl(217.2 91.2% 59.8%);
+  --ring: #1877F2; /* Meta Facebook blue outline */ --sidebar: hsl(0 0% 98%); --sidebar-foreground: hsl(240 5.3% 26.1%); --sidebar-primary: #1877F2; --sidebar-primary-foreground: #ffffff; --sidebar-accent: #1877F2; --sidebar-accent-foreground: #ffffff; --sidebar-border: hsl(220 13% 91%); --sidebar-ring: #1877F2;
 }
 
 .dark {
-  --brand: oklch(75% 0.18 280); /* neon purple */
-  --brand-foreground: oklch(95% 0.05 280);
+  --brand: #1877F2; /* Meta Facebook blue */
+  --brand-foreground: #ffffff;
 
   --background: oklch(6% 0.02 280);   /* almost black */
   --foreground: oklch(95% 0.02 280);  /* pure white-purple text */
@@ -162,20 +162,20 @@
   --popover: oklch(12% 0.02 280);
   --popover-foreground: oklch(95% 0.02 280);
 
-  --primary: oklch(75% 0.18 280);     /* neon purple */
-  --primary-foreground: oklch(6% 0.02 280);
+  --primary: #1877F2;     /* Meta Facebook blue */
+  --primary-foreground: #ffffff;
   --secondary: oklch(20% 0.02 280);
   --secondary-foreground: oklch(95% 0.02 280);
 
   --muted: oklch(15% 0.02 280);
   --muted-foreground: oklch(65% 0.05 280);
 
-  --accent: oklch(25% 0.05 280);
-  --accent-foreground: oklch(95% 0.02 280);
+  --accent: #1877F2;
+  --accent-foreground: #ffffff;
 
   --border: oklch(25% 0.05 280);
   --input: oklch(18% 0.05 280);
-  --ring: oklch(65% 0.2 280); /* brighter purple glow */ --sidebar: hsl(240 5.9% 10%); --sidebar-foreground: hsl(240 4.8% 95.9%); --sidebar-primary: hsl(224.3 76.3% 48%); --sidebar-primary-foreground: hsl(0 0% 100%); --sidebar-accent: hsl(240 3.7% 15.9%); --sidebar-accent-foreground: hsl(240 4.8% 95.9%); --sidebar-border: hsl(240 3.7% 15.9%); --sidebar-ring: hsl(217.2 91.2% 59.8%);
+  --ring: #1877F2; /* Meta Facebook blue glow */ --sidebar: hsl(240 5.9% 10%); --sidebar-foreground: hsl(240 4.8% 95.9%); --sidebar-primary: #1877F2; --sidebar-primary-foreground: #ffffff; --sidebar-accent: #1877F2; --sidebar-accent-foreground: #ffffff; --sidebar-border: hsl(240 3.7% 15.9%); --sidebar-ring: #1877F2;
 }
 a:hover, a:hover * {
   background: none !important;

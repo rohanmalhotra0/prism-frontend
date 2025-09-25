@@ -171,10 +171,10 @@ export default function Hero({
               className="relative group px-6 py-3 rounded-full font-semibold text-white transition-all duration-300 hover:scale-105 active:scale-95 overflow-hidden inline-block"
             >
               {/* Background gradient */}
-              <div className="absolute inset-0 bg-gradient-to-r from-purple-600 via-purple-500 to-blue-600 rounded-full opacity-100"></div>
+              <div className="absolute inset-0 bg-[#1877F2] rounded-full opacity-100"></div>
               
               {/* Hover effect overlay */}
-              <div className="absolute inset-0 bg-gradient-to-r from-purple-500 via-purple-400 to-blue-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <div className="absolute inset-0 bg-[#1877F2] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               
               {/* Shine effect */}
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>

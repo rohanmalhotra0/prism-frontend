@@ -42,10 +42,10 @@ export default function ProtectedRoute({ children, fallback }: ProtectedRoutePro
         <div className="fixed inset-0 bg-[radial-gradient(ellipse_at_center,rgba(147,51,234,0.15)_0%,rgba(0,0,0,1)_85%)]" />
         
         <div className="relative z-10 text-center max-w-md mx-auto p-8">
-          <div className="w-16 h-16 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-6">
+          <div className="w-16 h-16 bg-[#1877F2] rounded-full flex items-center justify-center mx-auto mb-6">
             <LogIn className="w-8 h-8 text-white" />
           </div>
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-400 to-purple-600 bg-clip-text text-transparent mb-4">
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-[#1877F2] to-[#1877F2] bg-clip-text text-transparent mb-4">
             Authentication Required
           </h1>
           <p className="text-muted-foreground mb-6 text-lg">
@@ -53,7 +53,7 @@ export default function ProtectedRoute({ children, fallback }: ProtectedRoutePro
           </p>
           <Button
             onClick={() => window.dispatchEvent(new CustomEvent("openAuthModal"))}
-            className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white px-8 py-3 rounded-full font-medium transition mb-4"
+            className="bg-[#1877F2] hover:bg-[#1877F2] text-white px-8 py-3 rounded-full font-medium transition mb-4"
           >
             Sign In / Sign Up
           </Button>

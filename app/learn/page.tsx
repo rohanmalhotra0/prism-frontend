@@ -135,9 +135,9 @@ export default function LearnPage() {
                 return (
                   <div key={cat.slug} className={isLast ? "lg:col-start-2" : undefined}>
                     <Link href={`/learn/${cat.slug}`} className="block group">
-                      <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-purple-500/20">
+                      <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-[#1877F2]/20">
                         <div className="flex items-center gap-3 mb-4">
-                          <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl flex items-center justify-center">
+                          <div className="w-12 h-12 bg-[#1877F2] rounded-xl flex items-center justify-center">
                             <cat.icon className="w-6 h-6 text-white" />
                           </div>
                           <div>
@@ -158,7 +158,7 @@ export default function LearnPage() {
                         </p>
                         <div className="flex flex-wrap gap-1 mb-4">
                           {cat.topics.slice(0, 3).map((topic, topicIdx) => (
-                            <span key={topicIdx} className="px-2 py-1 bg-blue-500/20 text-blue-300 text-xs rounded-full">
+                            <span key={topicIdx} className="px-2 py-1 bg-[#1877F2]/20 text-[#1877F2] text-xs rounded-full">
                               {topic}
                             </span>
                           ))}
@@ -188,7 +188,7 @@ export default function LearnPage() {
             <div className="flex justify-center gap-4">
               <Button
                 asChild
-                className="rounded-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500"
+                className="rounded-full bg-[#1877F2] hover:bg-[#1877F2]"
               >
                 <Link href="/learn/statistics-probability">
                   Start with Basics
@@ -196,7 +196,7 @@ export default function LearnPage() {
               </Button>
               <Button
                 asChild
-                className="rounded-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500"
+                className="rounded-full bg-[#1877F2] hover:bg-[#1877F2]"
               >
                 <Link href="/research">
                   View Research

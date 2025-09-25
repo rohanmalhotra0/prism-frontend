@@ -301,7 +301,7 @@ function ListItem({
       >
         <div className="flex items-center gap-3">
           {Icon && (
-            <div className="w-6 h-6 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform duration-200">
+            <div className="w-6 h-6 bg-[#1877F2] rounded-lg flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform duration-200">
               <Icon className="w-3 h-3 text-white" />
             </div>
           )}

@@ -106,7 +106,7 @@ export default function ExamplesPage() {
       clusters: 3,
       difficulty: 'Beginner',
       icon: Target,
-      color: 'from-pink-500 to-rose-500',
+      color: 'from-[#1877F2] to-[#1877F2]',
       researchPaper: 'Fisher, R.A. (1936). The use of multiple measurements in taxonomic problems.',
       useCases: ['Species Classification', 'Feature Selection', 'Dimensionality Reduction'],
       generateData: () => {
@@ -138,7 +138,7 @@ export default function ExamplesPage() {
       clusters: 5,
       difficulty: 'Intermediate',
       icon: BarChart3,
-      color: 'from-blue-500 to-cyan-500',
+      color: 'from-[#1877F2] to-[#1877F2]',
       researchPaper: 'Kotler, P. (2016). Marketing 4.0: Moving from Traditional to Digital.',
       useCases: ['Market Segmentation', 'Customer Lifetime Value', 'Personalized Marketing'],
       generateData: () => {
@@ -169,7 +169,7 @@ export default function ExamplesPage() {
       clusters: 4,
       difficulty: 'Advanced',
       icon: TrendingUp,
-      color: 'from-green-500 to-emerald-500',
+      color: 'from-[#1877F2] to-[#1877F2]',
       researchPaper: 'Malhotra, R. (2025). Reddit Data in Quantitative Financial Models.',
       useCases: ['Risk Assessment', 'Portfolio Optimization', 'Algorithmic Trading'],
       generateData: () => {
@@ -202,7 +202,7 @@ export default function ExamplesPage() {
       clusters: 3,
       difficulty: 'Intermediate',
       icon: Zap,
-      color: 'from-purple-500 to-violet-500',
+      color: 'from-[#1877F2] to-[#1877F2]',
       researchPaper: 'Topol, E. (2019). Deep Medicine: How Artificial Intelligence Can Make Healthcare Human Again.',
       useCases: ['Health Monitoring', 'Fitness Optimization', 'Disease Prevention'],
       generateData: () => {
@@ -233,7 +233,7 @@ export default function ExamplesPage() {
       clusters: 4,
       difficulty: 'Intermediate',
       icon: Database,
-      color: 'from-orange-500 to-red-500',
+      color: 'from-[#1877F2] to-[#1877F2]',
       researchPaper: 'Davenport, T.H. (2017). The AI Advantage: How to Put the Artificial Intelligence Revolution to Work.',
       useCases: ['Performance Analysis', 'Sales Forecasting', 'Team Optimization'],
       generateData: () => {
@@ -265,7 +265,7 @@ export default function ExamplesPage() {
       clusters: 3,
       difficulty: 'Intermediate',
       icon: Target,
-      color: 'from-pink-500 to-rose-500',
+      color: 'from-[#1877F2] to-[#1877F2]',
       researchPaper: 'Fisher, R.A. (1936). The use of multiple measurements in taxonomic problems.',
       useCases: ['Multi-dimensional Classification', 'Feature Engineering', 'Dimensionality Reduction'],
       generateData: () => {
@@ -298,7 +298,7 @@ export default function ExamplesPage() {
       clusters: 5,
       difficulty: 'Advanced',
       icon: BarChart3,
-      color: 'from-blue-500 to-cyan-500',
+      color: 'from-[#1877F2] to-[#1877F2]',
       researchPaper: 'Kotler, P. (2016). Marketing 4.0: Moving from Traditional to Digital.',
       useCases: ['Advanced Segmentation', 'Customer Journey Mapping', 'Predictive Analytics'],
       generateData: () => {
@@ -330,7 +330,7 @@ export default function ExamplesPage() {
       clusters: 6,
       difficulty: 'Advanced',
       icon: TrendingUp,
-      color: 'from-green-500 to-emerald-500',
+      color: 'from-[#1877F2] to-[#1877F2]',
       researchPaper: 'Malhotra, R. (2024). An Economic Approach to Optimize Capital Allocation.',
       useCases: ['Risk Management', 'Portfolio Optimization', 'Derivatives Pricing'],
       generateData: () => {
@@ -361,7 +361,7 @@ export default function ExamplesPage() {
       clusters: 4,
       difficulty: 'Advanced',
       icon: Brain,
-      color: 'from-purple-500 to-violet-500',
+      color: 'from-[#1877F2] to-[#1877F2]',
       researchPaper: 'Topol, E. (2019). Deep Medicine: How Artificial Intelligence Can Make Healthcare Human Again.',
       useCases: ['Disease Prediction', 'Treatment Optimization', 'Health Risk Assessment'],
       generateData: () => {
@@ -392,7 +392,7 @@ export default function ExamplesPage() {
       clusters: 5,
       difficulty: 'Advanced',
       icon: TestTube,
-      color: 'from-orange-500 to-red-500',
+      color: 'from-[#1877F2] to-[#1877F2]',
       researchPaper: 'Lee, J. (2018). Industrial AI: Applications in Smart Manufacturing.',
       useCases: ['Quality Control', 'Predictive Maintenance', 'Process Optimization'],
       generateData: () => {
@@ -455,7 +455,7 @@ export default function ExamplesPage() {
     <article className="group relative">
       <div className="relative bg-white/2 backdrop-blur-xl rounded-3xl border border-white/5 overflow-hidden transition-all duration-700 hover:scale-[1.02] hover:border-white/10 hover:shadow-2xl hover:shadow-purple-500/20">
         {/* Top accent line */}
-        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500"></div>
+        <div className="absolute top-0 left-0 right-0 h-1 bg-[#1877F2]"></div>
         
         {/* Content layout */}
         <div className="flex flex-col lg:flex-row">
@@ -504,7 +504,7 @@ export default function ExamplesPage() {
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
               
               {/* Corner accent */}
-              <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-blue-500/20 to-transparent rounded-bl-full"></div>
+              <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-[#1877F2]/20 to-transparent rounded-bl-full"></div>
             </div>
           </div>
 
@@ -578,7 +578,7 @@ export default function ExamplesPage() {
             <div className="flex flex-col sm:flex-row gap-4">
               <Button
                 asChild
-                className="group/btn relative overflow-hidden rounded-full bg-gradient-to-r from-blue-600 to-purple-600 px-8 py-4 text-white font-semibold shadow-lg transition-all duration-300 hover:from-blue-500 hover:to-purple-500 hover:shadow-xl hover:shadow-blue-500/25 hover:scale-105 focus:ring-4 focus:ring-blue-400/30 focus:outline-none active:scale-95"
+                className="group/btn relative overflow-hidden rounded-full bg-[#1877F2] px-8 py-4 text-white font-semibold shadow-lg transition-all duration-300 hover:bg-[#1877F2] hover:shadow-xl hover:shadow-[#1877F2]/25 hover:scale-105 focus:ring-4 focus:ring-[#1877F2]/30 focus:outline-none active:scale-95"
               >
                 <a href={paper.pdfUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
                   <FileText className="w-5 h-5" />
@@ -679,7 +679,7 @@ export default function ExamplesPage() {
             className={`w-full py-3 px-4 rounded-lg font-semibold transition-all duration-200 ${
               isGenerating
                 ? 'bg-gray-600 text-gray-400 cursor-not-allowed'
-                : 'bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-500 hover:to-purple-500 hover:scale-105'
+                : 'bg-[#1877F2] text-white hover:bg-[#1877F2] hover:scale-105'
             }`}
           >
             <div className="flex items-center justify-center gap-2">
@@ -736,7 +736,7 @@ export default function ExamplesPage() {
                   onClick={() => setActiveTab('datasets')}
                   className={`px-8 py-4 rounded-xl font-semibold transition-all duration-300 ${
                     activeTab === 'datasets'
-                      ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg'
+                      ? 'bg-[#1877F2] text-white shadow-lg'
                       : 'text-gray-400 hover:text-white'
                   }`}
                 >
@@ -749,7 +749,7 @@ export default function ExamplesPage() {
                   onClick={() => setActiveTab('research')}
                   className={`px-8 py-4 rounded-xl font-semibold transition-all duration-300 ${
                     activeTab === 'research'
-                      ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg'
+                      ? 'bg-[#1877F2] text-white shadow-lg'
                       : 'text-gray-400 hover:text-white'
                   }`}
                 >
@@ -851,7 +851,7 @@ export default function ExamplesPage() {
               
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div className="text-center">
-                  <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <div className="w-16 h-16 bg-[#1877F2] rounded-full flex items-center justify-center mx-auto mb-4">
                     <Download className="w-8 h-8 text-white" />
                   </div>
                   <h4 className="text-lg font-semibold text-white mb-2">1. Download Datasets</h4>
@@ -859,7 +859,7 @@ export default function ExamplesPage() {
                 </div>
                 
                 <div className="text-center">
-                  <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <div className="w-16 h-16 bg-[#1877F2] rounded-full flex items-center justify-center mx-auto mb-4">
                     <Code className="w-8 h-8 text-white" />
                   </div>
                   <h4 className="text-lg font-semibold text-white mb-2">2. Experiment & Learn</h4>

@@ -81,7 +81,7 @@ export default function BusinessMetricsLearnPage() {
                     onClick={() => setActiveSection(section.id)}
                     className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-200 ${
                       activeSection === section.id
-                        ? 'bg-blue-600 text-white'
+                        ? 'bg-[#1877F2] text-white'
                         : 'bg-white/5 text-gray-300 hover:bg-white/10 hover:text-white'
                     }`}
                   >
@@ -130,7 +130,7 @@ export default function BusinessMetricsLearnPage() {
                             onClick={() => setViewMode('formula')}
                             className={`flex items-center gap-2 px-3 py-1.5 rounded-md transition-all duration-200 text-sm ${
                               viewMode === 'formula'
-                                ? 'bg-blue-600 text-white'
+                                ? 'bg-[#1877F2] text-white'
                                 : 'text-gray-300 hover:text-white'
                             }`}
                           >
@@ -141,7 +141,7 @@ export default function BusinessMetricsLearnPage() {
                             onClick={() => setViewMode('code')}
                             className={`flex items-center gap-2 px-3 py-1.5 rounded-md transition-all duration-200 text-sm ${
                               viewMode === 'code'
-                                ? 'bg-blue-600 text-white'
+                                ? 'bg-[#1877F2] text-white'
                                 : 'text-gray-300 hover:text-white'
                             }`}
                           >
@@ -246,7 +246,7 @@ console.log(\`Total Bookings: $\${totalBookings.toLocaleString()}\`);`}
                             onClick={() => setViewMode('formula')}
                             className={`flex items-center gap-2 px-3 py-1.5 rounded-md transition-all duration-200 text-sm ${
                               viewMode === 'formula'
-                                ? 'bg-blue-600 text-white'
+                                ? 'bg-[#1877F2] text-white'
                                 : 'text-gray-300 hover:text-white'
                             }`}
                           >
@@ -257,7 +257,7 @@ console.log(\`Total Bookings: $\${totalBookings.toLocaleString()}\`);`}
                             onClick={() => setViewMode('code')}
                             className={`flex items-center gap-2 px-3 py-1.5 rounded-md transition-all duration-200 text-sm ${
                               viewMode === 'code'
-                                ? 'bg-blue-600 text-white'
+                                ? 'bg-[#1877F2] text-white'
                                 : 'text-gray-300 hover:text-white'
                             }`}
                           >
@@ -359,7 +359,7 @@ console.log(\`Total Revenue: $\${totalRevenue.toLocaleString()}\`);`}
                             onClick={() => setViewMode('formula')}
                             className={`flex items-center gap-2 px-3 py-1.5 rounded-md transition-all duration-200 text-sm ${
                               viewMode === 'formula'
-                                ? 'bg-blue-600 text-white'
+                                ? 'bg-[#1877F2] text-white'
                                 : 'text-gray-300 hover:text-white'
                             }`}
                           >
@@ -370,7 +370,7 @@ console.log(\`Total Revenue: $\${totalRevenue.toLocaleString()}\`);`}
                             onClick={() => setViewMode('code')}
                             className={`flex items-center gap-2 px-3 py-1.5 rounded-md transition-all duration-200 text-sm ${
                               viewMode === 'code'
-                                ? 'bg-blue-600 text-white'
+                                ? 'bg-[#1877F2] text-white'
                                 : 'text-gray-300 hover:text-white'
                             }`}
                           >
@@ -495,7 +495,7 @@ console.log(\`ARR per Customer: $\${arrPerCustomer.toLocaleString()}\`);`}
                             onClick={() => setViewMode('formula')}
                             className={`flex items-center gap-2 px-3 py-1.5 rounded-md transition-all duration-200 text-sm ${
                               viewMode === 'formula'
-                                ? 'bg-blue-600 text-white'
+                                ? 'bg-[#1877F2] text-white'
                                 : 'text-gray-300 hover:text-white'
                             }`}
                           >
@@ -506,7 +506,7 @@ console.log(\`ARR per Customer: $\${arrPerCustomer.toLocaleString()}\`);`}
                             onClick={() => setViewMode('code')}
                             className={`flex items-center gap-2 px-3 py-1.5 rounded-md transition-all duration-200 text-sm ${
                               viewMode === 'code'
-                                ? 'bg-blue-600 text-white'
+                                ? 'bg-[#1877F2] text-white'
                                 : 'text-gray-300 hover:text-white'
                             }`}
                           >
@@ -637,7 +637,7 @@ console.log(\`MRR per Customer: $\${mrrPerCustomer.toLocaleString()}\`);`}
                             onClick={() => setViewMode('formula')}
                             className={`flex items-center gap-2 px-3 py-1.5 rounded-md transition-all duration-200 text-sm ${
                               viewMode === 'formula'
-                                ? 'bg-blue-600 text-white'
+                                ? 'bg-[#1877F2] text-white'
                                 : 'text-gray-300 hover:text-white'
                             }`}
                           >
@@ -648,7 +648,7 @@ console.log(\`MRR per Customer: $\${mrrPerCustomer.toLocaleString()}\`);`}
                             onClick={() => setViewMode('code')}
                             className={`flex items-center gap-2 px-3 py-1.5 rounded-md transition-all duration-200 text-sm ${
                               viewMode === 'code'
-                                ? 'bg-blue-600 text-white'
+                                ? 'bg-[#1877F2] text-white'
                                 : 'text-gray-300 hover:text-white'
                             }`}
                           >
@@ -780,7 +780,7 @@ console.log(\`Payback Period: \${paybackPeriod.toFixed(1)} months\`);`}
                             onClick={() => setViewMode('formula')}
                             className={`flex items-center gap-2 px-3 py-1.5 rounded-md transition-all duration-200 text-sm ${
                               viewMode === 'formula'
-                                ? 'bg-blue-600 text-white'
+                                ? 'bg-[#1877F2] text-white'
                                 : 'text-gray-300 hover:text-white'
                             }`}
                           >
@@ -791,7 +791,7 @@ console.log(\`Payback Period: \${paybackPeriod.toFixed(1)} months\`);`}
                             onClick={() => setViewMode('code')}
                             className={`flex items-center gap-2 px-3 py-1.5 rounded-md transition-all duration-200 text-sm ${
                               viewMode === 'code'
-                                ? 'bg-blue-600 text-white'
+                                ? 'bg-[#1877F2] text-white'
                                 : 'text-gray-300 hover:text-white'
                             }`}
                           >
@@ -937,7 +937,7 @@ console.log(\`Net MRR Churn: \${netMRRChurn.toFixed(2)}%\`);`}
                             onClick={() => setViewMode('formula')}
                             className={`flex items-center gap-2 px-3 py-1.5 rounded-md transition-all duration-200 text-sm ${
                               viewMode === 'formula'
-                                ? 'bg-blue-600 text-white'
+                                ? 'bg-[#1877F2] text-white'
                                 : 'text-gray-300 hover:text-white'
                             }`}
                           >
@@ -948,7 +948,7 @@ console.log(\`Net MRR Churn: \${netMRRChurn.toFixed(2)}%\`);`}
                             onClick={() => setViewMode('code')}
                             className={`flex items-center gap-2 px-3 py-1.5 rounded-md transition-all duration-200 text-sm ${
                               viewMode === 'code'
-                                ? 'bg-blue-600 text-white'
+                                ? 'bg-[#1877F2] text-white'
                                 : 'text-gray-300 hover:text-white'
                             }`}
                           >

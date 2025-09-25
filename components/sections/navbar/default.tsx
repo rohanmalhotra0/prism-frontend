@@ -85,7 +85,7 @@ export default function Navbar({
                     href={homeUrl}
                     className="flex items-center gap-2 hover:opacity-80 transition-opacity touch-manipulation"
                   >
-                    <div className="w-6 h-6 bg-gradient-to-br from-blue-500 to-purple-500 rounded-lg flex items-center justify-center">
+                    <div className="w-6 h-6 bg-[#1877F2] rounded-lg flex items-center justify-center">
                       <BarChart3 className="w-3 h-3 text-white" />
                     </div>
                     <span className="text-base font-bold text-white">Refrax</span>
@@ -104,7 +104,7 @@ export default function Navbar({
                         href="/financePage" 
                         className="group flex items-center gap-2 p-2 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-200 touch-manipulation"
                       >
-                        <div className="w-6 h-6 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
+                        <div className="w-6 h-6 bg-[#1877F2] rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
                           <BarChart3 className="w-3 h-3 text-white" />
                         </div>
                         <span className="font-semibold text-white group-hover:text-purple-200 transition-colors text-xs">Financial Modeling</span>
@@ -114,7 +114,7 @@ export default function Navbar({
                         href="/backtesting" 
                         className="group flex items-center gap-2 p-2 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-200 touch-manipulation"
                       >
-                        <div className="w-6 h-6 bg-gradient-to-br from-orange-500 to-red-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
+                        <div className="w-6 h-6 bg-[#1877F2] rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
                           <TestTube className="w-3 h-3 text-white" />
                         </div>
                         <span className="font-semibold text-white group-hover:text-orange-200 transition-colors text-xs">Backtest</span>
@@ -125,7 +125,7 @@ export default function Navbar({
                         href="/general" 
                         className="group flex items-center gap-2 p-2 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-200 touch-manipulation"
                       >
-                        <div className="w-6 h-6 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
+                        <div className="w-6 h-6 bg-[#1877F2] rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
                           <Calculator className="w-3 h-3 text-white" />
                         </div>
                         <span className="font-semibold text-white group-hover:text-purple-200 transition-colors text-xs">General Modeling</span>
@@ -143,7 +143,7 @@ export default function Navbar({
                         href="/learn" 
                         className="group flex items-center gap-2 p-2 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-200 touch-manipulation"
                       >
-                        <div className="w-6 h-6 bg-gradient-to-br from-blue-500 to-purple-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
+                        <div className="w-6 h-6 bg-[#1877F2] rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
                           <BookOpen className="w-3 h-3 text-white" />
                         </div>
                         <span className="font-semibold text-white group-hover:text-blue-200 transition-colors text-xs">Learn</span>
@@ -153,7 +153,7 @@ export default function Navbar({
                         href="/learn/examples" 
                         className="group flex items-center gap-2 p-2 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-200 touch-manipulation"
                       >
-                        <div className="w-6 h-6 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
+                        <div className="w-6 h-6 bg-[#1877F2] rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
                           <Database className="w-3 h-3 text-white" />
                         </div>
                         <span className="font-semibold text-white group-hover:text-cyan-200 transition-colors text-xs">Examples</span>
@@ -171,7 +171,7 @@ export default function Navbar({
                         href="/business" 
                         className="group flex items-center gap-2 p-2 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-200 touch-manipulation"
                       >
-                        <div className="w-6 h-6 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
+                        <div className="w-6 h-6 bg-[#1877F2] rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
                           <BarChart3 className="w-3 h-3 text-white" />
                         </div>
                         <span className="font-semibold text-white group-hover:text-emerald-200 transition-colors text-xs">Business Metrics</span>
@@ -189,7 +189,7 @@ export default function Navbar({
                         href="/about" 
                         className="group flex items-center gap-2 p-2 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-200 touch-manipulation"
                       >
-                        <div className="w-6 h-6 bg-gradient-to-br from-green-500 to-blue-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
+                        <div className="w-6 h-6 bg-[#1877F2] rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
                           <User className="w-3 h-3 text-white" />
                         </div>
                         <span className="font-semibold text-white group-hover:text-green-200 transition-colors text-xs">About Us</span>
@@ -198,7 +198,7 @@ export default function Navbar({
                         href="/docs" 
                         className="group flex items-center gap-2 p-2 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-200 touch-manipulation"
                       >
-                        <div className="w-6 h-6 bg-gradient-to-br from-green-500 to-blue-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
+                        <div className="w-6 h-6 bg-[#1877F2] rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
                           <FileText className="w-3 h-3 text-white" />
                         </div>
                         <span className="font-semibold text-white group-hover:text-green-200 transition-colors text-xs">Documentation</span>
@@ -216,7 +216,7 @@ export default function Navbar({
                         href="/ai" 
                         className="group flex items-center gap-2 p-2 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-200 touch-manipulation"
                       >
-                        <div className="w-6 h-6 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
+                        <div className="w-6 h-6 bg-[#1877F2] rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
                           <span className="text-sm font-bold text-white">AI</span>
                         </div>
                         <span className="font-semibold text-white group-hover:text-cyan-200 transition-colors text-xs">AI Assistant</span>
@@ -237,7 +237,7 @@ export default function Navbar({
                     href={homeUrl}
                     className="flex items-center gap-2 hover:opacity-80 transition-opacity touch-manipulation"
                   >
-                    <div className="w-6 h-6 bg-gradient-to-br from-blue-500 to-purple-500 rounded-lg flex items-center justify-center">
+                    <div className="w-6 h-6 bg-[#1877F2] rounded-lg flex items-center justify-center">
                       <BarChart3 className="w-3 h-3 text-white" />
                     </div>
                     <span className="text-base font-bold text-white">Refrax</span>
@@ -255,7 +255,7 @@ export default function Navbar({
                         href="/learn" 
                         className="group flex items-center gap-2 p-2 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-200 touch-manipulation"
                       >
-                        <div className="w-6 h-6 bg-gradient-to-br from-blue-500 to-purple-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
+                        <div className="w-6 h-6 bg-[#1877F2] rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
                           <BookOpen className="w-3 h-3 text-white" />
                         </div>
                         <span className="font-semibold text-white group-hover:text-blue-200 transition-colors text-xs">Learn</span>
@@ -265,7 +265,7 @@ export default function Navbar({
                         href="/learn/examples" 
                         className="group flex items-center gap-2 p-2 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-200 touch-manipulation"
                       >
-                        <div className="w-6 h-6 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
+                        <div className="w-6 h-6 bg-[#1877F2] rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
                           <Database className="w-3 h-3 text-white" />
                         </div>
                         <span className="font-semibold text-white group-hover:text-cyan-200 transition-colors text-xs">Examples</span>
@@ -283,7 +283,7 @@ export default function Navbar({
                         href="/business" 
                         className="group flex items-center gap-2 p-2 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-200 touch-manipulation"
                       >
-                        <div className="w-6 h-6 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
+                        <div className="w-6 h-6 bg-[#1877F2] rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
                           <BarChart3 className="w-3 h-3 text-white" />
                         </div>
                         <span className="font-semibold text-white group-hover:text-emerald-200 transition-colors text-xs">Business Metrics</span>
@@ -301,7 +301,7 @@ export default function Navbar({
                         href="/about" 
                         className="group flex items-center gap-2 p-2 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-200 touch-manipulation"
                       >
-                        <div className="w-6 h-6 bg-gradient-to-br from-green-500 to-blue-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
+                        <div className="w-6 h-6 bg-[#1877F2] rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
                           <User className="w-3 h-3 text-white" />
                         </div>
                         <span className="font-semibold text-white group-hover:text-green-200 transition-colors text-xs">About Me</span>
@@ -310,7 +310,7 @@ export default function Navbar({
                         href="/docs" 
                         className="group flex items-center gap-2 p-2 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-200 touch-manipulation"
                       >
-                        <div className="w-6 h-6 bg-gradient-to-br from-green-500 to-blue-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
+                        <div className="w-6 h-6 bg-[#1877F2] rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
                           <FileText className="w-3 h-3 text-white" />
                         </div>
                         <span className="font-semibold text-white group-hover:text-green-200 transition-colors text-xs">Documentation</span>
@@ -328,7 +328,7 @@ export default function Navbar({
                         href="/financePage" 
                         className="group flex items-center gap-2 p-2 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-200 touch-manipulation"
                       >
-                        <div className="w-6 h-6 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
+                        <div className="w-6 h-6 bg-[#1877F2] rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
                           <BarChart3 className="w-3 h-3 text-white" />
                         </div>
                         <span className="font-semibold text-white group-hover:text-purple-200 transition-colors text-xs">Stocks & Indices</span>
@@ -338,7 +338,7 @@ export default function Navbar({
                         href="/general" 
                         className="group flex items-center gap-2 p-2 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-200 touch-manipulation"
                       >
-                        <div className="w-6 h-6 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
+                        <div className="w-6 h-6 bg-[#1877F2] rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
                           <Calculator className="w-3 h-3 text-white" />
                         </div>
                         <span className="font-semibold text-white group-hover:text-purple-200 transition-colors text-xs">General Modeling</span>
@@ -356,7 +356,7 @@ export default function Navbar({
                         href="/ai" 
                         className="group flex items-center gap-2 p-2 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-200 touch-manipulation"
                       >
-                        <div className="w-6 h-6 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
+                        <div className="w-6 h-6 bg-[#1877F2] rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
                           <span className="text-sm font-bold text-white">AI</span>
                         </div>
                         <span className="font-semibold text-white group-hover:text-cyan-200 transition-colors text-xs">AI Assistant</span>

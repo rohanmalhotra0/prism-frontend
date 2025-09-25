@@ -100,11 +100,12 @@ const toZeroLevel = (exprRaw: string) => {
 // -------- Component --------
 export default function MathVisualizer({ sharedData, setSharedData }: MathVisualizerProps) {
   // UI State
-  const [mode3D, setMode3D] = useState(false);
+  const [mode3D, setMode3D] = useState(true);
   const [equations, setEquations] = useState<EquationItem[]>([
     { id: crypto.randomUUID(), expr: "y = cos(x + 5t)", color: COLORS[1], visible: true },
-    { id: crypto.randomUUID(), expr: "y = x^2", color: COLORS[2], visible: true },
-    { id: crypto.randomUUID(), expr: "z = sin(x)*cos(y)", color: COLORS[0], visible: false },
+    { id: crypto.randomUUID(), expr: "y = sin(x + 5t)", color: COLORS[2], visible: true },
+    { id: crypto.randomUUID(), expr: "y = x^2", color: COLORS[3], visible: true },
+    { id: crypto.randomUUID(), expr: "z = sin(x+5t)*cos(y+5t)", color: COLORS[0], visible: true },
     { id: crypto.randomUUID(), expr: "x^2 + y^2 + z^2 = 9", color: COLORS[3], visible: false },
   ]);
   const [activeId, setActiveId] = useState<string | null>(equations[0]?.id ?? null);
@@ -560,7 +561,7 @@ export default function MathVisualizer({ sharedData, setSharedData }: MathVisual
             <span className={`text-sm ${!mode3D ? "text-white" : "text-white/40"}`}>2D</span>
             <button
               onClick={() => setMode3D((v) => !v)}
-              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${mode3D ? "bg-blue-600" : "bg-gray-600"}`}
+              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${mode3D ? "bg-[#1877F2]" : "bg-gray-600"}`}
             >
               <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${mode3D ? "translate-x-6" : "translate-x-1"}`} />
             </button>
@@ -571,7 +572,7 @@ export default function MathVisualizer({ sharedData, setSharedData }: MathVisual
         <div className="flex items-center gap-2">
           <button
             onClick={addEquation}
-            className="flex-1 py-2 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500"
+            className="flex-1 py-2 rounded-xl bg-[#1877F2] hover:bg-[#1877F2]"
           >
             + Add Expression
           </button>
@@ -593,7 +594,7 @@ export default function MathVisualizer({ sharedData, setSharedData }: MathVisual
             return (
               <div
                 key={eq.id}
-                className={`rounded-xl border ${active ? "border-purple-500 bg-purple-500/10" : "border-white/10 bg-[#101826]"} p-3`}
+                className={`rounded-xl border ${active ? "border-[#1877F2] bg-[#1877F2]/10" : "border-white/10 bg-[#101826]"} p-3`}
                 onClick={() => setActiveId(eq.id)}
               >
                 <div className="flex items-center gap-2 mb-2">
@@ -624,7 +625,7 @@ export default function MathVisualizer({ sharedData, setSharedData }: MathVisual
                   </button>
                 </div>
                 <input
-                  className="w-full bg-[#0b111a] border border-white/10 rounded-lg px-3 py-2 font-mono text-sm focus:outline-none focus:border-purple-500"
+                  className="w-full bg-[#0b111a] border border-white/10 rounded-lg px-3 py-2 font-mono text-sm focus:outline-none focus:border-[#1877F2]"
                   value={eq.expr}
                   onChange={(e) => updateEquation(eq.id, { expr: e.target.value })}
                   placeholder={mode3D ? "z = f(x, y, t)  or  F(x,y,z,t)=0" : "y = f(x, t)  or  F(x,y,t)=0"}
@@ -655,7 +656,7 @@ export default function MathVisualizer({ sharedData, setSharedData }: MathVisual
           <div className="flex items-center gap-3">
             <button
               onClick={() => setAnim((v) => !v)}
-              className={`px-3 py-1.5 rounded-lg ${anim ? "bg-green-600 hover:bg-green-700" : "bg-gray-700 hover:bg-gray-600"}`}
+              className={`px-3 py-1.5 rounded-lg ${anim ? "bg-[#1877F2] hover:bg-[#1877F2]" : "bg-gray-700 hover:bg-gray-600"}`}
             >
               {anim ? "Stop" : "Animate"}
             </button>
