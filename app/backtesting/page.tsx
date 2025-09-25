@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Navbar from "@/components/sections/navbar/default";
-import BacktestingSandbox from "../general/components/BacktestingSandbox";
+import Backtest from "../general/components/Backtest";
 import HeroBackground from "@/components/ui/HeroBackground";
 
 export default function BacktestingPage() {
@@ -42,7 +42,7 @@ export default function BacktestingPage() {
               <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-500 via-blue-500 to-green-500"></div>
               
               <div className="p-8">
-                <BacktestingSandbox sharedData={sharedData} setSharedData={setSharedData} />
+                <Backtest sharedData={sharedData} setSharedData={setSharedData} />
               </div>
             </div>
           </div>

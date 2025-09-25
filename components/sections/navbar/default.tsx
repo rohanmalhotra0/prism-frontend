@@ -117,17 +117,17 @@ export default function Navbar({
                         <div className="w-6 h-6 bg-gradient-to-br from-orange-500 to-red-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
                           <TestTube className="w-3 h-3 text-white" />
                         </div>
-                        <span className="font-semibold text-white group-hover:text-orange-200 transition-colors text-xs">Backtesting Sandbox</span>
+                        <span className="font-semibold text-white group-hover:text-orange-200 transition-colors text-xs">Backtest</span>
                       </a>
                       
                       <a 
-                        href="/learn/ml-playground" 
+                        href="/learn/examples" 
                         className="group flex items-center gap-2 p-2 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-200 touch-manipulation"
                       >
                         <div className="w-6 h-6 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
                           <Database className="w-3 h-3 text-white" />
                         </div>
-                        <span className="font-semibold text-white group-hover:text-cyan-200 transition-colors text-xs">ML Playground</span>
+                        <span className="font-semibold text-white group-hover:text-cyan-200 transition-colors text-xs">Examples</span>
                       </a>
                       
                       <a 
@@ -183,15 +183,6 @@ export default function Navbar({
                           <BookOpen className="w-3 h-3 text-white" />
                         </div>
                         <span className="font-semibold text-white group-hover:text-blue-200 transition-colors text-xs">Learn</span>
-                      </a>
-                      <a 
-                        href="/research" 
-                        className="group flex items-center gap-2 p-2 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-200 touch-manipulation"
-                      >
-                        <div className="w-6 h-6 bg-gradient-to-br from-blue-500 to-purple-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
-                          <Search className="w-3 h-3 text-white" />
-                        </div>
-                        <span className="font-semibold text-white group-hover:text-blue-200 transition-colors text-xs">Research</span>
                       </a>
                     </div>
                   </div>
@@ -249,15 +240,6 @@ export default function Navbar({
                           <BookOpen className="w-3 h-3 text-white" />
                         </div>
                         <span className="font-semibold text-white group-hover:text-blue-200 transition-colors text-xs">Learn</span>
-                      </a>
-                      <a 
-                        href="/research" 
-                        className="group flex items-center gap-2 p-2 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-200 touch-manipulation"
-                      >
-                        <div className="w-6 h-6 bg-gradient-to-br from-blue-500 to-purple-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
-                          <Search className="w-3 h-3 text-white" />
-                        </div>
-                        <span className="font-semibold text-white group-hover:text-blue-200 transition-colors text-xs">Research</span>
                       </a>
                     </div>
                   </div>

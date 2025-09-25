@@ -53,7 +53,7 @@ interface BacktestingMetrics {
   customKPIs: { [key: string]: number };
 }
 
-interface BacktestingSandboxProps {
+interface BacktestProps {
   sharedData?: any;
   setSharedData?: (data: any) => void;
 }
@@ -95,7 +95,7 @@ function safeEval(expression: string, context: DatasetRow): any {
 }
 
 // -------- Component --------
-export default function BacktestingSandbox({ sharedData, setSharedData }: BacktestingSandboxProps) {
+export default function Backtest({ sharedData, setSharedData }: BacktestProps) {
   // State
   const [dataset, setDataset] = useState<DatasetRow[]>([]);
   const [columns, setColumns] = useState<string[]>([]);

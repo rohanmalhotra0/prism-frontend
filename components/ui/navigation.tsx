@@ -61,9 +61,9 @@ function NavigationComponent({
       icon: TestTube,
     },
     {
-      title: "ML Playground",
-      href: "/learn/ml-playground",
-      description: "Research insights and curated datasets for machine learning experimentation.",
+      title: "Examples",
+      href: "/learn/examples",
+      description: "Research papers and curated datasets for machine learning experimentation.",
       icon: Database,
     },
     /* 
@@ -99,12 +99,6 @@ function NavigationComponent({
       href: "/learn",
       description: "Foundations of modeling, indicators, and workflows.",
       icon: BookOpen,
-    },
-    {
-      title: "Research",
-      href: "/research",
-      description: "Explore research examples using Refrax models.",
-      icon: Search,
     },
     {
       title: "AI Assistant",
