@@ -82,15 +82,16 @@ export default function BusinessMetricsPage() {
   const [growthRate, setGrowthRate] = useState(20);
 
   // ---- Datasets (generated vs uploaded) ----
-  const datasets: Dataset[] = useMemo(
-    () => [
+  const [datasets, setDatasets] = useState<Dataset[]>([]);
+  
+  useEffect(() => {
+    setDatasets([
       { id: "finance", name: "Financial Data", type: "finance", data: generateFinancialData() },
       { id: "customers", name: "Customer Data", type: "customers", data: generateCustomerData() },
       { id: "product", name: "Product Data", type: "product", data: generateProductData() },
       { id: "uploaded", name: "Uploaded Data", type: "uploaded", data: uploadedData },
-    ],
-    [uploadedData]
-  );
+    ]);
+  }, [uploadedData]);
 
   // Generate scenario data based on current slider values
   const generateScenarioData = useCallback(() => {
@@ -132,7 +133,7 @@ export default function BusinessMetricsPage() {
   // Scenario management functions
   const saveScenario = () => {
     const newScenario = {
-      id: Date.now().toString(),
+      id: `scenario_${Math.random().toString(36).substr(2, 9)}`,
       name: scenarioName,
       data: generateScenarioData(),
       parameters: {
@@ -240,7 +241,12 @@ export default function BusinessMetricsPage() {
 
   // ---- Current dataset ----
   const current = useMemo(
-    () => datasets.find((d) => d.id === selectedDataset) ?? datasets[0],
+    () => {
+      if (datasets.length === 0) {
+        return { id: "finance", name: "Financial Data", type: "finance", data: [] };
+      }
+      return datasets.find((d) => d.id === selectedDataset) ?? datasets[0];
+    },
     [datasets, selectedDataset]
   );
   
@@ -498,7 +504,9 @@ export default function BusinessMetricsPage() {
   }, [calculateKPIs, current.type]);
 
   // ---- Revenue Forecast (24 months) ----
-  const revenueData = useMemo(() => {
+  const [revenueData, setRevenueData] = useState<any[]>([]);
+  
+  useEffect(() => {
     const months = 24;
     const base = 200_000;
     const rows = [];
@@ -514,24 +522,29 @@ export default function BusinessMetricsPage() {
         lo: rev * 0.85,
       });
     }
-    return rows;
+    setRevenueData(rows);
   }, [growthRate]);
 
   // ---- Cohort (retention) ----
-  const cohortData = useMemo(() => {
+  const [cohortData, setCohortData] = useState<any[]>([]);
+  
+  useEffect(() => {
     const cohorts = ["2025-01", "2025-02", "2025-03", "2025-04", "2025-05"];
     const months = 12;
-    return cohorts.map((cohort) => ({
+    const data = cohorts.map((cohort) => ({
       cohort,
       data: Array.from({ length: months }, (_, m) => {
         const r = Math.max(0.3, 1 - m * 0.08 + (Math.random() - 0.5) * 0.1);
         return { month: `Month ${m + 1}`, retention: r, revenue: 1000 * r * (1 + Math.random() * 0.2) };
       }),
     }));
+    setCohortData(data);
   }, []);
 
   // ---- Monte Carlo ----
-  const monteCarloData = useMemo(() => {
+  const [monteCarloData, setMonteCarloData] = useState<Array<Array<{ month: string; revenue: number }>>>([]);
+  
+  useEffect(() => {
     const sims = 100;
     const months = 24;
     const out: Array<Array<{ month: string; revenue: number }>> = [];
@@ -545,7 +558,7 @@ export default function BusinessMetricsPage() {
       }
       out.push(row);
     }
-    return out;
+    setMonteCarloData(out);
   }, [growthRate]);
 
   // ---- Chart traces/layouts ----
@@ -658,8 +671,8 @@ export default function BusinessMetricsPage() {
       cohortData.map((cohort, i) => ({
         type: "scatter",
         mode: "lines+markers",
-        x: cohort.data.map((d) => d.month),
-        y: cohort.data.map((d) => d.retention * 100),
+        x: cohort.data.map((d: any) => d.month),
+        y: cohort.data.map((d: any) => d.retention * 100),
         name: cohort.cohort,
         line: { color: `hsl(${(i * 61) % 360},70%,55%)`, width: 2 },
         marker: { size: 4 },

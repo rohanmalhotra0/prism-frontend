@@ -133,6 +133,34 @@ export default function Navbar({
                     </div>
                   </div>
 
+                  {/* Learn Section */}
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2 mb-2">
+                      <h3 className="text-xs font-semibold text-white uppercase tracking-wider">Learn</h3>
+                    </div>
+                    <div className="space-y-0.5">
+                      <a 
+                        href="/learn" 
+                        className="group flex items-center gap-2 p-2 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-200 touch-manipulation"
+                      >
+                        <div className="w-6 h-6 bg-gradient-to-br from-blue-500 to-purple-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
+                          <BookOpen className="w-3 h-3 text-white" />
+                        </div>
+                        <span className="font-semibold text-white group-hover:text-blue-200 transition-colors text-xs">Learn</span>
+                      </a>
+                      
+                      <a 
+                        href="/learn/examples" 
+                        className="group flex items-center gap-2 p-2 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-200 touch-manipulation"
+                      >
+                        <div className="w-6 h-6 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
+                          <Database className="w-3 h-3 text-white" />
+                        </div>
+                        <span className="font-semibold text-white group-hover:text-cyan-200 transition-colors text-xs">Examples</span>
+                      </a>
+                    </div>
+                  </div>
+
                   {/* Business Section */}
                   <div className="space-y-1">
                     <div className="flex items-center gap-2 mb-2">
@@ -174,34 +202,6 @@ export default function Navbar({
                           <FileText className="w-3 h-3 text-white" />
                         </div>
                         <span className="font-semibold text-white group-hover:text-green-200 transition-colors text-xs">Documentation</span>
-                      </a>
-                    </div>
-                  </div>
-
-                  {/* Learn Section */}
-                  <div className="space-y-1">
-                    <div className="flex items-center gap-2 mb-2">
-                      <h3 className="text-xs font-semibold text-white uppercase tracking-wider">Learn</h3>
-                    </div>
-                    <div className="space-y-0.5">
-                      <a 
-                        href="/learn" 
-                        className="group flex items-center gap-2 p-2 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-200 touch-manipulation"
-                      >
-                        <div className="w-6 h-6 bg-gradient-to-br from-blue-500 to-purple-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
-                          <BookOpen className="w-3 h-3 text-white" />
-                        </div>
-                        <span className="font-semibold text-white group-hover:text-blue-200 transition-colors text-xs">Learn</span>
-                      </a>
-                      
-                      <a 
-                        href="/learn/examples" 
-                        className="group flex items-center gap-2 p-2 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-200 touch-manipulation"
-                      >
-                        <div className="w-6 h-6 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
-                          <Database className="w-3 h-3 text-white" />
-                        </div>
-                        <span className="font-semibold text-white group-hover:text-cyan-200 transition-colors text-xs">Examples</span>
                       </a>
                     </div>
                   </div>

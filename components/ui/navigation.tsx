@@ -190,33 +190,6 @@ function NavigationComponent({
         )}
       </div>
 
-      {/* Learn */}
-      <div className="relative">
-        <button
-          onClick={() => handleDropdownToggle('learn')}
-          className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-300 hover:text-white transition-all duration-200 rounded-lg hover:bg-white/5"
-        >
-          <BookOpen className="w-4 h-4" />
-          Learn
-        </button>
-        {openDropdown === 'learn' && (
-          <div className="absolute top-full left-0 mt-2 w-[450px] bg-white/5 backdrop-blur-md border border-white/10 rounded-xl shadow-2xl z-50">
-            <div className="p-6">
-              <div className="flex items-center gap-2 mb-4">
-                <h3 className="text-sm font-semibold text-white uppercase tracking-wider">Learn</h3>
-              </div>
-              <ul className="grid gap-3">
-                {community.map((item) => (
-                  <ListItem key={item.title} href={item.href} title={item.title} icon={item.icon}>
-                    {item.description}
-                  </ListItem>
-                ))}
-              </ul>
-            </div>
-          </div>
-        )}
-      </div>
-
       {/* Business */}
       <div className="relative">
         <button
@@ -234,6 +207,33 @@ function NavigationComponent({
               </div>
               <ul className="grid gap-3">
                 {business.map((item) => (
+                  <ListItem key={item.title} href={item.href} title={item.title} icon={item.icon}>
+                    {item.description}
+                  </ListItem>
+                ))}
+              </ul>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Learn */}
+      <div className="relative">
+        <button
+          onClick={() => handleDropdownToggle('learn')}
+          className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-300 hover:text-white transition-all duration-200 rounded-lg hover:bg-white/5"
+        >
+          <BookOpen className="w-4 h-4" />
+          Learn
+        </button>
+        {openDropdown === 'learn' && (
+          <div className="absolute top-full left-0 mt-2 w-[450px] bg-white/5 backdrop-blur-md border border-white/10 rounded-xl shadow-2xl z-50">
+            <div className="p-6">
+              <div className="flex items-center gap-2 mb-4">
+                <h3 className="text-sm font-semibold text-white uppercase tracking-wider">Learn</h3>
+              </div>
+              <ul className="grid gap-3">
+                {community.map((item) => (
                   <ListItem key={item.title} href={item.href} title={item.title} icon={item.icon}>
                     {item.description}
                   </ListItem>
