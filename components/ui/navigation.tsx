@@ -37,6 +37,7 @@ interface ComponentItem {
 
 interface NavigationProps {
   components?: ComponentItem[];
+  business?: ComponentItem[];
   community?: ComponentItem[];
 }
 
@@ -59,12 +60,6 @@ function NavigationComponent({
       href: "/backtesting",
       description: "Upload datasets, define strategies, and simulate historical performance.",
       icon: TestTube,
-    },
-    {
-      title: "Examples",
-      href: "/learn/examples",
-      description: "Research papers and curated datasets for machine learning experimentation.",
-      icon: Database,
     },
     /* 
     {
@@ -93,12 +88,26 @@ function NavigationComponent({
     */
   
   ],
+  business = [
+    {
+      title: "Business Metrics",
+      href: "/business",
+      description: "Predictive analytics and interactive business intelligence.",
+      icon: BarChart3,
+    },
+  ],
   community = [
     {
       title: "Learn",
       href: "/learn",
       description: "Foundations of modeling, indicators, and workflows.",
       icon: BookOpen,
+    },
+    {
+      title: "Examples",
+      href: "/learn/examples",
+      description: "Research papers and curated datasets for machine learning experimentation.",
+      icon: Database,
     },
     {
       title: "AI Assistant",
@@ -198,6 +207,33 @@ function NavigationComponent({
               </div>
               <ul className="grid gap-3">
                 {community.map((item) => (
+                  <ListItem key={item.title} href={item.href} title={item.title} icon={item.icon}>
+                    {item.description}
+                  </ListItem>
+                ))}
+              </ul>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Business */}
+      <div className="relative">
+        <button
+          onClick={() => handleDropdownToggle('business')}
+          className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-300 hover:text-white transition-all duration-200 rounded-lg hover:bg-white/5"
+        >
+          <BarChart3 className="w-4 h-4" />
+          Business
+        </button>
+        {openDropdown === 'business' && (
+          <div className="absolute top-full left-0 mt-2 w-[400px] bg-white/5 backdrop-blur-md border border-white/10 rounded-xl shadow-2xl z-50">
+            <div className="p-6">
+              <div className="flex items-center gap-2 mb-4">
+                <h3 className="text-sm font-semibold text-white uppercase tracking-wider">Business</h3>
+              </div>
+              <ul className="grid gap-3">
+                {business.map((item) => (
                   <ListItem key={item.title} href={item.href} title={item.title} icon={item.icon}>
                     {item.description}
                   </ListItem>

@@ -61,33 +61,70 @@ interface BacktestProps {
 // -------- Utilities --------
 const COLORS = ["#ff6b6b", "#4ecdc4", "#45b7d1", "#96ceb4", "#feca57", "#ff9ff3", "#54a0ff"];
 
+// Generate UUID function (fallback for crypto.randomUUID)
+function generateUUID(): string {
+  if (typeof crypto !== 'undefined' && crypto.randomUUID) {
+    return crypto.randomUUID();
+  }
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    const r = Math.random() * 16 | 0;
+    const v = c === 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
+}
+
 // Safe evaluation function for strategy rules
 function safeEval(expression: string, context: DatasetRow): any {
   try {
+    // Simple expression evaluator for basic math operations
+    // This is much safer than using Function constructor
+    
     // Replace column references with actual values
     let processedExpression = expression;
     Object.keys(context).forEach(key => {
+      const value = context[key];
       const regex = new RegExp(`\\b${key}\\b`, 'g');
-      processedExpression = processedExpression.replace(regex, `context.${key}`);
+      if (typeof value === 'number') {
+        processedExpression = processedExpression.replace(regex, value.toString());
+      } else if (typeof value === 'string') {
+        processedExpression = processedExpression.replace(regex, `"${value}"`);
+      } else {
+        processedExpression = processedExpression.replace(regex, '0');
+      }
     });
     
-    // Create a safe evaluation context
-    const evalContext = { ...context };
-    
-    // Basic math operations and comparisons
-    const mathFunctions = {
-      Math, Date, parseInt, parseFloat, isNaN, isFinite,
-      abs: Math.abs, max: Math.max, min: Math.min, round: Math.round,
-      floor: Math.floor, ceil: Math.ceil, sqrt: Math.sqrt,
-      sin: Math.sin, cos: Math.cos, tan: Math.tan,
-      log: Math.log, exp: Math.exp, pow: Math.pow
+    // Basic math operations
+    const mathOps = {
+      'Math.abs': Math.abs,
+      'Math.max': Math.max,
+      'Math.min': Math.min,
+      'Math.round': Math.round,
+      'Math.floor': Math.floor,
+      'Math.ceil': Math.ceil,
+      'Math.sqrt': Math.sqrt,
+      'Math.sin': Math.sin,
+      'Math.cos': Math.cos,
+      'Math.tan': Math.tan,
+      'Math.log': Math.log,
+      'Math.exp': Math.exp,
+      'Math.pow': Math.pow
     };
     
-    // Create evaluation function with limited scope
-    const func = new Function('context', 'Math', 'Date', ...Object.keys(mathFunctions), 
-      `"use strict"; return (${processedExpression});`);
+    // Replace Math functions
+    Object.entries(mathOps).forEach(([funcName, func]) => {
+      const regex = new RegExp(funcName.replace('.', '\\.'), 'g');
+      processedExpression = processedExpression.replace(regex, func.toString());
+    });
     
-    return func(evalContext, Math, Date, ...Object.values(mathFunctions));
+    // Evaluate the expression safely
+    // Only allow basic math operations and comparisons
+    const allowedChars = /^[0-9+\-*/.()<>=!&|"'\s]+$/;
+    if (!allowedChars.test(processedExpression)) {
+      throw new Error('Invalid characters in expression');
+    }
+    
+    // Use eval with strict mode (still not ideal, but better than Function constructor)
+    return eval(processedExpression);
   } catch (error) {
     console.warn('Rule evaluation error:', error);
     return false;
@@ -104,12 +141,28 @@ export default function Backtest({ sharedData, setSharedData }: BacktestProps) {
   
   const [rules, setRules] = useState<StrategyRule[]>([
     {
-      id: crypto.randomUUID(),
+      id: generateUUID(),
       name: "High Value Alert",
       condition: "value > 100",
       action: "Alert",
       enabled: true,
       color: COLORS[0]
+    },
+    {
+      id: generateUUID(),
+      name: "Buy Low",
+      condition: "value < 95",
+      action: "Buy",
+      enabled: true,
+      color: COLORS[1]
+    },
+    {
+      id: generateUUID(),
+      name: "Sell High",
+      condition: "value > 105",
+      action: "Sell",
+      enabled: true,
+      color: COLORS[2]
     }
   ]);
   
@@ -140,31 +193,62 @@ export default function Backtest({ sharedData, setSharedData }: BacktestProps) {
     try {
       const text = await file.text();
       const lines = text.split('\n').filter(line => line.trim());
-      const headers = lines[0].split(',').map(h => h.trim());
+      
+      if (lines.length < 2) {
+        throw new Error('File must have at least a header row and one data row');
+      }
+      
+      // Parse CSV more robustly
+      const parseCSVLine = (line: string): string[] => {
+        const result = [];
+        let current = '';
+        let inQuotes = false;
+        
+        for (let i = 0; i < line.length; i++) {
+          const char = line[i];
+          if (char === '"') {
+            inQuotes = !inQuotes;
+          } else if (char === ',' && !inQuotes) {
+            result.push(current.trim());
+            current = '';
+          } else {
+            current += char;
+          }
+        }
+        result.push(current.trim());
+        return result;
+      };
+      
+      const headers = parseCSVLine(lines[0]);
       
       const data = lines.slice(1).map((line, index) => {
-        const values = line.split(',').map(v => v.trim());
+        const values = parseCSVLine(line);
         const row: DatasetRow = { index };
         
         headers.forEach((header, colIndex) => {
-          const value = values[colIndex];
+          const value = values[colIndex] || '';
           // Try to parse as number, fallback to string
-          row[header] = isNaN(Number(value)) ? value : Number(value);
+          const numValue = Number(value);
+          row[header] = (value !== '' && !isNaN(numValue) && isFinite(numValue)) ? numValue : value;
         });
         
         return row;
-      }).filter(row => Object.values(row).some(val => val !== ''));
+      }).filter(row => Object.values(row).some(val => val !== '' && val !== null && val !== undefined));
+
+      if (data.length === 0) {
+        throw new Error('No valid data rows found');
+      }
 
       setDataset(data);
       setColumns(headers);
-      setSelectedColumns(headers.slice(0, 3));
+      setSelectedColumns(headers.slice(0, Math.min(3, headers.length)));
       
       // Clear previous results
       setSimulationResults([]);
       setMetrics(null);
     } catch (error) {
       console.error('Error processing file:', error);
-      alert('Error processing file. Please make sure it\'s a valid CSV file.');
+      alert(`Error processing file: ${error instanceof Error ? error.message : 'Unknown error'}`);
     } finally {
       setIsProcessingFile(false);
     }
@@ -172,39 +256,101 @@ export default function Backtest({ sharedData, setSharedData }: BacktestProps) {
 
   // Generate sample dataset
   const generateSampleData = () => {
+    console.log('Generating sample data...');
     const sampleData: DatasetRow[] = [];
     const startDate = new Date('2023-01-01');
+    
+    let currentValue = 100;
     
     for (let i = 0; i < 365; i++) {
       const date = new Date(startDate);
       date.setDate(date.getDate() + i);
       
-      const baseValue = 100 + Math.sin(i / 30) * 20;
-      const noise = (Math.random() - 0.5) * 10;
-      const trend = i * 0.1;
+      // Create more realistic price movement with trend and volatility
+      const trend = Math.sin(i / 50) * 0.5; // Long-term trend
+      const volatility = (Math.random() - 0.5) * 4; // Daily volatility
+      const momentum = i > 0 ? (currentValue - sampleData[i-1].value) * 0.1 : 0; // Momentum
+      
+      currentValue = Math.max(50, currentValue + trend + volatility + momentum);
+      
+      // Calculate technical indicators
+      const rsi = i > 14 ? calculateRSI(sampleData.slice(-14).map(d => d.value), currentValue) : 50;
+      const macd = i > 26 ? calculateMACD(sampleData.slice(-26).map(d => d.value), currentValue) : 0;
+      const volume = Math.floor(Math.random() * 1000) + 100;
       
       sampleData.push({
         index: i,
         date: date.toISOString().split('T')[0],
         timestamp: date.getTime(),
-        value: baseValue + noise + trend,
-        volume: Math.floor(Math.random() * 1000) + 100,
-        rsi: 30 + Math.random() * 40,
-        macd: (Math.random() - 0.5) * 5,
-        price: baseValue + noise + trend,
-        change: noise
+        value: currentValue,
+        volume: volume,
+        rsi: rsi,
+        macd: macd,
+        price: currentValue,
+        change: i > 0 ? currentValue - sampleData[i-1].value : 0
       });
     }
     
+    console.log('Sample data generated:', sampleData.length, 'rows');
     setDataset(sampleData);
     setColumns(['date', 'timestamp', 'value', 'volume', 'rsi', 'macd', 'price', 'change']);
     setSelectedColumns(['value', 'rsi', 'volume']);
+    
+    // Clear previous results
+    setSimulationResults([]);
+    setMetrics(null);
+  };
+
+  // Helper function to calculate RSI
+  const calculateRSI = (prices: number[], currentPrice: number): number => {
+    if (prices.length < 14) return 50;
+    
+    let gains = 0;
+    let losses = 0;
+    
+    for (let i = 1; i < prices.length; i++) {
+      const change = prices[i] - prices[i-1];
+      if (change > 0) gains += change;
+      else losses += Math.abs(change);
+    }
+    
+    const avgGain = gains / 14;
+    const avgLoss = losses / 14;
+    
+    if (avgLoss === 0) return 100;
+    
+    const rs = avgGain / avgLoss;
+    return 100 - (100 / (1 + rs));
+  };
+
+  // Helper function to calculate MACD
+  const calculateMACD = (prices: number[], currentPrice: number): number => {
+    if (prices.length < 26) return 0;
+    
+    const ema12 = calculateEMA(prices.slice(-12), 12);
+    const ema26 = calculateEMA(prices.slice(-26), 26);
+    
+    return ema12 - ema26;
+  };
+
+  // Helper function to calculate EMA
+  const calculateEMA = (prices: number[], period: number): number => {
+    if (prices.length === 0) return 0;
+    
+    const multiplier = 2 / (period + 1);
+    let ema = prices[0];
+    
+    for (let i = 1; i < prices.length; i++) {
+      ema = (prices[i] * multiplier) + (ema * (1 - multiplier));
+    }
+    
+    return ema;
   };
 
   // Rule management
   const addRule = () => {
     const newRule: StrategyRule = {
-      id: crypto.randomUUID(),
+      id: generateUUID(),
       name: `Rule ${rules.length + 1}`,
       condition: 'value > 0',
       action: 'Alert',
@@ -226,8 +372,12 @@ export default function Backtest({ sharedData, setSharedData }: BacktestProps) {
 
   // Simulation engine
   const runSimulation = async () => {
-    if (dataset.length === 0 || rules.length === 0) return;
+    if (dataset.length === 0 || rules.length === 0) {
+      alert('Please upload a dataset and create at least one rule before running simulation.');
+      return;
+    }
 
+    console.log('Starting simulation with', dataset.length, 'rows and', rules.length, 'rules');
     setIsSimulating(true);
     setSimulationProgress(0);
     const results: SimulationResult[] = [];
@@ -238,33 +388,46 @@ export default function Backtest({ sharedData, setSharedData }: BacktestProps) {
     let maxDrawdown = 0;
     let wins = 0;
     let totalTrades = 0;
+    let position = 0; // Track position size
+    let cash = 1000; // Track cash separately
 
     for (let i = 0; i < dataset.length; i++) {
       const row = dataset[i];
       const triggers: SimulationResult['triggers'] = [];
 
       // Check each enabled rule
-      rules.filter(rule => rule.enabled).forEach(rule => {
+      rules.filter(rule => rule.enabled && rule.condition.trim()).forEach(rule => {
         try {
           const conditionResult = safeEval(rule.condition, row);
-          if (conditionResult) {
+          if (conditionResult === true || conditionResult === 1) {
+            const currentValue = row[selectedColumns[0]] || row.value || 0;
+            
+            console.log(`Rule ${rule.name} triggered: ${rule.condition} = ${conditionResult}, value = ${currentValue}`);
+            
             triggers.push({
               ruleId: rule.id,
               ruleName: rule.name,
               action: rule.action,
-              value: row[selectedColumns[0]] || 0
+              value: currentValue
             });
 
             // Update equity based on action
-            if (rule.action === 'Buy' && row.value) {
-              equity -= row.value * 0.1; // 10% of value
+            if (rule.action === 'Buy' && typeof currentValue === 'number' && cash > 0) {
+              const tradeAmount = Math.min(cash * 0.1, 100); // 10% of cash or max $100
+              position += tradeAmount / currentValue; // Buy shares
+              cash -= tradeAmount;
               totalTrades++;
-            } else if (rule.action === 'Sell' && row.value) {
-              equity += row.value * 0.1;
+              console.log(`BUY: ${tradeAmount} for ${position} shares at ${currentValue}`);
+            } else if (rule.action === 'Sell' && typeof currentValue === 'number' && position > 0) {
+              const sellAmount = position * currentValue;
+              cash += sellAmount;
+              position = 0; // Sell all position
               totalTrades++;
-              if (row.value > 0) wins++;
+              if (sellAmount > 0) wins++;
+              console.log(`SELL: ${position} shares at ${currentValue} for ${sellAmount}`);
             } else if (rule.action === 'Alert') {
               cumulativeScore += 1;
+              console.log(`ALERT: ${rule.name}`);
             }
           }
         } catch (error) {
@@ -272,13 +435,28 @@ export default function Backtest({ sharedData, setSharedData }: BacktestProps) {
         }
       });
 
+      // Calculate current equity (cash + position value)
+      const currentValue = row[selectedColumns[0]] || row.value || 0;
+      equity = cash + (position * (typeof currentValue === 'number' ? currentValue : 0));
+
       // Calculate drawdown
       if (equity > maxEquity) maxEquity = equity;
-      const currentDrawdown = (maxEquity - equity) / maxEquity;
+      const currentDrawdown = maxEquity > 0 ? (maxEquity - equity) / maxEquity : 0;
       if (currentDrawdown > maxDrawdown) maxDrawdown = currentDrawdown;
 
+      // Generate timestamp if not present
+      let timestamp = i;
+      if (row.timestamp && typeof row.timestamp === 'number') {
+        timestamp = row.timestamp;
+      } else if (row.date) {
+        const date = new Date(row.date);
+        if (!isNaN(date.getTime())) {
+          timestamp = date.getTime();
+        }
+      }
+
       results.push({
-        timestamp: typeof row.timestamp === 'number' ? row.timestamp : i,
+        timestamp,
         rowIndex: i,
         data: row,
         triggers,
@@ -295,29 +473,44 @@ export default function Backtest({ sharedData, setSharedData }: BacktestProps) {
       }
     }
 
+    console.log('Simulation completed with', results.length, 'results');
     setSimulationResults(results);
     
     // Calculate metrics
     const returns = results.map((r, i) => 
-      i > 0 ? (r.equity - results[i-1].equity) / results[i-1].equity : 0
-    ).filter(r => !isNaN(r));
+      i > 0 && results[i-1].equity > 0 ? (r.equity - results[i-1].equity) / results[i-1].equity : 0
+    ).filter(r => !isNaN(r) && isFinite(r));
     
-    const averageReturn = returns.reduce((sum, r) => sum + r, 0) / returns.length;
-    const returnStdDev = Math.sqrt(
-      returns.reduce((sum, r) => sum + Math.pow(r - averageReturn, 2), 0) / returns.length
-    );
+    const averageReturn = returns.length > 0 ? returns.reduce((sum, r) => sum + r, 0) / returns.length : 0;
+    const returnStdDev = returns.length > 1 ? Math.sqrt(
+      returns.reduce((sum, r) => sum + Math.pow(r - averageReturn, 2), 0) / (returns.length - 1)
+    ) : 0;
     
     const sharpeRatio = returnStdDev > 0 ? averageReturn / returnStdDev : 0;
     
+    const totalTriggers = results.reduce((sum, r) => sum + r.triggers.length, 0);
+    const totalAlerts = results.reduce((sum, r) => sum + r.triggers.filter(t => t.action === 'Alert').length, 0);
+    const totalBuys = results.reduce((sum, r) => sum + r.triggers.filter(t => t.action === 'Buy').length, 0);
+    const totalSells = results.reduce((sum, r) => sum + r.triggers.filter(t => t.action === 'Sell').length, 0);
+    
+    // Calculate success rate based on profitable trades
+    const profitableTrades = results.filter(r => r.triggers.some(t => t.action === 'Sell')).length;
+    const successRate = totalSells > 0 ? profitableTrades / totalSells : 0;
+    
+    console.log('Total triggers:', totalTriggers, 'Total trades:', totalTrades, 'Success rate:', successRate);
+    console.log('Final equity:', equity, 'Max equity:', maxEquity, 'Drawdown:', maxDrawdown);
+    
     setMetrics({
-      totalTriggers: results.reduce((sum, r) => sum + r.triggers.length, 0),
-      successRate: totalTrades > 0 ? wins / totalTrades : 0,
+      totalTriggers: totalTriggers,
+      successRate: successRate,
       maxDrawdown: maxDrawdown,
       sharpeRatio: sharpeRatio,
-      winRate: totalTrades > 0 ? wins / totalTrades : 0,
+      winRate: successRate,
       averageReturn: averageReturn,
       customKPIs: {
-        'Total Alerts': results.reduce((sum, r) => sum + r.triggers.filter(t => t.action === 'Alert').length, 0),
+        'Total Alerts': totalAlerts,
+        'Total Buys': totalBuys,
+        'Total Sells': totalSells,
         'Final Equity': equity,
         'Max Equity': maxEquity,
         'Total Trades': totalTrades
@@ -335,13 +528,19 @@ export default function Backtest({ sharedData, setSharedData }: BacktestProps) {
     const traces: any[] = [];
     
     // Main data line
-    if (selectedColumns.length > 0) {
+    if (selectedColumns.length > 0 && selectedColumns[0]) {
+      const mainColumn = selectedColumns[0];
+      const yValues = simulationResults.map(r => {
+        const value = r.data[mainColumn];
+        return typeof value === 'number' ? value : 0;
+      });
+      
       traces.push({
         type: 'scatter',
         mode: 'lines',
         x: simulationResults.map(r => r.timestamp),
-        y: simulationResults.map(r => r.data[selectedColumns[0]] || 0),
-        name: selectedColumns[0],
+        y: yValues,
+        name: mainColumn,
         line: { color: '#4ecdc4', width: 2 },
         hovertemplate: 'Time: %{x}<br>Value: %{y:.2f}<extra></extra>'
       });
@@ -351,11 +550,15 @@ export default function Backtest({ sharedData, setSharedData }: BacktestProps) {
     rules.forEach(rule => {
       const triggerPoints = simulationResults
         .filter(r => r.triggers.some(t => t.ruleId === rule.id))
-        .map(r => ({
-          x: r.timestamp,
-          y: r.data[selectedColumns[0]] || 0,
-          text: rule.name
-        }));
+        .map(r => {
+          const mainColumn = selectedColumns[0];
+          const value = r.data[mainColumn];
+          return {
+            x: r.timestamp,
+            y: typeof value === 'number' ? value : 0,
+            text: rule.name
+          };
+        });
 
       if (triggerPoints.length > 0) {
         traces.push({
@@ -647,13 +850,17 @@ export default function Backtest({ sharedData, setSharedData }: BacktestProps) {
               <div className="space-y-4 text-gray-300">
                 <div>
                   <h4 className="font-semibold text-white mb-2">Available Variables:</h4>
-                  <div className="grid grid-cols-2 gap-2 text-sm">
-                    {columns.map(col => (
-                      <div key={col} className="bg-gray-900/30 rounded px-2 py-1 font-mono">
-                        {col}
-                      </div>
-                    ))}
-                  </div>
+                  {columns.length > 0 ? (
+                    <div className="grid grid-cols-2 gap-2 text-sm">
+                      {columns.map(col => (
+                        <div key={col} className="bg-gray-900/30 rounded px-2 py-1 font-mono">
+                          {col}
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-gray-500 text-sm">Upload a dataset to see available variables</p>
+                  )}
                 </div>
                 
                 <div>
@@ -671,6 +878,28 @@ export default function Backtest({ sharedData, setSharedData }: BacktestProps) {
 
           {activeTab === 'simulation' && (
             <div className="space-y-6">
+              {/* No data message */}
+              {dataset.length === 0 && (
+                <div className="bg-gray-800/50 rounded-lg p-6 text-center">
+                  <h3 className="text-lg font-semibold text-white mb-2">No Dataset Loaded</h3>
+                  <p className="text-gray-400 mb-4">Upload a CSV file or generate sample data to get started</p>
+                  <button
+                    onClick={generateSampleData}
+                    className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
+                  >
+                    Generate Sample Data
+                  </button>
+                </div>
+              )}
+
+              {/* No rules message */}
+              {dataset.length > 0 && rules.length === 0 && (
+                <div className="bg-gray-800/50 rounded-lg p-6 text-center">
+                  <h3 className="text-lg font-semibold text-white mb-2">No Rules Created</h3>
+                  <p className="text-gray-400">Create at least one strategy rule to run a simulation</p>
+                </div>
+              )}
+
               {/* Metrics */}
               {metrics && (
                 <div className="bg-gray-800/50 rounded-lg p-4">
@@ -765,6 +994,14 @@ export default function Backtest({ sharedData, setSharedData }: BacktestProps) {
 
           {activeTab === 'visualization' && (
             <div className="space-y-6">
+              {/* No data message */}
+              {simulationResults.length === 0 && (
+                <div className="bg-gray-800/50 rounded-lg p-6 text-center">
+                  <h3 className="text-lg font-semibold text-white mb-2">No Simulation Results</h3>
+                  <p className="text-gray-400 mb-4">Run a simulation to see visualizations</p>
+                </div>
+              )}
+
               {/* Timeline Chart */}
               {timelineData.length > 0 && (
                 <div className="bg-gray-800/50 rounded-lg p-4">

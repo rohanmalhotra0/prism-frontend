@@ -17,7 +17,8 @@ import {
   PieChart,
   Target,
   Zap,
-  Database
+  Database,
+  DollarSign
 } from "lucide-react";
 import 'katex/dist/katex.min.css';
 import { InlineMath, BlockMath } from 'react-katex';
@@ -85,6 +86,15 @@ export const CATEGORIES = [
     topics: ["Neural Networks", "Random Forest", "Sentiment Analysis", "Prediction"],
     difficulty: "Advanced",
     duration: "6-8 weeks"
+  },
+  { 
+    name: "Business Metrics", 
+    slug: "business-metrics", 
+    description: "Master essential financial metrics: ARR, MRR, CAC, churn rates, and TAM calculations.",
+    icon: DollarSign,
+    topics: ["ARR/MRR", "Churn Analysis", "CAC/LTV", "TAM Analysis", "Bookings"],
+    difficulty: "Intermediate",
+    duration: "3-4 weeks"
   },
 ];
 
