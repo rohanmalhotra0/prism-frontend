@@ -50,20 +50,20 @@ export default function Hero({
 
   // Slideshow images (all photos from 'Refrax Photos' directory)
   const slideshowItems = [
-    { src: "/Refrax Photos/2DDatasets.png", title: "2D Datasets", href: "/learn/ml-playground" },
-    { src: "/Refrax Photos/2DstockModel.png", title: "2D Stock Modeling", href: "/learn/financial-modeling" },
-    { src: "/Refrax Photos/3DLineCharts.png", title: "3D Financial Charts", href: "/financePage" },
-    { src: "/Refrax Photos/Animations.png", title: "Data Animations", href: "/general" },
-    { src: "/Refrax Photos/clusterGraphing.png", title: "Cluster Analysis", href: "/learn/ml-playground" },
-    { src: "/Refrax Photos/machineLearning.png", title: "Machine Learning", href: "/learn/machine-learning" },
-    { src: "/Refrax Photos/math.png", title: "Math Tools", href: "/general" },
-    { src: "/Refrax Photos/predictive_analyitics.png", title: "Predictive Analytics", href: "/learn/ml-playground" },
-    { src: "/Refrax Photos/spiral.png", title: "3D Visualizations", href: "/general" },
-    { src: "/Refrax Photos/stockChart3D.png", title: "3D Stock Charts", href: "/financePage" },
-    { src: "/Refrax Photos/monteCarlo.png", title: "Monte Carlo Simulation", href: "/business" },
-    { src: "/Refrax Photos/ScenarioAnalysis.png", title: "Revenue Forecast", href: "/business" },
-    { src: "/Refrax Photos/CustomerRetention.png", title: "Customer Retention", href: "/business" },
-    { src: "/Refrax Photos/Base Cases.png", title: "Base Case Analysis", href: "/business" },
+    { src: "/Refrax Photos/2DDatasets.png", title: "2D Datasets", href: "/learn/examples?tab=demo" },
+    { src: "/Refrax Photos/2DstockModel.png", title: "2D Stock Modeling", href: "/learn/examples?tab=demo" },
+    { src: "/Refrax Photos/3DLineCharts.png", title: "3D Financial Charts", href: "/learn/examples?tab=demo" },
+    { src: "/Refrax Photos/Animations.png", title: "Data Animations", href: "/learn/examples?tab=demo" },
+    { src: "/Refrax Photos/clusterGraphing.png", title: "Cluster Analysis", href: "/learn/examples?tab=demo" },
+    { src: "/Refrax Photos/machineLearning.png", title: "Machine Learning", href: "/learn/examples?tab=demo" },
+    { src: "/Refrax Photos/math.png", title: "Math Tools", href: "/learn/examples?tab=demo" },
+    { src: "/Refrax Photos/predictive_analyitics.png", title: "Predictive Analytics", href: "/learn/examples?tab=demo" },
+    { src: "/Refrax Photos/spiral.png", title: "3D Visualizations", href: "/learn/examples?tab=demo" },
+    { src: "/Refrax Photos/stockChart3D.png", title: "3D Stock Charts", href: "/learn/examples?tab=demo" },
+    { src: "/Refrax Photos/monteCarlo.png", title: "Monte Carlo Simulation", href: "/learn/examples?tab=demo" },
+    { src: "/Refrax Photos/ScenarioAnalysis.png", title: "Revenue Forecast", href: "/learn/examples?tab=demo" },
+    { src: "/Refrax Photos/CustomerRetention.png", title: "Customer Retention", href: "/learn/examples?tab=demo" },
+    { src: "/Refrax Photos/Base Cases.png", title: "Base Case Analysis", href: "/learn/examples?tab=demo" },
   ];
 
   // Typewriter animation effect
@@ -106,42 +106,16 @@ export default function Hero({
     return () => clearTimeout(startDelay);
   }, []);
 
-  // Marquee interaction helpers
+  // Simplified marquee - no interaction
   const pauseMarquee = () => {
     if (marqueeRef.current) {
       marqueeRef.current.style.animationPlayState = "paused";
     }
   };
-  const resumeMarquee = (durationSeconds: number = BASE_DURATION_SECONDS, direction: "normal" | "reverse" = "normal") => {
-    const node = marqueeRef.current;
-    if (!node) return;
-    node.style.animationDuration = `${durationSeconds}s`;
-    node.style.animationDirection = direction;
-    node.style.animationPlayState = "running";
-  };
-  const handlePointerDown = (clientX: number) => {
-    isDraggingRef.current = true;
-    lastXRef.current = clientX;
-    lastTimeRef.current = performance.now();
-    pauseMarquee();
-  };
-  const handlePointerMove = (clientX: number) => {
-    if (!isDraggingRef.current) return;
-    const now = performance.now();
-    const dx = clientX - lastXRef.current; // right positive
-    const dt = Math.max(1, now - lastTimeRef.current);
-    const velocityPxPerMs = Math.abs(dx) / dt;
-    const direction: "normal" | "reverse" = dx < 0 ? "normal" : "reverse";
-    // Map velocity to a speed factor [1, 6]
-    const speedFactor = Math.min(6, Math.max(1, velocityPxPerMs * 12));
-    const duration = BASE_DURATION_SECONDS / speedFactor;
-    resumeMarquee(duration, direction);
-    lastXRef.current = clientX;
-    lastTimeRef.current = now;
-  };
-  const handlePointerUp = () => {
-    isDraggingRef.current = false;
-    resumeMarquee(BASE_DURATION_SECONDS, "normal");
+  const resumeMarquee = () => {
+    if (marqueeRef.current) {
+      marqueeRef.current.style.animationPlayState = "running";
+    }
   };
 
   useEffect(() => {
@@ -204,13 +178,6 @@ export default function Hero({
               <div
                 ref={marqueeRef}
                 className="marquee-track"
-                onMouseDown={(e) => handlePointerDown(e.clientX)}
-                onMouseMove={(e) => handlePointerMove(e.clientX)}
-                onMouseUp={handlePointerUp}
-                onMouseLeave={handlePointerUp}
-                onTouchStart={(e) => handlePointerDown(e.touches[0].clientX)}
-                onTouchMove={(e) => handlePointerMove(e.touches[0].clientX)}
-                onTouchEnd={handlePointerUp}
               >
                 {/* Dynamic set A */}
                 {slideshowItems.map((item, idx) => (
@@ -258,14 +225,14 @@ export default function Hero({
             >
               <div className="w-full">
                 <div 
-                  className="relative w-full rounded-2xl overflow-hidden shadow-2xl border border-white/10"
+                  className="relative w-full rounded-3xl overflow-hidden shadow-2xl border border-white/10"
                   style={{ aspectRatio: '16/9' }}
                 >
                   <iframe
                     ref={iframeRef}
                     src="https://www.youtube.com/embed/J7e7Fx0Nu2A"
                     title="Refrax Platform Demo"
-                    className="w-full h-full rounded-2xl"
+                    className="w-full h-full rounded-3xl"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
                     allowFullScreen
                     frameBorder="0"

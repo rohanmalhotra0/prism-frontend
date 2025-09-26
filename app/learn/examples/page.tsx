@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import Navbar from "@/components/sections/navbar/default";
 import HeroBackground from "@/components/ui/HeroBackground";
 import { Button } from "@/components/ui/button";
@@ -62,7 +63,16 @@ interface ResearchPaper {
 }
 
 export default function ExamplesPage() {
+  const searchParams = useSearchParams();
   const [activeTab, setActiveTab] = useState<'datasets' | 'research' | 'demo'>('datasets');
+
+  // Handle URL parameter to switch to demo tab
+  useEffect(() => {
+    const tab = searchParams.get('tab');
+    if (tab === 'demo') {
+      setActiveTab('demo');
+    }
+  }, [searchParams]);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [selectedDifficulty, setSelectedDifficulty] = useState<string>('all');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
