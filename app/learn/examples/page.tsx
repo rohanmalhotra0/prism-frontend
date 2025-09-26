@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Navbar from "@/components/sections/navbar/default";
 import HeroBackground from "@/components/ui/HeroBackground";
@@ -62,7 +62,8 @@ interface ResearchPaper {
   techniques?: string[];
 }
 
-export default function ExamplesPage() {
+// Component that handles search params
+function ExamplesPageContent() {
   const searchParams = useSearchParams();
   const [activeTab, setActiveTab] = useState<'datasets' | 'research' | 'demo'>('datasets');
 
@@ -1136,5 +1137,43 @@ export default function ExamplesPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+// Loading component for Suspense fallback
+function ExamplesPageLoading() {
+  return (
+    <div className="relative min-h-screen bg-black overflow-hidden">
+      <HeroBackground position="fixed" backgroundColor="transparent" className="z-0" blendModeClassName="mix-blend-screen" />
+      <div className="fixed inset-0 z-5">
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-900/30 via-black/20 to-slate-900/30"></div>
+      </div>
+      <div className="relative z-10 min-h-screen">
+        <Navbar />
+        <div className="pt-32 pb-16 px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto text-center">
+            <div className="flex items-center justify-center gap-3 mb-6">
+              <div className="w-3 h-3 bg-blue-400 rounded-full animate-pulse"></div>
+              <span className="text-blue-300 font-semibold">Examples & Research</span>
+            </div>
+            <h1 className="text-6xl lg:text-7xl font-black mb-8 bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text text-transparent">
+              Research & Datasets
+            </h1>
+            <p className="text-xl lg:text-2xl text-gray-400 max-w-4xl mx-auto leading-relaxed mb-12">
+              Loading...
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Main export with Suspense boundary
+export default function ExamplesPage() {
+  return (
+    <Suspense fallback={<ExamplesPageLoading />}>
+      <ExamplesPageContent />
+    </Suspense>
   );
 }
