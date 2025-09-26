@@ -231,8 +231,8 @@ export default function Navbar({
             {sidebarOpen && (
               <div className="hidden lg:block fixed right-0 top-0 h-full w-72 bg-black/5 backdrop-blur-sm border-l border-white/5 z-40 overflow-y-auto">
               <div className="p-4">
-                {/* Refrax Header */}
-                <div className="flex items-center justify-center py-3 border-b border-white/5 mb-4">
+                {/* Refrax Header with Close Button */}
+                <div className="flex items-center justify-between py-3 border-b border-white/5 mb-4">
                   <a 
                     href={homeUrl}
                     className="flex items-center gap-2 hover:opacity-80 transition-opacity touch-manipulation"
@@ -242,6 +242,15 @@ export default function Navbar({
                     </div>
                     <span className="text-base font-bold text-white">Refrax</span>
                   </a>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => setSidebarOpen(false)}
+                    className="shrink-0 rounded-lg hover:bg-white/10 border border-gray-700/50 hover:border-gray-600/50 transition-all duration-200"
+                    aria-label="Close sidebar"
+                  >
+                    <X className="size-4 text-gray-300 hover:text-white transition-colors" />
+                  </Button>
                 </div>
 
                 <nav className="space-y-3">
@@ -304,7 +313,7 @@ export default function Navbar({
                   {/* Resources Section */}
                   <div className="space-y-1">
                     <div className="flex items-center gap-2 mb-2">
-                      <h3 className="text-xs font-semibold text-white uppercase tracking-wider">Resources</h3>
+                      <h3 className="text-xs font-semibold text-white uppercase tracking-wider">Docs</h3>
                     </div>
                     <div className="space-y-0.5">
                       <a 

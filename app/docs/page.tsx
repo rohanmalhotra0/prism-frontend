@@ -147,7 +147,7 @@ export default function DocumentationPage() {
                     <div className="space-y-8">
                       <div className="bg-[#1877F2]/20 rounded-2xl p-8 border border-[#1877F2]/30">
                         <div className="flex items-center gap-3 mb-4">
-                          <Lightbulb className="w-6 h-6 text-yellow-400" />
+                          <Lightbulb className="w-6 h-6 text-white" />
                           <h3 className="text-2xl font-semibold text-white">What is Refrax?</h3>
                         </div>
                         <p className="text-gray-300 text-lg leading-relaxed">
@@ -214,67 +214,67 @@ export default function DocumentationPage() {
                               </li>
                             </ul>
                           </div>
-                          <div className="bg-gradient-to-br from-green-500/10 to-emerald-500/10 rounded-xl p-4 border border-green-500/20">
+                          <div className="bg-gradient-to-br from-blue-500/10 to-cyan-500/10 rounded-xl p-4 border border-blue-500/20">
                             <div className="flex items-center gap-2 mb-4">
-                              <Server className="w-5 h-5 text-green-400" />
+                              <Server className="w-5 h-5 text-blue-400" />
                               <h4 className="text-lg font-semibold text-white">Backend</h4>
                             </div>
                             <ul className="text-gray-300 space-y-2 text-sm">
                               <li className="flex items-center gap-2">
-                                <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                                <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
                                 <span>Next.js API Routes</span>
                               </li>
                               <li className="flex items-center gap-2">
-                                <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                                <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
                                 <span>FastAPI (Python Backend)</span>
                               </li>
                               <li className="flex items-center gap-2">
-                                <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                                <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
                                 <span>Supabase (BaaS)</span>
                               </li>
                               <li className="flex items-center gap-2">
-                                <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                                <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
                                 <span>PostgreSQL Database</span>
                               </li>
                               <li className="flex items-center gap-2">
-                                <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                                <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
                                 <span>Finnhub WebSockets</span>
                               </li>
                               <li className="flex items-center gap-2">
-                                <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                                <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
                                 <span>Polygon API</span>
                               </li>
                               <li className="flex items-center gap-2">
-                                <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                                <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
                                 <span>OpenAI API</span>
                               </li>
                               
                             </ul>
                           </div>
-                          <div className="bg-gradient-to-br from-purple-500/10 to-pink-500/10 rounded-xl p-4 border border-purple-500/20">
+                          <div className="bg-gradient-to-br from-cyan-500/10 to-blue-500/10 rounded-xl p-4 border border-cyan-500/20">
                             <div className="flex items-center gap-2 mb-4">
-                              <Server className="w-5 h-5 text-purple-400" />
+                              <Server className="w-5 h-5 text-cyan-400" />
                               <h4 className="text-lg font-semibold text-white">Infrastructure</h4>
                             </div>
                             <ul className="text-gray-300 space-y-2 text-sm">
                               <li className="flex items-center gap-2">
-                                <div className="w-2 h-2 bg-purple-400 rounded-full"></div>
+                                <div className="w-2 h-2 bg-cyan-400 rounded-full"></div>
                                 <span>Netlify (Frontend Hosting)</span>
                               </li>
                               <li className="flex items-center gap-2">
-                                <div className="w-2 h-2 bg-purple-400 rounded-full"></div>
+                                <div className="w-2 h-2 bg-cyan-400 rounded-full"></div>
                                 <span>Fly.io (Backend Hosting)</span>
                               </li>
                               <li className="flex items-center gap-2">
-                                <div className="w-2 h-2 bg-purple-400 rounded-full"></div>
+                                <div className="w-2 h-2 bg-cyan-400 rounded-full"></div>
                                 <span>Supabase (Database & Auth)</span>
                               </li>
                               <li className="flex items-center gap-2">
-                                <div className="w-2 h-2 bg-purple-400 rounded-full"></div>
+                                <div className="w-2 h-2 bg-cyan-400 rounded-full"></div>
                                 <span>Cloudflare (CDN)</span>
                               </li>
                               <li className="flex items-center gap-2">
-                                <div className="w-2 h-2 bg-purple-400 rounded-full"></div>
+                                <div className="w-2 h-2 bg-cyan-400 rounded-full"></div>
                                 <span>GitHub (Version Control)</span>
                               </li>
                             </ul>

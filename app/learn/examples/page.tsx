@@ -828,12 +828,8 @@ function ExamplesPageContent() {
         {/* Hero section */}
         <div className="pt-32 pb-16 px-6 lg:px-8">
           <div className="max-w-7xl mx-auto text-center">
-            <div className="flex items-center justify-center gap-3 mb-6">
-              <div className="w-3 h-3 bg-blue-400 rounded-full animate-pulse"></div>
-              <span className="text-blue-300 font-semibold">Examples & Research</span>
-            </div>
             <h1 className="text-6xl lg:text-7xl font-black mb-8 bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text text-transparent">
-              Research & Datasets
+              Examples
             </h1>
             <p className="text-xl lg:text-2xl text-gray-400 max-w-4xl mx-auto leading-relaxed mb-12">
               Explore cutting-edge research papers and experiment with curated datasets designed for machine learning
@@ -974,39 +970,10 @@ function ExamplesPageContent() {
         {activeTab === 'demo' && (
           <div className="px-6 lg:px-8 pb-20">
             <div className="max-w-7xl mx-auto">
-              {/* YouTube Demo Section */}
-              <div className="mb-16">
-                <div className="text-center mb-8">
-                  <h2 className="text-3xl font-bold text-white mb-4">Watch Refrax in Action</h2>
-                  <p className="text-gray-400 text-lg">See how Refrax's powerful analytics tools work in practice</p>
-                </div>
-                
-                <div className="relative bg-white/5 backdrop-blur-sm rounded-3xl border border-white/10 overflow-hidden">
-                  <div className="aspect-video relative">
-                    <iframe
-                      className="w-full h-full"
-                      src="https://www.youtube.com/embed/J7e7Fx0Nu2A"
-                      title="Refrax Platform Demo"
-                      frameBorder="0"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                    ></iframe>
-                  </div>
-                  
-                  {/* Video overlay info */}
-                  <div className="absolute top-6 left-6">
-                    <div className="flex items-center gap-2 px-4 py-2 bg-black/80 backdrop-blur-md text-white text-sm font-semibold rounded-full border border-white/20">
-                      <Video className="w-4 h-4" />
-                      Demo Video
-                    </div>
-                  </div>
-                </div>
-              </div>
-
               {/* Refrax Photos Gallery */}
-              <div className="mb-8">
+              <div className="mb-16">
                 <div className="text-center mb-12">
-                  <h2 className="text-3xl font-bold text-white mb-4">Platform Screenshots</h2>
+                  <h2 className="text-3xl font-bold text-white mb-4">Examples</h2>
                   <p className="text-gray-400 text-lg">Explore the different features and capabilities of Refrax</p>
                 </div>
                 
@@ -1068,32 +1035,32 @@ function ExamplesPageContent() {
                 </div>
               </div>
 
-              {/* Call to Action */}
-              <div className="text-center">
-                <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-8">
-                  <h3 className="text-2xl font-bold text-white mb-4">Ready to Try Refrax?</h3>
-                  <p className="text-gray-400 mb-6 max-w-2xl mx-auto">
-                    Start exploring our powerful analytics tools and see how they can transform your data analysis workflow.
-                  </p>
-                  <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                    <Button
-                      asChild
-                      className="rounded-full bg-[#1877F2] hover:bg-[#1877F2] px-8 py-4"
-                    >
-                      <a href="/general">
-                        <Play className="w-5 h-5 mr-2" />
-                        Start Exploring
-                      </a>
-                    </Button>
-                    <Button
-                      asChild
-                      className="rounded-full bg-white/10 hover:bg-white/20 text-white border border-white/20 px-8 py-4"
-                    >
-                      <a href="/learn">
-                        <BookOpen className="w-5 h-5 mr-2" />
-                        Learn More
-                      </a>
-                    </Button>
+
+              {/* YouTube Demo Section */}
+              <div className="mb-16">
+                <div className="text-center mb-8">
+                  <h2 className="text-3xl font-bold text-white mb-4">Watch Refrax in Action</h2>
+                  <p className="text-gray-400 text-lg">See how Refrax's powerful analytics tools work in practice</p>
+                </div>
+                
+                <div className="relative bg-white/5 backdrop-blur-sm rounded-3xl border border-white/10 overflow-hidden">
+                  <div className="aspect-video relative">
+                    <iframe
+                      className="w-full h-full"
+                      src="https://www.youtube.com/embed/J7e7Fx0Nu2A"
+                      title="Refrax Platform Demo"
+                      frameBorder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    ></iframe>
+                  </div>
+                  
+                  {/* Video overlay info */}
+                  <div className="absolute top-6 left-6">
+                    <div className="flex items-center gap-2 px-4 py-2 bg-black/80 backdrop-blur-md text-white text-sm font-semibold rounded-full border border-white/20">
+                      <Video className="w-4 h-4" />
+                      Demo Video
+                    </div>
                   </div>
                 </div>
               </div>
@@ -1101,40 +1068,6 @@ function ExamplesPageContent() {
           </div>
         )}
 
-        {/* Getting Started Section */}
-        <div className="px-6 lg:px-8 pb-20">
-          <div className="max-w-7xl mx-auto">
-            <div className="bg-gradient-to-br from-gray-900/50 via-gray-800/30 to-gray-900/50 backdrop-blur-xl rounded-3xl border border-white/10 p-8">
-              <h3 className="text-2xl font-bold text-white mb-6 text-center">Ready to Start Your ML Journey?</h3>
-              
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div className="text-center">
-                  <div className="w-16 h-16 bg-[#1877F2] rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Download className="w-8 h-8 text-white" />
-                  </div>
-                  <h4 className="text-lg font-semibold text-white mb-2">1. Download Datasets</h4>
-                  <p className="text-gray-400 text-sm">Choose from our curated collection of research-backed datasets</p>
-                </div>
-                
-                <div className="text-center">
-                  <div className="w-16 h-16 bg-[#1877F2] rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Code className="w-8 h-8 text-white" />
-                  </div>
-                  <h4 className="text-lg font-semibold text-white mb-2">2. Experiment & Learn</h4>
-                  <p className="text-gray-400 text-sm">Use our ML Lab tools to analyze and visualize your data</p>
-                </div>
-                
-                <div className="text-center">
-                  <div className="w-16 h-16 bg-gradient-to-r from-pink-500 to-red-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Rocket className="w-8 h-8 text-white" />
-                  </div>
-                  <h4 className="text-lg font-semibold text-white mb-2">3. Apply Research</h4>
-                  <p className="text-gray-400 text-sm">Implement cutting-edge techniques from our research insights</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   );
@@ -1152,12 +1085,8 @@ function ExamplesPageLoading() {
         <Navbar />
         <div className="pt-32 pb-16 px-6 lg:px-8">
           <div className="max-w-7xl mx-auto text-center">
-            <div className="flex items-center justify-center gap-3 mb-6">
-              <div className="w-3 h-3 bg-blue-400 rounded-full animate-pulse"></div>
-              <span className="text-blue-300 font-semibold">Examples & Research</span>
-            </div>
             <h1 className="text-6xl lg:text-7xl font-black mb-8 bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text text-transparent">
-              Research & Datasets
+              Examples
             </h1>
             <p className="text-xl lg:text-2xl text-gray-400 max-w-4xl mx-auto leading-relaxed mb-12">
               Loading...

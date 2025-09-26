@@ -39,7 +39,7 @@ export default function BacktestingPage() {
         <div className="px-6 lg:px-8 pb-20">
           <div className="max-w-7xl mx-auto">
             <div className="bg-gradient-to-br from-gray-900/50 via-gray-800/30 to-gray-900/50 backdrop-blur-xl rounded-3xl border border-white/10 overflow-hidden shadow-2xl">
-              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-500 via-blue-500 to-green-500"></div>
+              <div className="absolute top-0 left-0 right-0 h-1 bg-blue-500"></div>
               
               <div className="p-8">
                 <Backtest sharedData={sharedData} setSharedData={setSharedData} />

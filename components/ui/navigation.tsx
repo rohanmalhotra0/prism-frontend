@@ -251,7 +251,7 @@ function NavigationComponent({
           className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-300 hover:text-white transition-all duration-200 rounded-lg hover:bg-white/5"
         >
           <FileText className="w-4 h-4" />
-          Resources
+          Docs
         </button>
         {openDropdown === 'resources' && (
           <div className="absolute top-full left-0 mt-2 w-[400px] bg-white/5 backdrop-blur-md border border-white/10 rounded-xl shadow-2xl z-50">
