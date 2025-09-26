@@ -175,6 +175,7 @@ export default function Backtest({ sharedData, setSharedData }: BacktestProps) {
   const [activeTab, setActiveTab] = useState<'rules' | 'simulation' | 'visualization'>('rules');
   const [ruleBuilderMode, setRuleBuilderMode] = useState<'code' | 'visual'>('code');
   const [selectedColumns, setSelectedColumns] = useState<string[]>([]);
+  const [mainTab, setMainTab] = useState<'rules' | 'run'>('rules');
   
   // Load shared data from Dataset Lab
   useEffect(() => {
@@ -259,25 +260,31 @@ export default function Backtest({ sharedData, setSharedData }: BacktestProps) {
     console.log('Generating sample data...');
     const sampleData: DatasetRow[] = [];
     const startDate = new Date('2023-01-01');
-    
     let currentValue = 100;
-    
+    let forcedBuy = false;
+    let forcedSell = false;
+
     for (let i = 0; i < 365; i++) {
       const date = new Date(startDate);
       date.setDate(date.getDate() + i);
-      
       // Create more realistic price movement with trend and volatility
       const trend = Math.sin(i / 50) * 0.5; // Long-term trend
       const volatility = (Math.random() - 0.5) * 4; // Daily volatility
       const momentum = i > 0 ? (currentValue - sampleData[i-1].value) * 0.1 : 0; // Momentum
-      
-      currentValue = Math.max(50, currentValue + trend + volatility + momentum);
-      
+      // Force a Buy trigger at day 10 if not already forced
+      if (i === 10 && !forcedBuy) {
+        currentValue = 90; // Below Buy threshold (95)
+        forcedBuy = true;
+      } else if (i === 300 && !forcedSell) {
+        currentValue = 110; // Above Sell threshold (105)
+        forcedSell = true;
+      } else {
+        currentValue = Math.max(50, currentValue + trend + volatility + momentum);
+      }
       // Calculate technical indicators
       const rsi = i > 14 ? calculateRSI(sampleData.slice(-14).map(d => d.value), currentValue) : 50;
       const macd = i > 26 ? calculateMACD(sampleData.slice(-26).map(d => d.value), currentValue) : 0;
       const volume = Math.floor(Math.random() * 1000) + 100;
-      
       sampleData.push({
         index: i,
         date: date.toISOString().split('T')[0],
@@ -290,15 +297,13 @@ export default function Backtest({ sharedData, setSharedData }: BacktestProps) {
         change: i > 0 ? currentValue - sampleData[i-1].value : 0
       });
     }
-    
     console.log('Sample data generated:', sampleData.length, 'rows');
     setDataset(sampleData);
     setColumns(['date', 'timestamp', 'value', 'volume', 'rsi', 'macd', 'price', 'change']);
     setSelectedColumns(['value', 'rsi', 'volume']);
-    
-    // Clear previous results
     setSimulationResults([]);
     setMetrics(null);
+    // Do not auto-run simulation; user will use the button
   };
 
   // Helper function to calculate RSI
@@ -349,14 +354,17 @@ export default function Backtest({ sharedData, setSharedData }: BacktestProps) {
 
   // Rule management
   const addRule = () => {
+    // Prevent adding a rule with empty name or condition
     const newRule: StrategyRule = {
       id: generateUUID(),
-      name: `Rule ${rules.length + 1}`,
+      name: `Custom Rule ${rules.length + 1}`,
       condition: 'value > 0',
       action: 'Alert',
       enabled: true,
       color: COLORS[rules.length % COLORS.length]
     };
+    // Prevent duplicate rules (same name and condition)
+    if (rules.some(r => r.name === newRule.name && r.condition === newRule.condition)) return;
     setRules([...rules, newRule]);
   };
 
@@ -370,10 +378,39 @@ export default function Backtest({ sharedData, setSharedData }: BacktestProps) {
     setRules(rules.filter(rule => rule.id !== id));
   };
 
+  const resetDefaultRules = () => {
+    setRules([
+      {
+        id: generateUUID(),
+        name: "High Value Alert",
+        condition: "value > 100",
+        action: "Alert",
+        enabled: true,
+        color: COLORS[0]
+      },
+      {
+        id: generateUUID(),
+        name: "Buy Low",
+        condition: "value < 95",
+        action: "Buy",
+        enabled: true,
+        color: COLORS[1]
+      },
+      {
+        id: generateUUID(),
+        name: "Sell High",
+        condition: "value > 105",
+        action: "Sell",
+        enabled: true,
+        color: COLORS[2]
+      }
+    ]);
+  };
+
   // Simulation engine
   const runSimulation = async () => {
     if (dataset.length === 0 || rules.length === 0) {
-      alert('Please upload a dataset and create at least one rule before running simulation.');
+      // Remove alert for missing dataset/rules
       return;
     }
 
@@ -627,7 +664,7 @@ export default function Backtest({ sharedData, setSharedData }: BacktestProps) {
   };
 
   return (
-    <div className="min-h-[90vh] bg-black text-white p-4">
+    <div className="min-h-[90vh] text-white p-4">
       {/* Header */}
       <div className="mb-6">
         <h2 className="text-3xl font-bold text-white mb-2">Backtest</h2>
@@ -637,6 +674,125 @@ export default function Backtest({ sharedData, setSharedData }: BacktestProps) {
       <div className="grid grid-cols-12 gap-6">
         {/* Sidebar */}
         <div className="col-span-4 space-y-6">
+          {/* Main Tabs above Strategy Rules */}
+          <div className="flex gap-2 mb-4">
+            <button
+              onClick={() => setMainTab('run')}
+              className={`px-3 py-1 rounded-t text-sm font-semibold ${mainTab === 'run' ? 'bg-[#1877F2] text-white' : 'bg-gray-700 text-gray-300'}`}
+            >
+              Run Simulation
+            </button>
+            <button
+              onClick={() => setMainTab('rules')}
+              className={`px-3 py-1 rounded-t text-sm font-semibold ${mainTab === 'rules' ? 'bg-[#1877F2] text-white' : 'bg-gray-700 text-gray-300'}`}
+            >
+              Strategy Rules
+            </button>
+          </div>
+          {/* Tab Content */}
+          {mainTab === 'run' ? (
+            <div className="bg-gray-800/50 rounded-b-lg p-4 mb-6">
+              <div className="flex flex-col items-center gap-2">
+                <button
+                  onClick={runSimulation}
+                  className="px-4 py-2 bg-[#1877F2] text-white rounded hover:bg-[#145db2] transition-colors font-semibold shadow"
+                  disabled={dataset.length === 0 || rules.length === 0 || isSimulating}
+                  title={dataset.length === 0 ? 'Upload or generate a dataset first' : rules.length === 0 ? 'Add at least one rule' : isSimulating ? 'Simulation running...' : 'Run simulation'}
+                >
+                  {isSimulating ? 'Simulating...' : 'Run Simulation'}
+                </button>
+                {isSimulating && (
+                  <div className="text-xs text-blue-300 mt-2">Simulation in progress...</div>
+                )}
+              </div>
+            </div>
+          ) : (
+            <div className="bg-gray-800/50 rounded-b-lg p-4">
+              {/* Strategy Rules section (moved here) */}
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="text-lg font-semibold text-white">Strategy Rules</h3>
+                <button
+                  onClick={resetDefaultRules}
+                  className="px-2 py-1 rounded text-xs bg-gray-700 text-white hover:bg-gray-600 ml-2"
+                  title="Reset to default rules"
+                >
+                  Reset to Default
+                </button>
+              </div>
+              <div className="space-y-3">
+                {rules.map((rule) => (
+                  <div key={rule.id} className="bg-gray-900/30 rounded-lg p-3 border border-gray-700">
+                    <div className="flex items-center gap-2 mb-2">
+                      <input
+                        type="color"
+                        value={rule.color}
+                        onChange={(e) => updateRule(rule.id, { color: e.target.value })}
+                        className="h-4 w-4 rounded"
+                        title="Rule color"
+                      />
+                      <input
+                        type="text"
+                        value={rule.name}
+                        onChange={(e) => updateRule(rule.id, { name: e.target.value })}
+                        className="flex-1 bg-transparent border border-gray-600 rounded px-2 py-1 text-sm"
+                        placeholder="Rule name"
+                        title="Rule name (required)"
+                      />
+                      <label className="flex items-center gap-1 text-xs" title="Enable or disable this rule">
+                        <input
+                          type="checkbox"
+                          checked={rule.enabled}
+                          onChange={(e) => updateRule(rule.id, { enabled: e.target.checked })}
+                        />
+                        Active
+                      </label>
+                      <button
+                        onClick={() => deleteRule(rule.id)}
+                        className="text-red-400 hover:text-red-300 text-xs"
+                        title="Delete rule"
+                      >
+                        ×
+                      </button>
+                    </div>
+                    <div className="space-y-2">
+                      <div>
+                        <label className="block text-xs text-gray-400 mb-1">Condition <span title="Example: value > 100">🛈</span></label>
+                        <input
+                          type="text"
+                          value={rule.condition}
+                          onChange={(e) => updateRule(rule.id, { condition: e.target.value })}
+                          className="w-full bg-transparent border border-gray-600 rounded px-2 py-1 text-sm font-mono"
+                          placeholder="value > 100"
+                          title="Rule condition (required). Example: value > 100"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs text-gray-400 mb-1">Action <span title="What happens when the condition is true">🛈</span></label>
+                        <select
+                          value={rule.action}
+                          onChange={(e) => updateRule(rule.id, { action: e.target.value })}
+                          className="w-full bg-gray-700 border border-gray-600 rounded px-2 py-1 text-sm"
+                          title="Action to take when rule triggers"
+                        >
+                          <option value="Alert">Alert</option>
+                          <option value="Buy">Buy</option>
+                          <option value="Sell">Sell</option>
+                          <option value="Flag">Flag</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+                <button
+                  onClick={addRule}
+                  className="w-full p-2 bg-[#1877F2] text-white rounded hover:bg-[#1877F2] transition-colors"
+                  title="Add a new rule"
+                >
+                  + Add Rule
+                </button>
+              </div>
+            </div>
+          )}
           {/* Dataset Section */}
           <div className="bg-gray-800/50 rounded-lg p-4">
             <h3 className="text-lg font-semibold text-white mb-3">Dataset</h3>
@@ -696,343 +852,164 @@ export default function Backtest({ sharedData, setSharedData }: BacktestProps) {
               </div>
             )}
           </div>
+        </div>
 
-          {/* Rule Builder */}
-          <div className="bg-gray-800/50 rounded-lg p-4">
-            <div className="flex items-center justify-between mb-3">
-              <h3 className="text-lg font-semibold text-white">Strategy Rules</h3>
-              <div className="flex gap-2">
-                <button
-                  onClick={() => setRuleBuilderMode('code')}
-                  className={`px-2 py-1 rounded text-xs ${
-                    ruleBuilderMode === 'code' ? 'bg-[#1877F2]' : 'bg-gray-600'
-                  }`}
-                >
-                  Code
-                </button>
-                <button
-                  onClick={() => setRuleBuilderMode('visual')}
-                  className={`px-2 py-1 rounded text-xs ${
-                    ruleBuilderMode === 'visual' ? 'bg-[#1877F2]' : 'bg-gray-600'
-                  }`}
-                >
-                  Visual
-                </button>
+        {/* Main Content: Combined vertical view, no tabs */}
+        <div className="col-span-8 space-y-6">
+          {/* Metrics */}
+          {metrics && (
+            <div className="bg-gray-800/50 rounded-lg p-4">
+              <h3 className="text-lg font-semibold text-white mb-4">Performance Metrics</h3>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="bg-gray-700/50 rounded-lg p-3">
+                  <div className="text-2xl font-bold text-green-400">
+                    {(metrics.successRate * 100).toFixed(1)}%
+                  </div>
+                  <div className="text-sm text-gray-400">Success Rate</div>
+                </div>
+                <div className="bg-gray-700/50 rounded-lg p-3">
+                  <div className="text-2xl font-bold text-blue-400">
+                    {metrics.totalTriggers}
+                  </div>
+                  <div className="text-sm text-gray-400">Total Triggers</div>
+                </div>
+                <div className="bg-gray-700/50 rounded-lg p-3">
+                  <div className="text-2xl font-bold text-red-400">
+                    {(metrics.maxDrawdown * 100).toFixed(1)}%
+                  </div>
+                  <div className="text-sm text-gray-400">Max Drawdown</div>
+                </div>
+                <div className="bg-gray-700/50 rounded-lg p-3">
+                  <div className="text-2xl font-bold text-purple-400">
+                    {metrics.sharpeRatio.toFixed(2)}
+                  </div>
+                  <div className="text-sm text-gray-400">Sharpe Ratio</div>
+                </div>
+              </div>
+              {/* Custom KPIs */}
+              <div className="mt-4">
+                <h4 className="font-semibold text-white mb-2">Custom KPIs</h4>
+                <div className="grid grid-cols-2 gap-2 text-sm">
+                  {Object.entries(metrics.customKPIs).map(([key, value]) => (
+                    <div key={key} className="flex justify-between">
+                      <span className="text-gray-400">{key}:</span>
+                      <span className="text-white">{typeof value === 'number' ? value.toFixed(2) : value}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
+          )}
 
-            <div className="space-y-3">
-              {rules.map((rule) => (
-                <div key={rule.id} className="bg-gray-900/30 rounded-lg p-3 border border-gray-700">
-                  <div className="flex items-center gap-2 mb-2">
-                    <input
-                      type="color"
-                      value={rule.color}
-                      onChange={(e) => updateRule(rule.id, { color: e.target.value })}
-                      className="h-4 w-4 rounded"
-                    />
-                    <input
-                      type="text"
-                      value={rule.name}
-                      onChange={(e) => updateRule(rule.id, { name: e.target.value })}
-                      className="flex-1 bg-transparent border border-gray-600 rounded px-2 py-1 text-sm"
-                    />
-                    <label className="flex items-center gap-1 text-xs">
-                      <input
-                        type="checkbox"
-                        checked={rule.enabled}
-                        onChange={(e) => updateRule(rule.id, { enabled: e.target.checked })}
-                      />
-                      Active
-                    </label>
-                    <button
-                      onClick={() => deleteRule(rule.id)}
-                      className="text-red-400 hover:text-red-300 text-xs"
-                    >
-                      ×
-                    </button>
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <div>
-                      <label className="block text-xs text-gray-400 mb-1">Condition</label>
-                      <input
-                        type="text"
-                        value={rule.condition}
-                        onChange={(e) => updateRule(rule.id, { condition: e.target.value })}
-                        className="w-full bg-transparent border border-gray-600 rounded px-2 py-1 text-sm font-mono"
-                        placeholder="value > 100"
-                      />
-                    </div>
-                    
-                    <div>
-                      <label className="block text-xs text-gray-400 mb-1">Action</label>
-                      <select
-                        value={rule.action}
-                        onChange={(e) => updateRule(rule.id, { action: e.target.value })}
-                        className="w-full bg-gray-700 border border-gray-600 rounded px-2 py-1 text-sm"
-                      >
-                        <option value="Alert">Alert</option>
-                        <option value="Buy">Buy</option>
-                        <option value="Sell">Sell</option>
-                        <option value="Flag">Flag</option>
-                      </select>
-                    </div>
-                  </div>
+          {/* Visualization: Timeline and Equity Curve (always visible if results) */}
+          <div className="space-y-6">
+            {simulationResults.length === 0 && (
+              <div className="bg-gray-800/50 rounded-lg p-6 text-center">
+                <h3 className="text-lg font-semibold text-white mb-2">No Simulation Results</h3>
+                <p className="text-gray-400 mb-4">Run a simulation to see visualizations</p>
+              </div>
+            )}
+            {timelineData.length > 0 && (
+              <div className="bg-gray-800/50 rounded-lg p-4">
+                <h3 className="text-lg font-semibold text-white mb-4">Strategy Timeline</h3>
+                <div className="h-96">
+                  <Plot
+                    data={timelineData}
+                    layout={timelineLayout}
+                    config={plotConfig}
+                    style={{ width: '100%', height: '100%' }}
+                  />
                 </div>
-              ))}
-              
-              <button
-                onClick={addRule}
-                className="w-full p-2 bg-[#1877F2] text-white rounded hover:bg-[#1877F2] transition-colors"
-              >
-                + Add Rule
-              </button>
-            </div>
-          </div>
-
-          {/* Simulation Controls */}
-          <div className="bg-gray-800/50 rounded-lg p-4">
-            <h3 className="text-lg font-semibold text-white mb-3">Simulation</h3>
-            
-            <button
-              onClick={runSimulation}
-              disabled={isSimulating || dataset.length === 0 || rules.length === 0}
-              className={`w-full p-3 rounded-lg font-semibold transition-colors ${
-                isSimulating || dataset.length === 0 || rules.length === 0
-                  ? 'bg-gray-600 text-gray-400 cursor-not-allowed'
-                  : 'bg-[#1877F2] text-white hover:bg-[#1877F2]'
-              }`}
-            >
-              {isSimulating ? `Running... ${simulationProgress}%` : 'Run Simulation'}
-            </button>
-
-            {isSimulating && (
-              <div className="mt-3">
-                <div className="w-full bg-gray-700 rounded-full h-2">
-                  <div
-                    className="bg-[#1877F2] h-2 rounded-full transition-all duration-300"
-                    style={{ width: `${simulationProgress}%` }}
-                  ></div>
+              </div>
+            )}
+            {equityData.length > 0 && (
+              <div className="bg-gray-800/50 rounded-lg p-4">
+                <h3 className="text-lg font-semibold text-white mb-4">Equity Curve</h3>
+                <div className="h-96">
+                  <Plot
+                    data={equityData}
+                    layout={equityLayout}
+                    config={plotConfig}
+                    style={{ width: '100%', height: '100%' }}
+                  />
                 </div>
               </div>
             )}
           </div>
-        </div>
 
-        {/* Main Content */}
-        <div className="col-span-8 space-y-6">
-          {/* Tabs */}
-          <div className="flex gap-2">
-            {[
-              { id: 'rules', label: 'Rules' },
-              { id: 'simulation', label: 'Simulation' },
-              { id: 'visualization', label: 'Visualization' }
-            ].map(tab => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id as any)}
-                className={`px-4 py-2 rounded-lg font-semibold transition-colors ${
-                  activeTab === tab.id
-                    ? 'bg-[#1877F2] text-white'
-                    : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
-                }`}
-              >
-                {tab.label}
-              </button>
-            ))}
-          </div>
-
-          {/* Content based on active tab */}
-          {activeTab === 'rules' && (
-            <div className="bg-gray-800/50 rounded-lg p-6">
-              <h3 className="text-xl font-semibold text-white mb-4">Rule Builder Help</h3>
-              <div className="space-y-4 text-gray-300">
-                <div>
-                  <h4 className="font-semibold text-white mb-2">Available Variables:</h4>
-                  {columns.length > 0 ? (
-                    <div className="grid grid-cols-2 gap-2 text-sm">
-                      {columns.map(col => (
-                        <div key={col} className="bg-gray-900/30 rounded px-2 py-1 font-mono">
-                          {col}
-                        </div>
+          {/* Results Table (always below graphs) */}
+          {simulationResults.length > 0 && (
+            <div className="bg-gray-800/50 rounded-lg p-4">
+              <h3 className="text-lg font-semibold text-white mb-4">Simulation Results</h3>
+              <div className="bg-gray-900/50 rounded-lg p-4 max-h-64 overflow-auto">
+                <div className="overflow-x-auto">
+                  <table className="w-full text-xs">
+                    <thead>
+                      <tr className="border-b border-gray-700">
+                        <th className="text-left p-2 text-gray-300">Time</th>
+                        <th className="text-left p-2 text-gray-300">Value</th>
+                        <th className="text-left p-2 text-gray-300">Triggers</th>
+                        <th className="text-left p-2 text-gray-300">Equity</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {simulationResults.slice(0, 20).map((result, index) => (
+                        <tr key={index} className="border-b border-gray-800">
+                          <td className="p-2 text-gray-400">
+                            {new Date(result.timestamp).toLocaleDateString()}
+                          </td>
+                          <td className="p-2 text-gray-400">
+                            {result.data[selectedColumns[0]]?.toFixed(2) || 'N/A'}
+                          </td>
+                          <td className="p-2 text-gray-400">
+                            {result.triggers.length > 0 ? result.triggers.map(t => t.ruleName).join(', ') : 'None'}
+                          </td>
+                          <td className="p-2 text-gray-400">
+                            ${result.equity.toFixed(2)}
+                          </td>
+                        </tr>
                       ))}
+                    </tbody>
+                  </table>
+                  {simulationResults.length > 20 && (
+                    <div className="text-center text-gray-500 text-xs mt-2">
+                      ... and {simulationResults.length - 20} more rows
                     </div>
-                  ) : (
-                    <p className="text-gray-500 text-sm">Upload a dataset to see available variables</p>
                   )}
-                </div>
-                
-                <div>
-                  <h4 className="font-semibold text-white mb-2">Example Conditions:</h4>
-                  <div className="space-y-2 text-sm font-mono bg-gray-900/30 rounded p-3">
-                    <div>value &gt; 100</div>
-                    <div>rsi &lt; 30 && volume &gt; 500</div>
-                    <div>price &gt; 50 || change &gt; 0</div>
-                    <div>Math.abs(change) &gt; 5</div>
-                  </div>
                 </div>
               </div>
             </div>
           )}
 
-          {activeTab === 'simulation' && (
-            <div className="space-y-6">
-              {/* No data message */}
-              {dataset.length === 0 && (
-                <div className="bg-gray-800/50 rounded-lg p-6 text-center">
-                  <h3 className="text-lg font-semibold text-white mb-2">No Dataset Loaded</h3>
-                  <p className="text-gray-400 mb-4">Upload a CSV file or generate sample data to get started</p>
-                  <button
-                    onClick={generateSampleData}
-                    className="px-4 py-2 bg-[#1877F2] text-white rounded hover:bg-[#1877F2] transition-colors"
-                  >
-                    Generate Sample Data
-                  </button>
-                </div>
-              )}
-
-              {/* No rules message */}
-              {dataset.length > 0 && rules.length === 0 && (
-                <div className="bg-gray-800/50 rounded-lg p-6 text-center">
-                  <h3 className="text-lg font-semibold text-white mb-2">No Rules Created</h3>
-                  <p className="text-gray-400">Create at least one strategy rule to run a simulation</p>
-                </div>
-              )}
-
-              {/* Metrics */}
-              {metrics && (
-                <div className="bg-gray-800/50 rounded-lg p-4">
-                  <h3 className="text-lg font-semibold text-white mb-4">Performance Metrics</h3>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div className="bg-gray-700/50 rounded-lg p-3">
-                      <div className="text-2xl font-bold text-green-400">
-                        {(metrics.successRate * 100).toFixed(1)}%
+          {/* Rule Builder Help (moved to bottom) */}
+          <div className="bg-gray-800/50 rounded-lg p-6 mt-6">
+            <h3 className="text-xl font-semibold text-white mb-4">Rule Builder Help</h3>
+            <div className="space-y-4 text-gray-300">
+              <div>
+                <h4 className="font-semibold text-white mb-2">Available Variables:</h4>
+                {columns.length > 0 ? (
+                  <div className="grid grid-cols-2 gap-2 text-sm">
+                    {columns.map(col => (
+                      <div key={col} className="bg-gray-900/30 rounded px-2 py-1 font-mono">
+                        {col}
                       </div>
-                      <div className="text-sm text-gray-400">Success Rate</div>
-                    </div>
-                    <div className="bg-gray-700/50 rounded-lg p-3">
-                      <div className="text-2xl font-bold text-blue-400">
-                        {metrics.totalTriggers}
-                      </div>
-                      <div className="text-sm text-gray-400">Total Triggers</div>
-                    </div>
-                    <div className="bg-gray-700/50 rounded-lg p-3">
-                      <div className="text-2xl font-bold text-red-400">
-                        {(metrics.maxDrawdown * 100).toFixed(1)}%
-                      </div>
-                      <div className="text-sm text-gray-400">Max Drawdown</div>
-                    </div>
-                    <div className="bg-gray-700/50 rounded-lg p-3">
-                      <div className="text-2xl font-bold text-purple-400">
-                        {metrics.sharpeRatio.toFixed(2)}
-                      </div>
-                      <div className="text-sm text-gray-400">Sharpe Ratio</div>
-                    </div>
+                    ))}
                   </div>
-                  
-                  {/* Custom KPIs */}
-                  <div className="mt-4">
-                    <h4 className="font-semibold text-white mb-2">Custom KPIs</h4>
-                    <div className="grid grid-cols-2 gap-2 text-sm">
-                      {Object.entries(metrics.customKPIs).map(([key, value]) => (
-                        <div key={key} className="flex justify-between">
-                          <span className="text-gray-400">{key}:</span>
-                          <span className="text-white">{typeof value === 'number' ? value.toFixed(2) : value}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
+                ) : (
+                  <p className="text-gray-500 text-sm">Upload a dataset to see available variables</p>
+                )}
+              </div>
+              <div>
+                <h4 className="font-semibold text-white mb-2">Example Conditions:</h4>
+                <div className="space-y-2 text-sm font-mono bg-gray-900/30 rounded p-3">
+                  <div>value &gt; 100</div>
+                  <div>rsi &lt; 30 &amp;&amp; volume &gt; 500</div>
+                  <div>price &gt; 50 || change &gt; 0</div>
+                  <div>Math.abs(change) &gt; 5</div>
                 </div>
-              )}
-
-              {/* Results Table */}
-              {simulationResults.length > 0 && (
-                <div className="bg-gray-800/50 rounded-lg p-4">
-                  <h3 className="text-lg font-semibold text-white mb-4">Simulation Results</h3>
-                  <div className="bg-gray-900/50 rounded-lg p-4 max-h-64 overflow-auto">
-                    <div className="overflow-x-auto">
-                      <table className="w-full text-xs">
-                        <thead>
-                          <tr className="border-b border-gray-700">
-                            <th className="text-left p-2 text-gray-300">Time</th>
-                            <th className="text-left p-2 text-gray-300">Value</th>
-                            <th className="text-left p-2 text-gray-300">Triggers</th>
-                            <th className="text-left p-2 text-gray-300">Equity</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {simulationResults.slice(0, 20).map((result, index) => (
-                            <tr key={index} className="border-b border-gray-800">
-                              <td className="p-2 text-gray-400">
-                                {new Date(result.timestamp).toLocaleDateString()}
-                              </td>
-                              <td className="p-2 text-gray-400">
-                                {result.data[selectedColumns[0]]?.toFixed(2) || 'N/A'}
-                              </td>
-                              <td className="p-2 text-gray-400">
-                                {result.triggers.length > 0 ? result.triggers.map(t => t.ruleName).join(', ') : 'None'}
-                              </td>
-                              <td className="p-2 text-gray-400">
-                                ${result.equity.toFixed(2)}
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                      {simulationResults.length > 20 && (
-                        <div className="text-center text-gray-500 text-xs mt-2">
-                          ... and {simulationResults.length - 20} more rows
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              )}
+              </div>
             </div>
-          )}
-
-          {activeTab === 'visualization' && (
-            <div className="space-y-6">
-              {/* No data message */}
-              {simulationResults.length === 0 && (
-                <div className="bg-gray-800/50 rounded-lg p-6 text-center">
-                  <h3 className="text-lg font-semibold text-white mb-2">No Simulation Results</h3>
-                  <p className="text-gray-400 mb-4">Run a simulation to see visualizations</p>
-                </div>
-              )}
-
-              {/* Timeline Chart */}
-              {timelineData.length > 0 && (
-                <div className="bg-gray-800/50 rounded-lg p-4">
-                  <h3 className="text-lg font-semibold text-white mb-4">Strategy Timeline</h3>
-                  <div className="h-96">
-                    <Plot
-                      data={timelineData}
-                      layout={timelineLayout}
-                      config={plotConfig}
-                      style={{ width: '100%', height: '100%' }}
-                    />
-                  </div>
-                </div>
-              )}
-
-              {/* Equity Curve */}
-              {equityData.length > 0 && (
-                <div className="bg-gray-800/50 rounded-lg p-4">
-                  <h3 className="text-lg font-semibold text-white mb-4">Equity Curve</h3>
-                  <div className="h-96">
-                    <Plot
-                      data={equityData}
-                      layout={equityLayout}
-                      config={plotConfig}
-                      style={{ width: '100%', height: '100%' }}
-                    />
-                  </div>
-                </div>
-              )}
-            </div>
-          )}
+          </div>
         </div>
       </div>
     </div>
