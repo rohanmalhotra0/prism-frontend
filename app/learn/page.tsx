@@ -104,9 +104,6 @@ export default function LearnPage() {
       {/* Particle background */}
       <HeroBackground position="fixed" backgroundColor="rgba(0,0,0,1)" className="z-0" blendModeClassName="mix-blend-screen" />
       
-      {/* Background gradient */}
-      <div className="fixed inset-0 bg-gradient-to-br from-blue-900/20 via-blue-900/20 to-blue-900/20 pointer-events-none z-5"></div>
-      
       {/* Main content */}
       <div className="relative z-10 min-h-screen">
         {/* NAVBAR */}

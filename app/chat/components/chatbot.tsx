@@ -114,9 +114,9 @@ export default function ChatBot() {
           <div className="absolute -top-2 -right-2 w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
         </button>
       ) : (
-        <div className="w-96 h-[520px] bg-black/95 backdrop-blur-xl border border-white/20 rounded-3xl shadow-2xl flex flex-col overflow-hidden">
+        <div className="w-96 h-[520px] bg-white/5 backdrop-blur-xl border border-white/20 rounded-3xl shadow-2xl flex flex-col overflow-hidden">
           {/* Header */}
-          <div className="flex justify-between items-center bg-[#1877F2]/20 px-6 py-4 border-b border-white/10">
+          <div className="flex justify-between items-center bg-white/10 backdrop-blur-sm px-6 py-4 border-b border-white/10">
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 bg-[#1877F2] rounded-full flex items-center justify-center">
                 <Bot className="w-4 h-4 text-white" />
@@ -153,8 +153,8 @@ export default function ChatBot() {
                 <div
                   className={`max-w-[80%] px-4 py-3 rounded-2xl text-sm whitespace-pre-wrap leading-relaxed ${
                     msg.role === "user"
-                      ? "bg-blue-600 text-white"
-                      : "bg-white/10 border border-white/20 text-gray-200"
+                      ? "bg-[#1877F2]/80 backdrop-blur-sm text-white"
+                      : "bg-white/5 backdrop-blur-sm border border-white/20 text-gray-200"
                   }`}
                 >
                   {msg.content}
@@ -165,7 +165,7 @@ export default function ChatBot() {
             {/* Loading bubble */}
             {isLoading && (
               <div className="flex justify-start">
-                <div className="px-4 py-3 rounded-2xl bg-white/10 text-gray-400 flex items-center gap-2 text-sm border border-white/20">
+                <div className="px-4 py-3 rounded-2xl bg-white/5 backdrop-blur-sm text-gray-400 flex items-center gap-2 text-sm border border-white/20">
                   <Loader2 className="w-4 h-4 animate-spin" /> Thinking...
                 </div>
               </div>
@@ -174,7 +174,7 @@ export default function ChatBot() {
           </div>
 
           {/* Input */}
-          <div className="p-4 border-t border-white/10 bg-black/70 backdrop-blur-md">
+          <div className="p-4 border-t border-white/10 bg-white/5 backdrop-blur-md">
             
             <div className="flex gap-3">
               <input
@@ -182,7 +182,7 @@ export default function ChatBot() {
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && handleSend()}
                 placeholder="Message Tomas, King of Analytics..."
-                className="flex-1 rounded-2xl bg-white/10 text-white px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#1877F2] border border-white/20 placeholder-gray-400"
+                className="flex-1 rounded-2xl bg-white/5 backdrop-blur-sm text-white px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#1877F2] border border-white/20 placeholder-gray-400"
                 disabled={isLoading}
               />
               <button

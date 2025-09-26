@@ -14,7 +14,7 @@ export default function FinanceModelsPage() {
   const [is3DView, setIs3DView] = useState(false);
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-gray-950 via-gray-900 to-black text-white relative">
+    <main className="min-h-screen bg-black text-white relative">
       {/* Particle background */}
       <HeroBackground position="fixed" backgroundColor="transparent" className="z-0" blendModeClassName="mix-blend-screen" />
       

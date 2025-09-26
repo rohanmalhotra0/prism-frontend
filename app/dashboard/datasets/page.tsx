@@ -125,7 +125,7 @@ function DatasetsContent() {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-screen bg-black text-white">
       {/* Background gradient */}
       <div className="fixed inset-0 bg-[radial-gradient(ellipse_at_center,rgba(147,51,234,0.15)_0%,rgba(0,0,0,1)_85%)]" />
       

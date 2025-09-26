@@ -37,7 +37,7 @@ export default function CurrencyPage() {
   };
 
   return (
-    <main className="min-h-screen bg-gray-950 text-white">
+    <main className="min-h-screen bg-black text-white">
       <Navbar />
 
       <div className="container mx-auto py-12 space-y-12">

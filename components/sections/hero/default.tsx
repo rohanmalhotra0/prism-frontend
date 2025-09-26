@@ -61,9 +61,9 @@ export default function Hero({
     { src: "/Refrax Photos/spiral.png", title: "3D Visualizations", href: "/general" },
     { src: "/Refrax Photos/stockChart3D.png", title: "3D Stock Charts", href: "/financePage" },
     { src: "/Refrax Photos/monteCarlo.png", title: "Monte Carlo Simulation", href: "/business" },
+    { src: "/Refrax Photos/ScenarioAnalysis.png", title: "Revenue Forecast", href: "/business" },
     { src: "/Refrax Photos/CustomerRetention.png", title: "Customer Retention", href: "/business" },
     { src: "/Refrax Photos/Base Cases.png", title: "Base Case Analysis", href: "/business" },
-    { src: "/Refrax Photos/ScenarioAnalysis.png", title: "Scenario Analysis", href: "/business" },
   ];
 
   // Typewriter animation effect
