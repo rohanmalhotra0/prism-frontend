@@ -37,7 +37,7 @@ interface ComponentItem {
 
 interface NavigationProps {
   components?: ComponentItem[];
-  business?: ComponentItem[];
+  financeTools?: ComponentItem[];
   community?: ComponentItem[];
 }
 
@@ -48,12 +48,6 @@ function NavigationComponent({
       href: "/general",
       description: "Regression, simulation, and time-series forecasting.",
       icon: FlaskConical,
-    },
-    {
-      title: "Financial Modeling",
-      href: "/financePage",
-      description: "Quantitative 2D/3D models for corporate finance and forecasting.",
-      icon: TrendingUp,
     },
     {
       title: "Backtest",
@@ -88,7 +82,13 @@ function NavigationComponent({
     */
   
   ],
-  business = [
+  financeTools = [
+    {
+      title: "Financial Modeling",
+      href: "/financePage",
+      description: "Quantitative 2D/3D models for corporate finance and forecasting.",
+      icon: TrendingUp,
+    },
     {
       title: "Business Metrics",
       href: "/business",
@@ -190,23 +190,23 @@ function NavigationComponent({
         )}
       </div>
 
-      {/* Business */}
+      {/* Finance Tools */}
       <div className="relative">
         <button
-          onClick={() => handleDropdownToggle('business')}
+          onClick={() => handleDropdownToggle('financeTools')}
           className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-300 hover:text-white transition-all duration-200 rounded-lg hover:bg-white/5"
         >
           <BarChart3 className="w-4 h-4" />
-          Business
+          Finance Tools
         </button>
-        {openDropdown === 'business' && (
+        {openDropdown === 'financeTools' && (
           <div className="absolute top-full left-0 mt-2 w-[400px] bg-white/5 backdrop-blur-md border border-white/10 rounded-xl shadow-2xl z-50">
             <div className="p-6">
               <div className="flex items-center gap-2 mb-4">
-                <h3 className="text-sm font-semibold text-white uppercase tracking-wider">Business</h3>
+                <h3 className="text-sm font-semibold text-white uppercase tracking-wider">Finance Tools</h3>
               </div>
               <ul className="grid gap-3">
-                {business.map((item) => (
+                {financeTools.map((item) => (
                   <ListItem key={item.title} href={item.href} title={item.title} icon={item.icon}>
                     {item.description}
                   </ListItem>

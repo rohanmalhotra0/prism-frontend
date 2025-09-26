@@ -62,13 +62,13 @@ export default function AboutPage() {
                 <img
                   src="/rohanphoto.jpg"
                   alt="Rohan Malhotra"
-                  className="relative w-32 h-32 rounded-full object-cover border-4 border-[#1877F2]/50 shadow-2xl"
+                  className="relative w-40 h-40 rounded-full object-cover border-4 border-white/50 shadow-2xl"
                 />
               </div>
               <h1 className="text-5xl md:text-7xl font-black mb-4 text-white">
                 Rohan Malhotra
               </h1>
-              <p className="text-2xl md:text-3xl text-[#1877F2] font-semibold mb-6">Founder & Developer</p>
+              <p className="text-2xl md:text-3xl text-white font-semibold mb-6">Founder & Developer</p>
               <p className="text-lg text-gray-300 max-w-4xl mx-auto leading-relaxed">
                 Computer Science & Economics student at NYU with a passion for building data-driven solutions. 
                 Creating Refrax to democratize access to advanced analytics and financial modeling tools.

@@ -140,8 +140,6 @@ export default function AIPage() {
       {/* Particle background */}
       {memoizedHeroBackground}
       
-      {/* Background gradient */}
-      <div className="fixed inset-0 bg-gradient-to-br from-blue-900/20 via-blue-900/20 to-blue-900/20 pointer-events-none z-5"></div>
       
       {/* Navbar */}
       <Navbar />

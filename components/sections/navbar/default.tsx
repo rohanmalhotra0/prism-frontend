@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Image from "next/image";
-import { Menu, BarChart3, Calculator, BookOpen, HelpCircle, FileText, GraduationCap, Search, User, X, TestTube, Database } from "lucide-react";
+import { Menu, BarChart3, Calculator, BookOpen, HelpCircle, FileText, GraduationCap, Search, User, X, TestTube, Database, TrendingUp } from "lucide-react";
 import RefraxLogo from "@/components/logos/RefraxLogo.jpeg";
 import { cn } from "@/lib/utils";
 
@@ -101,16 +101,6 @@ export default function Navbar({
                     </div>
                     <div className="space-y-0.5">
                       <a 
-                        href="/financePage" 
-                        className="group flex items-center gap-2 p-2 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-200 touch-manipulation"
-                      >
-                        <div className="w-6 h-6 bg-[#1877F2] rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
-                          <BarChart3 className="w-3 h-3 text-white" />
-                        </div>
-                        <span className="font-semibold text-white group-hover:text-purple-200 transition-colors text-xs">Financial Modeling</span>
-                      </a>
-                      
-                      <a 
                         href="/backtesting" 
                         className="group flex items-center gap-2 p-2 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-200 touch-manipulation"
                       >
@@ -161,12 +151,22 @@ export default function Navbar({
                     </div>
                   </div>
 
-                  {/* Business Section */}
+                  {/* Finance Tools Section */}
                   <div className="space-y-1">
                     <div className="flex items-center gap-2 mb-2">
-                      <h3 className="text-xs font-semibold text-white uppercase tracking-wider">Business</h3>
+                      <h3 className="text-xs font-semibold text-white uppercase tracking-wider">Finance Tools</h3>
                     </div>
                     <div className="space-y-0.5">
+                      <a 
+                        href="/financePage" 
+                        className="group flex items-center gap-2 p-2 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-200 touch-manipulation"
+                      >
+                        <div className="w-6 h-6 bg-[#1877F2] rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
+                          <TrendingUp className="w-3 h-3 text-white" />
+                        </div>
+                        <span className="font-semibold text-white group-hover:text-blue-200 transition-colors text-xs">Financial Modeling</span>
+                      </a>
+                      
                       <a 
                         href="/business" 
                         className="group flex items-center gap-2 p-2 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-200 touch-manipulation"
@@ -273,12 +273,22 @@ export default function Navbar({
                     </div>
                   </div>
 
-                  {/* Business Section */}
+                  {/* Finance Tools Section */}
                   <div className="space-y-1">
                     <div className="flex items-center gap-2 mb-2">
-                      <h3 className="text-xs font-semibold text-white uppercase tracking-wider">Business</h3>
+                      <h3 className="text-xs font-semibold text-white uppercase tracking-wider">Finance Tools</h3>
                     </div>
                     <div className="space-y-0.5">
+                      <a 
+                        href="/financePage" 
+                        className="group flex items-center gap-2 p-2 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-200 touch-manipulation"
+                      >
+                        <div className="w-6 h-6 bg-[#1877F2] rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
+                          <TrendingUp className="w-3 h-3 text-white" />
+                        </div>
+                        <span className="font-semibold text-white group-hover:text-blue-200 transition-colors text-xs">Financial Modeling</span>
+                      </a>
+                      
                       <a 
                         href="/business" 
                         className="group flex items-center gap-2 p-2 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-200 touch-manipulation"
