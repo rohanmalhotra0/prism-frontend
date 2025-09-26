@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Image from "next/image";
-import { Menu, BarChart3, Calculator, BookOpen, HelpCircle, FileText, GraduationCap, Search, User, X, TestTube, Database, TrendingUp } from "lucide-react";
+import { Menu, BarChart3, Calculator, BookOpen, HelpCircle, FileText, GraduationCap, Search, User, X, TestTube, Database, TrendingUp, Edit3 } from "lucide-react";
 import RefraxLogo from "@/components/logos/RefraxLogo.jpeg";
 import { cn } from "@/lib/utils";
 
@@ -49,6 +49,14 @@ export default function Navbar({
 
           {/* Right side */}
           <NavbarRight>
+            {/* Dataset Editor Button */}
+            <a
+              href="/dataset-editor"
+              className="hidden md:flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-300 hover:text-white transition-all duration-200 rounded-lg hover:bg-white/5"
+            >
+              <Edit3 className="w-4 h-4" />
+              Dataset Editor
+            </a>
 
             {/* Desktop sidebar toggle */}
             <Button
@@ -110,7 +118,6 @@ export default function Navbar({
                         <span className="font-semibold text-white group-hover:text-orange-200 transition-colors text-xs">Backtest</span>
                       </a>
                       
-                      
                       <a 
                         href="/general" 
                         className="group flex items-center gap-2 p-2 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-200 touch-manipulation"
@@ -119,6 +126,16 @@ export default function Navbar({
                           <Calculator className="w-3 h-3 text-white" />
                         </div>
                         <span className="font-semibold text-white group-hover:text-purple-200 transition-colors text-xs">General Modeling</span>
+                      </a>
+
+                      <a 
+                        href="/dataset-editor" 
+                        className="group flex items-center gap-2 p-2 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-200 touch-manipulation"
+                      >
+                        <div className="w-6 h-6 bg-[#1877F2] rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
+                          <Edit3 className="w-3 h-3 text-white" />
+                        </div>
+                        <span className="font-semibold text-white group-hover:text-green-200 transition-colors text-xs">Dataset Editor</span>
                       </a>
                     </div>
                   </div>
@@ -361,6 +378,16 @@ export default function Navbar({
                           <Calculator className="w-3 h-3 text-white" />
                         </div>
                         <span className="font-semibold text-white group-hover:text-purple-200 transition-colors text-xs">General Modeling</span>
+                      </a>
+
+                      <a 
+                        href="/dataset-editor" 
+                        className="group flex items-center gap-2 p-2 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-200 touch-manipulation"
+                      >
+                        <div className="w-6 h-6 bg-[#1877F2] rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
+                          <Edit3 className="w-3 h-3 text-white" />
+                        </div>
+                        <span className="font-semibold text-white group-hover:text-green-200 transition-colors text-xs">Dataset Editor</span>
                       </a>
                     </div>
                   </div>
