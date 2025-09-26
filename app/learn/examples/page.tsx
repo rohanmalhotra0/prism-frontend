@@ -25,7 +25,10 @@ import {
   Filter,
   Grid,
   List,
-  ExternalLink
+  ExternalLink,
+  Image,
+  Video,
+  Eye
 } from "lucide-react";
 
 interface Dataset {
@@ -59,7 +62,7 @@ interface ResearchPaper {
 }
 
 export default function ExamplesPage() {
-  const [activeTab, setActiveTab] = useState<'datasets' | 'research'>('datasets');
+  const [activeTab, setActiveTab] = useState<'datasets' | 'research' | 'demo'>('datasets');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [selectedDifficulty, setSelectedDifficulty] = useState<string>('all');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
@@ -414,6 +417,106 @@ export default function ExamplesPage() {
     }
   ];
 
+  // Refrax Photos for Demo
+  const refraxPhotos = [
+    {
+      id: '2d-datasets',
+      title: '2D Datasets',
+      description: 'Interactive 2D data visualization and analysis tools',
+      image: '/Refrax Photos/2DDatasets.png',
+      category: 'Visualization',
+      href: '/learn/ml-playground'
+    },
+    {
+      id: '2d-stock-model',
+      title: '2D Stock Modeling',
+      description: 'Advanced financial modeling with 2D charts and indicators',
+      image: '/Refrax Photos/2DstockModel.png',
+      category: 'Finance',
+      href: '/learn/financial-modeling'
+    },
+    {
+      id: '3d-line-charts',
+      title: '3D Financial Charts',
+      description: 'Immersive 3D financial data visualization',
+      image: '/Refrax Photos/3DLineCharts.png',
+      category: 'Visualization',
+      href: '/financePage'
+    },
+    {
+      id: 'animations',
+      title: 'Data Animations',
+      description: 'Dynamic data animations and interactive visualizations',
+      image: '/Refrax Photos/Animations.png',
+      category: 'Visualization',
+      href: '/general'
+    },
+    {
+      id: 'cluster-graphing',
+      title: 'Cluster Analysis',
+      description: 'Advanced clustering algorithms and data grouping',
+      image: '/Refrax Photos/clusterGraphing.png',
+      category: 'Machine Learning',
+      href: '/learn/ml-playground'
+    },
+    {
+      id: 'machine-learning',
+      title: 'Machine Learning',
+      description: 'AI and ML tools for predictive analytics',
+      image: '/Refrax Photos/machineLearning.png',
+      category: 'Machine Learning',
+      href: '/learn/machine-learning'
+    },
+    {
+      id: 'math-tools',
+      title: 'Math Tools',
+      description: 'Mathematical visualization and calculation tools',
+      image: '/Refrax Photos/math.png',
+      category: 'Mathematics',
+      href: '/general'
+    },
+    {
+      id: 'predictive-analytics',
+      title: 'Predictive Analytics',
+      description: 'Advanced forecasting and prediction models',
+      image: '/Refrax Photos/predictive_analyitics.png',
+      category: 'Analytics',
+      href: '/learn/machine-learning'
+    },
+    {
+      id: 'monte-carlo',
+      title: 'Monte Carlo Simulation',
+      description: 'Statistical simulation and risk analysis',
+      image: '/Refrax Photos/monteCarlo.png',
+      category: 'Simulation',
+      href: '/business'
+    },
+    {
+      id: 'customer-retention',
+      title: 'Customer Retention',
+      description: 'Customer lifecycle and retention analysis',
+      image: '/Refrax Photos/CustomerRetention.png',
+      category: 'Business',
+      href: '/business'
+    },
+    {
+      id: 'base-cases',
+      title: 'Base Cases',
+      description: 'Financial modeling base case scenarios',
+      image: '/Refrax Photos/Base Cases.png',
+      category: 'Finance',
+      href: '/business'
+    },
+    {
+      id: 'scenario-analysis',
+      title: 'Scenario Analysis',
+      description: 'Multi-scenario financial modeling and analysis',
+      image: '/Refrax Photos/ScenarioAnalysis.png',
+      category: 'Finance',
+      href: '/business'
+    }
+  ];
+
   const filteredDatasets = datasets.filter(dataset => {
     const categoryMatch = selectedCategory === 'all' || dataset.category === selectedCategory;
     const difficultyMatch = selectedDifficulty === 'all' || dataset.difficulty === selectedDifficulty;
@@ -758,6 +861,19 @@ export default function ExamplesPage() {
                     Research Papers
                   </div>
                 </button>
+                <button
+                  onClick={() => setActiveTab('demo')}
+                  className={`px-8 py-4 rounded-xl font-semibold transition-all duration-300 ${
+                    activeTab === 'demo'
+                      ? 'bg-[#1877F2] text-white shadow-lg'
+                      : 'text-gray-400 hover:text-white'
+                  }`}
+                >
+                  <div className="flex items-center gap-2">
+                    <Play className="w-5 h-5" />
+                    Demo
+                  </div>
+                </button>
               </div>
             </div>
           </div>
@@ -838,6 +954,137 @@ export default function ExamplesPage() {
                 {researchPapers.map((paper, index) => (
                   <ResearchCard key={paper.id} paper={paper} />
                 ))}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Demo Tab */}
+        {activeTab === 'demo' && (
+          <div className="px-6 lg:px-8 pb-20">
+            <div className="max-w-7xl mx-auto">
+              {/* YouTube Demo Section */}
+              <div className="mb-16">
+                <div className="text-center mb-8">
+                  <h2 className="text-3xl font-bold text-white mb-4">Watch Refrax in Action</h2>
+                  <p className="text-gray-400 text-lg">See how Refrax's powerful analytics tools work in practice</p>
+                </div>
+                
+                <div className="relative bg-white/5 backdrop-blur-sm rounded-3xl border border-white/10 overflow-hidden">
+                  <div className="aspect-video relative">
+                    <iframe
+                      className="w-full h-full"
+                      src="https://www.youtube.com/embed/J7e7Fx0Nu2A"
+                      title="Refrax Platform Demo"
+                      frameBorder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    ></iframe>
+                  </div>
+                  
+                  {/* Video overlay info */}
+                  <div className="absolute top-6 left-6">
+                    <div className="flex items-center gap-2 px-4 py-2 bg-black/80 backdrop-blur-md text-white text-sm font-semibold rounded-full border border-white/20">
+                      <Video className="w-4 h-4" />
+                      Demo Video
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Refrax Photos Gallery */}
+              <div className="mb-8">
+                <div className="text-center mb-12">
+                  <h2 className="text-3xl font-bold text-white mb-4">Platform Screenshots</h2>
+                  <p className="text-gray-400 text-lg">Explore the different features and capabilities of Refrax</p>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                  {refraxPhotos.map((photo) => (
+                    <div
+                      key={photo.id}
+                      className="group relative bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 overflow-hidden hover:border-white/20 transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-[#1877F2]/20"
+                    >
+                      {/* Image */}
+                      <div className="aspect-video relative overflow-hidden">
+                        <img
+                          src={photo.image}
+                          alt={photo.title}
+                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                        />
+                        
+                        {/* Overlay */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                          <div className="absolute bottom-4 left-4 right-4">
+                            <div className="flex items-center gap-2 mb-2">
+                              <span className="px-2 py-1 bg-[#1877F2]/80 text-white text-xs font-semibold rounded">
+                                {photo.category}
+                              </span>
+                            </div>
+                            <h3 className="text-white font-semibold text-sm mb-1">{photo.title}</h3>
+                            <p className="text-gray-300 text-xs leading-relaxed">{photo.description}</p>
+                          </div>
+                        </div>
+                        
+                        {/* View button */}
+                        <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                          <a
+                            href={photo.href}
+                            className="flex items-center justify-center w-10 h-10 bg-[#1877F2] text-white rounded-full hover:bg-[#1877F2] transition-colors"
+                            title="View Feature"
+                          >
+                            <Eye className="w-4 h-4" />
+                          </a>
+                        </div>
+                      </div>
+                      
+                      {/* Content */}
+                      <div className="p-4">
+                        <div className="flex items-center justify-between mb-2">
+                          <h3 className="text-white font-semibold text-sm group-hover:text-blue-200 transition-colors">
+                            {photo.title}
+                          </h3>
+                          <span className="px-2 py-1 bg-gray-700/50 text-gray-300 text-xs rounded">
+                            {photo.category}
+                          </span>
+                        </div>
+                        <p className="text-gray-400 text-xs leading-relaxed line-clamp-2">
+                          {photo.description}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Call to Action */}
+              <div className="text-center">
+                <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-8">
+                  <h3 className="text-2xl font-bold text-white mb-4">Ready to Try Refrax?</h3>
+                  <p className="text-gray-400 mb-6 max-w-2xl mx-auto">
+                    Start exploring our powerful analytics tools and see how they can transform your data analysis workflow.
+                  </p>
+                  <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                    <Button
+                      asChild
+                      className="rounded-full bg-[#1877F2] hover:bg-[#1877F2] px-8 py-4"
+                    >
+                      <a href="/general">
+                        <Play className="w-5 h-5 mr-2" />
+                        Start Exploring
+                      </a>
+                    </Button>
+                    <Button
+                      asChild
+                      className="rounded-full bg-white/10 hover:bg-white/20 text-white border border-white/20 px-8 py-4"
+                    >
+                      <a href="/learn">
+                        <BookOpen className="w-5 h-5 mr-2" />
+                        Learn More
+                      </a>
+                    </Button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
