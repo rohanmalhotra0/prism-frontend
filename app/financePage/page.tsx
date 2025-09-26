@@ -113,7 +113,7 @@ export default function FinanceModelsPage() {
                     <span><strong>Scroll:</strong> Zoom in/out</span>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <span className="text-lg">👆</span>
+                    <span className="text-lg"></span>
                     <span><strong>Hover:</strong> Show data</span>
                   </div>
                 </div>
