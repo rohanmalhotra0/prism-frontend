@@ -47,7 +47,9 @@ export default function DatasetEditor() {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [computedFields, setComputedFields] = useState<ComputedField[]>([]);
   const [showComputedBuilder, setShowComputedBuilder] = useState(false);
+  const [showFilterBuilder, setShowFilterBuilder] = useState(false);
   const [newComputedField, setNewComputedField] = useState({ name: "", formula: "" });
+  const [newFilter, setNewFilter] = useState({ column: "", operator: "equals", value: "" });
   const [isUploading, setIsUploading] = useState(false);
   
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -104,6 +106,28 @@ export default function DatasetEditor() {
 
     return result;
   }, [data, searchTerm, filters, computedFields]);
+
+  // Calculate optimal column widths
+  const columnWidths = useMemo(() => {
+    const widths: { [key: string]: number } = {};
+    
+    [...columns, ...computedFields.map(f => f.name)].forEach(col => {
+      // Start with header width
+      let maxWidth = col.length * 8 + 20; // Approximate character width
+      
+      // Check data content for this column
+      processedData.forEach(row => {
+        const value = String(row[col] || '');
+        const valueWidth = value.length * 8 + 20;
+        maxWidth = Math.max(maxWidth, valueWidth);
+      });
+      
+      // Set reasonable bounds
+      widths[col] = Math.min(Math.max(maxWidth, 120), 400);
+    });
+    
+    return widths;
+  }, [columns, computedFields, processedData]);
 
   // Formula evaluator
   const evaluateFormula = (formula: string, row: DataRow): any => {
@@ -321,7 +345,15 @@ export default function DatasetEditor() {
 
   // Filter management
   const addFilter = () => {
-    setFilters([...filters, { column: '', operator: 'equals', value: '' }]);
+    setShowFilterBuilder(true);
+  };
+
+  const addNewFilter = () => {
+    if (newFilter.column && newFilter.value) {
+      setFilters([...filters, { ...newFilter }]);
+      setNewFilter({ column: "", operator: "equals", value: "" });
+      setShowFilterBuilder(false);
+    }
   };
 
   const updateFilter = (index: number, field: keyof FilterState, value: string) => {
@@ -383,278 +415,323 @@ export default function DatasetEditor() {
   };
 
   return (
-    <div className="min-h-[90vh] text-white p-4">
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="mb-6">
-          <h2 className="text-3xl font-bold text-white mb-2">Dataset Editor</h2>
-          <p className="text-gray-400">Upload, edit, filter, and export your datasets</p>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-          {/* Left Panel - Controls */}
-          <div className="space-y-6">
-            {/* Upload */}
-            <div className="bg-gray-800/50 rounded-lg p-4">
-              <h3 className="text-lg font-semibold text-white mb-3">Upload Data</h3>
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept=".csv,.xlsx,.xls"
-                onChange={handleFileUpload}
-                className="hidden"
-              />
-              <Button
-                onClick={() => fileInputRef.current?.click()}
-                disabled={isUploading}
-                className="w-full bg-[#1877F2] hover:bg-[#145db2] disabled:bg-gray-600 disabled:cursor-not-allowed"
-              >
-                <Upload className="w-4 h-4 mr-2" />
-                {isUploading ? 'Processing...' : 'Upload CSV/Excel'}
-              </Button>
-              {data.length > 0 && (
-                <div className="mt-3 text-sm text-gray-400">
-                  <div>Rows: {data.length}</div>
-                  <div>Columns: {columns.length}</div>
-                </div>
-              )}
-            </div>
-
-            {/* Search */}
-            <div className="bg-gray-800/50 rounded-lg p-4">
-              <h3 className="text-lg font-semibold text-white mb-3">Search</h3>
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-                <Input
-                  placeholder="Search all columns..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10 bg-gray-700 border-gray-600 text-white"
-                />
-              </div>
-            </div>
-
-            {/* Filters */}
-            <div className="bg-gray-800/50 rounded-lg p-4">
-              <div className="flex items-center justify-between mb-3">
-                <h3 className="text-lg font-semibold text-white">Filters</h3>
-                <Button
-                  onClick={addFilter}
-                  size="sm"
-                  className="bg-gray-700 hover:bg-gray-600"
-                >
-                  <Plus className="w-4 h-4" />
-                </Button>
-              </div>
-              <div className="space-y-3">
-                {filters.map((filter, index) => (
-                  <div key={index} className="bg-gray-700/50 rounded p-3">
-                    <div className="grid grid-cols-3 gap-2 mb-2">
-                      <select
-                        value={filter.column}
-                        onChange={(e) => updateFilter(index, 'column', e.target.value)}
-                        className="bg-gray-600 border-gray-500 rounded px-2 py-1 text-sm"
-                      >
-                        <option value="">Column</option>
-                        {columns.map(col => (
-                          <option key={col} value={col}>{col}</option>
-                        ))}
-                      </select>
-                      <select
-                        value={filter.operator}
-                        onChange={(e) => updateFilter(index, 'operator', e.target.value)}
-                        className="bg-gray-600 border-gray-500 rounded px-2 py-1 text-sm"
-                      >
-                        <option value="equals">Equals</option>
-                        <option value="contains">Contains</option>
-                        <option value="greater">Greater</option>
-                        <option value="less">Less</option>
-                      </select>
-                      <Button
-                        onClick={() => removeFilter(index)}
-                        size="sm"
-                        className="bg-red-600 hover:bg-red-700 p-1"
-                      >
-                        <X className="w-3 h-3" />
-                      </Button>
-                    </div>
-                    <Input
-                      placeholder="Filter value"
-                      value={filter.value}
-                      onChange={(e) => updateFilter(index, 'value', e.target.value)}
-                      className="bg-gray-600 border-gray-500 text-white text-sm"
-                    />
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Computed Fields */}
-            <div className="bg-gray-800/50 rounded-lg p-4">
-              <div className="flex items-center justify-between mb-3">
-                <h3 className="text-lg font-semibold text-white">Computed Fields</h3>
-                <Button
-                  onClick={() => setShowComputedBuilder(true)}
-                  size="sm"
-                  className="bg-[#1877F2] hover:bg-[#145db2]"
-                >
-                  <Calculator className="w-4 h-4" />
-                </Button>
-              </div>
-              
-              {showComputedBuilder && (
-                <div className="bg-gray-700/50 rounded p-3 mb-3">
-                  <Input
-                    placeholder="Field name"
-                    value={newComputedField.name}
-                    onChange={(e) => setNewComputedField({...newComputedField, name: e.target.value})}
-                    className="mb-2 bg-gray-600 border-gray-500 text-white"
-                  />
-                  <Input
-                    placeholder="Formula (e.g., colA + colB)"
-                    value={newComputedField.formula}
-                    onChange={(e) => setNewComputedField({...newComputedField, formula: e.target.value})}
-                    className="mb-2 bg-gray-600 border-gray-500 text-white"
-                  />
-                  <div className="flex gap-2">
-                    <Button
-                      onClick={addComputedField}
-                      size="sm"
-                      className="bg-green-600 hover:bg-green-700"
-                    >
-                      <Save className="w-3 h-3 mr-1" />
-                      Add
-                    </Button>
-                    <Button
-                      onClick={() => setShowComputedBuilder(false)}
-                      size="sm"
-                      className="bg-gray-600 hover:bg-gray-700"
-                    >
-                      <X className="w-3 h-3" />
-                    </Button>
-                  </div>
-                </div>
-              )}
-
-              <div className="space-y-2">
-                {computedFields.map(field => (
-                  <div key={field.id} className="bg-gray-700/50 rounded p-2 flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <input
-                        type="checkbox"
-                        checked={field.enabled}
-                        onChange={() => toggleComputedField(field.id)}
-                        className="w-4 h-4"
-                      />
-                      <span className="text-sm text-white">{field.name}</span>
-                    </div>
-                    <Button
-                      onClick={() => removeComputedField(field.id)}
-                      size="sm"
-                      className="bg-red-600 hover:bg-red-700 p-1"
-                    >
-                      <Trash2 className="w-3 h-3" />
-                    </Button>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Export */}
-            <div className="bg-gray-800/50 rounded-lg p-4">
-              <h3 className="text-lg font-semibold text-white mb-3">Export</h3>
-              <Button
-                onClick={exportToCSV}
-                disabled={processedData.length === 0}
-                className="w-full bg-green-600 hover:bg-green-700 disabled:bg-gray-600"
-              >
-                <Download className="w-4 h-4 mr-2" />
-                Export CSV
-              </Button>
-            </div>
-          </div>
-
-          {/* Right Panel - Data Table */}
-          <div className="lg:col-span-3">
-            {data.length === 0 ? (
-              <div className="bg-gray-800/50 rounded-lg p-8 text-center">
-                <h3 className="text-lg font-semibold text-white mb-2">No Data</h3>
-                <p className="text-gray-400">Upload a CSV or Excel file to get started</p>
-              </div>
-            ) : (
-              <div className="bg-gray-800/50 rounded-lg p-4">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-semibold text-white">
-                    Data Table ({processedData.length} rows)
-                  </h3>
-                  <div className="text-sm text-gray-400">
-                    Click cells to edit
-                  </div>
-                </div>
-                
-                <div className="overflow-x-auto">
-                  <table className="w-full text-sm">
-                    <thead>
-                      <tr className="border-b border-gray-600">
-                        {[...columns, ...computedFields.map(f => f.name)].map(col => (
-                          <th key={col} className="text-left p-2 text-gray-300 font-semibold">
-                            {col}
-                          </th>
-                        ))}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {processedData.map((row, rowIndex) => (
-                        <tr key={row._id || rowIndex} className="border-b border-gray-700">
-                          {[...columns, ...computedFields.map(f => f.name)].map(col => (
-                            <td key={col} className="p-2">
-                              {editingCell?.row === rowIndex && editingCell?.col === col ? (
-                                <div className="flex items-center gap-2">
-                                  <Input
-                                    value={editValue}
-                                    onChange={(e) => setEditValue(e.target.value)}
-                                    className="bg-gray-600 border-gray-500 text-white text-sm"
-                                    autoFocus
-                                    onKeyDown={(e) => {
-                                      if (e.key === 'Enter') saveEdit();
-                                      if (e.key === 'Escape') cancelEdit();
-                                    }}
-                                  />
-                                  <Button
-                                    onClick={saveEdit}
-                                    size="sm"
-                                    className="bg-green-600 hover:bg-green-700 p-1"
-                                  >
-                                    <Save className="w-3 h-3" />
-                                  </Button>
-                                  <Button
-                                    onClick={cancelEdit}
-                                    size="sm"
-                                    className="bg-gray-600 hover:bg-gray-700 p-1"
-                                  >
-                                    <X className="w-3 h-3" />
-                                  </Button>
-                                </div>
-                              ) : (
-                                <div
-                                  className="cursor-pointer hover:bg-gray-700/50 p-1 rounded"
-                                  onClick={() => startEditing(rowIndex, col)}
-                                >
-                                  {row[col] !== undefined ? String(row[col]) : ''}
-                                </div>
-                              )}
-                            </td>
-                          ))}
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
+    <div className="min-h-screen bg-gray-900 text-white">
+      {/* Google Sheets-like Header */}
+      <div className="bg-gray-800 border-b border-gray-700 px-6 py-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <h1 className="text-xl font-semibold text-white">Dataset Editor</h1>
+            {data.length > 0 && (
+              <div className="flex items-center gap-6 text-sm text-gray-300">
+                <span>{processedData.length} rows</span>
+                <span>{columns.length} columns</span>
               </div>
             )}
           </div>
+          
+          <div className="flex items-center gap-3">
+            {/* Upload Button */}
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept=".csv,.xlsx,.xls"
+              onChange={handleFileUpload}
+              className="hidden"
+            />
+            <Button
+              onClick={() => fileInputRef.current?.click()}
+              disabled={isUploading}
+              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium"
+            >
+              <Upload className="w-4 h-4 mr-2" />
+              {isUploading ? 'Processing...' : 'Upload File'}
+            </Button>
+
+            {/* Export Button */}
+            <Button
+              onClick={exportToCSV}
+              disabled={processedData.length === 0}
+              className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md text-sm font-medium disabled:bg-gray-600"
+            >
+              <Download className="w-4 h-4 mr-2" />
+              Export
+            </Button>
+          </div>
         </div>
       </div>
+
+      {/* Toolbar */}
+      {data.length > 0 && (
+        <div className="bg-gray-800 border-b border-gray-700 px-6 py-3">
+          <div className="flex items-center gap-4">
+            {/* Search */}
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <Input
+                placeholder="Search data..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10 bg-gray-700 border-gray-600 text-white w-64"
+              />
+            </div>
+
+            {/* Filter Button */}
+            <Button
+              onClick={addFilter}
+              className="bg-gray-700 hover:bg-gray-600 text-white px-3 py-2 rounded-md text-sm"
+            >
+              <Filter className="w-4 h-4 mr-2" />
+              Filter
+            </Button>
+
+            {/* Computed Fields Button */}
+            <Button
+              onClick={() => setShowComputedBuilder(true)}
+              className="bg-purple-600 hover:bg-purple-700 text-white px-3 py-2 rounded-md text-sm"
+            >
+              <Calculator className="w-4 h-4 mr-2" />
+              Add Formula
+            </Button>
+          </div>
+        </div>
+      )}
+
+      {/* Main Content */}
+      <div className="flex-1 overflow-hidden">
+        {data.length === 0 ? (
+          <div className="flex items-center justify-center h-96">
+            <div className="text-center">
+              <div className="w-16 h-16 bg-gray-700 rounded-lg flex items-center justify-center mx-auto mb-4">
+                <Upload className="w-8 h-8 text-gray-400" />
+              </div>
+              <h3 className="text-lg font-semibold text-white mb-2">No Data</h3>
+              <p className="text-gray-400 mb-4">Upload a CSV or Excel file to get started</p>
+              <Button
+                onClick={() => fileInputRef.current?.click()}
+                className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-md"
+              >
+                <Upload className="w-4 h-4 mr-2" />
+                Upload File
+              </Button>
+            </div>
+          </div>
+        ) : (
+          <div className="h-full overflow-auto">
+            {/* Google Sheets-like Table */}
+            <div className="relative min-w-full">
+              {/* Column Headers */}
+              <div className="sticky top-0 z-10 bg-gray-800 border-b border-gray-700">
+                <div className="flex min-w-max">
+                  {[...columns, ...computedFields.map(f => f.name)].map((col, colIndex) => (
+                    <div
+                      key={col}
+                      className="px-3 py-3 border-r border-gray-700 bg-gray-800 text-sm font-semibold text-gray-200 flex-shrink-0"
+                      style={{
+                        width: `${columnWidths[col] || 150}px`,
+                        minWidth: '120px'
+                      }}
+                    >
+                      {col}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Data Rows */}
+              <div className="bg-white">
+                {processedData.map((row, rowIndex) => (
+                  <div
+                    key={row._id || rowIndex}
+                    className={`flex min-w-max border-b border-gray-200 hover:bg-gray-50 ${
+                      rowIndex % 2 === 0 ? 'bg-white' : 'bg-gray-50'
+                    }`}
+                  >
+                    {[...columns, ...computedFields.map(f => f.name)].map((col, colIndex) => (
+                      <div
+                        key={col}
+                        className="px-3 py-2 border-r border-gray-200 text-sm text-gray-900 relative group flex-shrink-0"
+                        style={{
+                          width: `${columnWidths[col] || 150}px`,
+                          minWidth: '120px'
+                        }}
+                      >
+                        {editingCell?.row === rowIndex && editingCell?.col === col ? (
+                          <Input
+                            value={editValue}
+                            onChange={(e) => setEditValue(e.target.value)}
+                            className="bg-white border-blue-500 text-gray-900 text-sm h-8 w-full"
+                            autoFocus
+                            onBlur={saveEdit}
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter') saveEdit();
+                              if (e.key === 'Escape') cancelEdit();
+                            }}
+                          />
+                        ) : (
+                          <div
+                            className="cursor-pointer hover:bg-blue-100 p-1 rounded min-h-[24px] flex items-center"
+                            onClick={() => startEditing(rowIndex, col)}
+                          >
+                            {row[col] !== undefined ? String(row[col]) : ''}
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Filter Panel */}
+      {filters.length > 0 && (
+        <div className="bg-gray-800 border-t border-gray-700 p-4">
+          <h3 className="text-sm font-semibold text-white mb-3">Active Filters</h3>
+          <div className="flex flex-wrap gap-2">
+            {filters.map((filter, index) => (
+              <div key={index} className="bg-gray-700 rounded-lg px-3 py-2 flex items-center gap-2">
+                <span className="text-sm text-gray-300">{filter.column}</span>
+                <span className="text-sm text-gray-400">{filter.operator}</span>
+                <span className="text-sm text-white">{filter.value}</span>
+                <Button
+                  onClick={() => removeFilter(index)}
+                  size="sm"
+                  className="bg-red-600 hover:bg-red-700 p-1 h-5 w-5"
+                >
+                  <X className="w-3 h-3" />
+                </Button>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Computed Fields Panel */}
+      {computedFields.length > 0 && (
+        <div className="bg-gray-800 border-t border-gray-700 p-4">
+          <h3 className="text-sm font-semibold text-white mb-3">Computed Fields</h3>
+          <div className="flex flex-wrap gap-2">
+            {computedFields.map(field => (
+              <div key={field.id} className="bg-gray-700 rounded-lg px-3 py-2 flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  checked={field.enabled}
+                  onChange={() => toggleComputedField(field.id)}
+                  className="w-4 h-4"
+                />
+                <span className="text-sm text-white">{field.name}</span>
+                <span className="text-sm text-gray-400">= {field.formula}</span>
+                <Button
+                  onClick={() => removeComputedField(field.id)}
+                  size="sm"
+                  className="bg-red-600 hover:bg-red-700 p-1 h-5 w-5"
+                >
+                  <Trash2 className="w-3 h-3" />
+                </Button>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Filter Builder Modal */}
+      {showFilterBuilder && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-gray-800 rounded-lg p-6 w-96">
+            <h3 className="text-lg font-semibold text-white mb-4">Add Filter</h3>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">Column</label>
+                <select
+                  value={newFilter.column}
+                  onChange={(e) => setNewFilter({...newFilter, column: e.target.value})}
+                  className="w-full bg-gray-700 border-gray-600 text-white rounded-md px-3 py-2"
+                >
+                  <option value="">Select column</option>
+                  {columns.map(col => (
+                    <option key={col} value={col}>{col}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">Operator</label>
+                <select
+                  value={newFilter.operator}
+                  onChange={(e) => setNewFilter({...newFilter, operator: e.target.value})}
+                  className="w-full bg-gray-700 border-gray-600 text-white rounded-md px-3 py-2"
+                >
+                  <option value="equals">Equals</option>
+                  <option value="contains">Contains</option>
+                  <option value="greater">Greater than</option>
+                  <option value="less">Less than</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">Value</label>
+                <Input
+                  placeholder="Filter value"
+                  value={newFilter.value}
+                  onChange={(e) => setNewFilter({...newFilter, value: e.target.value})}
+                  className="bg-gray-700 border-gray-600 text-white"
+                />
+              </div>
+              <div className="flex gap-2 justify-end">
+                <Button
+                  onClick={() => setShowFilterBuilder(false)}
+                  className="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-md"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  onClick={addNewFilter}
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md"
+                >
+                  Add Filter
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Computed Field Builder Modal */}
+      {showComputedBuilder && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-gray-800 rounded-lg p-6 w-96">
+            <h3 className="text-lg font-semibold text-white mb-4">Add Computed Field</h3>
+            <div className="space-y-4">
+              <Input
+                placeholder="Field name"
+                value={newComputedField.name}
+                onChange={(e) => setNewComputedField({...newComputedField, name: e.target.value})}
+                className="bg-gray-700 border-gray-600 text-white"
+              />
+              <Input
+                placeholder="Formula (e.g., colA + colB)"
+                value={newComputedField.formula}
+                onChange={(e) => setNewComputedField({...newComputedField, formula: e.target.value})}
+                className="bg-gray-700 border-gray-600 text-white"
+              />
+              <div className="flex gap-2 justify-end">
+                <Button
+                  onClick={() => setShowComputedBuilder(false)}
+                  className="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-md"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  onClick={addComputedField}
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md"
+                >
+                  Add Field
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

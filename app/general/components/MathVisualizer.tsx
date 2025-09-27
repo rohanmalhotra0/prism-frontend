@@ -78,12 +78,18 @@ function classify(exprRaw: string, is3DMode: boolean): EqKind {
   return "implicit2D";
 }
 
-// Safe mathjs evaluate; window.math is loaded async
+// Safe mathjs evaluate using a compile cache; window.math is loaded async
+const compiledCache: Record<string, any> = {};
 function safeEval(expr: string, scope: Record<string, number>) {
   try {
     const math: any = (window as any).math;
     if (!math) return NaN;
-    return math.evaluate(expr, scope);
+    let compiled = compiledCache[expr];
+    if (!compiled) {
+      compiled = math.compile(expr);
+      compiledCache[expr] = compiled;
+    }
+    return compiled.evaluate(scope);
   } catch {
     return NaN;
   }
@@ -102,11 +108,11 @@ export default function MathVisualizer({ sharedData, setSharedData }: MathVisual
   // UI State
   const [mode3D, setMode3D] = useState(true);
   const [equations, setEquations] = useState<EquationItem[]>([
-    { id: crypto.randomUUID(), expr: "y = cos(x + 5t)", color: COLORS[1], visible: true },
-    { id: crypto.randomUUID(), expr: "y = sin(x + 5t)", color: COLORS[2], visible: true },
-    { id: crypto.randomUUID(), expr: "y = x^2", color: COLORS[3], visible: true },
+    { id: crypto.randomUUID(), expr: "y = cos(x + 5t)", color: "#60a5fa", visible: true },
+    { id: crypto.randomUUID(), expr: "y = sin(x + 5t)", color: "#3b82f6", visible: true },
+    { id: crypto.randomUUID(), expr: "y = x^2", color: "#1e40af", visible: true },
     { id: crypto.randomUUID(), expr: "z = sin(x+5t)*cos(y+5t)", color: COLORS[0], visible: true },
-    { id: crypto.randomUUID(), expr: "x^2 + y^2 + z^2 = 9", color: COLORS[3], visible: false },
+    { id: crypto.randomUUID(), expr: "x^2 + y^2 + z^2 = 9", color: "#ffffff", visible: true },
   ]);
   const [activeId, setActiveId] = useState<string | null>(equations[0]?.id ?? null);
 
@@ -143,21 +149,33 @@ export default function MathVisualizer({ sharedData, setSharedData }: MathVisual
     })();
   }, []);
 
-  // Animation
+  // Animation - optimized: throttle to ~10-15fps while animating
   const rafRef = useRef<number | null>(null);
   useEffect(() => {
-    if (!anim) return;
+    if (!anim) {
+      if (rafRef.current) {
+        cancelAnimationFrame(rafRef.current);
+        rafRef.current = null;
+      }
+      return;
+    }
+    
     let last = 0;
     const step = (ts: number) => {
-      if (ts - last > 16) {
-        setT((prev) => prev + 0.02 * animSpeed);
+      // Throttle to ~100ms per update (~10 fps) for Plotly performance
+      if (ts - last >= 100) {
+        setT((prev) => prev + 0.1 * animSpeed);
         last = ts;
       }
       rafRef.current = requestAnimationFrame(step);
     };
     rafRef.current = requestAnimationFrame(step);
+    
     return () => {
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      if (rafRef.current) {
+        cancelAnimationFrame(rafRef.current);
+        rafRef.current = null;
+      }
     };
   }, [anim, animSpeed]);
 
@@ -244,8 +262,10 @@ export default function MathVisualizer({ sharedData, setSharedData }: MathVisual
       const expr = normalize(exprRaw);
       const rhs = expr.includes("=") ? expr.split("=")[1] : expr;
 
-      const nx = Math.max(2, Math.min(50, grid3D)); // Limit grid size for performance
-      const ny = Math.max(2, Math.min(50, grid3D));
+      // Reduced grid size while animating for performance
+      const effectiveGrid = anim ? Math.min(16, grid3D) : Math.min(25, grid3D);
+      const nx = Math.max(8, effectiveGrid);
+      const ny = Math.max(8, effectiveGrid);
       const xs: number[] = [];
       const ys: number[] = [];
       const dx = (x3.max - x3.min) / (nx - 1);
@@ -254,19 +274,30 @@ export default function MathVisualizer({ sharedData, setSharedData }: MathVisual
       for (let j = 0; j < ny; j++) ys.push(y3.min + j * dy);
 
       const z: number[][] = new Array(ny);
+      let hasValidData = false;
+      
       for (let j = 0; j < ny; j++) {
         const row: number[] = new Array(nx);
         for (let i = 0; i < nx; i++) {
-          const out = safeEval(rhs, { x: xs[i], y: ys[j], t });
-          const v = (typeof out === "object" && out?.re != null) ? out.re : Number(out);
-          row[i] = Number.isFinite(v) ? v : 0; // Use 0 instead of NaN for WebGL compatibility
+          try {
+            const out = safeEval(rhs, { x: xs[i], y: ys[j], t });
+            const v = (typeof out === "object" && out?.re != null) ? out.re : Number(out);
+            if (Number.isFinite(v) && Math.abs(v) < 1000) { // Limit extreme values
+              row[i] = v;
+              hasValidData = true;
+            } else {
+              row[i] = 0; // Use 0 for invalid values
+            }
+          } catch (error) {
+            row[i] = 0;
+          }
         }
         z[j] = row;
       }
 
-      // Ensure all arrays have the same length and are properly formatted
-      if (xs.length !== nx || ys.length !== ny || z.length !== ny || z[0]?.length !== nx) {
-        console.warn("3D surface data mismatch, skipping plot");
+      // Only return data if we have valid points
+      if (!hasValidData) {
+        console.warn("No valid data points for 3D surface, skipping plot");
         return null;
       }
 
@@ -283,16 +314,18 @@ export default function MathVisualizer({ sharedData, setSharedData }: MathVisual
         connectgaps: false,
       } as any;
     },
-    [grid3D, x3, y3, t]
+    [grid3D, x3, y3, t, anim]
   );
 
   const genImplicit3D = useCallback(
     (exprRaw: string, color: string) => {
       const F = toZeroLevel(exprRaw);
 
-      const nx = Math.max(2, Math.min(30, grid3D)); // Limit for performance
-      const ny = Math.max(2, Math.min(30, grid3D));
-      const nz = Math.max(2, Math.min(30, grid3D));
+      // Keep higher resolution while animating so spheres stay round
+      const effectiveGrid = anim ? Math.min(24, grid3D) : Math.min(28, grid3D);
+      const nx = Math.max(12, effectiveGrid);
+      const ny = Math.max(12, effectiveGrid);
+      const nz = Math.max(12, effectiveGrid);
 
       const xs: number[] = [];
       const ys: number[] = [];
@@ -342,7 +375,7 @@ export default function MathVisualizer({ sharedData, setSharedData }: MathVisual
         opacity: 0.8,
       } as any;
     },
-    [grid3D, x3, y3, z3, t]
+    [grid3D, x3, y3, z3, t, anim]
   );
 
   // Constants / Identities handling
@@ -442,16 +475,22 @@ export default function MathVisualizer({ sharedData, setSharedData }: MathVisual
           if (tr) list.push(tr);
         }
       } else {
-        // 3D mode - add safety checks
+        // 3D mode - add safety checks and better error handling
         try {
           if (kind === "explicit3D") {
             const tr = genExplicit3D(eq.expr, eq.color);
             if (tr && tr.x && tr.y && tr.z && Array.isArray(tr.z) && tr.z.length > 0) {
               list.push(tr);
             }
-          } else if (kind === "implicit3D" || kind === "implicit2D") {
+          } else if (kind === "implicit3D") {
             const tr = genImplicit3D(eq.expr, eq.color);
             if (tr && tr.x && tr.y && tr.z && tr.value && Array.isArray(tr.value) && tr.value.length > 0) {
+              list.push(tr);
+            }
+          } else if (kind === "implicit2D") {
+            // Handle 2D implicit in 3D mode by creating a flat surface
+            const tr = genImplicit2D(eq.expr, eq.color);
+            if (tr) {
               list.push(tr);
             }
           } else if (kind === "constant") {
@@ -473,7 +512,16 @@ export default function MathVisualizer({ sharedData, setSharedData }: MathVisual
           }
         } catch (error) {
           console.warn(`Error generating 3D plot for "${eq.expr}":`, error);
-          // Skip this equation if it causes errors
+          // Add a placeholder to show the equation failed
+          list.push({
+            type: "scatter3d",
+            mode: "text",
+            x: [0], y: [0], z: [0],
+            text: [`Error: ${eq.expr}`],
+            textfont: { color: "#ef4444" },
+            hoverinfo: "skip",
+            showlegend: false,
+          } as any);
         }
       }
     }

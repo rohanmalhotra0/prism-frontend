@@ -24,6 +24,7 @@ export default function DatasetLab({ sharedData, setSharedData }: DatasetLabProp
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [performanceMode, setPerformanceMode] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const sceneRef = useRef<THREE.Scene | null>(null);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
@@ -252,7 +253,7 @@ export default function DatasetLab({ sharedData, setSharedData }: DatasetLabProp
     cameraRef.current = camera;
 
     // Renderer - use the new canvas
-    const renderer = new THREE.WebGLRenderer({ canvas: newCanvas, antialias: true });
+    const renderer = new THREE.WebGLRenderer({ canvas: newCanvas, antialias: false });
     renderer.setSize(newCanvas.clientWidth, newCanvas.clientHeight);
     rendererRef.current = renderer;
 
@@ -443,14 +444,10 @@ export default function DatasetLab({ sharedData, setSharedData }: DatasetLabProp
       
       if (typeof x !== 'number' || typeof y !== 'number') return;
 
-      const geometry = new THREE.SphereGeometry(0.4, 12, 12);
+      const geometry = new THREE.SphereGeometry(0.4, 6, 4);
       
-      // Color based on z-value or index
-      let color = 0x8b5cf6;
-      if (zCol && typeof z === 'number' && zValues.length > 0) {
-        const intensity = (z - zMin) / zRange;
-        color = new THREE.Color().setHSL(0.7, 1, 0.3 + intensity * 0.7).getHex();
-      }
+      // White color for better performance
+      const color = 0xffffff;
 
       const material = new THREE.MeshBasicMaterial({ color });
       const sphere = new THREE.Mesh(geometry, material);
@@ -589,21 +586,30 @@ export default function DatasetLab({ sharedData, setSharedData }: DatasetLabProp
     const normalizeY = (y: number) => ((y - yMin) / yRange) * 20 - 10;
     const normalizeZ = (z: number) => ((z - zMin) / zRange) * 20 - 10;
 
-    filteredData.forEach((row, index) => {
+    // Limit number of spheres for performance - much lower for animation
+    const maxSpheres = 100;
+    const dataToRender = filteredData.slice(0, maxSpheres);
+    
+    // Show warning if data is limited and enable performance mode
+    if (filteredData.length > maxSpheres) {
+      console.warn(`Performance: Limited 3D visualization to ${maxSpheres} points out of ${filteredData.length} total points`);
+      setPerformanceMode(true);
+    } else {
+      setPerformanceMode(false);
+    }
+    
+    // Create shared geometry for better performance - minimal polygons
+    const geometry = new THREE.SphereGeometry(0.5, 6, 4);
+
+    dataToRender.forEach((row, index) => {
       const x = row[xCol];
       const y = row[yCol];
       const z = zCol && typeof row[zCol] === 'number' ? row[zCol] : 0;
       
       if (typeof x !== 'number' || typeof y !== 'number') return;
 
-      const geometry = new THREE.SphereGeometry(0.5, 12, 12);
-      
-      // Color based on z-value or index
-      let color = 0x8b5cf6;
-      if (zCol && typeof row[zCol] === 'number') {
-        const intensity = (z - zMin) / zRange;
-        color = new THREE.Color().setHSL(0.7, 1, 0.3 + intensity * 0.7).getHex();
-      }
+      // White color for better performance
+      const color = 0xffffff;
 
       const material = new THREE.MeshBasicMaterial({ color });
       const sphere = new THREE.Mesh(geometry, material);
@@ -856,39 +862,71 @@ export default function DatasetLab({ sharedData, setSharedData }: DatasetLabProp
   const animate = useCallback(() => {
     if (!sceneRef.current || !cameraRef.current || !rendererRef.current) return;
 
-    if (isAnimating) {
-      // Rotate camera around the data
+    // Only animate if animation is enabled and not in performance mode
+    if (isAnimating && !performanceMode) {
+      // Rotate camera around the data - simplified
       const time = Date.now() * 0.001;
       const radius = 20;
-      cameraRef.current.position.x = Math.cos(time * 0.5) * radius;
-      cameraRef.current.position.z = Math.sin(time * 0.5) * radius;
+      cameraRef.current.position.x = Math.cos(time * 0.3) * radius;
+      cameraRef.current.position.z = Math.sin(time * 0.3) * radius;
       cameraRef.current.lookAt(0, 0, 0);
 
-      // Animate data points
+      // Animate data points - much more efficient
       const dataPoints = sceneRef.current.children.filter(child => 
-        child.userData.isDataPoint || child.userData.isData3D
+        child.userData.isData3D // Only animate 3D points
       );
       
+      // Batch update positions for better performance
       dataPoints.forEach((point, index) => {
-        const originalY = point.position.y;
-        point.position.y = originalY + Math.sin(time + index * 0.1) * 0.5;
+        if (point.userData.originalY === undefined) {
+          point.userData.originalY = point.position.y;
+        }
+        // Simpler animation with less calculation
+        point.position.y = point.userData.originalY + Math.sin(time * 2 + index * 0.2) * 0.3;
       });
     }
 
-    // Always render the scene, regardless of animation state
+    // Render the scene
     rendererRef.current.render(sceneRef.current, cameraRef.current);
-    animationRef.current = requestAnimationFrame(animate);
-  }, [isAnimating]);
+    
+    // Only continue animation loop if we're actually animating
+    if (isAnimating) {
+      animationRef.current = requestAnimationFrame(animate);
+    }
+  }, [isAnimating, performanceMode]);
 
-  // Restart animation when isAnimating changes
+  // Reset original positions when data changes
+  const resetOriginalPositions = useCallback(() => {
+    if (!sceneRef.current) return;
+    const dataPoints = sceneRef.current.children.filter(child => 
+      child.userData.isDataPoint || child.userData.isData3D
+    );
+    dataPoints.forEach(point => {
+      point.userData.originalY = undefined; // Reset so it gets recalculated
+    });
+  }, []);
+
+  // Reset positions when dataset changes
+  useEffect(() => {
+    resetOriginalPositions();
+  }, [dataset, resetOriginalPositions]);
+
+  // Handle animation start/stop
   useEffect(() => {
     if (is3D && rendererRef.current && sceneRef.current && cameraRef.current) {
       // Cancel existing animation
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current);
+        animationRef.current = undefined;
       }
-      // Start new animation
-      animate();
+      
+      if (isAnimating) {
+        // Start animation loop
+        animate();
+      } else {
+        // Just render once when not animating
+        rendererRef.current.render(sceneRef.current, cameraRef.current);
+      }
     }
   }, [isAnimating, animate, is3D]);
 
