@@ -15,7 +15,7 @@ export default function AIPage() {
   const [messages, setMessages] = useState<Message[]>([
     {
       role: "assistant",
-      content: "Hey there! I'm Tomas, Master of Data! I'm a master at data, stats, and all things analytical. Whether you need help with financial modeling, statistical analysis, or just want to chat about data - I'm your guy! What can I help you analyze today?",
+      content: "Hi I'm Tomas, Master of Data! I'm a master at data, stats, and all things analytical. How can I assist you today?",
       timestamp: new Date(),
     },
   ]);
