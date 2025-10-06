@@ -73,7 +73,7 @@ export default function AIPage() {
     setMessages([
       {
         role: "assistant",
-        content: "New chat started! I'm Tomas, your analytics master! What data challenge can I help you conquer today?",
+        content: "New chat started! Hi I'm Tomas, Master of Data! I'm a Master at Data.",
         timestamp: new Date(),
       },
     ]);
