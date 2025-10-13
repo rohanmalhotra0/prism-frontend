@@ -19,7 +19,7 @@ export default function ChatBot() {
     {
       role: "assistant",
       content:
-        "Hey there! I'm Tomas, the King of Analytics! I'm a master at data, stats, and all things analytical. Whether you need help with financial modeling, statistical analysis, or just want to chat about data - I'm your guy! What can I help you analyze today?",
+        "Hey there! I'm Tomas, the King of Analytics! How can I assist you with your data and statistical needs today",
       timestamp: new Date(),
     },
   ]);
