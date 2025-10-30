@@ -1,0 +1,45 @@
+name: Contribution Heartbeat (Random 0-5 Daily)
+
+on:
+  schedule:
+    # Runs once daily at 09:00 UTC
+    - cron: '0 9 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  beat:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+          fetch-depth: 0
+
+      - name: Random 0-5 commits
+        shell: bash
+        run: |
+          mkdir -p .github/heartbeat
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          COMMITS=$((RANDOM % 6))
+          echo "Planning to create $COMMITS commits today"
+
+          if [ "$COMMITS" -gt 0 ]; then
+            for i in $(seq 1 $COMMITS); do
+              printf "%sZ - heartbeat %d/%d rand=%04d\n" "$(date -u +'%Y-%m-%d %H:%M:%S')" "$i" "$COMMITS" "$RANDOM" >> .github/heartbeat/keepalive.md
+              git add .github/heartbeat/keepalive.md
+              git commit -m "chore(heartbeat): keepalive $i/$COMMITS [skip ci]" || true
+            done
+            # Rebase to reduce push races, then push
+            git pull --rebase || true
+            git push || true
+          else
+            echo "Zero commits today by random choice."
+          fi
+
+

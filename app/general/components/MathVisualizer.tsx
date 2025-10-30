@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 
 // -------- Plotly (client-only) --------
-const Plot = dynamic(() => import("react-plotly.js"), {
+const Plot: any = dynamic(() => import("react-plotly.js"), {
   ssr: false,
   loading: () => (
     <div className="w-full h-full flex items-center justify-center text-white/70">
@@ -594,7 +594,7 @@ export default function MathVisualizer({ sharedData, setSharedData }: MathVisual
   if (!mathReady) {
     return (
       <div className="min-h-[80vh] flex items-center justify-center bg-black text-white/80">
-        Loading math engine…
+        Loading…
       </div>
     );
   }

@@ -42,6 +42,25 @@ export default function DatasetLab({ sharedData, setSharedData }: DatasetLabProp
     }
   }, [sharedData]);
 
+  // Helper: pick first N numeric columns from current dataset
+  const pickNumericColumns = useCallback((count: number): string[] => {
+    if (!dataset.length || !columns.length) return [];
+    const numericCols = columns.filter((col) => dataset.some((row) => typeof row[col] === 'number'));
+    return numericCols.slice(0, count);
+  }, [dataset, columns]);
+
+  // Ensure we always have valid numeric selections for the current mode
+  useEffect(() => {
+    if (!dataset.length || !columns.length) return;
+    const need = is3D ? 3 : 2;
+    const numerics = pickNumericColumns(need);
+    // If current selections are insufficient or non-numeric, auto-fix them
+    const current = selectedColumns.filter((c) => !!c && dataset.some((r) => typeof r[c] === 'number'));
+    if (current.length < need && numerics.length >= need) {
+      setSelectedColumns(numerics);
+    }
+  }, [dataset, columns, is3D, pickNumericColumns]);
+
   // Cleanup on unmount
   useEffect(() => {
     return () => {
@@ -115,8 +134,11 @@ export default function DatasetLab({ sharedData, setSharedData }: DatasetLabProp
         const cols = [...headers];
         if (!cols.includes("date_index") && parsedData[0]?.date_index !== undefined) cols.push("date_index");
         setColumns(cols);
-        // Prefer date_index with Close if available
-        if (cols.includes("date_index") && cols.includes("Close")) {
+        // Prefer numeric columns; fallback to date_index/Close
+        const numeric2 = processedData.length ? cols.filter((c) => typeof processedData[0][c] === 'number').slice(0, 2) : [];
+        if (numeric2.length === 2) {
+          setSelectedColumns(numeric2);
+        } else if (cols.includes("date_index") && cols.includes("Close")) {
           setSelectedColumns(["date_index", "Close"]);
         } else {
           setSelectedColumns(cols.slice(0, 2));
@@ -174,7 +196,10 @@ export default function DatasetLab({ sharedData, setSharedData }: DatasetLabProp
           const cols = [...headers];
           if (!cols.includes("date_index") && processedData[0]?.date_index !== undefined) cols.push("date_index");
           setColumns(cols);
-          if (cols.includes("date_index") && cols.includes("Close")) {
+          const numeric2 = processedData.length ? cols.filter((c) => typeof processedData[0][c] === 'number').slice(0, 2) : [];
+          if (numeric2.length === 2) {
+            setSelectedColumns(numeric2);
+          } else if (cols.includes("date_index") && cols.includes("Close")) {
             setSelectedColumns(["date_index", "Close"]);
           } else {
             setSelectedColumns(cols.slice(0, 2));
@@ -205,7 +230,7 @@ export default function DatasetLab({ sharedData, setSharedData }: DatasetLabProp
     }
     setDataset(sampleData);
     setColumns(['x', 'y', 'z', 'category']);
-    setSelectedColumns(['x', 'y']);
+    setSelectedColumns(['x', 'y', 'z']);
   };
 
 
@@ -408,9 +433,22 @@ export default function DatasetLab({ sharedData, setSharedData }: DatasetLabProp
       xCol = 'date_index';
     }
 
-    const xValues = filteredData.map(d => d[xCol]).filter(v => typeof v === 'number');
-    const yValues = filteredData.map(d => d[yCol]).filter(v => typeof v === 'number');
-    const zValues = zCol ? filteredData.map(d => d[zCol]).filter(v => typeof v === 'number') : [];
+    // Ensure columns are numeric; otherwise try auto-pick
+    let xValues = filteredData.map(d => d[xCol]).filter(v => typeof v === 'number');
+    let yValues = filteredData.map(d => d[yCol]).filter(v => typeof v === 'number');
+    let zValues = zCol ? filteredData.map(d => d[zCol]).filter(v => typeof v === 'number') : [];
+    if (xValues.length === 0 || yValues.length === 0) {
+      const numerics = pickNumericColumns(3);
+      if (numerics.length >= 2) {
+        xCol = numerics[0];
+        const yPick = numerics[1];
+        const zPick = numerics[2];
+        xValues = filteredData.map(d => d[xCol]).filter(v => typeof v === 'number');
+        yValues = filteredData.map(d => d[yPick]).filter(v => typeof v === 'number');
+        zValues = zPick ? filteredData.map(d => d[zPick]).filter(v => typeof v === 'number') : [];
+        setSelectedColumns([xCol, yPick, zPick].filter(Boolean) as string[]);
+      }
+    }
     
     if (xValues.length === 0 || yValues.length === 0) return;
 
@@ -562,9 +600,21 @@ export default function DatasetLab({ sharedData, setSharedData }: DatasetLabProp
       xCol = 'date_index';
     }
 
-    const xValues = filteredData.map(d => d[xCol]).filter(v => typeof v === 'number');
-    const yValues = filteredData.map(d => d[yCol]).filter(v => typeof v === 'number');
-    const zValues = zCol ? filteredData.map(d => d[zCol]).filter(v => typeof v === 'number') : [0];
+    let xValues = filteredData.map(d => d[xCol]).filter(v => typeof v === 'number');
+    let yValues = filteredData.map(d => d[yCol]).filter(v => typeof v === 'number');
+    let zValues = zCol ? filteredData.map(d => d[zCol]).filter(v => typeof v === 'number') : [0];
+    if (xValues.length === 0 || yValues.length === 0) {
+      const numerics = pickNumericColumns(3);
+      if (numerics.length >= 2) {
+        xCol = numerics[0];
+        const yPick = numerics[1];
+        const zPick = numerics[2];
+        xValues = filteredData.map(d => d[xCol]).filter(v => typeof v === 'number');
+        yValues = filteredData.map(d => d[yPick]).filter(v => typeof v === 'number');
+        zValues = zPick ? filteredData.map(d => d[zPick]).filter(v => typeof v === 'number') : [0];
+        setSelectedColumns([xCol, yPick, zPick].filter(Boolean) as string[]);
+      }
+    }
     
     if (xValues.length === 0 || yValues.length === 0) return;
 
@@ -587,7 +637,7 @@ export default function DatasetLab({ sharedData, setSharedData }: DatasetLabProp
     const normalizeZ = (z: number) => ((z - zMin) / zRange) * 20 - 10;
 
     // Limit number of spheres for performance - much lower for animation
-    const maxSpheres = 100;
+    const maxSpheres = 200;
     const dataToRender = filteredData.slice(0, maxSpheres);
     
     // Show warning if data is limited and enable performance mode
