@@ -32,7 +32,7 @@ export default function CryptoPage() {
         {/* Hero */}
         <div className="pt-32 pb-16 px-6 lg:px-8 text-center">
           <h1 className="text-6xl lg:text-7xl font-black mb-8 bg-gradient-to-r from-purple-400 via-blue-400 to-indigo-400 bg-clip-text text-transparent">
-            Crypto Analytics Platform
+            Crypto Analytics Platform In Development
           </h1>
           <p className="text-xl lg:text-2xl text-gray-400 max-w-3xl mx-auto leading-relaxed">
             Analyze crypto pairs, on-chain metrics, and sentiment with powerful visualization tools.
