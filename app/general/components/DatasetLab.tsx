@@ -1099,28 +1099,28 @@ export default function DatasetLab({ sharedData, setSharedData }: DatasetLabProp
 
 
   return (
-    <div className="h-full flex flex-col">
+    <div className="h-full flex flex-col text-foreground">
       {/* Header */}
       <div className="mb-6">
-        <h2 className="text-3xl font-bold text-white mb-2">Dataset Lab</h2>
-        <p className="text-gray-400">Upload, explore, and transform datasets with interactive visualizations</p>
+        <h2 className="text-3xl font-bold mb-2">Dataset Lab</h2>
+        <p className="text-muted-foreground">Upload, explore, and transform datasets with interactive visualizations</p>
       </div>
 
       <div className="flex-1 grid grid-cols-1 lg:grid-cols-4 gap-6">
         {/* Controls Panel */}
         <div className="lg:col-span-1 space-y-6">
           {/* Data Import */}
-          <div className="bg-gray-800/50 rounded-lg p-4">
-            <h3 className="text-lg font-semibold text-white mb-3">Data Import</h3>
+          <div className="bg-card rounded-lg p-4 border border-border">
+            <h3 className="text-lg font-semibold mb-3">Data Import</h3>
             <div className="space-y-3">
               <div>
                 <input
                   type="file"
                   accept=".csv,.xlsx,.xls"
                   onChange={handleFileUpload}
-                  className="w-full p-2 bg-gray-700 text-white rounded border border-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-purple-600 file:text-white hover:file:bg-purple-700"
+                  className="w-full p-2 bg-input text-foreground rounded border border-input file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-primary-foreground hover:file:bg-primary/90"
                 />
-                <p className="text-xs text-gray-400 mt-1">
+                <p className="text-xs text-muted-foreground mt-1">
                   Supported formats: CSV, XLSX, XLS
                 </p>
               </div>
@@ -1129,15 +1129,15 @@ export default function DatasetLab({ sharedData, setSharedData }: DatasetLabProp
                 disabled={isLoading}
                 className={`w-full p-2 rounded transition-colors ${
                   isLoading
-                    ? 'bg-gray-600 text-gray-400 cursor-not-allowed'
-                    : 'bg-blue-600 text-white hover:bg-blue-700'
+                    ? 'bg-muted text-muted-foreground cursor-not-allowed'
+                    : 'bg-primary text-primary-foreground hover:bg-primary/90'
                 }`}
               >
                 {isLoading ? 'Loading...' : 'Generate Sample Data'}
               </button>
               
               {error && (
-                <div className="p-3 bg-red-900/50 border border-red-500 rounded text-red-300 text-sm">
+                <div className="p-3 bg-red-100 border border-red-300 rounded text-red-700 text-sm">
                   {error}
                 </div>
               )}
@@ -1146,8 +1146,8 @@ export default function DatasetLab({ sharedData, setSharedData }: DatasetLabProp
 
           {/* Column Selection */}
           {columns.length > 0 && (
-            <div className="bg-gray-800/50 rounded-lg p-4">
-              <h3 className="text-lg font-semibold text-white mb-3">Columns</h3>
+            <div className="bg-card rounded-lg p-4 border border-border">
+              <h3 className="text-lg font-semibold mb-3">Columns</h3>
               <div className="space-y-2">
                 {columns.map((col, index) => (
                   <label key={col} className="flex items-center space-x-2">
@@ -1163,7 +1163,7 @@ export default function DatasetLab({ sharedData, setSharedData }: DatasetLabProp
                       }}
                       className="rounded"
                     />
-                    <span className="text-sm text-gray-300">{col}</span>
+                    <span className="text-sm">{col}</span>
                   </label>
                 ))}
               </div>
@@ -1171,8 +1171,8 @@ export default function DatasetLab({ sharedData, setSharedData }: DatasetLabProp
           )}
 
           {/* Visualization Type */}
-          <div className="bg-gray-800/50 rounded-lg p-4">
-            <h3 className="text-lg font-semibold text-white mb-3">Visualization</h3>
+          <div className="bg-card rounded-lg p-4 border border-border">
+            <h3 className="text-lg font-semibold mb-3">Visualization</h3>
             <div className="space-y-2">
               {[
                 { value: 'scatter', label: 'Scatter Plot', desc: '3D points' },
@@ -1184,13 +1184,13 @@ export default function DatasetLab({ sharedData, setSharedData }: DatasetLabProp
                   onClick={() => setVisualizationType(type.value as any)}
                   className={`w-full p-2 rounded text-sm transition-colors ${
                     visualizationType === type.value
-                      ? 'bg-purple-600 text-white'
-                      : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                      ? 'bg-primary text-primary-foreground'
+                      : 'bg-muted text-foreground hover:bg-muted'
                   }`}
                 >
                   <div className="text-left">
                     <div className="font-medium">{type.label}</div>
-                    <div className="text-xs opacity-75">{type.desc}</div>
+                    <div className="text-xs text-muted-foreground">{type.desc}</div>
                   </div>
                 </button>
               ))}
@@ -1198,8 +1198,8 @@ export default function DatasetLab({ sharedData, setSharedData }: DatasetLabProp
           </div>
 
           {/* 2D/3D Toggle */}
-          <div className="bg-gray-800/50 rounded-lg p-4">
-            <h3 className="text-lg font-semibold text-white mb-3">View Mode</h3>
+          <div className="bg-card rounded-lg p-4 border border-border">
+            <h3 className="text-lg font-semibold mb-3">View Mode</h3>
             <div className="flex space-x-2">
               <button
                 onClick={() => {
@@ -1214,8 +1214,8 @@ export default function DatasetLab({ sharedData, setSharedData }: DatasetLabProp
                 }}
                 className={`flex-1 p-2 rounded text-sm transition-colors ${
                   !is3D
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                    ? 'bg-primary text-primary-foreground'
+                    : 'bg-muted text-foreground hover:bg-muted'
                 }`}
               >
                 2D
@@ -1233,8 +1233,8 @@ export default function DatasetLab({ sharedData, setSharedData }: DatasetLabProp
                 }}
                 className={`flex-1 p-2 rounded text-sm transition-colors ${
                   is3D
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                    ? 'bg-primary text-primary-foreground'
+                    : 'bg-muted text-foreground hover:bg-muted'
                 }`}
               >
                 3D
@@ -1243,8 +1243,8 @@ export default function DatasetLab({ sharedData, setSharedData }: DatasetLabProp
           </div>
 
           {/* Animation Controls */}
-          <div className="bg-gray-800/50 rounded-lg p-4">
-            <h3 className="text-lg font-semibold text-white mb-3">Animation</h3>
+          <div className="bg-card rounded-lg p-4 border border-border">
+            <h3 className="text-lg font-semibold mb-3">Animation</h3>
             <div className="space-y-3">
               <button
                 onClick={() => setIsAnimating(!isAnimating)}
@@ -1257,7 +1257,7 @@ export default function DatasetLab({ sharedData, setSharedData }: DatasetLabProp
                 {isAnimating ? 'Stop Animation' : 'Start Animation'}
               </button>
               
-              <div className="text-xs text-gray-400">
+              <div className="text-xs text-muted-foreground">
                 Animation rotates camera and bounces data points
               </div>
             </div>
@@ -1269,22 +1269,22 @@ export default function DatasetLab({ sharedData, setSharedData }: DatasetLabProp
         <div className="lg:col-span-3 space-y-6">
           {/* Data Table */}
           {dataset.length > 0 && (
-            <div className="bg-gray-800/50 rounded-lg p-4">
-              <h3 className="text-lg font-semibold text-white mb-3">Data Preview</h3>
+            <div className="bg-card rounded-lg p-4 border border-border">
+              <h3 className="text-lg font-semibold mb-3">Data Preview</h3>
               <div className="overflow-x-auto max-h-48">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-gray-600">
+                    <tr className="border-b border-border">
                       {columns.map((col) => (
-                        <th key={col} className="text-left p-2 text-gray-300">{col}</th>
+                        <th key={col} className="text-left p-2 text-foreground">{col}</th>
                       ))}
                     </tr>
                   </thead>
                   <tbody>
                     {dataset.slice(0, 10).map((row, index) => (
-                      <tr key={index} className="border-b border-gray-700">
+                      <tr key={index} className="border-b border-border">
                         {columns.map((col) => (
-                          <td key={col} className="p-2 text-gray-400">
+                          <td key={col} className="p-2 text-muted-foreground">
                             {typeof row[col] === 'number' ? row[col].toFixed(2) : row[col]}
                           </td>
                         ))}
@@ -1293,16 +1293,16 @@ export default function DatasetLab({ sharedData, setSharedData }: DatasetLabProp
                   </tbody>
                 </table>
                 {dataset.length > 10 && (
-                  <p className="text-gray-500 text-sm mt-2">Showing first 10 rows of {dataset.length} total</p>
+                  <p className="text-muted-foreground text-sm mt-2">Showing first 10 rows of {dataset.length} total</p>
                 )}
               </div>
             </div>
           )}
 
           {/* Visualization */}
-          <div className="bg-gray-900/50 rounded-lg p-4">
+          <div className="bg-card rounded-lg p-4 border border-border">
             <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg font-semibold text-white">
+              <h3 className="text-lg font-semibold">
                 {is3D ? (
                   visualizationType === 'scatter' ? '3D Scatter Plot' : 
                   visualizationType === 'line' ? '3D Line Plot' : '3D Scatter Plot'
@@ -1311,12 +1311,12 @@ export default function DatasetLab({ sharedData, setSharedData }: DatasetLabProp
                   visualizationType === 'line' ? '2D Line Plot' : '2D Scatter Plot'
                 )}
               </h3>
-              <div className="text-sm text-gray-400">
+              <div className="text-sm text-muted-foreground">
                 {dataset.length} data points
               </div>
             </div>
             
-            <div className="bg-black rounded-lg overflow-hidden" style={{ height: '500px' }}>
+            <div className="bg-background rounded-lg overflow-hidden" style={{ height: '500px' }}>
               <canvas
                 ref={canvasRef}
                 className="w-full h-full"
@@ -1326,8 +1326,8 @@ export default function DatasetLab({ sharedData, setSharedData }: DatasetLabProp
               />
             </div>
             
-            <div className="mt-4 p-3 bg-gray-700/50 rounded text-xs text-gray-400">
-              <div className="font-semibold mb-1">{is3D ? '3D Controls:' : '2D Plot:'}</div>
+            <div className="mt-4 p-3 bg-muted rounded text-xs text-muted-foreground">
+              <div className="font-semibold text-foreground mb-1">{is3D ? '3D Controls:' : '2D Plot:'}</div>
               {is3D ? (
                 <>
                   <div>• Mouse: Rotate view</div>

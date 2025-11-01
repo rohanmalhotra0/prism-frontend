@@ -61,7 +61,7 @@ export default function FinancePlot({
   }, [data, live]);
 
   if (!chartData || chartData.length === 0) {
-    return <p className="text-gray-400">No data to display</p>;
+    return <p className="text-muted-foreground">No data to display</p>;
   }
 
   // ✅ Extract OHLCV
@@ -129,7 +129,7 @@ export default function FinancePlot({
   });
 
   return (
-    <div className="w-full h-[700px]">
+    <div className="w-full h-[700px] bg-card rounded-xl border border-border">
       <Plot
         data={traces as any}
         layout={{
@@ -141,9 +141,9 @@ export default function FinancePlot({
           yaxis: { title: { text: "Price (USD)" }, domain: [0.4, 1] },
           yaxis2: { title: { text: "Volume" }, domain: [0.25, 0.35] },
           yaxis3: { title: { text: "Indicators" }, domain: [0, 0.2] },
-          paper_bgcolor: "black",
-          plot_bgcolor: "black",
-          font: { color: "white" },
+          paper_bgcolor: "transparent",
+          plot_bgcolor: "transparent",
+          font: { color: "var(--foreground)" },
         } as Partial<Plotly.Layout>}
         config={{ responsive: true } as Partial<Plotly.Config>}
         style={{ width: "100%", height: "100%" }}

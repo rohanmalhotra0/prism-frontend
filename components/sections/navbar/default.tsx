@@ -15,6 +15,7 @@ import {
 } from "../../ui/navbar";
 import Navigation from "../../ui/navigation";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "../../ui/sheet";
+import { ModeToggle } from "@/components/ui/mode-toggle";
 
 export default function Navbar({
   className,
@@ -49,10 +50,14 @@ export default function Navbar({
 
           {/* Right side */}
           <NavbarRight>
+            {/* Theme toggle */}
+            <div className="mr-2">
+              <ModeToggle />
+            </div>
             {/* Dataset Editor Button */}
             <a
               href="/dataset-editor"
-              className="hidden md:flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-300 hover:text-white transition-all duration-200 rounded-lg hover:bg-white/5"
+              className="hidden md:flex items-center gap-2 px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-all duration-200 rounded-lg hover:bg-muted"
             >
               <Edit3 className="w-4 h-4" />
               Dataset Editor
@@ -63,7 +68,7 @@ export default function Navbar({
               variant="ghost"
               size="icon"
               onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="hidden lg:flex shrink-0 rounded-xl hover:bg-white/10 border border-gray-700/50 hover:border-gray-600/50 transition-all duration-200"
+              className="hidden lg:flex shrink-0 rounded-xl hover:bg-muted border border-border hover:border-border transition-all duration-200"
               aria-label="Toggle sidebar"
             >
               {sidebarOpen ? <X className="size-5 text-gray-300 hover:text-white transition-colors" /> : <Menu className="size-5 text-gray-300 hover:text-white transition-colors" />}
@@ -75,7 +80,7 @@ export default function Navbar({
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="shrink-0 md:hidden rounded-xl hover:bg-white/10 border border-gray-700/50 hover:border-gray-600/50 transition-all duration-200"
+                className="shrink-0 md:hidden rounded-xl hover:bg-muted border border-border hover:border-border transition-all duration-200"
                   aria-label="Toggle navigation menu"
                 >
                   <Menu className="size-5 text-gray-300 hover:text-white transition-colors" />
@@ -83,12 +88,12 @@ export default function Navbar({
               </SheetTrigger>
               <SheetContent
                 side="right"
-                className="bg-black/5 backdrop-blur-sm w-72 touch-manipulation border-l border-white/5"
+                className="bg-card/90 backdrop-blur-sm w-72 touch-manipulation border-l border-border"
               >
                 <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
                 
                 {/* Refrax Header */}
-                <div className="flex items-center justify-center py-3 border-b border-white/5 mb-4">
+                <div className="flex items-center justify-center py-3 border-b border-border mb-4">
                   <a 
                     href={homeUrl}
                     className="flex items-center gap-2 hover:opacity-80 transition-opacity touch-manipulation"
@@ -96,7 +101,7 @@ export default function Navbar({
                     <div className="w-6 h-6 bg-[#1877F2] rounded-lg flex items-center justify-center">
                       <BarChart3 className="w-3 h-3 text-white" />
                     </div>
-                    <span className="text-base font-bold text-white">Refrax</span>
+                    <span className="text-base font-bold text-foreground">Refrax</span>
                   </a>
                 </div>
 
@@ -105,37 +110,28 @@ export default function Navbar({
                   {/* Math Tools Section */}
                   <div className="space-y-1">
                     <div className="flex items-center gap-2 mb-2">
-                      <h3 className="text-xs font-semibold text-white uppercase tracking-wider">Math Tools</h3>
+                      <h3 className="text-xs font-semibold text-foreground uppercase tracking-wider">Math Tools</h3>
                     </div>
                     <div className="space-y-0.5">
-                      <a 
-                        href="/backtesting" 
-                        className="group flex items-center gap-2 p-2 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-200 touch-manipulation"
-                      >
-                        <div className="w-6 h-6 bg-[#1877F2] rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
-                          <TestTube className="w-3 h-3 text-white" />
-                        </div>
-                        <span className="font-semibold text-white group-hover:text-orange-200 transition-colors text-xs">Backtest</span>
-                      </a>
                       
                       <a 
                         href="/general" 
-                        className="group flex items-center gap-2 p-2 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-200 touch-manipulation"
+                        className="group flex items-center gap-2 p-2 rounded-lg bg-muted backdrop-blur-sm border border-border hover:bg-muted transition-all duration-200 touch-manipulation"
                       >
                         <div className="w-6 h-6 bg-[#1877F2] rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
                           <Calculator className="w-3 h-3 text-white" />
                         </div>
-                        <span className="font-semibold text-white group-hover:text-purple-200 transition-colors text-xs">General Modeling</span>
+                        <span className="font-semibold text-foreground transition-colors text-xs">General Modeling</span>
                       </a>
 
                       <a 
                         href="/dataset-editor" 
-                        className="group flex items-center gap-2 p-2 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-200 touch-manipulation"
+                        className="group flex items-center gap-2 p-2 rounded-lg bg-muted backdrop-blur-sm border border-border hover:bg-muted transition-all duration-200 touch-manipulation"
                       >
                         <div className="w-6 h-6 bg-[#1877F2] rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
                           <Edit3 className="w-3 h-3 text-white" />
                         </div>
-                        <span className="font-semibold text-white group-hover:text-green-200 transition-colors text-xs">Dataset Editor</span>
+                        <span className="font-semibold text-foreground transition-colors text-xs">Dataset Editor</span>
                       </a>
                     </div>
                   </div>
@@ -143,27 +139,27 @@ export default function Navbar({
                   {/* Learn Section */}
                   <div className="space-y-1">
                     <div className="flex items-center gap-2 mb-2">
-                      <h3 className="text-xs font-semibold text-white uppercase tracking-wider">Learn</h3>
+                      <h3 className="text-xs font-semibold text-foreground uppercase tracking-wider">Learn</h3>
                     </div>
                     <div className="space-y-0.5">
                       <a 
                         href="/learn" 
-                        className="group flex items-center gap-2 p-2 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-200 touch-manipulation"
+                        className="group flex items-center gap-2 p-2 rounded-lg bg-muted backdrop-blur-sm border border-border hover:bg-muted transition-all duration-200 touch-manipulation"
                       >
                         <div className="w-6 h-6 bg-[#1877F2] rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
                           <BookOpen className="w-3 h-3 text-white" />
                         </div>
-                        <span className="font-semibold text-white group-hover:text-blue-200 transition-colors text-xs">Learn</span>
+                        <span className="font-semibold text-foreground transition-colors text-xs">Learn</span>
                       </a>
                       
                       <a 
                         href="/learn/examples" 
-                        className="group flex items-center gap-2 p-2 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-200 touch-manipulation"
+                        className="group flex items-center gap-2 p-2 rounded-lg bg-muted backdrop-blur-sm border border-border hover:bg-muted transition-all duration-200 touch-manipulation"
                       >
                         <div className="w-6 h-6 bg-[#1877F2] rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
                           <Database className="w-3 h-3 text-white" />
                         </div>
-                        <span className="font-semibold text-white group-hover:text-cyan-200 transition-colors text-xs">Examples</span>
+                        <span className="font-semibold text-foreground transition-colors text-xs">Examples</span>
                       </a>
                     </div>
                   </div>
@@ -171,54 +167,46 @@ export default function Navbar({
                   {/* Finance Tools Section */}
                   <div className="space-y-1">
                     <div className="flex items-center gap-2 mb-2">
-                      <h3 className="text-xs font-semibold text-white uppercase tracking-wider">Finance Tools</h3>
+                      <h3 className="text-xs font-semibold text-foreground uppercase tracking-wider">Finance Tools</h3>
                     </div>
                     <div className="space-y-0.5">
                       <a 
                         href="/financePage" 
-                        className="group flex items-center gap-2 p-2 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-200 touch-manipulation"
+                        className="group flex items-center gap-2 p-2 rounded-lg bg-muted backdrop-blur-sm border border-border hover:bg-muted transition-all duration-200 touch-manipulation"
                       >
                         <div className="w-6 h-6 bg-[#1877F2] rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
                           <TrendingUp className="w-3 h-3 text-white" />
                         </div>
-                        <span className="font-semibold text-white group-hover:text-blue-200 transition-colors text-xs">Financial Modeling</span>
+                        <span className="font-semibold text-foreground transition-colors text-xs">Financial Modeling</span>
                       </a>
                       
-                      <a 
-                        href="/business" 
-                        className="group flex items-center gap-2 p-2 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-200 touch-manipulation"
-                      >
-                        <div className="w-6 h-6 bg-[#1877F2] rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
-                          <BarChart3 className="w-3 h-3 text-white" />
-                        </div>
-                        <span className="font-semibold text-white group-hover:text-emerald-200 transition-colors text-xs">Business Metrics</span>
-                      </a>
+                      
                     </div>
                   </div>
 
                   {/* Resources Section */}
                   <div className="space-y-1">
                     <div className="flex items-center gap-2 mb-2">
-                      <h3 className="text-xs font-semibold text-white uppercase tracking-wider">Resources</h3>
+                      <h3 className="text-xs font-semibold text-foreground uppercase tracking-wider">Resources</h3>
                     </div>
                     <div className="space-y-0.5">
                       <a 
                         href="/about" 
-                        className="group flex items-center gap-2 p-2 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-200 touch-manipulation"
+                        className="group flex items-center gap-2 p-2 rounded-lg bg-muted backdrop-blur-sm border border-border hover:bg-muted transition-all duration-200 touch-manipulation"
                       >
                         <div className="w-6 h-6 bg-[#1877F2] rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
                           <User className="w-3 h-3 text-white" />
                         </div>
-                        <span className="font-semibold text-white group-hover:text-green-200 transition-colors text-xs">About Us</span>
+                        <span className="font-semibold text-foreground transition-colors text-xs">About Us</span>
                       </a>
                       <a 
                         href="/docs" 
-                        className="group flex items-center gap-2 p-2 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-200 touch-manipulation"
+                        className="group flex items-center gap-2 p-2 rounded-lg bg-muted backdrop-blur-sm border border-border hover:bg-muted transition-all duration-200 touch-manipulation"
                       >
                         <div className="w-6 h-6 bg-[#1877F2] rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
                           <FileText className="w-3 h-3 text-white" />
                         </div>
-                        <span className="font-semibold text-white group-hover:text-green-200 transition-colors text-xs">Documentation</span>
+                        <span className="font-semibold text-foreground transition-colors text-xs">Documentation</span>
                       </a>
                     </div>
                   </div>
@@ -226,30 +214,39 @@ export default function Navbar({
                   {/* AI Assistant Section */}
                   <div className="space-y-2">
                     <div className="flex items-center gap-2 mb-3">
-                      <h3 className="text-xs font-semibold text-white uppercase tracking-wider">AI Assistant</h3>
+                      <h3 className="text-xs font-semibold text-foreground uppercase tracking-wider">AI Assistant</h3>
                     </div>
                     <div className="space-y-1">
                       <a 
                         href="/ai" 
-                        className="group flex items-center gap-2 p-2 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-200 touch-manipulation"
+                        className="group flex items-center gap-2 p-2 rounded-lg bg-muted backdrop-blur-sm border border-border hover:bg-muted transition-all duration-200 touch-manipulation"
                       >
                         <div className="w-6 h-6 bg-[#1877F2] rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
                           <span className="text-sm font-bold text-white">AI</span>
                         </div>
-                        <span className="font-semibold text-white group-hover:text-cyan-200 transition-colors text-xs">AI Assistant</span>
+                        <span className="font-semibold text-foreground transition-colors text-xs">AI Assistant</span>
                       </a>
                     </div>
                   </div>
                 </nav>
+
+                {/* Theme Section */}
+                <div className="mt-6 border-t border-border pt-4">
+                  <h3 className="text-xs font-semibold text-foreground uppercase tracking-wider mb-2">Theme</h3>
+                  <div className="flex items-center justify-between bg-muted rounded-lg p-2">
+                    <span className="text-xs text-muted-foreground">Light / Dark</span>
+                    <ModeToggle />
+                  </div>
+                </div>
               </SheetContent>
             </Sheet>
 
             {/* Desktop Persistent Sidebar */}
             {sidebarOpen && (
-              <div className="hidden lg:block fixed right-0 top-0 h-full w-72 bg-black/5 backdrop-blur-sm border-l border-white/5 z-40 overflow-y-auto">
+              <div className="hidden lg:block fixed right-0 top-0 h-full w-72 bg-card/90 backdrop-blur-sm border-l border-border z-40 overflow-y-auto">
               <div className="p-4">
                 {/* Refrax Header with Close Button */}
-                <div className="flex items-center justify-between py-3 border-b border-white/5 mb-4">
+                <div className="flex items-center justify-between py-3 border-b border-border mb-4">
                   <a 
                     href={homeUrl}
                     className="flex items-center gap-2 hover:opacity-80 transition-opacity touch-manipulation"
@@ -257,13 +254,13 @@ export default function Navbar({
                     <div className="w-6 h-6 bg-[#1877F2] rounded-lg flex items-center justify-center">
                       <BarChart3 className="w-3 h-3 text-white" />
                     </div>
-                    <span className="text-base font-bold text-white">Refrax</span>
+                    <span className="text-base font-bold text-foreground">Refrax</span>
                   </a>
                   <Button
                     variant="ghost"
                     size="icon"
                     onClick={() => setSidebarOpen(false)}
-                    className="shrink-0 rounded-lg hover:bg-white/10 border border-gray-700/50 hover:border-gray-600/50 transition-all duration-200"
+                    className="shrink-0 rounded-lg hover:bg-muted border border-border hover:border-border transition-all duration-200"
                     aria-label="Close sidebar"
                   >
                     <X className="size-4 text-gray-300 hover:text-white transition-colors" />
@@ -274,27 +271,27 @@ export default function Navbar({
                   {/* Learn Section */}
                   <div className="space-y-1">
                     <div className="flex items-center gap-2 mb-2">
-                      <h3 className="text-xs font-semibold text-white uppercase tracking-wider">Learn</h3>
+                      <h3 className="text-xs font-semibold text-foreground uppercase tracking-wider">Learn</h3>
                     </div>
                     <div className="space-y-0.5">
                       <a 
                         href="/learn" 
-                        className="group flex items-center gap-2 p-2 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-200 touch-manipulation"
+                        className="group flex items-center gap-2 p-2 rounded-lg bg-muted backdrop-blur-sm border border-border hover:bg-muted transition-all duration-200 touch-manipulation"
                       >
                         <div className="w-6 h-6 bg-[#1877F2] rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
                           <BookOpen className="w-3 h-3 text-white" />
                         </div>
-                        <span className="font-semibold text-white group-hover:text-blue-200 transition-colors text-xs">Learn</span>
+                        <span className="font-semibold text-foreground transition-colors text-xs">Learn</span>
                       </a>
                       
                       <a 
                         href="/learn/examples" 
-                        className="group flex items-center gap-2 p-2 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-200 touch-manipulation"
+                        className="group flex items-center gap-2 p-2 rounded-lg bg-muted backdrop-blur-sm border border-border hover:bg-muted transition-all duration-200 touch-manipulation"
                       >
                         <div className="w-6 h-6 bg-[#1877F2] rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
                           <Database className="w-3 h-3 text-white" />
                         </div>
-                        <span className="font-semibold text-white group-hover:text-cyan-200 transition-colors text-xs">Examples</span>
+                        <span className="font-semibold text-foreground transition-colors text-xs">Examples</span>
                       </a>
                     </div>
                   </div>
@@ -302,54 +299,46 @@ export default function Navbar({
                   {/* Finance Tools Section */}
                   <div className="space-y-1">
                     <div className="flex items-center gap-2 mb-2">
-                      <h3 className="text-xs font-semibold text-white uppercase tracking-wider">Finance Tools</h3>
+                      <h3 className="text-xs font-semibold text-foreground uppercase tracking-wider">Finance Tools</h3>
                     </div>
                     <div className="space-y-0.5">
                       <a 
                         href="/financePage" 
-                        className="group flex items-center gap-2 p-2 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-200 touch-manipulation"
+                        className="group flex items-center gap-2 p-2 rounded-lg bg-muted backdrop-blur-sm border border-border hover:bg-muted transition-all duration-200 touch-manipulation"
                       >
                         <div className="w-6 h-6 bg-[#1877F2] rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
                           <TrendingUp className="w-3 h-3 text-white" />
                         </div>
-                        <span className="font-semibold text-white group-hover:text-blue-200 transition-colors text-xs">Financial Modeling</span>
+                        <span className="font-semibold text-foreground transition-colors text-xs">Financial Modeling</span>
                       </a>
                       
-                      <a 
-                        href="/business" 
-                        className="group flex items-center gap-2 p-2 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-200 touch-manipulation"
-                      >
-                        <div className="w-6 h-6 bg-[#1877F2] rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
-                          <BarChart3 className="w-3 h-3 text-white" />
-                        </div>
-                        <span className="font-semibold text-white group-hover:text-emerald-200 transition-colors text-xs">Business Metrics</span>
-                      </a>
+                      
                     </div>
                   </div>
 
                   {/* Resources Section */}
                   <div className="space-y-1">
                     <div className="flex items-center gap-2 mb-2">
-                      <h3 className="text-xs font-semibold text-white uppercase tracking-wider">Docs</h3>
+                      <h3 className="text-xs font-semibold text-foreground uppercase tracking-wider">Docs</h3>
                     </div>
                     <div className="space-y-0.5">
                       <a 
                         href="/about" 
-                        className="group flex items-center gap-2 p-2 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-200 touch-manipulation"
+                        className="group flex items-center gap-2 p-2 rounded-lg bg-muted backdrop-blur-sm border border-border hover:bg-muted transition-all duration-200 touch-manipulation"
                       >
                         <div className="w-6 h-6 bg-[#1877F2] rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
                           <User className="w-3 h-3 text-white" />
                         </div>
-                        <span className="font-semibold text-white group-hover:text-green-200 transition-colors text-xs">About Me</span>
+                        <span className="font-semibold text-foreground transition-colors text-xs">About Me</span>
                       </a>
                       <a 
                         href="/docs" 
-                        className="group flex items-center gap-2 p-2 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-200 touch-manipulation"
+                        className="group flex items-center gap-2 p-2 rounded-lg bg-muted backdrop-blur-sm border border-border hover:bg-muted transition-all duration-200 touch-manipulation"
                       >
                         <div className="w-6 h-6 bg-[#1877F2] rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
                           <FileText className="w-3 h-3 text-white" />
                         </div>
-                        <span className="font-semibold text-white group-hover:text-green-200 transition-colors text-xs">Documentation</span>
+                        <span className="font-semibold text-foreground transition-colors text-xs">Documentation</span>
                       </a>
                     </div>
                   </div>
@@ -357,37 +346,37 @@ export default function Navbar({
                   {/* Math Tools Section */}
                   <div className="space-y-1">
                     <div className="flex items-center gap-2 mb-2">
-                      <h3 className="text-xs font-semibold text-white uppercase tracking-wider">Math Tools</h3>
+                      <h3 className="text-xs font-semibold text-foreground uppercase tracking-wider">Math Tools</h3>
                     </div>
                     <div className="space-y-0.5">
                       <a 
                         href="/financePage" 
-                        className="group flex items-center gap-2 p-2 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-200 touch-manipulation"
+                        className="group flex items-center gap-2 p-2 rounded-lg bg-muted backdrop-blur-sm border border-border hover:bg-muted transition-all duration-200 touch-manipulation"
                       >
                         <div className="w-6 h-6 bg-[#1877F2] rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
                           <BarChart3 className="w-3 h-3 text-white" />
                         </div>
-                        <span className="font-semibold text-white group-hover:text-purple-200 transition-colors text-xs">Stocks & Indices</span>
+                        <span className="font-semibold text-foreground transition-colors text-xs">Stocks & Indices</span>
                       </a>
                       
                       <a 
                         href="/general" 
-                        className="group flex items-center gap-2 p-2 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-200 touch-manipulation"
+                        className="group flex items-center gap-2 p-2 rounded-lg bg-muted backdrop-blur-sm border border-border hover:bg-muted transition-all duration-200 touch-manipulation"
                       >
                         <div className="w-6 h-6 bg-[#1877F2] rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
                           <Calculator className="w-3 h-3 text-white" />
                         </div>
-                        <span className="font-semibold text-white group-hover:text-purple-200 transition-colors text-xs">General Modeling</span>
+                        <span className="font-semibold text-foreground transition-colors text-xs">General Modeling</span>
                       </a>
 
                       <a 
                         href="/dataset-editor" 
-                        className="group flex items-center gap-2 p-2 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-200 touch-manipulation"
+                        className="group flex items-center gap-2 p-2 rounded-lg bg-muted backdrop-blur-sm border border-border hover:bg-muted transition-all duration-200 touch-manipulation"
                       >
                         <div className="w-6 h-6 bg-[#1877F2] rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
                           <Edit3 className="w-3 h-3 text-white" />
                         </div>
-                        <span className="font-semibold text-white group-hover:text-green-200 transition-colors text-xs">Dataset Editor</span>
+                        <span className="font-semibold text-foreground transition-colors text-xs">Dataset Editor</span>
                       </a>
                     </div>
                   </div>
@@ -395,21 +384,30 @@ export default function Navbar({
                   {/* AI Assistant Section */}
                   <div className="space-y-2">
                     <div className="flex items-center gap-2 mb-3">
-                      <h3 className="text-xs font-semibold text-white uppercase tracking-wider">AI Assistant</h3>
+                      <h3 className="text-xs font-semibold text-foreground uppercase tracking-wider">AI Assistant</h3>
                     </div>
                     <div className="space-y-1">
                       <a 
                         href="/ai" 
-                        className="group flex items-center gap-2 p-2 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-200 touch-manipulation"
+                        className="group flex items-center gap-2 p-2 rounded-lg bg-muted backdrop-blur-sm border border-border hover:bg-muted transition-all duration-200 touch-manipulation"
                       >
                         <div className="w-6 h-6 bg-[#1877F2] rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
                           <span className="text-sm font-bold text-white">AI</span>
                         </div>
-                        <span className="font-semibold text-white group-hover:text-cyan-200 transition-colors text-xs">AI Assistant</span>
+                        <span className="font-semibold text-foreground transition-colors text-xs">AI Assistant</span>
                       </a>
                     </div>
                   </div>
                 </nav>
+
+                {/* Theme Section */}
+                <div className="mt-6 border-t border-border pt-4">
+                  <h3 className="text-xs font-semibold text-foreground uppercase tracking-wider mb-2">Theme</h3>
+                  <div className="flex items-center justify-between bg-muted rounded-lg p-2">
+                    <span className="text-xs text-muted-foreground">Light / Dark</span>
+                    <ModeToggle />
+                  </div>
+                </div>
               </div>
             </div>
             )}

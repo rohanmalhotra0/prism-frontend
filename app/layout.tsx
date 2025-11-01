@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import ChatBot from "./chat/components/chatbot";
 import { AuthProvider } from "@/lib/AuthProvider";
+import { ThemeProvider } from "next-themes";
 
 import AuthModal from "./AuthModals";
 
@@ -27,18 +28,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <script src="https://accounts.google.com/gsi/client" async></script>
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased dark text-foreground bg-background`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased text-foreground bg-background`}
       >
-        <AuthProvider>
-          {children}
-          <ChatBot /> {/* 👈 mounted globally */}
-          <AuthModal /> {/* 👈 mounted globally */}
-        </AuthProvider>
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
+          <AuthProvider>
+            {children}
+            <ChatBot /> {/* 👈 mounted globally */}
+            <AuthModal /> {/* 👈 mounted globally */}
+          </AuthProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

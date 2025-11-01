@@ -136,7 +136,7 @@ export default function AIPage() {
   ), []);
 
   return (
-    <div className="min-h-screen bg-black text-white flex flex-col">
+    <div className="min-h-screen bg-background text-foreground flex flex-col">
       {/* Particle background */}
       {memoizedHeroBackground}
       
@@ -147,20 +147,20 @@ export default function AIPage() {
       {/* Main Content */}
       <div className="relative z-10 flex-1 flex flex-col">
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 bg-white/5 backdrop-blur-sm border-b border-white/10">
+        <div className="flex items-center justify-between px-6 py-4 bg-card border-b border-border">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-[#1877F2] rounded-full flex items-center justify-center">
-              <Bot className="w-4 h-4 text-white" />
+            <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+              <Bot className="w-4 h-4 text-primary-foreground" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-white">Tomas - King of Analytics</h1>
-              <p className="text-sm text-gray-400">Master of Data & Statistical Wizardry</p>
+              <h1 className="text-xl font-bold">Tomas - King of Analytics</h1>
+              <p className="text-sm text-muted-foreground">Master of Data & Statistical Wizardry</p>
             </div>
           </div>
           <div className="flex items-center gap-2">
             <button
               onClick={clearChat}
-              className="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg text-sm transition-colors"
+              className="px-4 py-2 bg-muted hover:bg-muted rounded-lg text-sm transition-colors"
             >
               Clear Chat
             </button>
@@ -169,11 +169,11 @@ export default function AIPage() {
 
         {/* Error Display */}
         {error && (
-          <div className="mx-6 mt-4 p-3 bg-red-900/20 border border-red-500/50 rounded-lg text-red-400 text-sm">
+          <div className="mx-6 mt-4 p-3 bg-red-100 border border-red-300 rounded-lg text-red-700 text-sm">
             {error}
             <button
               onClick={() => setError(null)}
-              className="ml-2 text-red-300 hover:text-red-200"
+              className="ml-2 text-red-600 hover:text-red-700"
             >
               ✕
             </button>
@@ -186,8 +186,8 @@ export default function AIPage() {
             <div key={i} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"} items-start gap-3`}>
               {/* Avatar for assistant messages */}
               {msg.role === "assistant" && (
-                <div className="w-8 h-8 bg-[#1877F2] rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                  <Bot className="w-4 h-4 text-white" />
+                <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                  <Bot className="w-4 h-4 text-primary-foreground" />
                 </div>
               )}
               
@@ -198,15 +198,15 @@ export default function AIPage() {
                 <div
                   className={`px-4 py-3 text-sm whitespace-pre-wrap leading-relaxed shadow-sm ${
                     msg.role === "user"
-                      ? "bg-blue-600 text-white rounded-2xl rounded-br-md"
-                      : "bg-gray-800/50 border border-gray-700/50 text-gray-100 rounded-2xl rounded-bl-md"
+                      ? "bg-primary text-primary-foreground rounded-2xl rounded-br-md"
+                      : "bg-card border border-border rounded-2xl rounded-bl-md"
                   }`}
                 >
                   {msg.content}
                 </div>
                 
                 {/* Timestamp */}
-                <div className={`text-xs text-gray-500 mt-1 ${
+                <div className={`text-xs text-muted-foreground mt-1 ${
                   msg.role === "user" ? "text-right" : "text-left"
                 }`}>
                   {msg.timestamp instanceof Date 
@@ -218,18 +218,18 @@ export default function AIPage() {
               
               {/* Avatar for user messages */}
               {msg.role === "user" && (
-                <div className="w-8 h-8 bg-[#1877F2] rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                  <User className="w-4 h-4 text-white" />
+                <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                  <User className="w-4 h-4 text-primary-foreground" />
                 </div>
               )}
             </div>
           ))}
           {isLoading && (
             <div className="flex justify-start items-start gap-3">
-              <div className="w-8 h-8 bg-[#1877F2] rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                <Bot className="w-4 h-4 text-white" />
+              <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                <Bot className="w-4 h-4 text-primary-foreground" />
               </div>
-              <div className="px-4 py-3 bg-gray-800/50 border border-gray-700/50 text-gray-400 flex items-center gap-2 text-sm rounded-2xl rounded-bl-md">
+              <div className="px-4 py-3 bg-card border border-border text-muted-foreground flex items-center gap-2 text-sm rounded-2xl rounded-bl-md">
                 <Loader2 className="w-4 h-4 animate-spin" /> Thinking...
               </div>
             </div>
@@ -238,9 +238,9 @@ export default function AIPage() {
         </div>
 
         {/* Input */}
-        <div className="p-6 border-t border-white/10 bg-white/5 backdrop-blur-sm">
+        <div className="p-6 border-t border-border bg-card">
           <div className="max-w-4xl mx-auto">
-            <div className="flex items-end gap-3 bg-gray-800/30 rounded-2xl px-4 py-3 border border-gray-700/50">
+            <div className="flex items-end gap-3 bg-input rounded-2xl px-4 py-3 border border-input">
               <div className="flex-1">
                 <textarea
                   ref={textareaRef}
@@ -253,7 +253,7 @@ export default function AIPage() {
                     }
                   }}
                   placeholder="Message Tomas, King of Analytics..."
-                  className="w-full bg-transparent text-sm text-white placeholder-gray-400 resize-none focus:outline-none"
+                  className="w-full bg-transparent text-sm text-foreground placeholder-muted-foreground resize-none focus:outline-none"
                   rows={1}
                   style={{ minHeight: '24px', maxHeight: '128px' }}
                 />
@@ -261,12 +261,12 @@ export default function AIPage() {
               <button
                 onClick={handleSend}
                 disabled={isLoading || !input.trim()}
-                className="rounded-full bg-[#1877F2] p-2 text-white hover:opacity-90 disabled:opacity-50 transition-all duration-200 flex-shrink-0"
+                className="rounded-full bg-primary p-2 text-primary-foreground hover:bg-primary/90 disabled:opacity-50 transition-all duration-200 flex-shrink-0"
               >
                 {isLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : <SendHorizonal className="w-5 h-5" />}
               </button>
             </div>
-            <div className="text-xs text-gray-500 mt-2 text-center">
+            <div className="text-xs text-muted-foreground mt-2 text-center">
               Press Enter to send 
             </div>
           </div>

@@ -5,7 +5,7 @@ import DatasetEditor from "../general/components/DatasetEditor";
 
 export default function DatasetEditorPage() {
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-background text-foreground">
       {/* NAVBAR */}
       <Navbar />
 

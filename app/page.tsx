@@ -12,7 +12,7 @@ import HeroBackground from "@/components/ui/HeroBackground";
 
 export default function Home() {
   return (
-    <main className="relative bg-black">
+    <main className="relative bg-background">
       {/* Particle background */}
       <HeroBackground position="fixed" backgroundColor="#000000" className="z-0" blendModeClassName="mix-blend-screen" />
       

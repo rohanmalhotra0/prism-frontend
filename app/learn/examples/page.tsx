@@ -500,7 +500,7 @@ function ExamplesPageContent() {
       description: 'Statistical simulation and risk analysis',
       image: '/Refrax Photos/monteCarlo.png',
       category: 'Simulation',
-      href: '/business'
+      href: '/financePage'
     },
     {
       id: 'customer-retention',
@@ -508,7 +508,7 @@ function ExamplesPageContent() {
       description: 'Customer lifecycle and retention analysis',
       image: '/Refrax Photos/CustomerRetention.png',
       category: 'Business',
-      href: '/business'
+      href: '/financePage'
     },
     {
       id: 'base-cases',
@@ -516,7 +516,7 @@ function ExamplesPageContent() {
       description: 'Financial modeling base case scenarios',
       image: '/Refrax Photos/Base Cases.png',
       category: 'Finance',
-      href: '/business'
+      href: '/financePage'
     },
     {
       id: 'scenario-analysis',
@@ -524,7 +524,7 @@ function ExamplesPageContent() {
       description: 'Multi-scenario financial modeling and analysis',
       image: '/Refrax Photos/ScenarioAnalysis.png',
       category: 'Finance',
-      href: '/business'
+      href: '/financePage'
     }
   ];
 
@@ -567,7 +567,7 @@ function ExamplesPageContent() {
 
   const ResearchCard = ({ paper }: { paper: ResearchPaper }) => (
     <article className="group relative">
-      <div className="relative bg-white/2 backdrop-blur-xl rounded-3xl border border-white/5 overflow-hidden transition-all duration-700 hover:scale-[1.02] hover:border-white/10 hover:shadow-2xl hover:shadow-purple-500/20">
+      <div className="relative bg-card rounded-3xl border border-border overflow-hidden transition-all duration-700 hover:scale-[1.02] hover:shadow-2xl hover:shadow-primary/20">
         {/* Top accent line */}
         <div className="absolute top-0 left-0 right-0 h-1 bg-[#1877F2]"></div>
         
@@ -577,7 +577,7 @@ function ExamplesPageContent() {
           <div className="lg:w-2/5 relative overflow-hidden">
             <div className="aspect-[4/3] relative group-hover:shadow-2xl transition-all duration-700">
               {/* PDF Preview */}
-              <div className="w-full h-full bg-white/2 flex items-center justify-center relative overflow-hidden">
+              <div className="w-full h-full bg-muted flex items-center justify-center relative overflow-hidden">
                 <iframe
                   src={`${paper.pdfUrl}#toolbar=0&navpanes=0&scrollbar=0&view=FitH`}
                   className="w-full h-full border-0"
@@ -593,29 +593,29 @@ function ExamplesPageContent() {
                 
                 {/* Fallback placeholder */}
                 <div 
-                  className="pdf-fallback absolute inset-0 bg-white/2 flex items-center justify-center hidden"
+                  className="pdf-fallback absolute inset-0 bg-muted flex items-center justify-center hidden"
                   data-paper-id={paper.id}
                 >
                   <div className="text-center">
                     <div className="mb-4 animate-pulse">
-                      <FileText className="w-16 h-16 text-gray-400 mx-auto" />
+                      <FileText className="w-16 h-16 text-muted-foreground mx-auto" />
                     </div>
-                    <div className="text-gray-400">PDF Preview</div>
-                    <div className="text-gray-500 text-sm mt-2">Click to view full paper</div>
+                    <div className="text-muted-foreground">PDF Preview</div>
+                    <div className="text-muted-foreground text-sm mt-2">Click to view full paper</div>
                   </div>
                 </div>
               </div>
               
               {/* Category badge */}
               <div className="absolute top-6 left-6">
-                <span className="inline-flex items-center gap-2 px-4 py-2 bg-black/80 backdrop-blur-md text-blue-300 text-sm font-semibold rounded-full border border-blue-500/40 shadow-lg">
-                  <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
+                <span className="inline-flex items-center gap-2 px-4 py-2 bg-card/90 backdrop-blur-md text-primary text-sm font-semibold rounded-full border border-primary/40 shadow-lg">
+                  <div className="w-2 h-2 bg-primary rounded-full"></div>
                   {paper.category}
                 </span>
               </div>
               
               {/* Gradient overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent"></div>
               
               {/* Corner accent */}
               <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-[#1877F2]/20 to-transparent rounded-bl-full"></div>
@@ -626,34 +626,34 @@ function ExamplesPageContent() {
           <div className="lg:w-3/5 p-8 lg:p-10 flex flex-col justify-between">
             <div>
               {/* Title */}
-              <h2 className="text-2xl lg:text-3xl font-bold mb-4 text-white group-hover:text-gray-100 transition-colors duration-300">
+              <h2 className="text-2xl lg:text-3xl font-bold mb-4 text-foreground transition-colors duration-300">
                 {paper.title}
               </h2>
               
               {/* Meta information */}
               <div className="flex items-center gap-4 mb-6">
                 <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
-                  <span className="text-gray-300 font-medium">{paper.authors}</span>
+                  <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
+                  <span className="text-muted-foreground font-medium">{paper.authors}</span>
                 </div>
-                <span className="text-gray-500">•</span>
-                <span className="text-gray-400 text-sm bg-gray-800/50 px-3 py-1 rounded-full border border-gray-700">
+                <span className="text-muted-foreground">•</span>
+                <span className="text-muted-foreground text-sm bg-muted px-3 py-1 rounded-full border border-border">
                   {paper.date}
                 </span>
               </div>
               
               {/* Abstract */}
-              <p className="text-gray-300 leading-relaxed mb-6 text-lg">
+              <p className="text-muted-foreground leading-relaxed mb-6 text-lg">
                 {paper.abstract}
               </p>
 
               {/* Related Datasets */}
               {paper.relatedDatasets && (
                 <div className="mb-4">
-                  <div className="text-sm text-gray-400 mb-2">Related Datasets:</div>
+                  <div className="text-sm text-muted-foreground mb-2">Related Datasets:</div>
                   <div className="flex flex-wrap gap-2">
                     {paper.relatedDatasets.map((dataset, index) => (
-                      <span key={index} className="px-3 py-1 bg-blue-600/20 text-blue-300 text-sm rounded-full border border-blue-500/30">
+                      <span key={index} className="px-3 py-1 bg-primary/15 text-primary text-sm rounded-full border border-primary/30">
                         {dataset}
                       </span>
                     ))}
@@ -664,10 +664,10 @@ function ExamplesPageContent() {
               {/* Techniques */}
               {paper.techniques && (
                 <div className="mb-4">
-                  <div className="text-sm text-gray-400 mb-2">ML Techniques:</div>
+                  <div className="text-sm text-muted-foreground mb-2">ML Techniques:</div>
                   <div className="flex flex-wrap gap-2">
                     {paper.techniques.map((technique, index) => (
-                      <span key={index} className="px-3 py-1 bg-purple-600/20 text-purple-300 text-sm rounded-full border border-purple-500/30">
+                      <span key={index} className="px-3 py-1 bg-purple-100 text-purple-700 text-sm rounded-full border border-purple-300">
                         {technique}
                       </span>
                     ))}
@@ -680,7 +680,7 @@ function ExamplesPageContent() {
                 {paper.tags.map((tag, tagIndex) => (
                   <span
                     key={tagIndex}
-                    className="px-3 py-1 bg-gray-800/50 text-gray-300 text-sm rounded-full border border-gray-700 hover:bg-gray-700/50 transition-colors duration-200"
+                    className="px-3 py-1 bg-muted text-muted-foreground text-sm rounded-full border border-border"
                   >
                     #{tag}
                   </span>
@@ -692,7 +692,7 @@ function ExamplesPageContent() {
             <div className="flex flex-col sm:flex-row gap-4">
               <Button
                 asChild
-                className="group/btn relative overflow-hidden rounded-full bg-[#1877F2] px-8 py-4 text-white font-semibold shadow-lg transition-all duration-300 hover:bg-[#1877F2] hover:shadow-xl hover:shadow-[#1877F2]/25 hover:scale-105 focus:ring-4 focus:ring-[#1877F2]/30 focus:outline-none active:scale-95"
+                className="group/btn relative overflow-hidden rounded-full bg-primary px-8 py-4 text-primary-foreground font-semibold shadow-lg transition-all duration-300 hover:bg-primary/90 hover:shadow-xl hover:shadow-primary/25 hover:scale-105 focus:ring-4 focus:ring-ring/30 focus:outline-none active:scale-95"
               >
                 <a href={paper.pdfUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
                   <FileText className="w-5 h-5" />
@@ -702,7 +702,7 @@ function ExamplesPageContent() {
 
               <Button
                 asChild
-                className="group/btn relative overflow-hidden rounded-full bg-gradient-to-r from-gray-600 to-gray-700 px-8 py-4 text-white font-semibold shadow-lg transition-all duration-300 hover:from-gray-500 hover:to-gray-600 hover:shadow-xl hover:shadow-gray-500/25 hover:scale-105 focus:ring-4 focus:ring-gray-400/30 focus:outline-none active:scale-95"
+                className="group/btn relative overflow-hidden rounded-full bg-muted px-8 py-4 text-foreground font-semibold shadow-lg transition-all duration-300 hover:bg-muted focus:ring-4 focus:ring-ring/20 focus:outline-none active:scale-95"
               >
                 <a href={paper.pdfUrl} download className="flex items-center gap-2">
                   <span className="text-lg">↓</span>
@@ -719,41 +719,41 @@ function ExamplesPageContent() {
   const DatasetCard = ({ dataset }: { dataset: Dataset }) => {
     const Icon = dataset.icon;
     return (
-      <div className="bg-gray-800/50 rounded-xl p-6 border border-white/10 hover:border-white/20 transition-all duration-300 group">
+      <div className="bg-card rounded-xl p-6 border border-border hover:bg-muted transition-all duration-300 group">
         <div className="flex items-start justify-between mb-4">
-          <div className={`w-12 h-12 bg-gradient-to-r ${dataset.color} rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform`}>
-            <Icon className="w-6 h-6 text-white" />
+          <div className={`w-12 h-12 bg-primary rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform`}>
+            <Icon className="w-6 h-6 text-primary-foreground" />
           </div>
           <div className="flex gap-2">
-            <span className="px-3 py-1 bg-gray-700 text-xs font-semibold text-gray-300 rounded-full">
+            <span className="px-3 py-1 bg-muted text-xs font-semibold text-foreground rounded-full">
               {dataset.type.toUpperCase()}
             </span>
             <span className={`px-3 py-1 text-xs font-semibold rounded-full ${
-              dataset.difficulty === 'Beginner' ? 'bg-green-600 text-green-100' :
-              dataset.difficulty === 'Intermediate' ? 'bg-yellow-600 text-yellow-100' :
-              'bg-red-600 text-red-100'
+              dataset.difficulty === 'Beginner' ? 'bg-green-100 text-green-700' :
+              dataset.difficulty === 'Intermediate' ? 'bg-yellow-100 text-yellow-700' :
+              'bg-red-100 text-red-700'
             }`}>
               {dataset.difficulty}
             </span>
           </div>
         </div>
         
-        <h3 className="text-xl font-semibold text-white mb-2 group-hover:text-blue-200 transition-colors">
+        <h3 className="text-xl font-semibold text-foreground mb-2">
           {dataset.name}
         </h3>
         
-        <p className="text-gray-400 text-sm mb-4 leading-relaxed">
+        <p className="text-muted-foreground text-sm mb-4 leading-relaxed">
           {dataset.description}
         </p>
 
         {/* Research Paper Reference */}
         {dataset.researchPaper && (
-          <div className="mb-4 p-3 bg-gray-700/30 rounded-lg border border-gray-600/30">
+          <div className="mb-4 p-3 bg-muted rounded-lg border border-border">
             <div className="flex items-start gap-2">
-              <BookOpen className="w-4 h-4 text-blue-400 mt-0.5 flex-shrink-0" />
+              <BookOpen className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
               <div>
-                <div className="text-xs text-blue-300 font-medium mb-1">Research Reference</div>
-                <div className="text-xs text-gray-300 leading-relaxed">{dataset.researchPaper}</div>
+                <div className="text-xs text-primary font-medium mb-1">Research Reference</div>
+                <div className="text-xs text-muted-foreground leading-relaxed">{dataset.researchPaper}</div>
               </div>
             </div>
           </div>
@@ -761,10 +761,10 @@ function ExamplesPageContent() {
 
         {/* Use Cases */}
         <div className="mb-4">
-          <div className="text-xs text-gray-500 mb-2">Use Cases:</div>
+          <div className="text-xs text-muted-foreground mb-2">Use Cases:</div>
           <div className="flex flex-wrap gap-1">
             {dataset.useCases.map((useCase, index) => (
-              <span key={index} className="px-2 py-1 bg-gray-700/50 text-xs text-gray-300 rounded">
+              <span key={index} className="px-2 py-1 bg-muted text-xs text-foreground rounded">
                 {useCase}
               </span>
             ))}
@@ -773,16 +773,16 @@ function ExamplesPageContent() {
         
         <div className="space-y-2 mb-6">
           <div className="flex justify-between text-sm">
-            <span className="text-gray-500">Samples:</span>
-            <span className="text-white font-medium">{dataset.samples.toLocaleString()}</span>
+            <span className="text-muted-foreground">Samples:</span>
+            <span className="text-foreground font-medium">{dataset.samples.toLocaleString()}</span>
           </div>
           <div className="flex justify-between text-sm">
-            <span className="text-gray-500">Features:</span>
-            <span className="text-white font-medium">{dataset.features.length}</span>
+            <span className="text-muted-foreground">Features:</span>
+            <span className="text-foreground font-medium">{dataset.features.length}</span>
           </div>
           <div className="flex justify-between text-sm">
-            <span className="text-gray-500">Clusters:</span>
-            <span className="text-white font-medium">{dataset.clusters}</span>
+            <span className="text-muted-foreground">Clusters:</span>
+            <span className="text-foreground font-medium">{dataset.clusters}</span>
           </div>
         </div>
         
@@ -792,8 +792,8 @@ function ExamplesPageContent() {
             disabled={isGenerating}
             className={`w-full py-3 px-4 rounded-lg font-semibold transition-all duration-200 ${
               isGenerating
-                ? 'bg-gray-600 text-gray-400 cursor-not-allowed'
-                : 'bg-[#1877F2] text-white hover:bg-[#1877F2] hover:scale-105'
+                ? 'bg-muted text-muted-foreground cursor-not-allowed'
+                : 'bg-primary text-primary-foreground hover:bg-primary/90 hover:scale-105'
             }`}
           >
             <div className="flex items-center justify-center gap-2">
@@ -802,7 +802,7 @@ function ExamplesPageContent() {
             </div>
           </button>
           
-          <div className="text-xs text-gray-500 text-center">
+          <div className="text-xs text-muted-foreground text-center">
             Features: {dataset.features.join(', ')}
           </div>
         </div>
@@ -811,14 +811,12 @@ function ExamplesPageContent() {
   };
 
   return (
-    <div className="relative min-h-screen bg-black overflow-hidden">
+    <div className="relative min-h-screen bg-background overflow-hidden text-foreground">
       {/* Particle background */}
       <HeroBackground position="fixed" backgroundColor="transparent" className="z-0" blendModeClassName="mix-blend-screen" />
       
       {/* Background gradient */}
-      <div className="fixed inset-0 z-5">
-        <div className="absolute inset-0 bg-gradient-to-br from-slate-900/30 via-black/20 to-slate-900/30"></div>
-      </div>
+      <div className="fixed inset-0 z-5" />
 
       {/* Main content */}
       <div className="relative z-10 min-h-screen">
@@ -828,10 +826,10 @@ function ExamplesPageContent() {
         {/* Hero section */}
         <div className="pt-32 pb-16 px-6 lg:px-8">
           <div className="max-w-7xl mx-auto text-center">
-            <h1 className="text-6xl lg:text-7xl font-black mb-8 bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text text-transparent">
+            <h1 className="text-6xl lg:text-7xl font-black mb-8 text-foreground">
               Examples
             </h1>
-            <p className="text-xl lg:text-2xl text-gray-400 max-w-4xl mx-auto leading-relaxed mb-12">
+            <p className="text-xl lg:text-2xl text-muted-foreground max-w-4xl mx-auto leading-relaxed mb-12">
               Explore cutting-edge research papers and experiment with curated datasets designed for machine learning
             </p>
           </div>
@@ -841,13 +839,13 @@ function ExamplesPageContent() {
         <div className="px-6 lg:px-8 pb-8">
           <div className="max-w-7xl mx-auto">
             <div className="flex justify-center">
-              <div className="bg-gray-800/50 rounded-2xl p-2 border border-white/10">
+              <div className="bg-card rounded-2xl p-2 border border-border">
                 <button
                   onClick={() => setActiveTab('datasets')}
                   className={`px-8 py-4 rounded-xl font-semibold transition-all duration-300 ${
                     activeTab === 'datasets'
-                      ? 'bg-[#1877F2] text-white shadow-lg'
-                      : 'text-gray-400 hover:text-white'
+                      ? 'bg-primary text-primary-foreground shadow-lg'
+                      : 'text-foreground hover:bg-muted'
                   }`}
                 >
                   <div className="flex items-center gap-2">
@@ -859,8 +857,8 @@ function ExamplesPageContent() {
                   onClick={() => setActiveTab('research')}
                   className={`px-8 py-4 rounded-xl font-semibold transition-all duration-300 ${
                     activeTab === 'research'
-                      ? 'bg-[#1877F2] text-white shadow-lg'
-                      : 'text-gray-400 hover:text-white'
+                      ? 'bg-primary text-primary-foreground shadow-lg'
+                      : 'text-foreground hover:bg-muted'
                   }`}
                 >
                   <div className="flex items-center gap-2">
@@ -872,8 +870,8 @@ function ExamplesPageContent() {
                   onClick={() => setActiveTab('demo')}
                   className={`px-8 py-4 rounded-xl font-semibold transition-all duration-300 ${
                     activeTab === 'demo'
-                      ? 'bg-[#1877F2] text-white shadow-lg'
-                      : 'text-gray-400 hover:text-white'
+                      ? 'bg-primary text-primary-foreground shadow-lg'
+                      : 'text-foreground hover:bg-muted'
                   }`}
                 >
                   <div className="flex items-center gap-2">
@@ -892,11 +890,11 @@ function ExamplesPageContent() {
             <div className="max-w-7xl mx-auto">
               {/* Filters and Controls */}
               <div className="flex flex-col lg:flex-row justify-between items-center mb-8 gap-4">
-                <div className="flex flex-wrap gap-4">
+              <div className="flex flex-wrap gap-4">
                   <select
                     value={selectedCategory}
                     onChange={(e) => setSelectedCategory(e.target.value)}
-                    className="px-4 py-2 bg-gray-800 text-white rounded-lg border border-gray-600 focus:border-blue-500 focus:outline-none"
+                  className="px-4 py-2 bg-input text-foreground rounded-lg border border-input focus:outline-none focus:ring-2 focus:ring-ring"
                   >
                     <option value="all">All Categories</option>
                     <option value="Classification">Classification</option>
@@ -910,7 +908,7 @@ function ExamplesPageContent() {
                   <select
                     value={selectedDifficulty}
                     onChange={(e) => setSelectedDifficulty(e.target.value)}
-                    className="px-4 py-2 bg-gray-800 text-white rounded-lg border border-gray-600 focus:border-blue-500 focus:outline-none"
+                  className="px-4 py-2 bg-input text-foreground rounded-lg border border-input focus:outline-none focus:ring-2 focus:ring-ring"
                   >
                     <option value="all">All Levels</option>
                     <option value="Beginner">Beginner</option>
@@ -923,7 +921,7 @@ function ExamplesPageContent() {
                   <button
                     onClick={() => setViewMode('grid')}
                     className={`p-2 rounded-lg transition-colors ${
-                      viewMode === 'grid' ? 'bg-blue-600 text-white' : 'bg-gray-700 text-gray-400 hover:text-white'
+                      viewMode === 'grid' ? 'bg-primary text-primary-foreground' : 'bg-muted text-foreground'
                     }`}
                   >
                     <Grid className="w-5 h-5" />
@@ -931,7 +929,7 @@ function ExamplesPageContent() {
                   <button
                     onClick={() => setViewMode('list')}
                     className={`p-2 rounded-lg transition-colors ${
-                      viewMode === 'list' ? 'bg-blue-600 text-white' : 'bg-gray-700 text-gray-400 hover:text-white'
+                      viewMode === 'list' ? 'bg-primary text-primary-foreground' : 'bg-muted text-foreground'
                     }`}
                   >
                     <List className="w-5 h-5" />
@@ -973,15 +971,15 @@ function ExamplesPageContent() {
               {/* Refrax Photos Gallery */}
               <div className="mb-16">
                 <div className="text-center mb-12">
-                  <h2 className="text-3xl font-bold text-white mb-4">Examples</h2>
-                  <p className="text-gray-400 text-lg">Explore the different features and capabilities of Refrax</p>
+                  <h2 className="text-3xl font-bold text-foreground mb-4">Examples</h2>
+                  <p className="text-muted-foreground text-lg">Explore the different features and capabilities of Refrax</p>
                 </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                   {refraxPhotos.map((photo) => (
                     <div
                       key={photo.id}
-                      className="group relative bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 overflow-hidden hover:border-white/20 transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-[#1877F2]/20"
+                      className="group relative bg-card rounded-2xl border border-border overflow-hidden hover:bg-muted transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-primary/20"
                     >
                       {/* Image */}
                       <div className="aspect-video relative overflow-hidden">
@@ -992,15 +990,15 @@ function ExamplesPageContent() {
                         />
                         
                         {/* Overlay */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                           <div className="absolute bottom-4 left-4 right-4">
                             <div className="flex items-center gap-2 mb-2">
-                              <span className="px-2 py-1 bg-[#1877F2]/80 text-white text-xs font-semibold rounded">
+                              <span className="px-2 py-1 bg-primary/80 text-primary-foreground text-xs font-semibold rounded">
                                 {photo.category}
                               </span>
                             </div>
-                            <h3 className="text-white font-semibold text-sm mb-1">{photo.title}</h3>
-                            <p className="text-gray-300 text-xs leading-relaxed">{photo.description}</p>
+                            <h3 className="text-foreground font-semibold text-sm mb-1">{photo.title}</h3>
+                            <p className="text-muted-foreground text-xs leading-relaxed">{photo.description}</p>
                           </div>
                         </div>
                         
@@ -1008,7 +1006,7 @@ function ExamplesPageContent() {
                         <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                           <a
                             href={photo.href}
-                            className="flex items-center justify-center w-10 h-10 bg-[#1877F2] text-white rounded-full hover:bg-[#1877F2] transition-colors"
+                            className="flex items-center justify-center w-10 h-10 bg-primary text-primary-foreground rounded-full hover:bg-primary/90 transition-colors"
                             title="View Feature"
                           >
                             <Eye className="w-4 h-4" />
@@ -1019,14 +1017,14 @@ function ExamplesPageContent() {
                       {/* Content */}
                       <div className="p-4">
                         <div className="flex items-center justify-between mb-2">
-                          <h3 className="text-white font-semibold text-sm group-hover:text-blue-200 transition-colors">
+                          <h3 className="text-foreground font-semibold text-sm">
                             {photo.title}
                           </h3>
-                          <span className="px-2 py-1 bg-gray-700/50 text-gray-300 text-xs rounded">
+                          <span className="px-2 py-1 bg-muted text-foreground text-xs rounded">
                             {photo.category}
                           </span>
                         </div>
-                        <p className="text-gray-400 text-xs leading-relaxed line-clamp-2">
+                        <p className="text-muted-foreground text-xs leading-relaxed line-clamp-2">
                           {photo.description}
                         </p>
                       </div>

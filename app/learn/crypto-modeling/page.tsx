@@ -555,12 +555,9 @@ def volatility_modeling(price_data):
   ];
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-background">
       {/* Particle background */}
-      <HeroBackground position="fixed" backgroundColor="transparent" className="z-0" blendModeClassName="mix-blend-screen" />
-      
-      {/* Background gradient */}
-      <div className="fixed inset-0 bg-gradient-to-br from-purple-900/10 via-blue-900/10 to-indigo-900/10 pointer-events-none z-5"></div>
+      <HeroBackground position="fixed" backgroundColor="transparent" className="z-0" />
       
       {/* Main content */}
       <div className="relative z-10 min-h-screen">
@@ -570,10 +567,10 @@ def volatility_modeling(price_data):
         {/* Hero section */}
         <div className="pt-32 pb-16 px-6 lg:px-8">
           <div className="max-w-7xl mx-auto text-center">
-            <h1 className="text-6xl lg:text-7xl font-black mb-8 bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text text-transparent">
+            <h1 className="text-6xl lg:text-7xl font-black mb-8 text-foreground">
               Crypto Modeling
             </h1>
-            <p className="text-xl lg:text-2xl text-gray-200 max-w-4xl mx-auto leading-relaxed mb-12">
+            <p className="text-xl lg:text-2xl text-muted-foreground max-w-4xl mx-auto leading-relaxed mb-12">
               Master advanced modeling techniques for cryptocurrency markets, DeFi protocols, and blockchain analysis
             </p>
           </div>
@@ -584,20 +581,20 @@ def volatility_modeling(price_data):
 
           <div className="space-y-8">
             {cryptoTopics.map((topic, index) => (
-              <div key={index} className="bg-white/2 backdrop-blur-sm rounded-2xl p-8 border border-white/5 hover:bg-white/10 transition-colors">
+              <div key={index} className="bg-card rounded-2xl p-8 border border-border hover:bg-muted transition-colors">
                 <div className="flex items-start gap-6">
                   <div className="text-4xl">{topic.icon}</div>
                   <div className="flex-1">
-                    <h3 className="text-2xl font-bold text-white mb-3">{topic.title}</h3>
-                    <p className="text-gray-200 mb-6 text-lg">{topic.description}</p>
+                    <h3 className="text-2xl font-bold text-foreground mb-3">{topic.title}</h3>
+                    <p className="text-muted-foreground mb-6 text-lg">{topic.description}</p>
                     
                     <div className="grid md:grid-cols-2 gap-6">
                       <div>
-                        <h4 className="text-lg font-semibold text-blue-400 mb-3">How It Works</h4>
-                        <p className="text-gray-200 text-sm mb-4">{topic.details.howItWorks}</p>
+                        <h4 className="text-lg font-semibold text-primary mb-3">How It Works</h4>
+                        <p className="text-muted-foreground text-sm mb-4">{topic.details.howItWorks}</p>
                         
-                        <h4 className="text-lg font-semibold text-green-400 mb-3">Key Components</h4>
-                        <ul className="text-gray-200 text-sm space-y-1">
+                        <h4 className="text-lg font-semibold text-primary mb-3">Key Components</h4>
+                        <ul className="text-muted-foreground text-sm space-y-1">
                           {topic.details.keyComponents.map((component, idx) => (
                             <li key={idx}>• {component}</li>
                           ))}
@@ -605,16 +602,16 @@ def volatility_modeling(price_data):
                       </div>
                       
                       <div>
-                        <h4 className="text-lg font-semibold text-purple-400 mb-3">Crypto Use Cases</h4>
-                        <ul className="text-gray-200 text-sm space-y-1 mb-4">
+                        <h4 className="text-lg font-semibold text-primary mb-3">Crypto Use Cases</h4>
+                        <ul className="text-muted-foreground text-sm space-y-1 mb-4">
                           {topic.details.useCases.map((useCase, idx) => (
                             <li key={idx}>• {useCase}</li>
                           ))}
                         </ul>
                         
-                        <h4 className="text-lg font-semibold text-yellow-400 mb-3">Code Example</h4>
-                        <div className="bg-gray-900/50 rounded-lg p-4 border border-gray-700">
-                          <pre className="text-green-400 text-xs overflow-x-auto">
+                        <h4 className="text-lg font-semibold text-primary mb-3">Code Example</h4>
+                        <div className="bg-input rounded-lg p-4 border border-border">
+                          <pre className="text-muted-foreground text-xs overflow-x-auto">
                             <code>{topic.details.codeExample}</code>
                           </pre>
                         </div>
@@ -630,32 +627,32 @@ def volatility_modeling(price_data):
         {/* Applications Section */}
         <div id="applications" className="max-w-7xl mx-auto px-6 lg:px-8 pb-20">
           <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-white mb-4">💼 Professional Applications</h2>
-            <p className="text-gray-200 text-lg max-w-3xl mx-auto">
+            <h2 className="text-4xl font-bold text-foreground mb-4">💼 Professional Applications</h2>
+            <p className="text-muted-foreground text-lg max-w-3xl mx-auto">
               Discover how crypto modeling techniques are applied across different areas of cryptocurrency and DeFi.
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 gap-8">
             {applications.map((app, index) => (
-              <div key={index} className="bg-white/2 backdrop-blur-sm rounded-2xl p-6 border border-white/5 hover:bg-white/10 transition-colors">
-                <h3 className="text-xl font-bold text-white mb-3">{app.title}</h3>
-                <p className="text-gray-200 mb-4">{app.description}</p>
+              <div key={index} className="bg-card rounded-2xl p-6 border border-border hover:bg-muted transition-colors">
+                <h3 className="text-xl font-bold text-foreground mb-3">{app.title}</h3>
+                <p className="text-muted-foreground mb-4">{app.description}</p>
                 
                 <div className="mb-4">
-                  <h4 className="text-sm font-semibold text-blue-400 mb-2">Common Tools</h4>
+                  <h4 className="text-sm font-semibold text-primary mb-2">Common Tools</h4>
                   <div className="flex flex-wrap gap-2">
                     {app.tools.map((tool, idx) => (
-                      <span key={idx} className="px-3 py-1 bg-blue-500/20 text-blue-300 text-xs rounded-full">
+                      <span key={idx} className="px-3 py-1 bg-primary/15 text-primary text-xs rounded-full">
                         {tool}
                       </span>
                     ))}
                   </div>
                 </div>
                 
-                <div className="bg-gray-900/30 rounded-lg p-3 border border-gray-700">
-                  <h4 className="text-sm font-semibold text-green-400 mb-1">Example</h4>
-                  <p className="text-gray-200 text-sm">{app.example}</p>
+                <div className="bg-input rounded-lg p-3 border border-border">
+                  <h4 className="text-sm font-semibold text-primary mb-1">Example</h4>
+                  <p className="text-muted-foreground text-sm">{app.example}</p>
                 </div>
               </div>
             ))}
@@ -664,28 +661,28 @@ def volatility_modeling(price_data):
 
         {/* Learning Path Section */}
         <div className="max-w-7xl mx-auto px-6 lg:px-8 pb-20">
-          <div className="bg-gradient-to-r from-purple-600/20 to-blue-600/20 rounded-2xl p-8 border border-purple-500/30">
-            <h3 className="text-2xl font-bold text-white mb-6 text-center">Learning Path</h3>
+          <div className="bg-card rounded-2xl p-8 border border-border">
+            <h3 className="text-2xl font-bold text-foreground mb-6 text-center">Learning Path</h3>
             <div className="grid md:grid-cols-4 gap-6">
-              <div className="bg-white/2 rounded-xl p-4 border border-white/5 text-center">
+              <div className="bg-muted rounded-xl p-4 border border-border text-center">
                 <div className="text-2xl mb-2">1</div>
-                <h4 className="text-white font-semibold mb-2">Blockchain Basics</h4>
-                <p className="text-gray-200 text-sm">Understanding blockchain technology</p>
+                <h4 className="text-foreground font-semibold mb-2">Blockchain Basics</h4>
+                <p className="text-muted-foreground text-sm">Understanding blockchain technology</p>
               </div>
-              <div className="bg-white/2 rounded-xl p-4 border border-white/5 text-center">
+              <div className="bg-muted rounded-xl p-4 border border-border text-center">
                 <div className="text-2xl mb-2">2</div>
-                <h4 className="text-white font-semibold mb-2">Market Analysis</h4>
-                <p className="text-gray-200 text-sm">Price analysis, volatility modeling</p>
+                <h4 className="text-foreground font-semibold mb-2">Market Analysis</h4>
+                <p className="text-muted-foreground text-sm">Price analysis, volatility modeling</p>
               </div>
-              <div className="bg-white/2 rounded-xl p-4 border border-white/5 text-center">
+              <div className="bg-muted rounded-xl p-4 border border-border text-center">
                 <div className="text-2xl mb-2">3</div>
-                <h4 className="text-white font-semibold mb-2">DeFi Protocols</h4>
-                <p className="text-gray-200 text-sm">Protocol analysis, tokenomics</p>
+                <h4 className="text-foreground font-semibold mb-2">DeFi Protocols</h4>
+                <p className="text-muted-foreground text-sm">Protocol analysis, tokenomics</p>
               </div>
-              <div className="bg-white/2 rounded-xl p-4 border border-white/5 text-center">
+              <div className="bg-muted rounded-xl p-4 border border-border text-center">
                 <div className="text-2xl mb-2">4</div>
-                <h4 className="text-white font-semibold mb-2">Advanced Topics</h4>
-                <p className="text-gray-200 text-sm">Sentiment analysis, trading strategies</p>
+                <h4 className="text-foreground font-semibold mb-2">Advanced Topics</h4>
+                <p className="text-muted-foreground text-sm">Sentiment analysis, trading strategies</p>
               </div>
             </div>
           </div>
@@ -693,48 +690,48 @@ def volatility_modeling(price_data):
 
         {/* Tools & Software Section */}
         <div className="max-w-7xl mx-auto px-6 lg:px-8 pb-20">
-          <div className="bg-white/2 backdrop-blur-sm rounded-2xl p-8 border border-white/5">
-            <h3 className="text-2xl font-bold text-white mb-6 text-center">Essential Tools & Software</h3>
+          <div className="bg-card rounded-2xl p-8 border border-border">
+            <h3 className="text-2xl font-bold text-foreground mb-6 text-center">Essential Tools & Software</h3>
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-              <div className="bg-white/2 rounded-xl p-4 border border-white/5 text-center">
+              <div className="bg-muted rounded-xl p-4 border border-border text-center">
                 <div className="text-2xl mb-2">🐍</div>
-                <h4 className="text-white font-semibold mb-1">Python</h4>
-                <p className="text-gray-200 text-xs">Primary language</p>
+                <h4 className="text-foreground font-semibold mb-1">Python</h4>
+                <p className="text-muted-foreground text-xs">Primary language</p>
               </div>
-              <div className="bg-white/2 rounded-xl p-4 border border-white/5 text-center">
+              <div className="bg-muted rounded-xl p-4 border border-border text-center">
                 <div className="text-2xl mb-2">•</div>
-                <h4 className="text-white font-semibold mb-1">Web3.py</h4>
-                <p className="text-gray-200 text-xs">Blockchain interaction</p>
+                <h4 className="text-foreground font-semibold mb-1">Web3.py</h4>
+                <p className="text-muted-foreground text-xs">Blockchain interaction</p>
               </div>
-              <div className="bg-white/2 rounded-xl p-4 border border-white/5 text-center">
+              <div className="bg-muted rounded-xl p-4 border border-border text-center">
                 <div className="text-2xl mb-2">•</div>
-                <h4 className="text-white font-semibold mb-1">Pandas</h4>
-                <p className="text-gray-200 text-xs">Data manipulation</p>
+                <h4 className="text-foreground font-semibold mb-1">Pandas</h4>
+                <p className="text-muted-foreground text-xs">Data manipulation</p>
               </div>
-              <div className="bg-white/2 rounded-xl p-4 border border-white/5 text-center">
+              <div className="bg-muted rounded-xl p-4 border border-border text-center">
                 <div className="text-2xl mb-2">•</div>
-                <h4 className="text-white font-semibold mb-1">NetworkX</h4>
-                <p className="text-gray-200 text-xs">Graph analysis</p>
+                <h4 className="text-foreground font-semibold mb-1">NetworkX</h4>
+                <p className="text-muted-foreground text-xs">Graph analysis</p>
               </div>
-              <div className="bg-white/2 rounded-xl p-4 border border-white/5 text-center">
+              <div className="bg-muted rounded-xl p-4 border border-border text-center">
                 <div className="text-2xl mb-2">•</div>
-                <h4 className="text-white font-semibold mb-1">CCXT</h4>
-                <p className="text-gray-200 text-xs">Exchange APIs</p>
+                <h4 className="text-foreground font-semibold mb-1">CCXT</h4>
+                <p className="text-muted-foreground text-xs">Exchange APIs</p>
               </div>
-              <div className="bg-white/2 rounded-xl p-4 border border-white/5 text-center">
+              <div className="bg-muted rounded-xl p-4 border border-border text-center">
                 <div className="text-2xl mb-2">•</div>
-                <h4 className="text-white font-semibold mb-1">TextBlob</h4>
-                <p className="text-gray-200 text-xs">Sentiment analysis</p>
+                <h4 className="text-foreground font-semibold mb-1">TextBlob</h4>
+                <p className="text-muted-foreground text-xs">Sentiment analysis</p>
               </div>
-              <div className="bg-white/2 rounded-xl p-4 border border-white/5 text-center">
+              <div className="bg-muted rounded-xl p-4 border border-border text-center">
                 <div className="text-2xl mb-2">•</div>
-                <h4 className="text-white font-semibold mb-1">ARCH</h4>
-                <p className="text-gray-200 text-xs">Volatility modeling</p>
+                <h4 className="text-foreground font-semibold mb-1">ARCH</h4>
+                <p className="text-muted-foreground text-xs">Volatility modeling</p>
               </div>
-              <div className="bg-white/2 rounded-xl p-4 border border-white/5 text-center">
+              <div className="bg-muted rounded-xl p-4 border border-border text-center">
                 <div className="text-2xl mb-2">⚡</div>
-                <h4 className="text-white font-semibold mb-1">FastAPI</h4>
-                <p className="text-gray-200 text-xs">API development</p>
+                <h4 className="text-foreground font-semibold mb-1">FastAPI</h4>
+                <p className="text-muted-foreground text-xs">API development</p>
               </div>
             </div>
           </div>
@@ -742,14 +739,14 @@ def volatility_modeling(price_data):
 
         {/* Call to Action */}
         <div className="max-w-7xl mx-auto px-6 lg:px-8 pb-20 text-center">
-          <h3 className="text-2xl font-bold text-white mb-4">Ready to Master Crypto Modeling?</h3>
-          <p className="text-gray-200 mb-6 max-w-2xl mx-auto">
+          <h3 className="text-2xl font-bold text-foreground mb-4">Ready to Master Crypto Modeling?</h3>
+          <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
             Build expertise in advanced modeling techniques for cryptocurrency markets, DeFi protocols, and blockchain analysis.
           </p>
           <div className="flex justify-center gap-4">
             <Button
               asChild
-              className="rounded-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500"
+              className="rounded-full bg-primary hover:bg-primary/90 text-primary-foreground"
             >
               <Link href="/learn/statistics-probability">
                 Start with Statistics
@@ -757,7 +754,7 @@ def volatility_modeling(price_data):
             </Button>
             <Button
               asChild
-              className="rounded-full bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-500 hover:to-gray-600"
+              className="rounded-full bg-muted hover:bg-muted/80"
             >
               <Link href="/learn">
                 Back to Learn

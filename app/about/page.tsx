@@ -44,7 +44,7 @@ export default function AboutPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-background text-foreground">
       {/* Particle background */}
       <HeroBackground position="fixed" backgroundColor="rgba(0,0,0,1)" className="z-0" blendModeClassName="mix-blend-screen" />
       
@@ -65,11 +65,11 @@ export default function AboutPage() {
                   className="relative w-40 h-40 rounded-full object-cover border-4 border-white/50 shadow-2xl"
                 />
               </div>
-              <h1 className="text-5xl md:text-7xl font-black mb-4 text-white">
+              <h1 className="text-5xl md:text-7xl font-black mb-4">
                 Rohan Malhotra
               </h1>
-              <p className="text-2xl md:text-3xl text-white font-semibold mb-6">Founder & Developer</p>
-              <p className="text-lg text-gray-300 max-w-4xl mx-auto leading-relaxed">
+              <p className="text-2xl md:text-3xl font-semibold mb-6">Founder & Developer</p>
+              <p className="text-lg text-muted-foreground max-w-4xl mx-auto leading-relaxed">
                 Computer Science & Economics student at NYU with a passion for building data-driven solutions. 
                 Creating Refrax to democratize access to advanced analytics and financial modeling tools.
               </p>
@@ -80,7 +80,7 @@ export default function AboutPage() {
             <div className="flex flex-wrap justify-center gap-4 mb-16">
               <Button
                 asChild
-                className="rounded-full bg-[#1877F2] hover:bg-[#1877F2] px-6 py-3"
+                className="rounded-full bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-3"
               >
                 <a href="/rohanmalhotra_.pdf" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
                   <Download className="w-5 h-5" />
@@ -89,7 +89,7 @@ export default function AboutPage() {
               </Button>
               <Button
                 asChild
-                className="rounded-full bg-[#0077B5] hover:bg-[#005885] px-6 py-3"
+                className="rounded-full bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-3"
               >
                 <a href="https://www.linkedin.com/in/rohanamal/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
                   <Linkedin className="w-5 h-5" />
@@ -98,7 +98,7 @@ export default function AboutPage() {
               </Button>
               <Button
                 asChild
-                className="rounded-full bg-[#333333] hover:bg-[#24292e] px-6 py-3"
+                className="rounded-full bg-muted hover:bg-muted px-6 py-3"
               >
                 <a href="https://github.com/rohanmalhotra0" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
                   <Github className="w-5 h-5" />
@@ -107,7 +107,7 @@ export default function AboutPage() {
               </Button>
               <Button
                 asChild
-                className="rounded-full bg-[#6B7280] hover:bg-[#4B5563] px-6 py-3"
+                className="rounded-full bg-muted hover:bg-muted px-6 py-3"
               >
                 <a href="https://rohanm.org/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
                   <Globe className="w-5 h-5" />
@@ -124,8 +124,8 @@ export default function AboutPage() {
             {/* Sidebar Navigation */}
             <div className="lg:col-span-1">
               <div className="sticky top-32">
-                <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
-                  <h3 className="text-xl font-bold text-white mb-6">Navigation</h3>
+                <div className="bg-card rounded-2xl p-6 border border-border">
+                  <h3 className="text-xl font-bold mb-6">Navigation</h3>
                   <nav className="space-y-2">
                     {sections.map((section) => {
                       const Icon = section.icon;
@@ -135,8 +135,8 @@ export default function AboutPage() {
                           onClick={() => setActiveSection(section.id)}
                           className={`w-full text-left px-4 py-3 rounded-xl transition-all duration-300 group ${
                             activeSection === section.id
-                              ? "bg-[#1877F2] text-white shadow-lg"
-                              : "text-gray-400 hover:text-white hover:bg-white/10"
+                              ? "bg-primary text-primary-foreground shadow-lg"
+                              : "text-foreground hover:bg-muted"
                           }`}
                         >
                           <div className="flex items-center gap-3">
@@ -153,25 +153,25 @@ export default function AboutPage() {
 
             {/* Main Content */}
             <div className="lg:col-span-3">
-              <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10">
+              <div className="bg-card rounded-2xl p-8 border border-border">
                 
                 {/* Overview Section */}
                 {activeSection === 'overview' && (
                   <div className="space-y-8">
                     <div className="text-center mb-8">
-                      <h2 className="text-3xl font-bold text-white mb-4">About Me</h2>
-                      <div className="w-24 h-1 bg-[#1877F2] mx-auto rounded-full"></div>
+                      <h2 className="text-3xl font-bold mb-4">About Me</h2>
+                      <div className="w-24 h-1 bg-primary mx-auto rounded-full"></div>
                     </div>
                     
                     <div className="prose prose-invert max-w-none">
-                      <p className="text-lg text-gray-300 leading-relaxed mb-6">
+                      <p className="text-lg text-muted-foreground leading-relaxed mb-6">
                         I'm a Computer Science and Economics student at New York University with a Mathematics minor, 
                         passionate about building data-driven solutions that solve real-world problems. My journey 
                         combines technical expertise with business acumen, allowing me to create impactful tools 
                         like Refrax that democratize access to advanced analytics.
                       </p>
                       
-                      <p className="text-lg text-gray-300 leading-relaxed mb-6">
+                      <p className="text-lg text-muted-foreground leading-relaxed mb-6">
                         My experience spans from NASA CubeSat research to building automated trading systems, 
                         always with a focus on leveraging technology to drive meaningful change. I believe in 
                         the power of interdisciplinary thinking and am committed to creating solutions that 
@@ -179,19 +179,19 @@ export default function AboutPage() {
                       </p>
 
                       <div className="grid md:grid-cols-2 gap-6 mt-8">
-                        <div className="bg-[#1877F2]/10 rounded-xl p-6 border border-[#1877F2]/20">
-                          <h3 className="text-xl font-semibold text-white mb-3 flex items-center gap-2">
-                            <MapPin className="w-5 h-5 text-[#1877F2]" />
+                        <div className="bg-muted rounded-xl p-6 border border-border">
+                          <h3 className="text-xl font-semibold mb-3 flex items-center gap-2">
+                            <MapPin className="w-5 h-5 text-primary" />
                             Location
                           </h3>
-                          <p className="text-gray-300">New York, NY</p>
+                          <p className="text-muted-foreground">New York, NY</p>
                         </div>
-                        <div className="bg-[#1877F2]/10 rounded-xl p-6 border border-[#1877F2]/20">
-                          <h3 className="text-xl font-semibold text-white mb-3 flex items-center gap-2">
-                            <Calendar className="w-5 h-5 text-[#1877F2]" />
+                        <div className="bg-muted rounded-xl p-6 border border-border">
+                          <h3 className="text-xl font-semibold mb-3 flex items-center gap-2">
+                            <Calendar className="w-5 h-5 text-primary" />
                             Contact
                           </h3>
-                          <p className="text-gray-300">ram9952@nyu.edu</p>
+                          <p className="text-muted-foreground">ram9952@nyu.edu</p>
                         </div>
                       </div>
                     </div>

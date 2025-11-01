@@ -125,8 +125,8 @@ function Candles({
       {/* Tooltip */}
       {hover !== null && (
         <Html position={[candles[hover].x, candles[hover].body.y, 1]} center>
-          <div className="backdrop-blur-md bg-black/80 text-white text-xs rounded-lg px-3 py-2 border border-white/20 shadow-xl">
-            <div className="font-semibold text-blue-400">{candles[hover].date}</div>
+          <div className="backdrop-blur-md bg-card/95 text-foreground text-xs rounded-lg px-3 py-2 border border-border shadow-xl">
+            <div className="font-semibold text-primary">{candles[hover].date}</div>
             <div className="space-y-1 mt-2">
               <div>O: ${candles[hover].d.Open.toFixed(2)}</div>
               <div>H: ${candles[hover].d.High.toFixed(2)}</div>
@@ -135,7 +135,7 @@ function Candles({
               {candles[hover].d.Volume && (
                 <div>V: {candles[hover].d.Volume.toLocaleString()}</div>
               )}
-              <div className="text-purple-400">Z: {candles[hover].z.toFixed(2)}</div>
+              <div className="text-muted-foreground">Z: {candles[hover].z.toFixed(2)}</div>
             </div>
           </div>
         </Html>
@@ -581,20 +581,19 @@ export default function ThreeStockChart({
   }, [width, effectiveHeight, effectiveDepth]);
 
   return (
-    <div className="w-full h-[700px] rounded-xl overflow-hidden border border-white/10 relative">
+    <div className="w-full h-[700px] rounded-xl overflow-hidden border border-border bg-card relative">
       <Canvas shadows dpr={[1, 2]}>
         <PerspectiveCamera
           makeDefault
           position={[width * 0.5, effectiveHeight * 0.5, effectiveDepth * 10]}
           fov={45}
         />
-        <color attach="background" args={["#0a0a0f"]} />
 
         {/* Enhanced Lighting */}
         <ambientLight intensity={0.4} />
         <directionalLight position={[10, 15, 10]} intensity={1.0} castShadow />
         <pointLight position={[-10, 10, 10]} intensity={0.3} />
-        <hemisphereLight intensity={0.2} color="#4a90e2" groundColor="#0a0a0f" />
+        <hemisphereLight intensity={0.2} color="#4a90e2" groundColor="#1f2937" />
 
         {/* 3D Grid System */}
         <Grid3D width={width} height={effectiveHeight} depth={effectiveDepth} />
@@ -603,7 +602,7 @@ export default function ThreeStockChart({
         <Axes3D width={width} height={effectiveHeight} depth={effectiveDepth} />
 
         {/* Chart Title */}
-        <Text position={[width / 2, effectiveHeight + 4, 0]} fontSize={1.4} color="#ffffff" anchorX="center" fontWeight="bold">
+        <Text position={[width / 2, effectiveHeight + 4, 0]} fontSize={1.4} color="#0f172a" anchorX="center" fontWeight="bold">
           {symbol} • 3D {chartType === "candlestick" ? "Candlestick" : "Area"} Chart
         </Text>
 
@@ -651,7 +650,7 @@ export default function ThreeStockChart({
       {/* Enhanced Reset Button */}
       <button
         onClick={resetCamera}
-        className="absolute top-4 right-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-6 py-3 rounded-xl shadow-xl transition-all duration-300 flex items-center space-x-2 font-semibold"
+        className="absolute top-4 right-4 bg-primary hover:opacity-90 text-primary-foreground px-6 py-3 rounded-xl shadow-xl transition-all duration-300 flex items-center space-x-2 font-semibold"
       >
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
           <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/>

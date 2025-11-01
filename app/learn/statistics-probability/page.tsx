@@ -370,12 +370,9 @@ def regression_analysis(X, y):
   ];
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-background">
       {/* Particle background */}
-      <HeroBackground position="fixed" backgroundColor="transparent" className="z-0" blendModeClassName="mix-blend-screen" />
-      
-      {/* Background gradient */}
-      <div className="fixed inset-0 bg-gradient-to-br from-purple-900/10 via-blue-900/10 to-indigo-900/10 pointer-events-none z-5"></div>
+      <HeroBackground position="fixed" backgroundColor="transparent" className="z-0" />
       
       {/* Main content */}
       <div className="relative z-10 min-h-screen">

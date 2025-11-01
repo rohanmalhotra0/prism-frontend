@@ -105,14 +105,14 @@ export default function ChartSettingsPanel({ onUpdate }: Props) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="relative space-y-8 rounded-3xl border border-white/10 bg-black/40 backdrop-blur-2xl p-10 shadow-2xl text-white"
+      className="relative space-y-8 rounded-3xl border border-border bg-card p-10 shadow-2xl text-foreground"
     >
       {/* Header */}
       <div>
-        <h2 className="text-3xl font-bold mb-2 bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text text-transparent">
+        <h2 className="text-3xl font-bold mb-2">
           Chart Settings
         </h2>
-        <div className="w-20 h-1 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full"></div>
+        <div className="w-20 h-1 bg-primary rounded-full"></div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -120,7 +120,7 @@ export default function ChartSettingsPanel({ onUpdate }: Props) {
         <div className="space-y-6">
           {/* Stock Picker */}
           <div className="relative">
-            <label className="block text-sm text-gray-300 mb-2">Choose Stock</label>
+            <label className="block text-sm text-muted-foreground mb-2">Choose Stock</label>
             <input
               type="text"
               placeholder="e.g. AAPL, Tesla"
@@ -131,10 +131,10 @@ export default function ChartSettingsPanel({ onUpdate }: Props) {
               }}
               onFocus={() => setShowDropdown(true)}
               onBlur={() => setTimeout(() => setShowDropdown(false), 120)}
-              className="w-full rounded-xl border border-white/20 bg-black/40 p-4 text-white placeholder-gray-400 focus:border-purple-400 focus:ring-2 focus:ring-purple-400/30"
+              className="w-full rounded-xl border border-input bg-input p-4 text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/30"
             />
             {showDropdown && search && (
-              <div className="absolute top-full mt-2 w-full max-h-60 overflow-y-auto rounded-xl border border-white/20 bg-black/90 backdrop-blur-xl shadow-xl z-20">
+              <div className="absolute top-full mt-2 w-full max-h-60 overflow-y-auto rounded-xl border border-border bg-card shadow-xl z-20">
                 {filteredStocks.map((s) => (
                   <div
                     key={s.symbol}
@@ -143,10 +143,10 @@ export default function ChartSettingsPanel({ onUpdate }: Props) {
                       setSearch(s.symbol);
                       setShowDropdown(false);
                     }}
-                    className="cursor-pointer px-4 py-2 hover:bg-purple-500/20"
+                    className="cursor-pointer px-4 py-2 hover:bg-muted"
                   >
-                    <span className="font-semibold text-purple-300">{s.symbol}</span>{" "}
-                    <span className="text-sm text-gray-400">— {s.name}</span>
+                    <span className="font-semibold text-primary">{s.symbol}</span>{" "}
+                    <span className="text-sm text-muted-foreground">— {s.name}</span>
                   </div>
                 ))}
               </div>
@@ -155,11 +155,11 @@ export default function ChartSettingsPanel({ onUpdate }: Props) {
 
           {/* Time Period */}
           <div>
-            <label className="block text-sm text-gray-300 mb-2">Time Period</label>
+            <label className="block text-sm text-muted-foreground mb-2">Time Period</label>
             <select
               value={timePeriod}
               onChange={(e) => setTimePeriod(e.target.value)}
-              className="w-full rounded-xl border border-white/20 bg-black/40 p-4 text-white"
+              className="w-full rounded-xl border border-input bg-input p-4 text-foreground"
             >
               <option value="1d">1 Day</option>
               <option value="5d">1 Week</option>
@@ -173,11 +173,11 @@ export default function ChartSettingsPanel({ onUpdate }: Props) {
 
           {/* Chart Type */}
           <div>
-            <label className="block text-sm text-gray-300 mb-2">Chart Type</label>
+            <label className="block text-sm text-muted-foreground mb-2">Chart Type</label>
             <select
               value={chartType}
               onChange={(e) => setChartType(e.target.value)}
-              className="w-full rounded-xl border border-white/20 bg-black/40 p-4 text-white"
+              className="w-full rounded-xl border border-input bg-input p-4 text-foreground"
             >
               <option value="candlestick">Candlestick</option>
               <option value="line">Line</option>
@@ -190,13 +190,13 @@ export default function ChartSettingsPanel({ onUpdate }: Props) {
         <div className="space-y-6">
           {/* Overlays */}
           <div>
-            <label className="block text-sm text-gray-300 mb-2">Overlays (up to 3)</label>
+            <label className="block text-sm text-muted-foreground mb-2">Overlays (up to 3)</label>
             {overlays.map((ov, i) => (
               <select
                 key={i}
                 value={ov}
                 onChange={(e) => handleOverlayChange(i, e.target.value)}
-                className="w-full rounded-xl border border-white/20 bg-black/40 p-3 text-white mb-2"
+                className="w-full rounded-xl border border-input bg-input p-3 text-foreground mb-2"
               >
                 <option value="">-- Select Overlay --</option>
                 <option value="ema20">EMA (20)</option>
@@ -209,13 +209,13 @@ export default function ChartSettingsPanel({ onUpdate }: Props) {
 
           {/* Indicators */}
           <div>
-            <label className="block text-sm text-gray-300 mb-2">Indicators (up to 3)</label>
+            <label className="block text-sm text-muted-foreground mb-2">Indicators (up to 3)</label>
             {indicators.map((ind, i) => (
               <select
                 key={i}
                 value={ind}
                 onChange={(e) => handleIndicatorChange(i, e.target.value)}
-                className="w-full rounded-xl border border-white/20 bg-black/40 p-3 text-white mb-2"
+                className="w-full rounded-xl border border-input bg-input p-3 text-foreground mb-2"
               >
                 <option value="">-- Select Indicator --</option>
                 <option value="rsi">RSI</option>
@@ -233,7 +233,7 @@ export default function ChartSettingsPanel({ onUpdate }: Props) {
       {/* Submit */}
       <button
         type="submit"
-        className="w-full rounded-xl bg-gradient-to-r from-purple-600 via-purple-500 to-blue-600 px-6 py-4 font-bold text-white shadow-xl hover:scale-[1.02] transition"
+        className="w-full rounded-xl bg-primary px-6 py-4 font-bold text-primary-foreground shadow-xl hover:opacity-90 transition"
       >
         Update Chart
       </button>

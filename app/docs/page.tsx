@@ -27,7 +27,7 @@ export default function DocumentationPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-background text-foreground">
       {/* Particle background */}
       <HeroBackground position="fixed" backgroundColor="rgba(0,0,0,1)" className="z-0" blendModeClassName="mix-blend-screen" />
       
@@ -40,10 +40,10 @@ export default function DocumentationPage() {
         <div className="pt-32 pb-20 px-6 lg:px-8">
           <div className="max-w-7xl mx-auto text-center">
             
-            <h1 className="text-6xl lg:text-7xl font-black mb-8 bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text text-transparent">
+            <h1 className="text-6xl lg:text-7xl font-black mb-8">
               Documentation
             </h1>
-            <p className="text-xl lg:text-2xl text-gray-400 max-w-4xl mx-auto leading-relaxed mb-12">
+            <p className="text-xl lg:text-2xl text-muted-foreground max-w-4xl mx-auto leading-relaxed mb-12">
               Complete technical documentation for Refrax's free educational platform for data analytics and mathematical visualization
             </p>
             
@@ -83,10 +83,10 @@ export default function DocumentationPage() {
             {/* Sidebar Navigation */}
             <div className="lg:col-span-1">
               <div className="sticky top-32">
-                <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
+                <div className="bg-card rounded-2xl p-6 border border-border">
                   <div className="flex items-center gap-3 mb-6">
-                    <FileText className="w-6 h-6 text-[#1877F2]" />
-                    <h3 className="text-xl font-bold text-white">Table of Contents</h3>
+                    <FileText className="w-6 h-6 text-primary" />
+                    <h3 className="text-xl font-bold">Table of Contents</h3>
                   </div>
                   <nav className="space-y-2">
                     {sections.map((section) => {
@@ -97,25 +97,21 @@ export default function DocumentationPage() {
                           onClick={() => setActiveSection(section.id)}
                           className={`w-full text-left px-4 py-4 rounded-xl transition-all duration-300 group ${
                             activeSection === section.id
-                              ? "bg-[#1877F2] text-white shadow-lg transform scale-105"
-                              : "text-gray-400 hover:text-white hover:bg-white/10 hover:transform hover:scale-105"
+                              ? "bg-primary text-primary-foreground shadow-lg transform scale-105"
+                              : "text-foreground hover:bg-muted hover:transform hover:scale-105"
                           }`}
                         >
                           <div className="flex items-center gap-3">
                             <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
                               activeSection === section.id
-                                ? "bg-white/20"
-                                : "bg-gray-700/50 group-hover:bg-white/10"
+                                ? "bg-muted"
+                                : "bg-muted"
                             }`}>
                               <Icon className="w-4 h-4" />
                             </div>
                             <div>
                               <div className="font-semibold">{section.title}</div>
-                              <div className={`text-xs ${
-                                activeSection === section.id
-                                  ? "text-white/70"
-                                  : "text-gray-500 group-hover:text-gray-300"
-                              }`}>
+                              <div className={`text-xs text-muted-foreground`}>
                                 {section.description}
                               </div>
                             </div>
@@ -130,7 +126,7 @@ export default function DocumentationPage() {
 
             {/* Main Content */}
             <div className="lg:col-span-3">
-              <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10">
+              <div className="bg-card rounded-2xl p-8 border border-border">
                 
                 {activeSection === "overview" && (
                   <div>
@@ -147,10 +143,10 @@ export default function DocumentationPage() {
                     <div className="space-y-8">
                       <div className="bg-[#1877F2]/20 rounded-2xl p-8 border border-[#1877F2]/30">
                         <div className="flex items-center gap-3 mb-4">
-                          <Lightbulb className="w-6 h-6 text-white" />
-                          <h3 className="text-2xl font-semibold text-white">What is Refrax?</h3>
+                          <Lightbulb className="w-6 h-6 text-primary" />
+                          <h3 className="text-2xl font-semibold">What is Refrax?</h3>
                         </div>
-                        <p className="text-gray-300 text-lg leading-relaxed">
+                        <p className="text-muted-foreground text-lg leading-relaxed">
                           Refrax is a completely free educational platform that combines advanced data visualization, 
                           mathematical modeling, and interactive tools to help students learn data analytics, 
                           financial modeling, and 2D/3D mathematical visualization through hands-on experience.
@@ -160,18 +156,18 @@ export default function DocumentationPage() {
                       
                        
 
-                      <div className="bg-white/5 rounded-xl p-6 border border-white/10">
+                      <div className="bg-card rounded-xl p-6 border border-border">
                         <div className="flex items-center gap-3 mb-6">
-                          <Code className="w-6 h-6 text-[#1877F2]" />
-                          <h3 className="text-xl font-semibold text-white">Technology Stack</h3>
+                          <Code className="w-6 h-6 text-primary" />
+                          <h3 className="text-xl font-semibold">Technology Stack</h3>
                         </div>
                         <div className="grid md:grid-cols-3 gap-6">
-                          <div className="bg-gradient-to-br from-blue-500/10 to-cyan-500/10 rounded-xl p-4 border border-blue-500/20">
+                          <div className="bg-muted rounded-xl p-4 border border-border">
                             <div className="flex items-center gap-2 mb-4">
-                              <Code className="w-5 h-5 text-blue-400" />
-                              <h4 className="text-lg font-semibold text-white">Frontend</h4>
+                              <Code className="w-5 h-5 text-primary" />
+                              <h4 className="text-lg font-semibold">Frontend</h4>
                             </div>
-                            <ul className="text-gray-300 space-y-2 text-sm">
+                            <ul className="text-muted-foreground space-y-2 text-sm">
                               <li className="flex items-center gap-2">
                                 <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
                                 <span>Next.js 15 (App Router)</span>
@@ -214,12 +210,12 @@ export default function DocumentationPage() {
                               </li>
                             </ul>
                           </div>
-                          <div className="bg-gradient-to-br from-blue-500/10 to-cyan-500/10 rounded-xl p-4 border border-blue-500/20">
+                          <div className="bg-muted rounded-xl p-4 border border-border">
                             <div className="flex items-center gap-2 mb-4">
-                              <Server className="w-5 h-5 text-blue-400" />
-                              <h4 className="text-lg font-semibold text-white">Backend</h4>
+                              <Server className="w-5 h-5 text-primary" />
+                              <h4 className="text-lg font-semibold">Backend</h4>
                             </div>
-                            <ul className="text-gray-300 space-y-2 text-sm">
+                            <ul className="text-muted-foreground space-y-2 text-sm">
                               <li className="flex items-center gap-2">
                                 <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
                                 <span>Next.js API Routes</span>
@@ -251,12 +247,12 @@ export default function DocumentationPage() {
                               
                             </ul>
                           </div>
-                          <div className="bg-gradient-to-br from-cyan-500/10 to-blue-500/10 rounded-xl p-4 border border-cyan-500/20">
+                          <div className="bg-muted rounded-xl p-4 border border-border">
                             <div className="flex items-center gap-2 mb-4">
-                              <Server className="w-5 h-5 text-cyan-400" />
-                              <h4 className="text-lg font-semibold text-white">Infrastructure</h4>
+                              <Server className="w-5 h-5 text-primary" />
+                              <h4 className="text-lg font-semibold">Infrastructure</h4>
                             </div>
-                            <ul className="text-gray-300 space-y-2 text-sm">
+                            <ul className="text-muted-foreground space-y-2 text-sm">
                               <li className="flex items-center gap-2">
                                 <div className="w-2 h-2 bg-cyan-400 rounded-full"></div>
                                 <span>Netlify (Frontend Hosting)</span>

@@ -415,14 +415,14 @@ export default function DatasetEditor() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
+    <div className="min-h-screen bg-background text-foreground">
       {/* Google Sheets-like Header */}
-      <div className="bg-gray-800 border-b border-gray-700 px-6 py-4">
+      <div className="bg-card border-b border-border px-6 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <h1 className="text-xl font-semibold text-white">Dataset Editor</h1>
+            <h1 className="text-xl font-semibold">Dataset Editor</h1>
             {data.length > 0 && (
-              <div className="flex items-center gap-6 text-sm text-gray-300">
+              <div className="flex items-center gap-6 text-sm text-muted-foreground">
                 <span>{processedData.length} rows</span>
                 <span>{columns.length} columns</span>
               </div>
@@ -441,7 +441,7 @@ export default function DatasetEditor() {
             <Button
               onClick={() => fileInputRef.current?.click()}
               disabled={isUploading}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium"
+              className="bg-primary hover:bg-primary/90 text-primary-foreground px-4 py-2 rounded-md text-sm font-medium"
             >
               <Upload className="w-4 h-4 mr-2" />
               {isUploading ? 'Processing...' : 'Upload File'}
@@ -451,7 +451,7 @@ export default function DatasetEditor() {
             <Button
               onClick={exportToCSV}
               disabled={processedData.length === 0}
-              className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md text-sm font-medium disabled:bg-gray-600"
+              className="bg-primary hover:bg-primary/90 text-primary-foreground px-4 py-2 rounded-md text-sm font-medium disabled:opacity-60"
             >
               <Download className="w-4 h-4 mr-2" />
               Export
@@ -462,23 +462,23 @@ export default function DatasetEditor() {
 
       {/* Toolbar */}
       {data.length > 0 && (
-        <div className="bg-gray-800 border-b border-gray-700 px-6 py-3">
+        <div className="bg-card border-b border-border px-6 py-3">
           <div className="flex items-center gap-4">
             {/* Search */}
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
               <Input
                 placeholder="Search data..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 bg-gray-700 border-gray-600 text-white w-64"
+                className="pl-10 bg-input border-input text-foreground w-64"
               />
             </div>
 
             {/* Filter Button */}
             <Button
               onClick={addFilter}
-              className="bg-gray-700 hover:bg-gray-600 text-white px-3 py-2 rounded-md text-sm"
+              className="bg-muted hover:bg-muted/80 text-foreground px-3 py-2 rounded-md text-sm"
             >
               <Filter className="w-4 h-4 mr-2" />
               Filter
@@ -487,7 +487,7 @@ export default function DatasetEditor() {
             {/* Computed Fields Button */}
             <Button
               onClick={() => setShowComputedBuilder(true)}
-              className="bg-purple-600 hover:bg-purple-700 text-white px-3 py-2 rounded-md text-sm"
+              className="bg-primary hover:bg-primary/90 text-primary-foreground px-3 py-2 rounded-md text-sm"
             >
               <Calculator className="w-4 h-4 mr-2" />
               Add Formula
@@ -501,14 +501,14 @@ export default function DatasetEditor() {
         {data.length === 0 ? (
           <div className="flex items-center justify-center h-96">
             <div className="text-center">
-              <div className="w-16 h-16 bg-gray-700 rounded-lg flex items-center justify-center mx-auto mb-4">
-                <Upload className="w-8 h-8 text-gray-400" />
+              <div className="w-16 h-16 bg-muted rounded-lg flex items-center justify-center mx-auto mb-4">
+                <Upload className="w-8 h-8 text-muted-foreground" />
               </div>
-              <h3 className="text-lg font-semibold text-white mb-2">No Data</h3>
-              <p className="text-gray-400 mb-4">Upload a CSV or Excel file to get started</p>
+              <h3 className="text-lg font-semibold mb-2">No Data</h3>
+              <p className="text-muted-foreground mb-4">Upload a CSV or Excel file to get started</p>
               <Button
                 onClick={() => fileInputRef.current?.click()}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-md"
+                className="bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-2 rounded-md"
               >
                 <Upload className="w-4 h-4 mr-2" />
                 Upload File
@@ -520,12 +520,12 @@ export default function DatasetEditor() {
             {/* Google Sheets-like Table */}
             <div className="relative min-w-full">
               {/* Column Headers */}
-              <div className="sticky top-0 z-10 bg-gray-800 border-b border-gray-700">
+              <div className="sticky top-0 z-10 bg-card border-b border-border">
                 <div className="flex min-w-max">
                   {[...columns, ...computedFields.map(f => f.name)].map((col, colIndex) => (
                     <div
                       key={col}
-                      className="px-3 py-3 border-r border-gray-700 bg-gray-800 text-sm font-semibold text-gray-200 flex-shrink-0"
+                      className="px-3 py-3 border-r border-border bg-card text-sm font-semibold text-foreground flex-shrink-0"
                       style={{
                         width: `${columnWidths[col] || 150}px`,
                         minWidth: '120px'
@@ -538,18 +538,18 @@ export default function DatasetEditor() {
               </div>
 
               {/* Data Rows */}
-              <div className="bg-white">
+              <div className="bg-background">
                 {processedData.map((row, rowIndex) => (
                   <div
                     key={row._id || rowIndex}
-                    className={`flex min-w-max border-b border-gray-200 hover:bg-gray-50 ${
-                      rowIndex % 2 === 0 ? 'bg-white' : 'bg-gray-50'
+                    className={`flex min-w-max border-b border-border hover:bg-muted/60 ${
+                      rowIndex % 2 === 0 ? 'bg-background' : 'bg-muted/40'
                     }`}
                   >
                     {[...columns, ...computedFields.map(f => f.name)].map((col, colIndex) => (
                       <div
                         key={col}
-                        className="px-3 py-2 border-r border-gray-200 text-sm text-gray-900 relative group flex-shrink-0"
+                        className="px-3 py-2 border-r border-border text-sm text-foreground relative group flex-shrink-0"
                         style={{
                           width: `${columnWidths[col] || 150}px`,
                           minWidth: '120px'
@@ -559,7 +559,7 @@ export default function DatasetEditor() {
                           <Input
                             value={editValue}
                             onChange={(e) => setEditValue(e.target.value)}
-                            className="bg-white border-blue-500 text-gray-900 text-sm h-8 w-full"
+                            className="bg-input border-primary text-foreground text-sm h-8 w-full"
                             autoFocus
                             onBlur={saveEdit}
                             onKeyDown={(e) => {
@@ -569,7 +569,7 @@ export default function DatasetEditor() {
                           />
                         ) : (
                           <div
-                            className="cursor-pointer hover:bg-blue-100 p-1 rounded min-h-[24px] flex items-center"
+                            className="cursor-pointer hover:bg-muted p-1 rounded min-h-[24px] flex items-center"
                             onClick={() => startEditing(rowIndex, col)}
                           >
                             {row[col] !== undefined ? String(row[col]) : ''}
@@ -587,18 +587,18 @@ export default function DatasetEditor() {
 
       {/* Filter Panel */}
       {filters.length > 0 && (
-        <div className="bg-gray-800 border-t border-gray-700 p-4">
-          <h3 className="text-sm font-semibold text-white mb-3">Active Filters</h3>
+        <div className="bg-card border-t border-border p-4">
+          <h3 className="text-sm font-semibold mb-3">Active Filters</h3>
           <div className="flex flex-wrap gap-2">
             {filters.map((filter, index) => (
-              <div key={index} className="bg-gray-700 rounded-lg px-3 py-2 flex items-center gap-2">
-                <span className="text-sm text-gray-300">{filter.column}</span>
-                <span className="text-sm text-gray-400">{filter.operator}</span>
-                <span className="text-sm text-white">{filter.value}</span>
+              <div key={index} className="bg-muted rounded-lg px-3 py-2 flex items-center gap-2">
+                <span className="text-sm text-foreground">{filter.column}</span>
+                <span className="text-sm text-muted-foreground">{filter.operator}</span>
+                <span className="text-sm text-foreground">{filter.value}</span>
                 <Button
                   onClick={() => removeFilter(index)}
                   size="sm"
-                  className="bg-red-600 hover:bg-red-700 p-1 h-5 w-5"
+                  className="bg-destructive hover:bg-destructive/90 text-destructive-foreground p-1 h-5 w-5"
                 >
                   <X className="w-3 h-3" />
                 </Button>
@@ -610,23 +610,23 @@ export default function DatasetEditor() {
 
       {/* Computed Fields Panel */}
       {computedFields.length > 0 && (
-        <div className="bg-gray-800 border-t border-gray-700 p-4">
-          <h3 className="text-sm font-semibold text-white mb-3">Computed Fields</h3>
+        <div className="bg-card border-t border-border p-4">
+          <h3 className="text-sm font-semibold mb-3">Computed Fields</h3>
           <div className="flex flex-wrap gap-2">
             {computedFields.map(field => (
-              <div key={field.id} className="bg-gray-700 rounded-lg px-3 py-2 flex items-center gap-2">
+              <div key={field.id} className="bg-muted rounded-lg px-3 py-2 flex items-center gap-2">
                 <input
                   type="checkbox"
                   checked={field.enabled}
                   onChange={() => toggleComputedField(field.id)}
                   className="w-4 h-4"
                 />
-                <span className="text-sm text-white">{field.name}</span>
-                <span className="text-sm text-gray-400">= {field.formula}</span>
+                <span className="text-sm text-foreground">{field.name}</span>
+                <span className="text-sm text-muted-foreground">= {field.formula}</span>
                 <Button
                   onClick={() => removeComputedField(field.id)}
                   size="sm"
-                  className="bg-red-600 hover:bg-red-700 p-1 h-5 w-5"
+                  className="bg-destructive hover:bg-destructive/90 text-destructive-foreground p-1 h-5 w-5"
                 >
                   <Trash2 className="w-3 h-3" />
                 </Button>
@@ -639,15 +639,15 @@ export default function DatasetEditor() {
       {/* Filter Builder Modal */}
       {showFilterBuilder && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-gray-800 rounded-lg p-6 w-96">
-            <h3 className="text-lg font-semibold text-white mb-4">Add Filter</h3>
+          <div className="bg-card rounded-lg p-6 w-96 border border-border">
+            <h3 className="text-lg font-semibold mb-4">Add Filter</h3>
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">Column</label>
+                <label className="block text-sm font-medium text-muted-foreground mb-2">Column</label>
                 <select
                   value={newFilter.column}
                   onChange={(e) => setNewFilter({...newFilter, column: e.target.value})}
-                  className="w-full bg-gray-700 border-gray-600 text-white rounded-md px-3 py-2"
+                  className="w-full bg-input border border-input text-foreground rounded-md px-3 py-2"
                 >
                   <option value="">Select column</option>
                   {columns.map(col => (
@@ -656,11 +656,11 @@ export default function DatasetEditor() {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">Operator</label>
+                <label className="block text-sm font-medium text-muted-foreground mb-2">Operator</label>
                 <select
                   value={newFilter.operator}
                   onChange={(e) => setNewFilter({...newFilter, operator: e.target.value})}
-                  className="w-full bg-gray-700 border-gray-600 text-white rounded-md px-3 py-2"
+                  className="w-full bg-input border border-input text-foreground rounded-md px-3 py-2"
                 >
                   <option value="equals">Equals</option>
                   <option value="contains">Contains</option>
@@ -669,24 +669,24 @@ export default function DatasetEditor() {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">Value</label>
+                <label className="block text-sm font-medium text-muted-foreground mb-2">Value</label>
                 <Input
                   placeholder="Filter value"
                   value={newFilter.value}
                   onChange={(e) => setNewFilter({...newFilter, value: e.target.value})}
-                  className="bg-gray-700 border-gray-600 text-white"
+                  className="bg-input border-input text-foreground"
                 />
               </div>
               <div className="flex gap-2 justify-end">
                 <Button
                   onClick={() => setShowFilterBuilder(false)}
-                  className="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-md"
+                  className="bg-muted hover:bg-muted/80 text-foreground px-4 py-2 rounded-md"
                 >
                   Cancel
                 </Button>
                 <Button
                   onClick={addNewFilter}
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md"
+                  className="bg-primary hover:bg-primary/90 text-primary-foreground px-4 py-2 rounded-md"
                 >
                   Add Filter
                 </Button>
@@ -699,31 +699,31 @@ export default function DatasetEditor() {
       {/* Computed Field Builder Modal */}
       {showComputedBuilder && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-gray-800 rounded-lg p-6 w-96">
-            <h3 className="text-lg font-semibold text-white mb-4">Add Computed Field</h3>
+          <div className="bg-card rounded-lg p-6 w-96 border border-border">
+            <h3 className="text-lg font-semibold mb-4">Add Computed Field</h3>
             <div className="space-y-4">
               <Input
                 placeholder="Field name"
                 value={newComputedField.name}
                 onChange={(e) => setNewComputedField({...newComputedField, name: e.target.value})}
-                className="bg-gray-700 border-gray-600 text-white"
+                className="bg-input border-input text-foreground"
               />
               <Input
                 placeholder="Formula (e.g., colA + colB)"
                 value={newComputedField.formula}
                 onChange={(e) => setNewComputedField({...newComputedField, formula: e.target.value})}
-                className="bg-gray-700 border-gray-600 text-white"
+                className="bg-input border-input text-foreground"
               />
               <div className="flex gap-2 justify-end">
                 <Button
                   onClick={() => setShowComputedBuilder(false)}
-                  className="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-md"
+                  className="bg-muted hover:bg-muted/80 text-foreground px-4 py-2 rounded-md"
                 >
                   Cancel
                 </Button>
                 <Button
                   onClick={addComputedField}
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md"
+                  className="bg-primary hover:bg-primary/90 text-primary-foreground px-4 py-2 rounded-md"
                 >
                   Add Field
                 </Button>

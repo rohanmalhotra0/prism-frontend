@@ -438,7 +438,7 @@ def catastrophe_modeling(exposure_data, historical_events, simulation_years=1000
   ];
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-background">
       {/* Particle background */}
       <HeroBackground position="fixed" backgroundColor="transparent" className="z-0" blendModeClassName="mix-blend-screen" />
       
@@ -453,10 +453,10 @@ def catastrophe_modeling(exposure_data, historical_events, simulation_years=1000
         {/* Hero section */}
         <div className="pt-32 pb-16 px-6 lg:px-8">
           <div className="max-w-7xl mx-auto text-center">
-            <h1 className="text-6xl lg:text-7xl font-black mb-8 bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text text-transparent">
+            <h1 className="text-6xl lg:text-7xl font-black mb-8 text-foreground">
               Insurance Risk Analysis
             </h1>
-            <p className="text-xl lg:text-2xl text-gray-200 max-w-4xl mx-auto leading-relaxed mb-12">
+            <p className="text-xl lg:text-2xl text-muted-foreground max-w-4xl mx-auto leading-relaxed mb-12">
               Master actuarial science and risk management techniques for insurance and financial institutions
             </p>
           </div>
@@ -467,27 +467,27 @@ def catastrophe_modeling(exposure_data, historical_events, simulation_years=1000
 
           <div className="space-y-8">
             {riskTopics.map((topic, index) => (
-              <div key={index} className="bg-white/2 backdrop-blur-sm rounded-2xl p-8 border border-white/5 hover:bg-white/10 transition-colors">
+              <div key={index} className="bg-card rounded-2xl p-8 border border-border hover:bg-muted transition-colors">
                 <div className="flex items-start gap-6">
                   <div className="text-4xl">{topic.icon}</div>
                   <div className="flex-1">
-                    <h3 className="text-2xl font-bold text-white mb-3">{topic.title}</h3>
-                    <p className="text-gray-200 mb-6 text-lg">{topic.description}</p>
+                    <h3 className="text-2xl font-bold text-foreground mb-3">{topic.title}</h3>
+                    <p className="text-muted-foreground mb-6 text-lg">{topic.description}</p>
                     
                     <div className="grid md:grid-cols-2 gap-6">
                       <div>
-                        <h4 className="text-lg font-semibold text-blue-400 mb-3">How It Works</h4>
-                        <p className="text-gray-200 text-sm mb-4">{topic.details.howItWorks}</p>
+                        <h4 className="text-lg font-semibold text-primary mb-3">How It Works</h4>
+                        <p className="text-muted-foreground text-sm mb-4">{topic.details.howItWorks}</p>
                         
-                        <h4 className="text-lg font-semibold text-green-400 mb-3">Key Components</h4>
-                        <ul className="text-gray-200 text-sm space-y-1">
+                        <h4 className="text-lg font-semibold text-green-700 mb-3">Key Components</h4>
+                        <ul className="text-muted-foreground text-sm space-y-1">
                           {topic.details.keyComponents.map((component, idx) => (
                             <li key={idx}>• {component}</li>
                           ))}
                         </ul>
 
-                        <h4 className="text-lg font-semibold text-purple-400 mb-3">Financial Use Cases</h4>
-                        <ul className="text-gray-200 text-sm space-y-1">
+                        <h4 className="text-lg font-semibold text-purple-700 mb-3">Financial Use Cases</h4>
+                        <ul className="text-muted-foreground text-sm space-y-1">
                           {topic.details.useCases.map((useCase, idx) => (
                             <li key={idx}>• {useCase}</li>
                           ))}
@@ -495,20 +495,20 @@ def catastrophe_modeling(exposure_data, historical_events, simulation_years=1000
                       </div>
                       
                       <div>
-                        <div className="bg-gray-900/30 rounded-lg border border-gray-700 overflow-hidden">
+                        <div className="bg-card rounded-lg border border-border overflow-hidden">
                           {/* Tab Headers */}
-                          <div className="flex border-b border-gray-700">
+                          <div className="flex border-b border-border">
                             {topic.details.formulas && (
                               <button
                                 onClick={() => setActiveTab(topic.id, 'formulas')}
                                 className={`flex-1 px-4 py-3 text-sm font-medium transition-colors ${
                                   activeTabs[topic.id] === 'formulas' || (!activeTabs[topic.id] && topic.details.formulas)
-                                    ? 'bg-orange-500/20 text-orange-400 border-b-2 border-orange-400'
-                                    : 'text-gray-200 hover:text-gray-200 hover:bg-gray-800/50'
+                                    ? 'bg-orange-100 text-orange-700 border-b-2 border-orange-500'
+                                    : 'text-muted-foreground hover:text-foreground hover:bg-muted'
                                 }`}
                               >
                                 <div className="flex items-center justify-center gap-2">
-                                  <div className="w-2 h-2 bg-orange-400 rounded-full"></div>
+                                  <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
                                   Math Formulas
                                 </div>
                               </button>
@@ -517,12 +517,12 @@ def catastrophe_modeling(exposure_data, historical_events, simulation_years=1000
                               onClick={() => setActiveTab(topic.id, 'code')}
                               className={`flex-1 px-4 py-3 text-sm font-medium transition-colors ${
                                 activeTabs[topic.id] === 'code' || (!activeTabs[topic.id] && !topic.details.formulas)
-                                  ? 'bg-yellow-500/20 text-yellow-400 border-b-2 border-yellow-400'
-                                  : 'text-gray-200 hover:text-gray-200 hover:bg-gray-800/50'
+                                  ? 'bg-yellow-100 text-yellow-700 border-b-2 border-yellow-500'
+                                  : 'text-muted-foreground hover:text-foreground hover:bg-muted'
                               }`}
                             >
                               <div className="flex items-center justify-center gap-2">
-                                <div className="w-2 h-2 bg-yellow-400 rounded-full"></div>
+                                <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
                                 Code Example
                               </div>
                             </button>
@@ -533,11 +533,11 @@ def catastrophe_modeling(exposure_data, historical_events, simulation_years=1000
                             {(activeTabs[topic.id] === 'formulas' || (!activeTabs[topic.id] && topic.details.formulas)) && topic.details.formulas && (
                               <div className="space-y-6">
                                 {Object.entries(topic.details.formulas).map(([key, formula]) => (
-                                  <div key={key} className="bg-gray-800/50 rounded-lg p-6 border border-gray-600">
-                                    <div className="text-gray-200 text-lg mb-4 font-semibold capitalize">
+                                  <div key={key} className="bg-muted rounded-lg p-6 border border-border">
+                                    <div className="text-foreground text-lg mb-4 font-semibold capitalize">
                                       {key.replace(/_/g, ' ')}:
                                     </div>
-                                    <div className="bg-gray-900/50 rounded-md p-4 border border-gray-700">
+                                    <div className="bg-card rounded-md p-4 border border-border">
                                       <div className="text-center">
                                         <BlockMath math={formula} />
                                       </div>
@@ -548,17 +548,17 @@ def catastrophe_modeling(exposure_data, historical_events, simulation_years=1000
                             )}
 
                             {(activeTabs[topic.id] === 'code' || (!activeTabs[topic.id] && !topic.details.formulas)) && (
-                              <div className="bg-gray-800/50 rounded-lg border border-gray-600">
-                                <div className="bg-gray-700/50 px-4 py-3 border-b border-gray-600 rounded-t-lg">
+                              <div className="bg-muted rounded-lg border border-border">
+                                <div className="bg-card px-4 py-3 border-b border-border rounded-t-lg">
                                   <div className="flex items-center gap-2">
                                     <div className="w-3 h-3 bg-red-500 rounded-full"></div>
                                     <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
                                     <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                                    <span className="text-gray-200 text-sm ml-2 font-medium">Python</span>
+                                    <span className="text-muted-foreground text-sm ml-2 font-medium">Python</span>
                                   </div>
                                 </div>
                                 <div className="p-6">
-                                  <pre className="text-green-400 text-sm overflow-x-auto leading-relaxed">
+                                  <pre className="text-green-700 text-sm overflow-x-auto leading-relaxed">
                                     <code>{topic.details.codeExample}</code>
                                   </pre>
                                 </div>
@@ -578,32 +578,32 @@ def catastrophe_modeling(exposure_data, historical_events, simulation_years=1000
         {/* Applications Section */}
         <div id="applications" className="max-w-7xl mx-auto px-6 lg:px-8 pb-20">
           <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-white mb-4">💼 Professional Applications</h2>
-            <p className="text-gray-200 text-lg max-w-3xl mx-auto">
+            <h2 className="text-4xl font-bold text-foreground mb-4">💼 Professional Applications</h2>
+            <p className="text-muted-foreground text-lg max-w-3xl mx-auto">
               Discover how actuarial science and risk analysis are applied across different areas of insurance and finance.
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 gap-8">
             {applications.map((app, index) => (
-              <div key={index} className="bg-white/2 backdrop-blur-sm rounded-2xl p-6 border border-white/5 hover:bg-white/10 transition-colors">
-                <h3 className="text-xl font-bold text-white mb-3">{app.title}</h3>
-                <p className="text-gray-200 mb-4">{app.description}</p>
+              <div key={index} className="bg-card rounded-2xl p-6 border border-border hover:bg-muted transition-colors">
+                <h3 className="text-xl font-bold text-foreground mb-3">{app.title}</h3>
+                <p className="text-muted-foreground mb-4">{app.description}</p>
                 
                 <div className="mb-4">
-                  <h4 className="text-sm font-semibold text-blue-400 mb-2">Common Tools</h4>
+                  <h4 className="text-sm font-semibold text-primary mb-2">Common Tools</h4>
                   <div className="flex flex-wrap gap-2">
                     {app.tools.map((tool, idx) => (
-                      <span key={idx} className="px-3 py-1 bg-blue-500/20 text-blue-300 text-xs rounded-full">
+                      <span key={idx} className="px-3 py-1 bg-primary/15 text-primary text-xs rounded-full">
                         {tool}
                       </span>
                     ))}
                   </div>
                 </div>
                 
-                <div className="bg-gray-900/30 rounded-lg p-3 border border-gray-700">
-                  <h4 className="text-sm font-semibold text-green-400 mb-1">Example</h4>
-                  <p className="text-gray-200 text-sm">{app.example}</p>
+                <div className="bg-card rounded-lg p-3 border border-border">
+                  <h4 className="text-sm font-semibold text-green-700 mb-1">Example</h4>
+                  <p className="text-muted-foreground text-sm">{app.example}</p>
                 </div>
               </div>
             ))}
@@ -612,28 +612,28 @@ def catastrophe_modeling(exposure_data, historical_events, simulation_years=1000
 
         {/* Learning Path Section */}
         <div className="max-w-7xl mx-auto px-6 lg:px-8 pb-20">
-          <div className="bg-gradient-to-r from-purple-600/20 to-blue-600/20 rounded-2xl p-8 border border-purple-500/30">
-            <h3 className="text-2xl font-bold text-white mb-6 text-center">• Learning Path</h3>
+          <div className="bg-card rounded-2xl p-8 border border-border">
+            <h3 className="text-2xl font-bold text-foreground mb-6 text-center">• Learning Path</h3>
             <div className="grid md:grid-cols-4 gap-6">
-              <div className="bg-white/2 rounded-xl p-4 border border-white/5 text-center">
+              <div className="bg-muted rounded-xl p-4 border border-border text-center">
                 <div className="text-2xl mb-2">1</div>
-                <h4 className="text-white font-semibold mb-2">Probability</h4>
-                <p className="text-gray-200 text-sm">Basic probability theory</p>
+                <h4 className="text-foreground font-semibold mb-2">Probability</h4>
+                <p className="text-muted-foreground text-sm">Basic probability theory</p>
               </div>
-              <div className="bg-white/2 rounded-xl p-4 border border-white/5 text-center">
+              <div className="bg-muted rounded-xl p-4 border border-border text-center">
                 <div className="text-2xl mb-2">2</div>
-                <h4 className="text-white font-semibold mb-2">Actuarial Math</h4>
-                <p className="text-gray-200 text-sm">Life contingencies, annuities</p>
+                <h4 className="text-foreground font-semibold mb-2">Actuarial Math</h4>
+                <p className="text-muted-foreground text-sm">Life contingencies, annuities</p>
               </div>
-              <div className="bg-white/2 rounded-xl p-4 border border-white/5 text-center">
+              <div className="bg-muted rounded-xl p-4 border border-border text-center">
                 <div className="text-2xl mb-2">3</div>
-                <h4 className="text-white font-semibold mb-2">Risk Models</h4>
-                <p className="text-gray-200 text-sm">Pricing, reserving, solvency</p>
+                <h4 className="text-foreground font-semibold mb-2">Risk Models</h4>
+                <p className="text-muted-foreground text-sm">Pricing, reserving, solvency</p>
               </div>
-              <div className="bg-white/2 rounded-xl p-4 border border-white/5 text-center">
+              <div className="bg-muted rounded-xl p-4 border border-border text-center">
                 <div className="text-2xl mb-2">4</div>
-                <h4 className="text-white font-semibold mb-2">Advanced Topics</h4>
-                <p className="text-gray-200 text-sm">Catastrophe modeling, regulation</p>
+                <h4 className="text-foreground font-semibold mb-2">Advanced Topics</h4>
+                <p className="text-muted-foreground text-sm">Catastrophe modeling, regulation</p>
               </div>
             </div>
           </div>
@@ -690,14 +690,14 @@ def catastrophe_modeling(exposure_data, historical_events, simulation_years=1000
 
         {/* Call to Action */}
         <div className="max-w-7xl mx-auto px-6 lg:px-8 pb-20 text-center">
-          <h3 className="text-2xl font-bold text-white mb-4">Ready to Master Insurance Risk Analysis?</h3>
-          <p className="text-gray-200 mb-6 max-w-2xl mx-auto">
+          <h3 className="text-2xl font-bold text-foreground mb-4">Ready to Master Insurance Risk Analysis?</h3>
+          <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
             Build expertise in actuarial science and risk management techniques used by insurance companies and financial institutions.
           </p>
           <div className="flex justify-center gap-4">
             <Button
               asChild
-              className="rounded-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500"
+              className="rounded-full bg-primary hover:bg-primary/90 text-primary-foreground"
             >
               <Link href="/learn/statistics-probability">
                 Start with Statistics
@@ -705,7 +705,7 @@ def catastrophe_modeling(exposure_data, historical_events, simulation_years=1000
             </Button>
             <Button
               asChild
-              className="rounded-full bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-500 hover:to-gray-600"
+              className="rounded-full bg-muted hover:bg-muted text-foreground"
             >
               <Link href="/learn">
                 Back to Learn

@@ -1,10 +1,11 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Particles, initParticlesEngine } from "@tsparticles/react";
 import type { ISourceOptions, Engine } from "@tsparticles/engine";
 import { loadSlim } from "@tsparticles/slim";
 import { cn } from "@/lib/utils";
+import { useTheme } from "next-themes";
 
 type PositionMode = "fixed" | "absolute";
 
@@ -31,15 +32,18 @@ export const HeroBackground: React.FC<HeroBackgroundProps> = ({
   position = "fixed",
   blendModeClassName = "mix-blend-screen",
 }) => {
+  const { theme } = useTheme();
+  const [mounted, setMounted] = useState(false);
   useEffect(() => {
+    setMounted(true);
     initParticlesEngine(async (engine: Engine) => {
       await loadSlim(engine);
       console.log("Particles engine loaded successfully");
     });
   }, []);
-  const options: ISourceOptions = {
+  const options: ISourceOptions = useMemo(() => ({
     background: {
-      color: backgroundColor,
+      color: theme === "light" ? "#ffffff" : backgroundColor,
     },
     particles: {
       number: {
@@ -47,11 +51,11 @@ export const HeroBackground: React.FC<HeroBackgroundProps> = ({
         density: { enable: true }, // maintain visual density across screen sizes
       },
       color: {
-        value: "#ffffff",
+        value: theme === "light" ? "#000000" : "#ffffff",
       },
       links: {
         enable: true,
-        color: "#ffffff",
+        color: theme === "light" ? "#000000" : "#ffffff",
         distance: 160,
         opacity: 0.55,
         width: 1.2,
@@ -84,25 +88,29 @@ export const HeroBackground: React.FC<HeroBackgroundProps> = ({
         },
       },
     },
-  };
+  }), [theme, backgroundColor]);
 
   return (
     <div
       className={cn(
         position === "fixed" ? "fixed inset-0" : "absolute inset-0",
         "pointer-events-none",
-        blendModeClassName,
+        mounted && theme !== "light" ? blendModeClassName : "",
         className,
       )}
-      style={{ backgroundColor }}
+      // Keep SSR and first client render identical to avoid hydration mismatch
+      // Background is driven by the particles canvas; wrapper stays transparent
+      style={{ backgroundColor: "transparent" }}
     >
-      <Particles 
-        id="hero-background" 
-        options={options}
-        particlesLoaded={async (container) => {
-          console.log("Particles loaded:", container);
-        }}
-      />
+      {mounted && (
+        <Particles
+          id="hero-background"
+          options={options}
+          particlesLoaded={async (container) => {
+            console.log("Particles loaded:", container);
+          }}
+        />
+      )}
     </div>
   );
 };

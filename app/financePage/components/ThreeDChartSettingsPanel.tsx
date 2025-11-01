@@ -154,12 +154,12 @@ export default function ThreeDChartSettingsPanel({ onUpdate, currentSettings }: 
   );
 
   return (
-    <div className="rounded-3xl border border-white/10 bg-black/40 backdrop-blur-xl p-8 shadow-2xl">
-      <h2 className="text-2xl font-bold mb-6 text-white">3D Chart Settings</h2>
+    <div className="rounded-3xl border border-border bg-card p-8 shadow-2xl">
+      <h2 className="text-2xl font-bold mb-6">3D Chart Settings</h2>
 
       {/* Stock Symbol */}
       <div className="mb-6">
-        <label className="block text-sm text-gray-300 mb-2">Stock Symbol</label>
+        <label className="block text-sm text-muted-foreground mb-2">Stock Symbol</label>
         <div className="relative">
           <input
             type="text"
@@ -171,10 +171,10 @@ export default function ThreeDChartSettingsPanel({ onUpdate, currentSettings }: 
             }}
             onFocus={() => setShowDropdown(true)}
             placeholder="Search stocks (e.g., AAPL, GOOGL)"
-            className="w-full rounded-xl border border-white/20 bg-black/40 p-4 text-white placeholder-gray-400 focus:border-blue-500 focus:outline-none"
+            className="w-full rounded-xl border border-input bg-input p-4 text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none"
           />
           {showDropdown && (
-            <div className="absolute top-full left-0 right-0 mt-1 bg-black/90 border border-white/20 rounded-xl overflow-hidden z-10 max-h-48 overflow-y-auto">
+            <div className="absolute top-full left-0 right-0 mt-1 bg-card border border-border rounded-xl overflow-hidden z-10 max-h-48 overflow-y-auto">
               {filteredStocks.map((stock) => (
                 <button
                   key={stock.symbol}
@@ -183,10 +183,10 @@ export default function ThreeDChartSettingsPanel({ onUpdate, currentSettings }: 
                     setSearch(stock.symbol);
                     setShowDropdown(false);
                   }}
-                  className="w-full text-left px-4 py-3 text-white hover:bg-white/10 transition-colors"
+                  className="w-full text-left px-4 py-3 hover:bg-muted transition-colors"
                 >
-                  <div className="font-semibold">{stock.symbol}</div>
-                  <div className="text-sm text-gray-400">{stock.name}</div>
+                  <div className="font-semibold text-primary">{stock.symbol}</div>
+                  <div className="text-sm text-muted-foreground">{stock.name}</div>
                 </button>
               ))}
             </div>
@@ -196,11 +196,11 @@ export default function ThreeDChartSettingsPanel({ onUpdate, currentSettings }: 
 
       {/* Chart Type */}
       <div className="mb-6">
-        <label className="block text-sm text-gray-300 mb-2">Chart Type</label>
+        <label className="block text-sm text-muted-foreground mb-2">Chart Type</label>
         <select
           value={chartType}
           onChange={(e) => setChartType(e.target.value as "candlestick" | "area")}
-          className="w-full rounded-xl border border-white/20 bg-black/40 p-4 text-white focus:border-blue-500 focus:outline-none"
+          className="w-full rounded-xl border border-input bg-input p-4 text-foreground focus:border-primary focus:outline-none"
         >
           <option value="candlestick">Candlestick</option>
           <option value="area">Area</option>
@@ -209,11 +209,11 @@ export default function ThreeDChartSettingsPanel({ onUpdate, currentSettings }: 
 
       {/* Time Period */}
       <div className="mb-6">
-        <label className="block text-sm text-gray-300 mb-2">Time Period</label>
+        <label className="block text-sm text-muted-foreground mb-2">Time Period</label>
         <select
           value={timePeriod}
           onChange={(e) => setTimePeriod(e.target.value)}
-          className="w-full rounded-xl border border-white/20 bg-black/40 p-4 text-white focus:border-blue-500 focus:outline-none"
+          className="w-full rounded-xl border border-input bg-input p-4 text-foreground focus:border-primary focus:outline-none"
         >
           <option value="1d">1 Day</option>
           <option value="5d">5 Days</option>
@@ -227,13 +227,13 @@ export default function ThreeDChartSettingsPanel({ onUpdate, currentSettings }: 
 
       {/* Overlays */}
       <div className="mb-6">
-        <label className="block text-sm text-gray-300 mb-2">Overlays</label>
+        <label className="block text-sm text-muted-foreground mb-2">Overlays</label>
         {overlays.map((overlay: string, i: number) => (
           <select
             key={i}
             value={overlay}
             onChange={(e) => handleOverlayChange(i, e.target.value)}
-            className="w-full rounded-xl border border-white/20 bg-black/40 p-3 text-white mb-2 focus:border-blue-500 focus:outline-none"
+            className="w-full rounded-xl border border-input bg-input p-3 text-foreground mb-2 focus:border-primary focus:outline-none"
           >
             <option value="">None</option>
             <option value="sma20">SMA 20</option>
@@ -248,13 +248,13 @@ export default function ThreeDChartSettingsPanel({ onUpdate, currentSettings }: 
 
       {/* Indicators */}
       <div className="mb-6">
-        <label className="block text-sm text-gray-300 mb-2">Indicators</label>
+        <label className="block text-sm text-muted-foreground mb-2">Indicators</label>
         {indicators.map((indicator: string, i: number) => (
           <select
             key={i}
             value={indicator}
             onChange={(e) => handleIndicatorChange(i, e.target.value)}
-            className="w-full rounded-xl border border-white/20 bg-black/40 p-3 text-white mb-2 focus:border-blue-500 focus:outline-none"
+            className="w-full rounded-xl border border-input bg-input p-3 text-foreground mb-2 focus:border-primary focus:outline-none"
           >
             <option value="">None</option>
             <option value="rsi">RSI</option>
@@ -271,10 +271,10 @@ export default function ThreeDChartSettingsPanel({ onUpdate, currentSettings }: 
 
       {/* 3D Scaling */}
       <div className="mb-6">
-        <h3 className="text-lg font-semibold text-white mb-4">3D Scaling</h3>
+        <h3 className="text-lg font-semibold mb-4">3D Scaling</h3>
         <div className="grid grid-cols-3 gap-4">
           <div>
-            <label className="block text-sm text-gray-300 mb-2">X Scale</label>
+            <label className="block text-sm text-muted-foreground mb-2">X Scale</label>
             <input
               type="range"
               min="0.5"
@@ -284,10 +284,10 @@ export default function ThreeDChartSettingsPanel({ onUpdate, currentSettings }: 
               onChange={(e) => setXScale(parseFloat(e.target.value))}
               className="w-full"
             />
-            <div className="text-xs text-gray-400 text-center mt-1">{xScale.toFixed(1)}</div>
+            <div className="text-xs text-muted-foreground text-center mt-1">{xScale.toFixed(1)}</div>
           </div>
           <div>
-            <label className="block text-sm text-gray-300 mb-2">Y Scale</label>
+            <label className="block text-sm text-muted-foreground mb-2">Y Scale</label>
             <input
               type="range"
               min="0.5"
@@ -297,10 +297,10 @@ export default function ThreeDChartSettingsPanel({ onUpdate, currentSettings }: 
               onChange={(e) => setYScale(parseFloat(e.target.value))}
               className="w-full"
             />
-            <div className="text-xs text-gray-400 text-center mt-1">{yScale.toFixed(1)}</div>
+            <div className="text-xs text-muted-foreground text-center mt-1">{yScale.toFixed(1)}</div>
           </div>
           <div>
-            <label className="block text-sm text-gray-300 mb-2">Z Scale</label>
+            <label className="block text-sm text-muted-foreground mb-2">Z Scale</label>
             <input
               type="range"
               min="0.5"
@@ -310,7 +310,7 @@ export default function ThreeDChartSettingsPanel({ onUpdate, currentSettings }: 
               onChange={(e) => setZScale(parseFloat(e.target.value))}
               className="w-full"
             />
-            <div className="text-xs text-gray-400 text-center mt-1">{zScale.toFixed(1)}</div>
+            <div className="text-xs text-muted-foreground text-center mt-1">{zScale.toFixed(1)}</div>
           </div>
         </div>
       </div>
@@ -318,7 +318,7 @@ export default function ThreeDChartSettingsPanel({ onUpdate, currentSettings }: 
       {/* Generate Chart Button */}
       <button
         onClick={handleSubmit}
-        className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-4 px-6 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl"
+        className="w-full bg-primary hover:opacity-90 text-primary-foreground font-semibold py-4 px-6 rounded-xl transition-all duration-300 shadow-lg"
       >
         Generate 3D Chart
       </button>

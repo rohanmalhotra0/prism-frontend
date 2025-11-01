@@ -49,12 +49,6 @@ function NavigationComponent({
       description: "Regression, simulation, and time-series forecasting.",
       icon: FlaskConical,
     },
-    {
-      title: "Backtest",
-      href: "/backtesting",
-      description: "Upload datasets, define strategies, and simulate historical performance.",
-      icon: TestTube,
-    },
     /* 
     {
       title: "₿ Crypto Modeling",
@@ -88,12 +82,6 @@ function NavigationComponent({
       href: "/financePage",
       description: "Quantitative 2D/3D models for corporate finance and forecasting.",
       icon: TrendingUp,
-    },
-    {
-      title: "Business Metrics",
-      href: "/business",
-      description: "Predictive analytics and interactive business intelligence.",
-      icon: BarChart3,
     },
   ],
   community = [

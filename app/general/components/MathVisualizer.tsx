@@ -593,34 +593,34 @@ export default function MathVisualizer({ sharedData, setSharedData }: MathVisual
   // -------- Render --------
   if (!mathReady) {
     return (
-      <div className="min-h-[80vh] flex items-center justify-center bg-black text-white/80">
+      <div className="min-h-[80vh] flex items-center justify-center bg-background text-foreground/80">
         Loading…
       </div>
     );
   }
 
   return (
-    <div className="min-h-[90vh] bg-black text-white grid grid-cols-12 gap-4 p-4">
+    <div className="min-h-[90vh] bg-background text-foreground grid grid-cols-12 gap-4 p-4">
       {/* Sidebar (Desmos-like, dark) */}
-      <aside className="col-span-4 lg:col-span-3 xl:col-span-3 bg-[#0b0f17] border border-white/10 rounded-2xl p-4 space-y-4">
+      <aside className="col-span-4 lg:col-span-3 xl:col-span-3 bg-card border border-border rounded-2xl p-4 space-y-4">
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-semibold">Math Visualizer</h2>
           <div className="flex items-center gap-2">
-            <span className={`text-sm ${!mode3D ? "text-white" : "text-white/40"}`}>2D</span>
+            <span className={`text-sm ${!mode3D ? "text-foreground" : "text-muted-foreground"}`}>2D</span>
             <button
               onClick={() => setMode3D((v) => !v)}
-              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${mode3D ? "bg-[#1877F2]" : "bg-gray-600"}`}
+              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${mode3D ? "bg-primary" : "bg-muted"}`}
             >
               <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${mode3D ? "translate-x-6" : "translate-x-1"}`} />
             </button>
-            <span className={`text-sm ${mode3D ? "text-white" : "text-white/40"}`}>3D</span>
+            <span className={`text-sm ${mode3D ? "text-foreground" : "text-muted-foreground"}`}>3D</span>
           </div>
         </div>
 
         <div className="flex items-center gap-2">
           <button
             onClick={addEquation}
-            className="flex-1 py-2 rounded-xl bg-[#1877F2] hover:bg-[#1877F2]"
+            className="flex-1 py-2 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground"
           >
             + Add Expression
           </button>
@@ -629,7 +629,7 @@ export default function MathVisualizer({ sharedData, setSharedData }: MathVisual
               setEquations([]);
               setActiveId(null);
             }}
-            className="py-2 px-3 rounded-xl bg-gray-700 hover:bg-gray-600 border border-white/10"
+            className="py-2 px-3 rounded-xl bg-muted hover:bg-muted border border-border"
             title="Clear all expressions"
           >
             Clear All
@@ -642,7 +642,7 @@ export default function MathVisualizer({ sharedData, setSharedData }: MathVisual
             return (
               <div
                 key={eq.id}
-                className={`rounded-xl border ${active ? "border-[#1877F2] bg-[#1877F2]/10" : "border-white/10 bg-[#101826]"} p-3`}
+                className={`rounded-xl border ${active ? "border-primary bg-primary/10" : "border-border bg-card"} p-3`}
                 onClick={() => setActiveId(eq.id)}
               >
                 <div className="flex items-center gap-2 mb-2">
@@ -673,7 +673,7 @@ export default function MathVisualizer({ sharedData, setSharedData }: MathVisual
                   </button>
                 </div>
                 <input
-                  className="w-full bg-[#0b111a] border border-white/10 rounded-lg px-3 py-2 font-mono text-sm focus:outline-none focus:border-[#1877F2]"
+                  className="w-full bg-input border border-input rounded-lg px-3 py-2 font-mono text-sm focus:outline-none focus:border-ring"
                   value={eq.expr}
                   onChange={(e) => updateEquation(eq.id, { expr: e.target.value })}
                   placeholder={mode3D ? "z = f(x, y, t)  or  F(x,y,z,t)=0" : "y = f(x, t)  or  F(x,y,t)=0"}
@@ -690,7 +690,7 @@ export default function MathVisualizer({ sharedData, setSharedData }: MathVisual
         </div>
 
         {/* Controls */}
-        <div className="rounded-2xl border border-white/10 p-3 space-y-3">
+        <div className="rounded-2xl border border-border p-3 space-y-3 bg-card">
           <div className="text-sm font-semibold">Parameter t</div>
           <div className="flex items-center gap-3">
             <input
@@ -704,7 +704,7 @@ export default function MathVisualizer({ sharedData, setSharedData }: MathVisual
           <div className="flex items-center gap-3">
             <button
               onClick={() => setAnim((v) => !v)}
-              className={`px-3 py-1.5 rounded-lg ${anim ? "bg-[#1877F2] hover:bg-[#1877F2]" : "bg-gray-700 hover:bg-gray-600"}`}
+            className={`px-3 py-1.5 rounded-lg ${anim ? "bg-primary hover:bg-primary/90 text-primary-foreground" : "bg-muted hover:bg-muted"}`}
             >
               {anim ? "Stop" : "Animate"}
             </button>
@@ -720,34 +720,34 @@ export default function MathVisualizer({ sharedData, setSharedData }: MathVisual
           </div>
         </div>
 
-        <div className="rounded-2xl border border-white/10 p-3 space-y-3">
+        <div className="rounded-2xl border border-border p-3 space-y-3 bg-card">
           <div className="text-sm font-semibold">Ranges & Resolution</div>
           {/* Simplified numeric inputs only */}
           {!mode3D ? (
             <div className="grid grid-cols-2 gap-2 text-sm">
               <label className="flex items-center gap-2">
                 x-min
-                <input type="number" className="bg-[#0b111a] w-full px-2 py-1 rounded border border-white/10"
+                <input type="number" className="bg-input w-full px-2 py-1 rounded border border-input"
                   value={xRange.min} onChange={(e) => setXRange({ ...xRange, min: +e.target.value })}/>
               </label>
               <label className="flex items-center gap-2">
                 x-max
-                <input type="number" className="bg-[#0b111a] w-full px-2 py-1 rounded border border-white/10"
+                <input type="number" className="bg-input w-full px-2 py-1 rounded border border-input"
                   value={xRange.max} onChange={(e) => setXRange({ ...xRange, max: +e.target.value })}/>
               </label>
               <label className="flex items-center gap-2">
                 y-min
-                <input type="number" className="bg-[#0b111a] w-full px-2 py-1 rounded border border-white/10"
+                <input type="number" className="bg-input w-full px-2 py-1 rounded border border-input"
                   value={yRange.min} onChange={(e) => setYRange({ ...yRange, min: +e.target.value })}/>
               </label>
               <label className="flex items-center gap-2">
                 y-max
-                <input type="number" className="bg-[#0b111a] w-full px-2 py-1 rounded border border-white/10"
+                <input type="number" className="bg-input w-full px-2 py-1 rounded border border-input"
                   value={yRange.max} onChange={(e) => setYRange({ ...yRange, max: +e.target.value })}/>
               </label>
               <label className="flex items-center gap-2 col-span-2">
                 samples
-                <input type="number" className="bg-[#0b111a] w-full px-2 py-1 rounded border border-white/10"
+                <input type="number" className="bg-input w-full px-2 py-1 rounded border border-input"
                   value={res2D} onChange={(e) => setRes2D(parseInt(e.target.value) || 200)}/>
               </label>
             </div>
@@ -755,12 +755,12 @@ export default function MathVisualizer({ sharedData, setSharedData }: MathVisual
             <div className="grid grid-cols-2 gap-2 text-sm">
               <label className="flex items-center gap-2">
                 x-min
-                <input type="number" className="bg-[#0b111a] w-full px-2 py-1 rounded border border-white/10"
+                <input type="number" className="bg-input w-full px-2 py-1 rounded border border-input"
                   value={x3.min} onChange={(e) => setX3({ ...x3, min: +e.target.value })}/>
               </label>
               <label className="flex items-center gap-2">
                 x-max
-                <input type="number" className="bg-[#0b111a] w-full px-2 py-1 rounded border border-white/10"
+                <input type="number" className="bg-input w-full px-2 py-1 rounded border border-input"
                   value={x3.max} onChange={(e) => setX3({ ...x3, max: +e.target.value })}/>
               </label>
               <label className="flex items-center gap-2">
@@ -794,7 +794,7 @@ export default function MathVisualizer({ sharedData, setSharedData }: MathVisual
       </aside>
 
       {/* Plot area */}
-      <main className="col-span-8 lg:col-span-9 xl:col-span-9 bg-[#0b0f17] border border-white/10 rounded-2xl overflow-hidden">
+      <main className="col-span-8 lg:col-span-9 xl:col-span-9 bg-card border border-border rounded-2xl overflow-hidden">
         <div className="h-[78vh] w-full">
           <Plot data={traces} layout={layout} config={config} style={{ width: "100%", height: "100%" }} useResizeHandler />
         </div>
