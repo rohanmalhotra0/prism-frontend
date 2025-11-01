@@ -1,4 +1,4 @@
-name: Contribution Heartbeat (Random 0-5 Daily)
+name: Contribution Heartbeat (Random 0-10 Daily)
 
 on:
   schedule:
@@ -19,7 +19,7 @@ jobs:
           persist-credentials: true
           fetch-depth: 0
 
-      - name: Random 0-5 commits
+      - name: Random 0-10 commits
         shell: bash
         env:
           GH_NAME: rohanmalhotra0
@@ -34,7 +34,7 @@ jobs:
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           fi
 
-          COMMITS=$((RANDOM % 6))
+          COMMITS=$((RANDOM % 11))
           echo "Planning to create $COMMITS commits today"
 
           if [ "$COMMITS" -gt 0 ]; then
