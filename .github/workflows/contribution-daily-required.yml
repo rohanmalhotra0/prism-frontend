@@ -34,7 +34,7 @@ jobs:
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           fi
 
-          COMMITS=$((15 + RANDOM % 11))
+          COMMITS=$((3 + RANDOM % 11))
           echo "Planning to create $COMMITS commits today"
 
           if [ "$COMMITS" -gt 0 ]; then
