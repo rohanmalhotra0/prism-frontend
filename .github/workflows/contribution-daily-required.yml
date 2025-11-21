@@ -3,7 +3,7 @@ name: Contribution Heartbeat (Random 15-25 Daily)
 on:
   schedule:
     # Runs once daily at 12:00 UTC (07:00 AM EST)
-    - cron: '0 12 * * *'
+    - cron: "0 12 * * *"
   workflow_dispatch:
 
 permissions:
@@ -34,7 +34,7 @@ jobs:
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           fi
 
-          COMMITS=$((3 + RANDOM % 11))
+          COMMITS=$((0 + RANDOM % 5))
           echo "Planning to create $COMMITS commits today"
 
           if [ "$COMMITS" -gt 0 ]; then
@@ -49,5 +49,3 @@ jobs:
           else
             echo "Unexpected: zero commits chosen though min is 15."
           fi
-
-
