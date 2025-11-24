@@ -3,7 +3,7 @@
 import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, Html, Text, PerspectiveCamera } from "@react-three/drei";
 import * as THREE from "three";
-import { useMemo, useRef, useState, useCallback } from "react";
+import { useMemo, useRef, useState, useCallback, useEffect } from "react";
 
 type Row = {
   Date: string;
@@ -567,6 +567,20 @@ export default function ThreeStockChart({
   const effectiveHeight = height * (threeDSettings?.y ?? 1);
   const effectiveDepth = 8 * (threeDSettings?.z ?? 1);
 
+  // Detect WebGL support and gracefully fallback if unavailable
+  const [webglSupported, setWebglSupported] = useState<boolean>(true);
+  useEffect(() => {
+    try {
+      const canvas = document.createElement("canvas");
+      const gl =
+        (canvas.getContext("webgl") as WebGLRenderingContext | null) ||
+        (canvas.getContext("experimental-webgl") as WebGLRenderingContext | null);
+      setWebglSupported(!!gl);
+    } catch {
+      setWebglSupported(false);
+    }
+  }, []);
+
   const resetCamera = useCallback(() => {
     if (controlsRef.current) {
       // Reset to a head-on view facing the chart
@@ -580,9 +594,22 @@ export default function ThreeStockChart({
     }
   }, [width, effectiveHeight, effectiveDepth]);
 
+  if (!webglSupported) {
+    return (
+      <div className="w-full h-[700px] rounded-xl overflow-hidden border border-border bg-card flex items-center justify-center p-6">
+        <div className="text-center space-y-2 max-w-xl">
+          <div className="font-semibold text-foreground">3D view requires WebGL</div>
+          <p className="text-sm text-muted-foreground">
+            It looks like your browser or device has WebGL disabled or unsupported. Enable hardware acceleration and WebGL in your browser settings, or try a modern browser like Chrome, Edge, or Firefox. The 2D chart should continue to work.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="w-full h-[700px] rounded-xl overflow-hidden border border-border bg-card relative">
-      <Canvas shadows dpr={[1, 2]}>
+      <Canvas shadows dpr={[1, 1.5]}>
         <PerspectiveCamera
           makeDefault
           position={[width * 0.5, effectiveHeight * 0.5, effectiveDepth * 10]}
