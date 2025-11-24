@@ -3,7 +3,35 @@
 import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, Html, Text, PerspectiveCamera } from "@react-three/drei";
 import * as THREE from "three";
-import { useMemo, useRef, useState, useCallback, useEffect } from "react";
+import { useMemo, useRef, useState, useCallback, useEffect, Suspense } from "react";
+import React from "react";
+
+class R3FErrorBoundary extends React.Component<{ children: React.ReactNode }, { hasError: boolean; error?: any }> {
+  constructor(props: { children: React.ReactNode }) {
+    super(props);
+    this.state = { hasError: false, error: undefined };
+  }
+  static getDerivedStateFromError(error: any) {
+    return { hasError: true, error };
+  }
+  componentDidCatch() {}
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="w-full h-[700px] rounded-xl overflow-hidden border border-border bg-card flex items-center justify-center p-6">
+          <div className="text-center space-y-2 max-w-xl">
+            <div className="font-semibold text-foreground">3D renderer failed to start</div>
+            <p className="text-sm text-muted-foreground">
+              This can happen if WebGL is restricted or the GPU/driver is outdated. Try refreshing,
+              switching browsers, or enabling hardware acceleration. The 2D chart will continue to work.
+            </p>
+          </div>
+        </div>
+      );
+    }
+    return this.props.children as any;
+  }
+}
 
 type Row = {
   Date: string;
@@ -609,70 +637,90 @@ export default function ThreeStockChart({
 
   return (
     <div className="w-full h-[700px] rounded-xl overflow-hidden border border-border bg-card relative">
-      <Canvas shadows dpr={[1, 1.5]}>
-        <PerspectiveCamera
-          makeDefault
-          position={[width * 0.5, effectiveHeight * 0.5, effectiveDepth * 10]}
-          fov={45}
-        />
+      <R3FErrorBoundary>
+        <Suspense
+          fallback={
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="text-sm text-muted-foreground">Loading 3D renderer…</div>
+            </div>
+          }
+        >
+          <Canvas
+            shadows
+            dpr={[1, 1.5]}
+            gl={{
+              antialias: true,
+              alpha: true,
+              preserveDrawingBuffer: false,
+              powerPreference: "high-performance",
+              failIfMajorPerformanceCaveat: false,
+            }}
+          >
+            <PerspectiveCamera
+              makeDefault
+              position={[width * 0.5, effectiveHeight * 0.5, effectiveDepth * 10]}
+              fov={45}
+            />
 
-        {/* Enhanced Lighting */}
-        <ambientLight intensity={0.4} />
-        <directionalLight position={[10, 15, 10]} intensity={1.0} castShadow />
-        <pointLight position={[-10, 10, 10]} intensity={0.3} />
-        <hemisphereLight intensity={0.2} color="#4a90e2" groundColor="#1f2937" />
+            {/* Enhanced Lighting */}
+            <ambientLight intensity={0.4} />
+            <directionalLight position={[10, 15, 10]} intensity={1.0} castShadow />
+            <pointLight position={[-10, 10, 10]} intensity={0.3} />
+            <hemisphereLight intensity={0.2} color="#4a90e2" groundColor="#1f2937" />
 
-        {/* 3D Grid System */}
-        <Grid3D width={width} height={effectiveHeight} depth={effectiveDepth} />
+            {/* 3D Grid System */}
+            <Grid3D width={width} height={effectiveHeight} depth={effectiveDepth} />
         
-        {/* 3D Axes */}
-        <Axes3D width={width} height={effectiveHeight} depth={effectiveDepth} />
+            {/* 3D Axes */}
+            <Axes3D width={width} height={effectiveHeight} depth={effectiveDepth} />
 
-        {/* Chart Title */}
-        <Text position={[width / 2, effectiveHeight + 4, 0]} fontSize={1.4} color="#0f172a" anchorX="center" fontWeight="bold">
-          {symbol} • 3D {chartType === "candlestick" ? "Candlestick" : "Area"} Chart
-        </Text>
+            {/* Chart Title */}
+            <Text position={[width / 2, effectiveHeight + 4, 0]} fontSize={1.4} color="#0f172a" anchorX="center" fontWeight="bold">
+              {symbol} • 3D {chartType === "candlestick" ? "Candlestick" : "Area"} Chart
+            </Text>
 
-        {/* Enhanced Axis Labels */}
-        <Text position={[width/2, -3, 0]} fontSize={1.0} color="#60a5fa" anchorX="center" fontWeight="bold">
-          Time (X)
-        </Text>
-        <Text position={[-3, effectiveHeight/2, 0]} fontSize={1.0} color="#34d399" anchorX="center" rotation={[0, 0, Math.PI/2]} fontWeight="bold">
-          Price (Y)
-        </Text>
-        <Text position={[0, -3, effectiveDepth/2]} fontSize={1.0} color="#f472b6" anchorX="center" rotation={[0, Math.PI/2, 0]} fontWeight="bold">
-          Volume/Depth (Z)
-        </Text>
+            {/* Enhanced Axis Labels */}
+            <Text position={[width/2, -3, 0]} fontSize={1.0} color="#60a5fa" anchorX="center" fontWeight="bold">
+              Time (X)
+            </Text>
+            <Text position={[-3, effectiveHeight/2, 0]} fontSize={1.0} color="#34d399" anchorX="center" rotation={[0, 0, Math.PI/2]} fontWeight="bold">
+              Price (Y)
+            </Text>
+            <Text position={[0, -3, effectiveDepth/2]} fontSize={1.0} color="#f472b6" anchorX="center" rotation={[0, Math.PI/2, 0]} fontWeight="bold">
+              Volume/Depth (Z)
+            </Text>
 
-        {/* Chart Content */}
-        {chartType === "candlestick" ? (
-          <Candles
-            data={data}
-            gap={gap}
-            baseThickness={baseThickness}
-            height={height}
-            threeDSettings={threeDSettings}
-          />
-        ) : (
-          <AreaChart data={data} height={height} gap={gap} threeDSettings={threeDSettings} />
-        )}
+            {/* Chart Content */}
+            {chartType === "candlestick" ? (
+              <Candles
+                data={data}
+                gap={gap}
+                baseThickness={baseThickness}
+                height={height}
+                threeDSettings={threeDSettings}
+              />
+            ) : (
+              <AreaChart data={data} height={height} gap={gap} threeDSettings={threeDSettings} />
+            )}
 
-        {/* Enhanced Orbit Controls */}
-        <OrbitControls
-          ref={controlsRef}
-          enableDamping
-          dampingFactor={0.05}
-          minDistance={2}
-          maxDistance={100}
-          maxPolarAngle={Math.PI * 0.6}
-          minPolarAngle={Math.PI * 0.2}
-          enablePan={true}
-          panSpeed={0.8}
-          rotateSpeed={0.8}
-          zoomSpeed={1.5}
-          target={[width / 2, effectiveHeight / 2, 0]}
-        />
-      </Canvas>
+            {/* Enhanced Orbit Controls */}
+            <OrbitControls
+              ref={controlsRef}
+              enableDamping
+              dampingFactor={0.05}
+              minDistance={2}
+              maxDistance={100}
+              maxPolarAngle={Math.PI * 0.6}
+              minPolarAngle={Math.PI * 0.2}
+              enablePan={true}
+              panSpeed={0.8}
+              rotateSpeed={0.8}
+              zoomSpeed={1.5}
+              target={[width / 2, effectiveHeight / 2, 0]}
+            />
+          </Canvas>
+        </Suspense>
+      </R3FErrorBoundary>
 
       {/* Enhanced Reset Button */}
       <button

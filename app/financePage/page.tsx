@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "@/components/sections/navbar/default";
 import ChartSettingsPanel from "./components/ChartSettingsPanel";
 import ThreeDChartSettingsPanel from "./components/ThreeDChartSettingsPanel";
@@ -12,6 +12,24 @@ import HeroBackground from "@/components/ui/HeroBackground";
 export default function FinanceModelsPage() {
   const [settings, setSettings] = useState<any>(null);
   const [is3DView, setIs3DView] = useState(false);
+  const [webglAvailable, setWebglAvailable] = useState<boolean>(true);
+
+  useEffect(() => {
+    try {
+      const canvas = document.createElement("canvas");
+      const gl =
+        (canvas.getContext("webgl") as WebGLRenderingContext | null) ||
+        (canvas.getContext("experimental-webgl") as WebGLRenderingContext | null);
+      const ok = !!gl;
+      setWebglAvailable(ok);
+      if (!ok) {
+        setIs3DView(false);
+      }
+    } catch {
+      setWebglAvailable(false);
+      setIs3DView(false);
+    }
+  }, []);
 
   return (
     <main className="min-h-screen bg-background text-foreground relative">
@@ -39,10 +57,11 @@ export default function FinanceModelsPage() {
                   2D
                 </span>
                 <button
-                  onClick={() => setIs3DView(!is3DView)}
+                  onClick={() => webglAvailable && setIs3DView(!is3DView)}
+                  disabled={!webglAvailable}
                   className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 ${
                     is3DView ? "bg-primary" : "bg-muted"
-                  }`}
+                  } ${!webglAvailable ? "opacity-50 cursor-not-allowed" : ""}`}
                 >
                   <span
                     className={`inline-block h-4 w-4 transform rounded-full bg-background transition-transform ${
@@ -117,6 +136,14 @@ export default function FinanceModelsPage() {
                     <span><strong>Hover:</strong> Show data</span>
                   </div>
                 </div>
+              </div>
+            )}
+            {!webglAvailable && (
+              <div className="mt-6 bg-muted text-foreground text-sm p-4 rounded-xl border border-border">
+                <div className="font-semibold mb-1">3D view unavailable</div>
+                <p className="text-muted-foreground">
+                  Your browser or device does not support WebGL. The 2D chart is shown instead.
+                </p>
               </div>
             )}
           </div>
