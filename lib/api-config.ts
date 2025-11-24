@@ -7,9 +7,13 @@ export const API_BASE =
     ? "http://localhost:8000"
     : "https://prismbackend.fly.dev");
 
+// Server-side upstream base (for Next.js API proxy routes)
+export const UPSTREAM_API_BASE =
+  process.env.UPSTREAM_API_URL || API_BASE;
+
 // API endpoints
 export const API_ENDPOINTS = {
-  FINANCE: `${API_BASE}/finance`,
+  FINANCE: `/api/finance`,
   FUNDAMENTALS: (symbol: string) => `${API_BASE}/fundamentals/${symbol}`,
 } as const;
 
