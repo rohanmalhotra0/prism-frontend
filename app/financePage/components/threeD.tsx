@@ -601,6 +601,7 @@ export default function ThreeStockChart({
     try {
       const canvas = document.createElement("canvas");
       const gl =
+        (canvas.getContext("webgl2") as WebGL2RenderingContext | null) ||
         (canvas.getContext("webgl") as WebGLRenderingContext | null) ||
         (canvas.getContext("experimental-webgl") as WebGLRenderingContext | null);
       setWebglSupported(!!gl);
@@ -654,6 +655,22 @@ export default function ThreeStockChart({
               preserveDrawingBuffer: false,
               powerPreference: "high-performance",
               failIfMajorPerformanceCaveat: false,
+            }}
+            onCreated={({ gl }) => {
+              const canvasEl = gl.domElement as HTMLCanvasElement;
+              const handleLost = (e: Event) => {
+                e.preventDefault();
+                setWebglSupported(false);
+              };
+              const handleRestored = () => {
+                setWebglSupported(true);
+              };
+              const handleCreationError = () => {
+                setWebglSupported(false);
+              };
+              canvasEl.addEventListener("webglcontextlost", handleLost as any, false);
+              canvasEl.addEventListener("webglcontextrestored", handleRestored as any, false);
+              canvasEl.addEventListener("webglcontextcreationerror", handleCreationError as any, false);
             }}
           >
             <PerspectiveCamera
